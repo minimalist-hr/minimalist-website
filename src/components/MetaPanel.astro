@@ -1,16 +1,18 @@
 ---
 /**
- * Case study meta row: client, sector, engagement, scope. Entries without a value are skipped
- * (client names appear only with written permission, plan §8).
+ * Label/value metadata. `row` is the case study header; `stack` is the article sidebar.
+ * Items without a value are left out by the caller (client names need written permission).
  */
 interface Props {
   items: { label: string; value: string | number }[];
+  variant?: 'row' | 'stack';
+  class?: string;
 }
 
-const { items } = Astro.props;
+const { items, variant = 'row', class: className } = Astro.props;
 ---
 
-<dl class="meta">
+<dl class:list={['meta', className]} data-variant={variant}>
   {items.map((item) => (
     <div class="item">
       <dt>{item.label}</dt>
@@ -21,16 +23,28 @@ const { items } = Astro.props;
 
 <style>
   .meta {
+    margin: 0;
+    font-weight: var(--weight-medium);
+    text-transform: uppercase;
+  }
+
+  .meta[data-variant='row'] {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 24px;
-    margin: clamp(24px, 3vw, 40px) 0 0;
+    margin-top: clamp(24px, 3vw, 40px);
     padding-top: 18px;
     border-top: var(--hairline) solid var(--rule);
     font-size: var(--text-label);
-    font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-label-tight);
-    text-transform: uppercase;
+  }
+
+  .meta[data-variant='stack'] {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    font-size: var(--text-label-sm);
+    letter-spacing: var(--tracking-label);
   }
 
   .item {

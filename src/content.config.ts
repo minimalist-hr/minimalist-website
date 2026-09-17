@@ -69,6 +69,10 @@ const insights = defineCollection({
     excerpt: z.string(),
     coverCaption: z.string(),
     draft: z.boolean().default(false),
+    /** Defaults to siteConfig.author. */
+    author: z.string().optional(),
+    /** Closing question on the article page; falls back to the Insights page CTA. */
+    ctaTitle: z.string().optional(),
   }),
 });
 

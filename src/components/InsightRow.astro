@@ -1,0 +1,81 @@
+---
+/**
+ * Insights list row: small image, date/category and title, then excerpt and link.
+ * Wraps to a single column on narrow screens (design).
+ */
+import type { Locale } from '../i18n/config';
+import { useTranslations } from '../i18n/utils';
+import { formatInsightDate } from '../lib/format';
+import { insightPath, type InsightEntry } from '../lib/content';
+import CtaLink from './CtaLink.astro';
+import ImageFrame from './ImageFrame.astro';
+import MetaRow from './MetaRow.astro';
+
+interface Props {
+  entry: InsightEntry;
+  locale: Locale;
+}
+
+const { entry, locale } = Astro.props;
+const { title, category, excerpt, coverCaption, date } = entry.data;
+const t = useTranslations(locale);
+---
+
+<article class="row">
+  <div class="image-slot">
+    <ImageFrame caption={coverCaption} ratio="4/3" />
+  </div>
+  <div class="heading">
+    <MetaRow class="date" items={[formatInsightDate(date, locale), category]} />
+    <h2>{title}</h2>
+  </div>
+  <div class="detail">
+    <p>{excerpt}</p>
+    <CtaLink href={insightPath(entry, locale)}>{t('insights.readInsight')}</CtaLink>
+  </div>
+</article>
+
+<style>
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: clamp(16px, 3vw, 44px);
+    padding-block: clamp(24px, 3vw, 40px);
+    /* inside the container already, so a plain border ends with the text */
+    border-bottom: var(--hairline) solid var(--rule);
+  }
+
+  .image-slot {
+    flex: 0 0 clamp(140px, 16vw, 190px);
+  }
+
+  .heading {
+    display: flex;
+    flex: 1 1 340px;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .date {
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label-tight);
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+    letter-spacing: var(--tracking-title);
+    line-height: var(--leading-tight);
+  }
+
+  .detail {
+    display: flex;
+    flex: 1 1 320px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    font-size: var(--text-md);
+    line-height: var(--leading-body);
+    color: var(--ink-2);
+  }
+</style>

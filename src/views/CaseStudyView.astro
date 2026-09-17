@@ -4,7 +4,7 @@
  * Structure follows the design: back link, title, meta, hero image, labelled sections,
  * gallery, results, quote, closing CTA.
  */
-import CaseMeta from '../components/CaseMeta.astro';
+import MetaPanel from '../components/MetaPanel.astro';
 import CtaBand from '../components/CtaBand.astro';
 import CtaLink from '../components/CtaLink.astro';
 import ImageFrame from '../components/ImageFrame.astro';
@@ -55,7 +55,7 @@ if (scope) meta.push({ label: t('case.scope'), value: scope });
         ← {t('work.backToWork')}
       </CtaLink>
       <h1>{title}</h1>
-      <CaseMeta items={meta} />
+      <MetaPanel items={meta} />
     </header>
 
     {heroCaption && (

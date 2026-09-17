@@ -1,0 +1,62 @@
+---
+/**
+ * Insights list, shared by /insights/ and /hr/zapisi/.
+ */
+import CtaBand from '../components/CtaBand.astro';
+import InsightRow from '../components/InsightRow.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import type { Locale } from '../i18n/config';
+import { alternatesFor, localizedPath, useTranslations } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getInsights } from '../lib/content';
+
+interface Props {
+  locale: Locale;
+}
+
+const copy = {
+  en: {
+    title: 'Insights — Minimalist',
+    heading: 'Notes on simplifying complex systems.',
+    lede: 'Published when there is something worth saying. Roughly once a month.',
+  },
+  hr: {
+    title: 'Zapisi — Minimalist',
+    heading: 'Zapisi o pojednostavljivanju složenih sustava.',
+    lede: 'Objavljujemo kada imamo što reći. Približno jednom mjesečno.',
+  },
+} satisfies Record<Locale, Record<string, string>>;
+
+const { locale } = Astro.props;
+const text = copy[locale];
+const t = useTranslations(locale);
+const entries = await getInsights(locale);
+---
+
+<BaseLayout title={text.title} description={text.lede} alternates={alternatesFor('insights')}>
+  <Section size="header">
+    <PageHeader label={t('nav.insights')} title={text.heading} lede={text.lede} />
+  </Section>
+
+  <Section bordered={false} flushTop>
+    {entries.map((entry) => (
+      <InsightRow entry={entry} locale={locale} />
+    ))}
+
+    <div class="closing">
+      <CtaBand
+        title={t('insights.ctaTitle')}
+        action={{ href: localizedPath('contact', locale), label: t('cta.startProject') }}
+        secondary={{ href: localizedPath('work', locale), label: t('nav.work') }}
+      />
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .closing {
+    margin-top: clamp(40px, 5vw, 72px);
+    padding-top: clamp(12px, 2vw, 20px);
+  }
+</style>

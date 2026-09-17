@@ -6,6 +6,8 @@ export const siteConfig = {
   name: 'Minimalist',
   url: 'https://minimalist.hr',
   email: 'hello@minimalist.hr',
+  /** Default byline for insights. */
+  author: 'Filip Mučnjak',
 
   /** Show the Insights section in navigation and routes (design flag `showInsights`). */
   showInsights: true,
