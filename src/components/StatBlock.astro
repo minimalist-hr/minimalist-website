@@ -1,0 +1,46 @@
+---
+/**
+ * One studio figure: large value over an uppercase label.
+ */
+import type { Locale } from '../i18n/config';
+import { pick } from '../i18n/localized';
+import type { Stat } from '../data/stats';
+
+interface Props {
+  stat: Stat;
+  locale: Locale;
+}
+
+const { stat, locale } = Astro.props;
+---
+
+<div class="stat">
+  <span class="value">{stat.value}</span>
+  <span class="label">{pick(stat.label, locale)}</span>
+</div>
+
+<style>
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 16px;
+    border-top: var(--hairline) solid var(--rule);
+  }
+
+  .value {
+    font-size: var(--text-4xl);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-headline);
+    line-height: var(--leading-none);
+  }
+
+  .label {
+    font-size: var(--text-label-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    line-height: var(--leading-normal);
+    text-transform: uppercase;
+    color: var(--graphite);
+  }
+</style>

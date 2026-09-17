@@ -1,0 +1,113 @@
+---
+/**
+ * The six steps. Mobile design: vertical rule with a square marker per step.
+ * Desktop design (md and up): six columns under one horizontal rule.
+ */
+import type { Locale } from '../i18n/config';
+import { pick } from '../i18n/localized';
+import type { Step } from '../data/steps';
+
+interface Props {
+  steps: Step[];
+  locale: Locale;
+}
+
+const { steps, locale } = Astro.props;
+---
+
+<ol class="steps" role="list">
+  {steps.map((step) => (
+    <li class="step">
+      <span class="marker" aria-hidden="true" />
+      <span class="number">{step.number}</span>
+      <h3>{pick(step.title, locale)}</h3>
+      <p>{pick(step.description, locale)}</p>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .steps {
+    margin: 0;
+    padding: 0;
+    border-left: var(--hairline) solid var(--rule);
+  }
+
+  .step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-left: 22px;
+  }
+
+  .step:not(:last-child) {
+    padding-bottom: 30px;
+  }
+
+  .marker {
+    position: absolute;
+    top: 4px;
+    left: -4px;
+    width: 7px;
+    height: 7px;
+    background: var(--ink);
+  }
+
+  .number {
+    font-size: var(--text-label-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    line-height: 1.4;
+    color: var(--graphite);
+  }
+
+  h3 {
+    font-size: var(--text-base);
+    letter-spacing: var(--tracking-snug);
+  }
+
+  p {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--ink-2);
+  }
+
+  /* ---- Desktop design (md and up): one rule across the top, six columns ---- */
+  @media (min-width: 60rem) {
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      column-gap: clamp(12px, 1.8vw, 28px);
+      border-left: 0;
+      border-top: var(--hairline) solid var(--rule);
+    }
+
+    .step {
+      gap: 9px;
+      margin-top: -4px;
+      padding-left: 0;
+    }
+
+    .step:not(:last-child) {
+      padding-bottom: 0;
+    }
+
+    .marker {
+      position: static;
+      display: block;
+    }
+
+    .number {
+      margin-top: 7px;
+    }
+
+    h3 {
+      font-size: var(--text-md);
+    }
+
+    p {
+      font-size: 13.5px;
+    }
+  }
+</style>

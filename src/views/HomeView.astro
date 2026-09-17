@@ -1,11 +1,27 @@
 ---
 /**
- * Home page, shared by / and /hr/. Pages only pass the locale; markup lives here once.
- * Placeholder until the home sections are built in Phase 2.
+ * Home page, shared by / and /hr/ (plan §2). Pages pass only the locale.
+ * Section copy comes from the design; work and insights come from content collections.
  */
+import CtaBand from '../components/CtaBand.astro';
+import Hero from '../components/Hero.astro';
+import InsightCard from '../components/InsightCard.astro';
+import Section from '../components/Section.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import SkillGroupCard from '../components/SkillGroupCard.astro';
+import StatBlock from '../components/StatBlock.astro';
+import StepList from '../components/StepList.astro';
+import WorkCard from '../components/WorkCard.astro';
+import { services } from '../data/services';
+import { skillGroups } from '../data/skills';
+import { stats } from '../data/stats';
+import { steps } from '../data/steps';
 import type { Locale } from '../i18n/config';
-import { alternatesFor } from '../i18n/utils';
+import { alternatesFor, localizedPath, useTranslations } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getFeaturedWork, getInsights } from '../lib/content';
+import { siteConfig } from '../site.config';
 
 interface Props {
   locale: Locale;
@@ -14,33 +30,238 @@ interface Props {
 const copy = {
   en: {
     title: 'Minimalist — Complex problems. Simple solutions.',
-    heading: 'Complex problems. Simple solutions.',
+    available: 'Available for hire',
+    studio: 'Software development studio',
+    phrases: [
+      'Complex problems. Simple solutions.',
+      'Less noise. Better software.',
+      'Software, reduced to what matters.',
+      'Simple by design, built to last.',
+    ],
+    lede: 'We design and build software that does exactly what it should, performs without friction, and stands the test of time.',
+    scroll: 'Scroll',
+    work: 'Selected work',
+    services: 'What we do',
+    approach: 'How we work',
+    approachLede:
+      'The same six steps on every engagement, in the same order. One week of discovery, then nothing starts until scope and price are signed.',
+    skills: 'What we build with',
+    skillsLede:
+      'Boring, proven tools — six areas, described in plain language. Chosen so the next engineer, ours or yours, can read the system and keep working.',
+    about: 'How the studio works',
+    aboutStatement:
+      'A studio built to stay small on purpose. Nothing is delegated down, nothing is padded out.',
+    insights: 'Latest thinking',
+    cta: 'Tell us what you are trying to build.',
   },
   hr: {
     title: 'Minimalist — Složeni problemi. Jednostavna rješenja.',
-    heading: 'Složeni problemi. Jednostavna rješenja.',
+    available: 'Dostupni za rad',
+    studio: 'Studio za razvoj softvera',
+    phrases: [
+      'Složeni problemi. Jednostavna rješenja.',
+      'Manje šuma. Bolji softver.',
+      'Softver, sveden na ono što je važno.',
+      'Jednostavan po dizajnu, građen da traje.',
+    ],
+    lede: 'Osmišljavamo i razvijamo softver koji radi upravo ono što treba, bez trenja, i traje.',
+    scroll: 'Pomaknite',
+    work: 'Odabrani radovi',
+    services: 'Čime se bavimo',
+    approach: 'Kako radimo',
+    approachLede:
+      'Istih šest koraka na svakom projektu, u istom redoslijedu. Tjedan otkrivanja, a zatim ništa ne počinje dok obuhvat i cijena nisu potpisani.',
+    skills: 'Čime gradimo',
+    skillsLede:
+      'Dosadni, provjereni alati — šest područja, opisanih bez žargona. Odabrani tako da sljedeći inženjer, naš ili vaš, može pročitati sustav i nastaviti raditi.',
+    about: 'Kako studio radi',
+    aboutStatement:
+      'Studio namjerno građen da ostane malen. Ništa se ne delegira niže, ništa se ne napuhava.',
+    insights: 'Najnovije',
+    cta: 'Recite nam što želite izgraditi.',
   },
-} satisfies Record<Locale, Record<string, string>>;
+} satisfies Record<Locale, Record<string, string | string[]>>;
 
 const { locale } = Astro.props;
 const text = copy[locale];
+const t = useTranslations(locale);
+
+const featuredWork = await getFeaturedWork(locale);
+const insights = siteConfig.showInsights ? (await getInsights(locale)).slice(0, 3) : [];
+
+const paths = {
+  work: localizedPath('work', locale),
+  services: localizedPath('services', locale),
+  approach: localizedPath('approach', locale),
+  skills: localizedPath('skills', locale),
+  about: localizedPath('about', locale),
+  insights: localizedPath('insights', locale),
+  contact: localizedPath('contact', locale),
+};
 ---
 
-<BaseLayout title={text.title} alternates={alternatesFor('home')}>
-  <section class="container hero">
-    <h1>{text.heading}</h1>
-  </section>
+<BaseLayout title={text.title} description={text.lede} alternates={alternatesFor('home')}>
+  <Hero
+    available={text.available}
+    label={text.studio}
+    phrases={text.phrases}
+    lede={text.lede}
+    action={{ href: paths.contact, label: t('cta.startProject') }}
+    secondary={{ href: paths.work, label: t('cta.seeWork') }}
+    scroll={text.scroll}
+  />
+
+  <Section>
+    <SectionHeader title={text.work} link={{ href: paths.work, label: t('nav.work') }} />
+    <div class="grid grid-work">
+      {featuredWork.map((entry) => (
+        <WorkCard entry={entry} locale={locale} />
+      ))}
+    </div>
+  </Section>
+
+  <Section>
+    <SectionHeader
+      title={text.services}
+      link={{ href: paths.services, label: t('nav.services') }}
+    />
+    <div class="grid grid-services">
+      {services.map((service) => (
+        <ServiceCard service={service} locale={locale} />
+      ))}
+    </div>
+  </Section>
+
+  <Section>
+    <SectionHeader
+      title={text.approach}
+      link={{ href: paths.approach, label: t('nav.approach') }}
+    />
+    <p class="lede">{text.approachLede}</p>
+    <StepList steps={steps} locale={locale} />
+  </Section>
+
+  <Section>
+    <SectionHeader title={text.skills} link={{ href: paths.skills, label: t('nav.skills') }} />
+    <p class="lede lede-wide">{text.skillsLede}</p>
+    <div class="grid grid-skills">
+      {skillGroups.map((group) => (
+        <SkillGroupCard group={group} locale={locale} />
+      ))}
+    </div>
+  </Section>
+
+  <Section>
+    <SectionHeader title={text.about} link={{ href: paths.about, label: t('nav.about') }} />
+    <p class="statement">{text.aboutStatement}</p>
+    <div class="grid grid-stats">
+      {stats.map((stat) => (
+        <StatBlock stat={stat} locale={locale} />
+      ))}
+    </div>
+  </Section>
+
+  {insights.length > 0 && (
+    <Section>
+      <SectionHeader
+        title={text.insights}
+        link={{ href: paths.insights, label: t('nav.insights') }}
+      />
+      <div class="grid grid-insights">
+        {insights.map((entry) => (
+          <InsightCard entry={entry} locale={locale} />
+        ))}
+      </div>
+    </Section>
+  )}
+
+  <Section bordered={false} size="lead">
+    <CtaBand
+      title={text.cta}
+      action={{ href: paths.contact, label: t('cta.startProject') }}
+      secondary={{ href: paths.work, label: t('nav.work') }}
+    />
+  </Section>
 </BaseLayout>
 
 <style>
-  .hero {
-    padding-block: clamp(56px, 10vw, 150px);
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
   }
 
-  h1 {
-    max-width: 16ch;
-    font-size: var(--text-display);
-    letter-spacing: var(--tracking-display);
-    line-height: var(--leading-display);
+  .lede,
+  .statement {
+    max-width: 52ch;
+    margin-bottom: clamp(28px, 3.4vw, 44px);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--ink-2);
+  }
+
+  .lede-wide {
+    max-width: 56ch;
+  }
+
+  .statement {
+    max-width: 46ch;
+    margin-bottom: clamp(28px, 3.5vw, 48px);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-snug);
+    line-height: 1.4;
+    color: var(--ink);
+  }
+
+  .grid-work {
+    gap: 44px;
+  }
+
+  .grid-services,
+  .grid-insights {
+    gap: 40px;
+  }
+
+  .grid-skills {
+    gap: 28px;
+  }
+
+  .grid-stats {
+    gap: 18px;
+  }
+
+  /* Tablets: the mobile structure gains columns (plan §5.2) */
+  @media (min-width: 40rem) {
+    .grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    }
+  }
+
+  /* ---- Desktop design (md and up) ---- */
+  @media (min-width: 60rem) {
+    .grid-work {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 30%), 1fr));
+      gap: clamp(20px, 3vw, 40px);
+    }
+
+    .grid-services {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 22%), 1fr));
+      gap: clamp(20px, 2.5vw, 36px);
+    }
+
+    .grid-skills {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 30%), 1fr));
+      gap: clamp(24px, 3vw, 44px);
+    }
+
+    .grid-stats {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 28%), 1fr));
+      gap: clamp(18px, 2.5vw, 36px);
+    }
+
+    .grid-insights {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 28%), 1fr));
+      gap: clamp(20px, 2.5vw, 36px);
+    }
   }
 </style>

@@ -1,0 +1,62 @@
+---
+/**
+ * One service: number, title, one line, and a placeholder image pinned to the bottom
+ * so cards in a row align.
+ */
+import type { Locale } from '../i18n/config';
+import { pick } from '../i18n/localized';
+import type { Service } from '../data/services';
+import ImageFrame from './ImageFrame.astro';
+
+interface Props {
+  service: Service;
+  locale: Locale;
+}
+
+const { service, locale } = Astro.props;
+---
+
+<article class="service">
+  <span class="number">{service.number}</span>
+  <h3>{pick(service.title, locale)}</h3>
+  <p>{pick(service.description, locale)}</p>
+  <div class="image-slot">
+    <ImageFrame caption={service.caption} ratio="16/10" />
+  </div>
+</article>
+
+<style>
+  .service {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 18px;
+    border-top: var(--hairline) solid var(--rule);
+  }
+
+  .number {
+    font-size: var(--text-label-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    color: var(--graphite);
+  }
+
+  h3 {
+    font-size: var(--text-body);
+    letter-spacing: var(--tracking-snug);
+  }
+
+  p {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--ink-2);
+  }
+
+  /* margin-top:auto pins the image to the bottom, so images line up across cards
+     whatever the text above them does. */
+  .image-slot {
+    width: 100%;
+    margin-top: auto;
+    padding-top: clamp(18px, 2.4vw, 30px);
+  }
+</style>

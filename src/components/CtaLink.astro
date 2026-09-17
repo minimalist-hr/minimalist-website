@@ -1,0 +1,67 @@
+---
+/**
+ * Uppercase label link with an arrow that nudges 5px on hover (design).
+ * `variant="plain"` drops the rule and the arrow, for links that sit beside a button.
+ */
+interface Props {
+  href: string;
+  variant?: 'rule' | 'plain';
+  class?: string;
+}
+
+const { href, variant = 'rule', class: className } = Astro.props;
+---
+
+<a class:list={['cta', className]} data-variant={variant} href={href}>
+  <span class="text">
+    <slot />
+  </span>
+  {variant === 'rule' && (
+    <span class="arrow" aria-hidden="true">
+      →
+    </span>
+  )}
+</a>
+
+<style>
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    /* keeps the link from stretching in column layouts without overriding
+       vertical alignment when it sits in a row beside a button */
+    width: fit-content;
+    gap: 8px;
+    padding-block: 6px;
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    line-height: var(--leading-snug);
+    text-transform: uppercase;
+    color: var(--graphite);
+    transition: color var(--duration-state) linear;
+  }
+
+  .cta[data-variant='rule'] .text {
+    padding-bottom: 3px;
+    border-bottom: var(--hairline) solid var(--rule);
+    transition: border-color var(--duration-state) linear;
+  }
+
+  .arrow {
+    transition: transform var(--duration-reveal) var(--ease);
+  }
+
+  @media (hover: hover) {
+    .cta:hover {
+      color: var(--ink);
+    }
+
+    .cta[data-variant='rule']:hover .text {
+      border-bottom-color: var(--ink);
+    }
+
+    .cta:hover .arrow {
+      transform: translateX(5px);
+    }
+  }
+</style>

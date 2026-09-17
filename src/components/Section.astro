@@ -1,0 +1,36 @@
+---
+/**
+ * Page section: centred container, fluid vertical rhythm and the hairline that separates
+ * sections in the design. Sizes come from the designs (mobile 48px → desktop 104px).
+ */
+interface Props {
+  /** Hairline under the section. The last section before the footer sets this to false. */
+  bordered?: boolean;
+  /** `lead` uses the larger padding the design gives the first and last blocks. */
+  size?: 'default' | 'lead';
+  class?: string;
+  id?: string;
+}
+
+const { bordered = true, size = 'default', class: className, id } = Astro.props;
+---
+
+<section class:list={['section', className]} data-bordered={bordered} data-size={size} id={id}>
+  <div class="container">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: clamp(48px, 7vw, 104px);
+  }
+
+  .section[data-size='lead'] {
+    padding-block: clamp(56px, 8vw, 120px);
+  }
+
+  .section[data-bordered='true'] {
+    border-bottom: var(--hairline) solid var(--rule);
+  }
+</style>
