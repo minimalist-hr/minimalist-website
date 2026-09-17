@@ -1,0 +1,184 @@
+---
+/**
+ * Case study page, shared by /work/[slug]/ and /hr/radovi/[slug]/.
+ * Structure follows the design: back link, title, meta, hero image, labelled sections,
+ * gallery, results, quote, closing CTA.
+ */
+import CaseMeta from '../components/CaseMeta.astro';
+import CtaBand from '../components/CtaBand.astro';
+import CtaLink from '../components/CtaLink.astro';
+import ImageFrame from '../components/ImageFrame.astro';
+import Quote from '../components/Quote.astro';
+import ResultList from '../components/ResultList.astro';
+import type { Locale } from '../i18n/config';
+import { localizedPath, useTranslations, type Alternates } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { WorkEntry } from '../lib/content';
+import { siteConfig } from '../site.config';
+
+interface Props {
+  entry: WorkEntry;
+  locale: Locale;
+  alternates: Alternates;
+}
+
+const { entry, locale, alternates } = Astro.props;
+const t = useTranslations(locale);
+const {
+  title,
+  summary,
+  client,
+  sector,
+  year,
+  engagement,
+  scope,
+  heroCaption,
+  sections = [],
+  gallery = [],
+  results = [],
+  quote,
+  ctaTitle,
+} = entry.data;
+
+/** Client and scope are optional; only show what the entry provides. */
+const meta: { label: string; value: string }[] = [];
+if (client) meta.push({ label: t('case.client'), value: client });
+meta.push({ label: t('case.sector'), value: sector });
+meta.push({ label: t('case.engagement'), value: engagement ?? String(year) });
+if (scope) meta.push({ label: t('case.scope'), value: scope });
+---
+
+<BaseLayout title={`${title} — ${siteConfig.name}`} description={summary} alternates={alternates}>
+  <article>
+    <header class="container head">
+      <CtaLink href={localizedPath('work', locale)} variant="plain">
+        ← {t('work.backToWork')}
+      </CtaLink>
+      <h1>{title}</h1>
+      <CaseMeta items={meta} />
+    </header>
+
+    {heroCaption && (
+      <div class="container hero-image">
+        <ImageFrame caption={heroCaption} ratio="16/9" />
+      </div>
+    )}
+
+    <div class="container body">
+      {sections.length > 0 && (
+        <div class="sections">
+          {sections.map((section) => (
+            <section class="block">
+              <h2>{section.label}</h2>
+              {section.paragraphs.map((paragraph) => (
+                <p class:list={['text', paragraph.lead && 'text-lead']}>{paragraph.text}</p>
+              ))}
+            </section>
+          ))}
+        </div>
+      )}
+
+      {gallery.length > 0 && (
+        <div class="gallery">
+          {gallery.map((image) => (
+            <ImageFrame caption={image.caption} ratio="4/3" />
+          ))}
+        </div>
+      )}
+
+      {results.length > 0 && <ResultList label={t('case.results')} results={results} />}
+
+      {quote && <Quote text={quote.text} name={quote.name} role={quote.role} />}
+
+      {ctaTitle && (
+        <div class="closing">
+          <CtaBand
+            title={ctaTitle}
+            action={{ href: localizedPath('contact', locale), label: t('cta.startProject') }}
+            secondary={{ href: localizedPath('services', locale), label: t('nav.services') }}
+          />
+        </div>
+      )}
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .head {
+    padding-block: clamp(40px, 6vw, 88px) clamp(32px, 4vw, 56px);
+  }
+
+  h1 {
+    max-width: 22ch;
+    margin-top: clamp(24px, 3vw, 40px);
+    font-size: var(--text-6xl);
+    letter-spacing: var(--tracking-display);
+    line-height: 1.02;
+  }
+
+  .hero-image {
+    padding-block: clamp(32px, 4vw, 56px);
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(28px, 4vw, 56px);
+    padding-block: clamp(24px, 3vw, 40px) clamp(48px, 7vw, 104px);
+  }
+
+  .sections {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(28px, 3.5vw, 56px);
+  }
+
+  .block {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: clamp(20px, 2.4vw, 28px);
+    border-top: var(--hairline) solid var(--rule);
+  }
+
+  .block h2 {
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--graphite);
+  }
+
+  .text {
+    max-width: var(--measure-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-relaxed);
+    color: var(--ink-2);
+  }
+
+  .text-lead {
+    color: var(--ink);
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(16px, 2vw, 28px);
+  }
+
+  .closing {
+    padding-top: clamp(28px, 3.5vw, 48px);
+    border-top: var(--hairline) solid var(--rule);
+  }
+
+  /* ---- Desktop design (md and up) ---- */
+  @media (min-width: 60rem) {
+    .sections {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 44%), 1fr));
+    }
+
+    .gallery {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 46%), 1fr));
+    }
+  }
+</style>

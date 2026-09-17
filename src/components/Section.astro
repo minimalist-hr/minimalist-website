@@ -6,31 +6,51 @@
 interface Props {
   /** Hairline under the section. The last section before the footer sets this to false. */
   bordered?: boolean;
-  /** `lead` uses the larger padding the design gives the first and last blocks. */
-  size?: 'default' | 'lead';
+  /**
+   * `lead`  — larger padding, used by the closing block (design).
+   * `header` — page header: normal space above, tighter below (design).
+   */
+  size?: 'default' | 'lead' | 'header';
+  /** Drops the top padding, for a section that follows a page header. */
+  flushTop?: boolean;
   class?: string;
   id?: string;
 }
 
-const { bordered = true, size = 'default', class: className, id } = Astro.props;
+const { bordered = true, size = 'default', flushTop = false, class: className, id } = Astro.props;
 ---
 
-<section class:list={['section', className]} data-bordered={bordered} data-size={size} id={id}>
-  <div class="container">
+<section class:list={['section', className]} data-size={size} data-flush-top={flushTop} id={id}>
+  <div class:list={['container', bordered && 'rule-bottom']}>
     <slot />
   </div>
 </section>
 
 <style>
+  /* Vertical rhythm lives on the section; the rule sits on the container so it runs to the
+     width of the content, as in the design. Only the footer's rule spans the whole window. */
   .section {
-    padding-block: clamp(48px, 7vw, 104px);
+    padding-top: clamp(48px, 7vw, 104px);
   }
 
   .section[data-size='lead'] {
-    padding-block: clamp(56px, 8vw, 120px);
+    padding-top: clamp(56px, 8vw, 120px);
   }
 
-  .section[data-bordered='true'] {
-    border-bottom: var(--hairline) solid var(--rule);
+  .section[data-flush-top='true'] {
+    padding-top: 0;
+  }
+
+  .container {
+    padding-bottom: clamp(48px, 7vw, 104px);
+  }
+
+  .section[data-size='lead'] .container {
+    padding-bottom: clamp(56px, 8vw, 120px);
+  }
+
+  /* Page header: the design keeps a tighter gap between the lede and its rule. */
+  .section[data-size='header'] .container {
+    padding-bottom: clamp(32px, 4vw, 56px);
   }
 </style>

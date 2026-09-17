@@ -1,0 +1,51 @@
+---
+/**
+ * Case study meta row: client, sector, engagement, scope. Entries without a value are skipped
+ * (client names appear only with written permission, plan §8).
+ */
+interface Props {
+  items: { label: string; value: string | number }[];
+}
+
+const { items } = Astro.props;
+---
+
+<dl class="meta">
+  {items.map((item) => (
+    <div class="item">
+      <dt>{item.label}</dt>
+      <dd>{item.value}</dd>
+    </div>
+  ))}
+</dl>
+
+<style>
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 24px;
+    margin: clamp(24px, 3vw, 40px) 0 0;
+    padding-top: 18px;
+    border-top: var(--hairline) solid var(--rule);
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label-tight);
+    text-transform: uppercase;
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  dt {
+    color: var(--graphite);
+  }
+
+  dd {
+    margin: 0;
+    letter-spacing: var(--tracking-meta);
+    color: var(--ink);
+  }
+</style>

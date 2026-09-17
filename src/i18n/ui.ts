@@ -37,6 +37,12 @@ const en = {
 
   'work.readCaseStudy': 'Read the case study',
   'work.inProgress': '[ case study in progress ]',
+  'work.backToWork': 'Work',
+  'case.client': 'Client',
+  'case.sector': 'Sector',
+  'case.engagement': 'Engagement',
+  'case.scope': 'Scope',
+  'case.results': 'Results',
   'insights.readInsight': 'Read the insight',
 
   'footer.country': 'Croatia',
@@ -77,6 +83,12 @@ const hr: Record<UiKey, string> = {
 
   'work.readCaseStudy': 'Pročitajte studiju',
   'work.inProgress': '[ studija u izradi ]',
+  'work.backToWork': 'Radovi',
+  'case.client': 'Klijent',
+  'case.sector': 'Sektor',
+  'case.engagement': 'Angažman',
+  'case.scope': 'Obuhvat',
+  'case.results': 'Rezultati',
   'insights.readInsight': 'Pročitajte zapis',
 
   'footer.country': 'Hrvatska',

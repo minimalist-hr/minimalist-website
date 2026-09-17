@@ -97,6 +97,9 @@
   /* Layout */
   --container-max: 1240px;
   --gutter: clamp(20px, 4vw, 64px);
+  /* Side gutters including notch insets; used for container padding and content-width rules. */
+  --gutter-left: max(var(--gutter), env(safe-area-inset-left));
+  --gutter-right: max(var(--gutter), env(safe-area-inset-right));
   --header-height: clamp(60px, 7vw, 76px);
   --tap-target: 44px;
   --row-min-height: 48px;

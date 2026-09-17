@@ -1,0 +1,78 @@
+---
+/**
+ * Case study results: a label over a row of figures.
+ */
+interface Props {
+  label: string;
+  results: { value: string; label: string }[];
+}
+
+const { label, results } = Astro.props;
+---
+
+<div class="results">
+  <p class="section-label">{label}</p>
+  <dl class="grid">
+    {results.map((result) => (
+      <div class="result">
+        <dt class="value">{result.value}</dt>
+        <dd class="caption">{result.label}</dd>
+      </div>
+    ))}
+  </dl>
+</div>
+
+<style>
+  .results {
+    padding-top: clamp(28px, 3.5vw, 48px);
+    border-top: var(--hairline) solid var(--rule);
+  }
+
+  .section-label {
+    margin-bottom: clamp(20px, 3vw, 32px);
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--graphite);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(20px, 3vw, 40px);
+    margin: 0;
+  }
+
+  .result {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .value {
+    font-size: var(--text-5xl);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-headline);
+    line-height: var(--leading-none);
+  }
+
+  .caption {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--ink-2);
+  }
+
+  @media (min-width: 40rem) {
+    .grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+    }
+  }
+
+  @media (min-width: 60rem) {
+    .grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 22%), 1fr));
+    }
+  }
+</style>

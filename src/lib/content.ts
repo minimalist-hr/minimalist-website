@@ -1,7 +1,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 
-import type { Locale } from '../i18n/config';
-import { localizedPath } from '../i18n/utils';
+import { locales, type Locale } from '../i18n/config';
+import { localizedPath, type Alternates } from '../i18n/utils';
 
 export type WorkEntry = CollectionEntry<'work'>;
 export type InsightEntry = CollectionEntry<'insights'>;
@@ -28,6 +28,32 @@ export async function getWork(locale: Locale): Promise<WorkEntry[]> {
 /** Case studies shown in "Selected work" on the home page. */
 export async function getFeaturedWork(locale: Locale): Promise<WorkEntry[]> {
   return (await getWork(locale)).filter((entry) => entry.data.featured);
+}
+
+/** Case studies with a page of their own; entries still being written have none. */
+export async function getPublishedWork(locale: Locale): Promise<WorkEntry[]> {
+  return (await getWork(locale)).filter((entry) => entry.data.status === 'published');
+}
+
+/**
+ * Paths of one entry in every language, for hreflang and the language switch.
+ * Entries are paired by `translationKey`; a language without a translation falls back
+ * to that language's list page.
+ */
+export async function getEntryAlternates(
+  collection: 'work' | 'insights',
+  translationKey: string,
+): Promise<Alternates> {
+  const entries = await getCollection(collection, (e) => e.data.translationKey === translationKey);
+  const listRoute = collection === 'work' ? 'work' : 'insights';
+
+  return Object.fromEntries(
+    locales.map((locale) => {
+      const listPath = localizedPath(listRoute, locale);
+      const match = entries.find((entry) => entry.data.locale === locale);
+      return [locale, match ? `${listPath}${slugOf(match)}/` : listPath];
+    }),
+  ) as Alternates;
 }
 
 /** Published insights in one language, newest first. Drafts are excluded from builds. */

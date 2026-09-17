@@ -6,8 +6,36 @@
     width: 100%;
     max-width: var(--container-max);
     margin-inline: auto;
-    padding-left: max(var(--gutter), env(safe-area-inset-left));
-    padding-right: max(var(--gutter), env(safe-area-inset-right));
+    padding-left: var(--gutter-left);
+    padding-right: var(--gutter-right);
+  }
+
+  /*
+   * Hairline that begins and ends with the text, at every width. A border on the container
+   * would run through its padding and touch the window edges on phones, so the rule is drawn
+   * as a pseudo-element inset by the same gutters.
+   */
+  .rule-top,
+  .rule-bottom {
+    position: relative;
+  }
+
+  .rule-top::before,
+  .rule-bottom::after {
+    content: '';
+    position: absolute;
+    left: var(--gutter-left);
+    right: var(--gutter-right);
+    height: var(--hairline);
+    background: var(--rule);
+  }
+
+  .rule-top::before {
+    top: 0;
+  }
+
+  .rule-bottom::after {
+    bottom: 0;
   }
 
   /* Uppercase label style (brand: 500, +14%, 10–11px). Graphite is allowed here. */

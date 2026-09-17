@@ -1,0 +1,44 @@
+---
+/**
+ * Top of a list or overview page: small label, page title, optional lede.
+ */
+interface Props {
+  label: string;
+  title: string;
+  lede?: string | undefined;
+}
+
+const { label, title, lede } = Astro.props;
+---
+
+<div class="page-header">
+  <p class="label">{label}</p>
+  <h1>{title}</h1>
+  {lede && <p class="lede">{lede}</p>}
+</div>
+
+<style>
+  .label {
+    margin-bottom: 20px;
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--graphite);
+  }
+
+  h1 {
+    max-width: 20ch;
+    font-size: var(--text-6xl);
+    letter-spacing: var(--tracking-display);
+    line-height: 1.02;
+  }
+
+  .lede {
+    max-width: 48ch;
+    margin-top: clamp(20px, 2.5vw, 32px);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--ink-2);
+  }
+</style>

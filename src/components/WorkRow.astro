@@ -1,0 +1,104 @@
+---
+/**
+ * Work list row: image beside text, alternating sides from md up (design).
+ * Published entries link to the case study; the rest show the in-progress note.
+ */
+import type { Locale } from '../i18n/config';
+import { useTranslations } from '../i18n/utils';
+import { workPath, type WorkEntry } from '../lib/content';
+import CtaLink from './CtaLink.astro';
+import ImageFrame from './ImageFrame.astro';
+import MetaRow from './MetaRow.astro';
+
+interface Props {
+  entry: WorkEntry;
+  locale: Locale;
+  /** Even rows put the image on the right (design). */
+  flipped?: boolean;
+  /** Hairline under the row; the last row omits it. */
+  bordered?: boolean;
+}
+
+const { entry, locale, flipped = false, bordered = true } = Astro.props;
+const { title, sector, year, summary, coverCaption, status } = entry.data;
+const t = useTranslations(locale);
+---
+
+<article class="row" data-flipped={flipped} data-bordered={bordered}>
+  <div class="image-slot">
+    <ImageFrame caption={coverCaption} ratio="16/10" />
+  </div>
+  <div class="body">
+    <MetaRow items={[sector, year]} />
+    <h2>{title}</h2>
+    <p class="summary">{summary}</p>
+    {status === 'published' ? (
+      <CtaLink class="link" href={workPath(entry, locale)}>
+        {t('work.readCaseStudy')}
+      </CtaLink>
+    ) : (
+      <p class="in-progress">{t('work.inProgress')}</p>
+    )}
+  </div>
+</article>
+
+<style>
+  .row {
+    display: grid;
+    gap: clamp(20px, 3vw, 48px);
+    align-items: center;
+    padding-block: clamp(28px, 4vw, 52px);
+  }
+
+  .row[data-bordered='true'] {
+    border-bottom: var(--hairline) solid var(--rule);
+  }
+
+  .image-slot {
+    width: 100%;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  h2 {
+    font-size: var(--text-2xl);
+    letter-spacing: var(--tracking-wordmark);
+    line-height: var(--leading-tight);
+  }
+
+  .summary {
+    max-width: 44ch;
+    font-size: var(--text-md);
+    line-height: var(--leading-body);
+    color: var(--ink-2);
+  }
+
+  .link {
+    margin-top: 8px;
+  }
+
+  .in-progress {
+    margin-top: 6px;
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--graphite);
+  }
+
+  /* ---- Desktop design (md and up): two columns, alternating sides ---- */
+  @media (min-width: 60rem) {
+    .row {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .row[data-flipped='true'] .image-slot {
+      order: 2;
+    }
+  }
+</style>
