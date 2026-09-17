@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="icon" href="assets/favicon.ico" />
+<meta name="description" content="Minimalist is a software development studio. We design and build software that does exactly what it should. Complex problems. Simple solutions." />
+<meta property="og:title" content="Minimalist — Complex problems. Simple solutions." />
+<meta property="og:description" content="A software development studio. Deliberately small, senior, and focused." />
+<meta property="og:image" content="assets/minimalist-mark-ink.svg" />
+<style>
+  html { --paper:#111110; --raise:#191917; --ink:#F5F4F1; --ink-2:#C9C7C0; --graphite:#8A8880; --rule:#2C2B28; --stripe-a:#1B1B19; --stripe-b:#131312; color-scheme: dark; }
+  html[data-theme="light"] { --paper:#F5F4F1; --raise:#FFFFFF; --ink:#111110; --ink-2:#3B3A36; --graphite:#7E7C75; --rule:#DCDAD3; --stripe-a:#E9E7E1; --stripe-b:#F2F0EA; color-scheme: light; }
+  html, body { margin:0; padding:0; background: var(--paper); }
+  * { box-sizing: border-box; }
+  a { color: var(--ink); text-decoration: none; }
+  a:hover { color: var(--ink); }
+  html[data-lang="en"] [data-l="hr"], html[data-lang="hr"] [data-l="en"] { display: none !important; }
+  section[data-route] { display: none; }
+  html[data-page="home"] section[data-route="home"],
+  html[data-page="work"] section[data-route="work"],
+  html[data-page="case"] section[data-route="case"],
+  html[data-page="services"] section[data-route="services"],
+  html[data-page="approach"] section[data-route="approach"],
+  html[data-page="skills"] section[data-route="skills"],
+  html[data-page="notfound"] section[data-route="notfound"],
+  html[data-page="about"] section[data-route="about"],
+  html[data-page="insights"] section[data-route="insights"],
+  html[data-page="insight"] section[data-route="insight"],
+  html[data-page="contact"] section[data-route="contact"],
+  html[data-page="legal"] section[data-route="legal"] { display: block; animation: enter 260ms cubic-bezier(.2,0,0,1) both; }
+  @keyframes enter { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  [data-nav][aria-current="page"] { color: var(--ink) !important; }
+  [data-nav]::after { content:""; display:block; height:1px; background: var(--ink); width:0; transition: width 240ms cubic-bezier(.2,0,0,1); }
+  [data-nav]:hover::after, [data-nav][aria-current="page"]::after { width:100%; }
+  html[data-lang="en"] [data-lang-set="en"], html[data-lang="hr"] [data-lang-set="hr"] { color: var(--ink) !important; }
+  [data-ctalink] { border-bottom: 1px solid var(--rule); padding-bottom: 3px; transition: color 140ms linear, border-color 140ms linear; }
+  [data-ctalink]::after { content: "→"; display: inline-block; margin-left: 8px; transition: transform 200ms cubic-bezier(.2,0,0,1); }
+  [data-ctalink]:hover { color: var(--ink); border-bottom-color: var(--ink); }
+  [data-ctalink]:hover::after { transform: translateX(5px); }
+  [data-ctalink][data-plain] { border-bottom: 0; padding-bottom: 0; }
+  [data-ctalink][data-plain]::after { content: none; }
+  [data-menupanel] { display: none; }
+  [data-menupanel] a { display: flex; align-items: center; }
+  [data-menupanel] [data-nav] { align-items: stretch; }
+  [data-menupanel] [data-nav] span[data-l] { align-self: center; position: relative; padding-bottom: 3px; }
+  [data-menupanel] [data-nav]::after { display: none; }
+  [data-menupanel] [data-nav]:hover span[data-l], [data-menupanel] [data-nav][aria-current="page"] span[data-l] { box-shadow: 0 1px 0 0 var(--ink); }
+  html[data-menu="open"] [data-menupanel] { display: flex; }
+  html[data-menu="open"] [data-bar="top"] { transform: translateY(6.25px) rotate(45deg); }
+  html[data-menu="open"] [data-bar="bot"] { transform: translateY(-6.25px) rotate(-45deg); }
+  html[data-menu="open"] [data-bar="mid"] { opacity: 0; transform: scaleX(0.4); }
+  [data-menulabel="open"] { display: none; }
+  html[data-menu="open"] [data-menulabel="open"] { display: inline; }
+  html[data-menu="open"] [data-menulabel="closed"] { display: none; }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+  [data-phrase] { opacity: 0; animation: phrase 18s cubic-bezier(.2,0,0,1) infinite; }
+  @keyframes phrase { 0% { opacity: 0; transform: translateY(10px); } 2% { opacity: 1; transform: none; } 22% { opacity: 1; transform: none; } 25% { opacity: 0; transform: translateY(-10px); } 100% { opacity: 0; transform: translateY(-10px); } }
+  @media (prefers-reduced-motion: reduce) { [data-phrase] { animation: none; } [data-phrase]:first-child { opacity: 1; } }
+  @keyframes signal { 0%, 70% { opacity: 1; } 71%, 100% { opacity: 0.25; } }
+  @keyframes ping { 0% { opacity: 0.7; transform: scale(0.45); } 70% { opacity: 0; transform: scale(1); } 100% { opacity: 0; transform: scale(1); } }
+  @keyframes cue { 0%,100% { opacity: 0.45; transform: translateY(0); } 50% { opacity: 1; transform: translateY(6px); } }
+  ::placeholder { color: var(--graphite); opacity: 1; }
+  :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+  input, select, textarea, button { font: inherit; color: inherit; }
+  form[data-sent="true"] [data-formbody] { display: none !important; }
+  form:not([data-sent="true"]) [data-formdone] { display: none !important; }
+  input[data-chip] { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+  input[data-chip]:checked + span { background: var(--ink); color: var(--paper); }
+  input[data-chip]:focus-visible + span { outline: 2px solid var(--ink); outline-offset: 2px; }
+  html[data-theme="light"] [data-knob] { transform: translateX(18px); }
+  @media (prefers-reduced-motion: reduce) { *, *::after { animation: none !important; transition: none !important; } }
+</style>
+<script>
+(function () {
+  var H = document.documentElement;
+  if (window.__mnInit) return;
+  window.__mnInit = true;
+  var ROUTES = ["home","work","case","services","approach","skills","about","insights","insight","contact","legal","notfound"];
+  var TITLES = {
+    home:{en:"Minimalist — Complex problems. Simple solutions.",hr:"Minimalist — Složeni problemi. Jednostavna rješenja."},
+    work:{en:"Work — Minimalist",hr:"Radovi — Minimalist"},
+    "case":{en:"Core banking, rebuilt in 14 weeks — Minimalist",hr:"Jezgra bankarskog sustava, iznova u 14 tjedana — Minimalist"},
+    services:{en:"Services — Minimalist",hr:"Usluge — Minimalist"},
+    approach:{en:"Approach — Minimalist",hr:"Pristup — Minimalist"},
+    skills:{en:"Skills — Minimalist",hr:"Vještine — Minimalist"},
+    notfound:{en:"Page not found — Minimalist",hr:"Stranica nije pronađena — Minimalist"},
+    about:{en:"About — Minimalist",hr:"O studiju — Minimalist"},
+    insights:{en:"Insights — Minimalist",hr:"Zapisi — Minimalist"},
+    insight:{en:"Deleting code is a feature — Minimalist",hr:"Brisanje koda je funkcija — Minimalist"},
+    contact:{en:"Contact — Minimalist",hr:"Kontakt — Minimalist"},
+    legal:{en:"Legal — Minimalist",hr:"Pravne informacije — Minimalist"}
+  };
+  function store(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function read(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function syncTitle() {
+    var p = H.getAttribute("data-page") || "home", l = H.getAttribute("data-lang") || "en";
+    if (TITLES[p]) document.title = TITLES[p][l];
+    H.setAttribute("lang", l);
+    document.querySelectorAll("[data-nav]").forEach(function (a) {
+      var r = (a.getAttribute("href") || "").replace("#", "");
+      var on = r === p || (p === "case" && r === "work") || (p === "insight" && r === "insights");
+      if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+    var sw = document.querySelector("[data-theme-toggle]");
+    if (sw) sw.setAttribute("aria-checked", H.getAttribute("data-theme") === "light" ? "true" : "false");
+  }
+  function setPage(r, scroll) {
+    if (ROUTES.indexOf(r) < 0) r = "notfound";
+    H.setAttribute("data-page", r);
+    syncTitle();
+    if (scroll) window.scrollTo(0, 0);
+  }
+  window.__mnSetTheme = function (t) { H.setAttribute("data-theme", t); store("mn-theme", t); syncTitle(); };
+  window.__mnSetLang = function (l) { H.setAttribute("data-lang", l); store("mn-lang", l); syncTitle(); };
+  H.setAttribute("data-theme", read("mn-theme") || "dark");
+  H.setAttribute("data-lang", read("mn-lang") || "en");
+  setPage((location.hash || "#home").slice(1), false);
+  window.addEventListener("hashchange", function () { setPage((location.hash || "#home").slice(1), true); });
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest("[data-theme-toggle]");
+    if (t) { window.__mnSetTheme(H.getAttribute("data-theme") === "dark" ? "light" : "dark"); return; }
+    var l = e.target.closest("[data-lang-set]");
+    if (l) { e.preventDefault(); window.__mnSetLang(l.getAttribute("data-lang-set")); return; }
+    var s = e.target.closest("[data-scrollnext]");
+    if (s) {
+      var target = document.getElementById("home-next");
+      if (target) window.scrollTo({ top: target.getBoundingClientRect().top + window.pageYOffset, behavior: "smooth" });
+      return;
+    }
+  });
+  document.addEventListener("click", function (e) {
+    var H = document.documentElement;
+    if (e.target.closest("[data-menutoggle]")) {
+      var open = H.getAttribute("data-menu") !== "open";
+      H.setAttribute("data-menu", open ? "open" : "closed");
+      document.querySelectorAll("[data-menutoggle]").forEach(function (b) { b.setAttribute("aria-expanded", open ? "true" : "false"); });
+      return;
+    }
+    if (e.target.closest("[data-menupanel] a") || e.target.closest("[data-menupanel] button")) {
+      H.setAttribute("data-menu", "closed");
+      document.querySelectorAll("[data-menutoggle]").forEach(function (b) { b.setAttribute("aria-expanded", "false"); });
+    }
+  });
+  document.addEventListener("submit", function (e) {
+    var f = e.target.closest("form[data-inquiry]");
+    if (!f) return;
+    e.preventDefault();
+    f.setAttribute("data-sent", "true");
+  });
+  document.addEventListener("DOMContentLoaded", syncTitle);
+})();
+</script>
+</helmet>
+
+<div style="background:var(--paper);color:var(--ink);font-family:Archivo,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;min-height:100%;display:flex;flex-direction:column;padding-top:var(--safe-top,0px);">
+
+  <header style="position:sticky;top:var(--safe-top,0px);z-index:20;background:var(--paper);border-bottom:1px solid var(--rule);">
+    <div style="width:100%;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;height:60px;">
+      <a href="#home" aria-label="Minimalist — home" style="display:inline-flex;align-items:baseline;gap:4.4px;flex:none;">
+        <span style="font-size:16px;font-weight:500;letter-spacing:-0.035em;">MINIMALIST</span>
+        <span style="width:3.4px;height:3.4px;background:currentColor;flex:none;"></span>
+      </a>
+      <button data-menutoggle type="button" aria-label="Menu" aria-expanded="false" style="width:44px;height:44px;padding:0;background:none;border:0;cursor:pointer;color:var(--graphite);display:flex;align-items:center;justify-content:center;transition:color 140ms linear;" style-hover="color:var(--ink)">
+        <span aria-hidden="true" style="position:relative;width:22px;height:14px;display:block;">
+          <span data-bar="top" style="position:absolute;left:0;right:0;top:0;height:1.5px;background:currentColor;transition:transform 260ms cubic-bezier(.2,0,0,1);"></span>
+          <span data-bar="mid" style="position:absolute;left:0;right:0;top:6.25px;height:1.5px;background:currentColor;transition:opacity 160ms linear,transform 260ms cubic-bezier(.2,0,0,1);"></span>
+          <span data-bar="bot" style="position:absolute;left:0;right:0;top:12.5px;height:1.5px;background:currentColor;transition:transform 260ms cubic-bezier(.2,0,0,1);"></span>
+        </span>
+      </button>
+    </div>
+
+    <nav data-menupanel aria-label="Primary" style="position:absolute;top:100%;left:0;right:0;flex-direction:column;border-bottom:1px solid var(--rule);padding:4px 20px 18px;background:var(--paper);">
+      <a data-nav href="#work" style="display:flex;align-items:center;min-height:48px;font-weight:500;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);border-bottom:1px solid var(--rule);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Work</span><span data-l="hr">Radovi</span></a>
+      <a data-nav href="#services" style="display:flex;align-items:center;min-height:48px;font-weight:500;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);border-bottom:1px solid var(--rule);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Services</span><span data-l="hr">Usluge</span></a>
+      <a data-nav href="#approach" style="display:flex;align-items:center;min-height:48px;font-weight:500;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);border-bottom:1px solid var(--rule);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Approach</span><span data-l="hr">Pristup</span></a>
+      <a data-nav href="#skills" style="display:flex;align-items:center;min-height:48px;font-weight:500;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);border-bottom:1px solid var(--rule);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Skills</span><span data-l="hr">Vještine</span></a>
+      <a data-nav href="#about" style="display:flex;align-items:center;min-height:48px;font-weight:500;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);border-bottom:1px solid var(--rule);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">About</span><span data-l="hr">O studiju</span></a>
+      <a data-nav href="#insights" style="display:flex;align-items:center;min-height:48px;font-weight:500;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);border-bottom:1px solid var(--rule);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Insights</span><span data-l="hr">Zapisi</span></a>
+      <a data-nav href="#contact" style="display:flex;align-items:center;min-height:48px;font-weight:500;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Contact</span><span data-l="hr">Kontakt</span></a>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;border-top:1px solid var(--rule);margin-top:10px;padding-top:16px;">
+        <div role="group" aria-label="Language" style="display:flex;align-items:center;gap:10px;font-weight:500;font-size:12px;letter-spacing:0.12em;">
+          <button data-lang-set="en" type="button" style="background:none;border:0;padding:8px 2px;cursor:pointer;color:var(--graphite);letter-spacing:0.12em;font:inherit;transition:color 140ms linear;" style-hover="color:var(--ink)">EN</button>
+          <span aria-hidden="true" style="color:var(--rule);">/</span>
+          <button data-lang-set="hr" type="button" style="background:none;border:0;padding:8px 2px;cursor:pointer;color:var(--graphite);letter-spacing:0.12em;font:inherit;transition:color 140ms linear;" style-hover="color:var(--ink)">HR</button>
+        </div>
+        <button data-theme-toggle type="button" role="switch" aria-checked="false" aria-label="Light mode" style="width:44px;height:26px;padding:0;background:none;border:1px solid var(--rule);cursor:pointer;display:flex;align-items:center;flex:none;transition:border-color 140ms linear;" style-hover="border-color:var(--ink)">
+          <span data-knob aria-hidden="true" style="width:16px;height:16px;margin-left:4px;background:var(--ink);transition:transform 220ms cubic-bezier(.2,0,0,1);"></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main style="flex:1;">
+
+    <!-- ══ HOME ══════════════════════════════════════ -->
+    <section data-route="home" data-screen-label="Home">
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:44px 20px 56px;min-height:calc(100cqh - 61px - var(--safe-top, 0px));display:flex;flex-direction:column;border-bottom:1px solid var(--rule);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:48px;">
+          <span aria-hidden="true" style="position:relative;width:9px;height:9px;flex:none;display:flex;align-items:center;justify-content:center;">
+            <span style="position:absolute;inset:0;background:var(--ink);animation:signal 1.8s steps(1,end) infinite;"></span>
+            <span style="position:absolute;inset:-6px;box-shadow:0 0 0 1px var(--ink);animation:ping 1.8s cubic-bezier(.2,0,0,1) infinite;"></span>
+          </span>
+          <span style="font-size:16px;font-weight:500;letter-spacing:-0.02em;"><span data-l="en">Available for hire</span><span data-l="hr">Dostupni za rad</span></span>
+        </div>
+        <div style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);margin-bottom:40px;">
+          <span data-l="en">Software development studio</span><span data-l="hr">Studio za razvoj softvera</span>
+        </div>
+        <h1 style="margin:4px 0 0;font-size:44px;font-weight:500;letter-spacing:-0.05em;line-height:0.96;max-width:16ch;display:grid;">
+          <span data-phrase style="grid-area:1/1;animation-delay:0s;"><span data-l="en">Complex<br />problems. Simple<br />solutions.</span><span data-l="hr">Složeni problemi. Jednostavna rješenja.</span></span>
+          <span data-phrase style="grid-area:1/1;animation-delay:4.5s;"><span data-l="en">Less noise.<br />Better<br />software.</span><span data-l="hr">Manje šuma. Bolji softver.</span></span>
+          <span data-phrase style="grid-area:1/1;animation-delay:9s;"><span data-l="en">Software,<br />reduced to what<br />matters.</span><span data-l="hr">Softver, sveden na ono što je važno.</span></span>
+          <span data-phrase style="grid-area:1/1;animation-delay:13.5s;"><span data-l="en">Simple by<br />design, built<br />to last.</span><span data-l="hr">Jednostavan po dizajnu, građen da traje.</span></span>
+        </h1>
+        <p style="margin:40px 0 0;max-width:42ch;font-size:16px;line-height:1.55;color:var(--ink-2);text-wrap:pretty;">
+          <span data-l="en">We design and build software that does exactly what it should, performs without friction, and stands the test of time.</span><span data-l="hr">Osmišljavamo i razvijamo softver koji radi upravo ono što treba, bez trenja, i traje.</span>
+        </p>
+        <div style="margin-top:56px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+          <a href="#contact" style="display:inline-flex;align-items:center;background:var(--ink);color:var(--paper);box-shadow:inset 0 0 0 1px var(--ink);padding:14px 22px;font-size:14px;font-weight:500;transition:background 160ms linear,color 160ms linear;" style-hover="background:var(--paper);color:var(--ink)"><span data-l="en">Start a project</span><span data-l="hr">Započnite projekt</span></a>
+          <a href="#work" style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">See the work</span><span data-l="hr">Pogledajte radove</span></a>
+        </div>
+        <div aria-hidden="true" style="margin-top:auto;padding-top:36px;display:flex;flex-direction:column;align-items:center;gap:8px;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);user-select:none;animation:cue 2.6s cubic-bezier(.4,0,.2,1) infinite;">
+          <span data-l="en">Scroll</span><span data-l="hr">Pomaknite</span>
+          <span style="font-size:13px;line-height:1;">↓</span>
+        </div>
+      </div>
+
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:48px 20px;border-bottom:1px solid var(--rule);">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:28px;">
+          <h2 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.025em;"><span data-l="en">Selected work</span><span data-l="hr">Odabrani radovi</span></h2>
+          <a data-ctalink href="#work" style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Work</span><span data-l="hr">Radovi</span></a>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr;gap:44px;">
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div style="aspect-ratio:4/3;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;">
+              <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">product shot / core banking console</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);">Fintech<span aria-hidden="true" style="display:inline-block;width:3.4px;height:3.4px;background:currentColor;margin:0 10px;vertical-align:middle;"></span>2026</span>
+              <span style="font-size:17px;font-weight:500;letter-spacing:-0.03em;line-height:1.15;"><span data-l="en">Core banking, rebuilt in 14 weeks</span><span data-l="hr">Jezgra bankarskog sustava, iznova u 14 tjedana</span></span>
+              <span style="font-size:14px;line-height:1.5;color:var(--ink-2);"><span data-l="en">p95 latency 340ms → 48ms. Infrastructure cost down 62%.</span><span data-l="hr">p95 latencija 340 ms → 48 ms. Infrastruktura 62% jeftinija.</span></span>
+              <a data-ctalink href="#case" style="align-self:flex-start;margin-top:4px;font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Read the case study</span><span data-l="hr">Pročitajte studiju</span></a>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div style="aspect-ratio:4/3;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;">
+              <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">product shot / dispatch dashboard</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);">Logistics<span aria-hidden="true" style="display:inline-block;width:3.4px;height:3.4px;background:currentColor;margin:0 10px;vertical-align:middle;"></span>2025</span>
+              <span style="font-size:17px;font-weight:500;letter-spacing:-0.03em;line-height:1.15;"><span data-l="en">Eleven tools replaced by one</span><span data-l="hr">Jedanaest alata zamijenjeno jednim</span></span>
+              <span style="font-size:14px;line-height:1.5;color:var(--ink-2);"><span data-l="en">Dispatch time per load cut by half. Support tickets down 71%.</span><span data-l="hr">Vrijeme dispečiranja prepolovljeno. Prijave podršci niže 71%.</span></span>
+              <a data-ctalink href="#work" style="align-self:flex-start;margin-top:4px;font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Read the case study</span><span data-l="hr">Pročitajte studiju</span></a>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div style="aspect-ratio:4/3;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;">
+              <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">product shot / scheduling flow</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);">Healthcare<span aria-hidden="true" style="display:inline-block;width:3.4px;height:3.4px;background:currentColor;margin:0 10px;vertical-align:middle;"></span>2025</span>
+              <span style="font-size:17px;font-weight:500;letter-spacing:-0.03em;line-height:1.15;"><span data-l="en">Nine clicks became two</span><span data-l="hr">Devet klikova postalo je dva</span></span>
+              <span style="font-size:14px;line-height:1.5;color:var(--ink-2);"><span data-l="en">Booking completion up 38%. No new staff training required.</span><span data-l="hr">Dovršenih rezervacija 38% više. Bez dodatne edukacije osoblja.</span></span>
+              <a data-ctalink href="#work" style="align-self:flex-start;margin-top:4px;font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Read the case study</span><span data-l="hr">Pročitajte studiju</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:48px 20px;border-bottom:1px solid var(--rule);">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:24px;">
+          <h2 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.025em;"><span data-l="en">What we do</span><span data-l="hr">Čime se bavimo</span></h2>
+          <a data-ctalink href="#services" style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Services</span><span data-l="hr">Usluge</span></a>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr;gap:40px;">
+          <div style="border-top:1px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:10px;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;color:var(--graphite);">01</span>
+            <span style="font-size:17px;font-weight:500;letter-spacing:-0.02em;"><span data-l="en">Product design &amp; development</span><span data-l="hr">Dizajn i razvoj proizvoda</span></span>
+            <span style="font-size:14px;line-height:1.5;color:var(--ink-2);"><span data-l="en">From a blank page to a product in the market.</span><span data-l="hr">Od prazne stranice do proizvoda na tržištu.</span></span>
+            <div style="margin-top:auto;padding-top:18px;width:100%;">
+              <div style="aspect-ratio:16/10;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">photo / design session, wall of screens</span></div>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:10px;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;color:var(--graphite);">02</span>
+            <span style="font-size:17px;font-weight:500;letter-spacing:-0.02em;"><span data-l="en">Custom software</span><span data-l="hr">Softver po mjeri</span></span>
+            <span style="font-size:14px;line-height:1.5;color:var(--ink-2);"><span data-l="en">Internal systems built around how the work actually happens.</span><span data-l="hr">Interni sustavi građeni oko stvarnog načina rada.</span></span>
+            <div style="margin-top:auto;padding-top:18px;width:100%;">
+              <div style="aspect-ratio:16/10;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">screens / one internal system replacing eleven</span></div>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:10px;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;color:var(--graphite);">03</span>
+            <span style="font-size:17px;font-weight:500;letter-spacing:-0.02em;"><span data-l="en">Modernization</span><span data-l="hr">Modernizacija</span></span>
+            <span style="font-size:14px;line-height:1.5;color:var(--ink-2);"><span data-l="en">Fragile systems rebuilt into clean architecture, nothing lost.</span><span data-l="hr">Krhki sustavi prelaze u čistu arhitekturu, bez gubitaka.</span></span>
+            <div style="margin-top:auto;padding-top:18px;width:100%;">
+              <div style="aspect-ratio:16/10;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">photo / old system beside its replacement</span></div>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:10px;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;color:var(--graphite);">04</span>
+            <span style="font-size:17px;font-weight:500;letter-spacing:-0.02em;"><span data-l="en">Technical strategy</span><span data-l="hr">Tehnička strategija</span></span>
+            <span style="font-size:14px;line-height:1.5;color:var(--ink-2);"><span data-l="en">A second senior opinion before the expensive decision.</span><span data-l="hr">Drugo stručno mišljenje prije skupe odluke.</span></span>
+            <div style="margin-top:auto;padding-top:18px;width:100%;">
+              <div style="aspect-ratio:16/10;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">photo / architecture decision on a whiteboard</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:48px 20px;border-bottom:1px solid var(--rule);">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:20px;">
+          <h2 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.025em;"><span data-l="en">How we work</span><span data-l="hr">Kako radimo</span></h2>
+          <a data-ctalink href="#approach" style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Approach</span><span data-l="hr">Pristup</span></a>
+        </div>
+        <p style="margin:0 0 30px;font-size:16px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">The same six steps on every engagement, in the same order. One week of discovery, then nothing starts until scope and price are signed.</span><span data-l="hr">Istih šest koraka na svakom projektu, u istom redoslijedu. Tjedan otkrivanja, a zatim ništa ne počinje dok obuhvat i cijena nisu potpisani.</span></p>
+        <div style="border-left:1px solid var(--rule);">
+          <div style="position:relative;padding-left:22px;padding-bottom:30px;display:flex;flex-direction:column;gap:8px;">
+            <span aria-hidden="true" style="position:absolute;left:-4px;top:4px;width:7px;height:7px;background:var(--ink);"></span>
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;color:var(--graphite);line-height:1.4;">01</span>
+            <span style="font-size:16px;font-weight:500;letter-spacing:-0.02em;"><span data-l="en">Discovery</span><span data-l="hr">Otkrivanje</span></span>
+            <span style="font-size:14px;line-height:1.5;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">We learn the business, the constraints, and what is actually broken.</span><span data-l="hr">Upoznajemo posao, ograničenja i ono što je zaista pokvareno.</span></span>
+          </div>
+          <div style="position:relative;padding-left:22px;padding-bottom:30px;display:flex;flex-direction:column;gap:8px;">
+            <span aria-hidden="true" style="position:absolute;left:-4px;top:4px;width:7px;height:7px;background:var(--ink);"></span>
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;color:var(--graphite);line-height:1.4;">02</span>
+            <span style="font-size:16px;font-weight:500;letter-spacing:-0.02em;"><span data-l="en">Definition</span><span data-l="hr">Definiranje</span></span>
+            <span style="font-size:14px;line-height:1.5;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Scope, price and timeline fixed in writing before anything is built.</span><span data-l="hr">Obuhvat, cijena i rok fiksiramo pisano prije izrade.</span></span>
+          </div>
+          <div style="position:relative;padding-left:22px;padding-bottom:30px;display:flex;flex-direction:column;gap:8px;">
+            <span aria-hidden="true" style="position:absolute;left:-4px;top:4px;width:7px;height:7px;background:var(--ink);"></span>
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;color:var(--graphite);line-height:1.4;">03</span>
+            <span style="font-size:16px;font-weight:500;letter-spacing:-0.02em;"><span data-l="en">Design</span><span data-l="hr">Dizajn</span></span>
+            <span style="font-size:14px;line-height:1.5;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Flows and interface built around the two decisions a user makes.</span><span data-l="hr">Tokovi i sučelje oko dvije odluke koje korisnik donosi.</span></span>
+          </div>
+          <div style="position:relative;padding-left:22px;padding-bottom:30px;display:flex;flex-direction:column;gap:8px;">
+            <span aria-hidden="true" style="position:absolute;left:-4px;top:4px;width:7px;height:7px;background:var(--ink);"></span>
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;color:var(--graphite);line-height:1.4;">04</span>
+            <span style="font-size:16px;font-weight:500;letter-spacing:-0.02em;"><span data-l="en">Build</span><span data-l="hr">Izrada</span></span>
+            <span style="font-size:14px;line-height:1.5;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Clean architecture, tested code, weekly builds you can click.</span><span data-l="hr">Čista arhitektura, testiran kod, tjedne verzije koje možete kliknuti.</span></span>
+          </div>
+          <div style="position:relative;padding-left:22px;padding-bottom:30px;display:flex;flex-direction:column;gap:8px;">
+            <span aria-hidden="true" style="position:absolute;left:-4px;top:4px;width:7px;height:7px;background:var(--ink);"></span>
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;color:var(--graphite);line-height:1.4;">05</span>
+            <span style="font-size:16px;font-weight:500;letter-spacing:-0.02em;"><span data-l="en">Launch</span><span data-l="hr">Pokretanje</span></span>
+            <span style="font-size:14px;line-height:1.5;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Deployment, monitoring and handover documentation in place.</span><span data-l="hr">Objava, nadzor i dokumentacija za preuzimanje.</span></span>
+          </div>
+          <div style="position:relative;padding-left:22px;display:flex;flex-direction:column;gap:8px;">
+            <span aria-hidden="true" style="position:absolute;left:-4px;top:4px;width:7px;height:7px;background:var(--ink);"></span>
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;color:var(--graphite);line-height:1.4;">06</span>
+            <span style="font-size:16px;font-weight:500;letter-spacing:-0.02em;"><span data-l="en">Support</span><span data-l="hr">Podrška</span></span>
+            <span style="font-size:14px;line-height:1.5;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">A named engineer stays on, month to month, no lock-in.</span><span data-l="hr">Imenovani inženjer ostaje, mjesečno, bez vezivanja.</span></span>
+          </div>
+        </div>
+      </div>
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:48px 20px;border-bottom:1px solid var(--rule);">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:20px;">
+          <h2 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.025em;"><span data-l="en">What we build with</span><span data-l="hr">Čime gradimo</span></h2>
+          <a data-ctalink href="#skills" style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Skills</span><span data-l="hr">Vještine</span></a>
+        </div>
+        <p style="margin:0 0 30px;font-size:16px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Boring, proven tools — six areas, described in plain language. Chosen so the next engineer, ours or yours, can read the system and keep working.</span><span data-l="hr">Dosadni, provjereni alati — šest područja, opisanih bez žargona. Odabrani tako da sljedeći inženjer, naš ili vaš, može pročitati sustav i nastaviti raditi.</span></p>
+        <div style="display:grid;grid-template-columns:1fr;gap:28px;">
+          <div style="border-top:1px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:12px;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">The part people see</span><span data-l="hr">Dio koji ljudi vide</span></span>
+            <span style="font-size:14px;line-height:1.55;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">The screens, forms and buttons your customers actually touch.</span><span data-l="hr">Ekrani, obrasci i gumbi koje vaši korisnici zaista diraju.</span></span>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:2px;">
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">React.js</span>
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Vue.js</span>
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">.NET Blazor</span>
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">.NET MVC</span>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:12px;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">The part that does the work</span><span data-l="hr">Dio koji radi posao</span></span>
+            <span style="font-size:14px;line-height:1.55;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">The engine behind the screens — rules, calculations, integrations.</span><span data-l="hr">Motor iza ekrana — pravila, izračuni, integracije.</span></span>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:2px;">
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">.NET</span>
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">ASP.NET Core</span>
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">EF Core</span>
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Identity</span>
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">MediatR</span>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:12px;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">Where your information lives</span><span data-l="hr">Gdje žive vaši podaci</span></span>
+            <span style="font-size:14px;line-height:1.55;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Storage chosen for the shape of your data, not for fashion.</span><span data-l="hr">Pohrana odabrana prema obliku vaših podataka, ne prema modi.</span></span>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:2px;">
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">PostgreSQL</span>
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Azure Storage</span>
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Redis</span>
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Mongo DB</span>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:12px;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">Keeping it running</span><span data-l="hr">Da sve radi bez prekida</span></span>
+            <span style="font-size:14px;line-height:1.55;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Hosting, deployment and monitoring, so releases stay boring.</span><span data-l="hr">Hosting, objava i nadzor, da izdanja ostanu dosadna.</span></span>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:2px;">
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">GitLab</span>
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Docker</span>
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Aspire</span>
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Azure</span>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:12px;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">Proving it works</span><span data-l="hr">Dokaz da radi</span></span>
+            <span style="font-size:14px;line-height:1.55;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Automated tests and code review that find problems before you do.</span><span data-l="hr">Automatizirani testovi i pregled koda nalaze probleme prije vas.</span></span>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:2px;">
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">xUnit</span>
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">NSubstitute</span>
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Selenium</span>
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">SonarQube</span>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:12px;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">Built to last</span><span data-l="hr">Građeno da traje</span></span>
+            <span style="font-size:14px;line-height:1.55;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Patterns that keep the system cheap to change in year three.</span><span data-l="hr">Uzorci zbog kojih je sustav i treće godine jeftin za mijenjati.</span></span>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:2px;">
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Clean architecture</span>
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Domain-driven design</span>
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Modular monolith</span>
+              <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Agile</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:48px 20px;border-bottom:1px solid var(--rule);">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:24px;">
+          <h2 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.025em;"><span data-l="en">How the studio works</span><span data-l="hr">Kako studio radi</span></h2>
+          <a data-ctalink href="#about" style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">About</span><span data-l="hr">O studiju</span></a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:28px;">
+          <p style="margin:0;max-width:46ch;font-size:17px;font-weight:500;letter-spacing:-0.02em;line-height:1.4;color:var(--ink);text-wrap:pretty;"><span data-l="en">A studio built to stay small on purpose. Nothing is delegated down, nothing is padded out.</span><span data-l="hr">Studio namjerno građen da ostane malen. Ništa se ne delegira niže, ništa se ne napuhava.</span></p>
+          <div style="display:grid;grid-template-columns:1fr;gap:18px;">
+            <div style="border-top:1px solid var(--rule);padding-top:16px;display:flex;flex-direction:column;gap:10px;">
+              <span style="font-size:26px;font-weight:500;letter-spacing:-0.04em;line-height:1;">5+</span>
+              <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);line-height:1.5;"><span data-l="en">Years of experience</span><span data-l="hr">Godina iskustva</span></span>
+            </div>
+            <div style="border-top:1px solid var(--rule);padding-top:16px;display:flex;flex-direction:column;gap:10px;">
+              <span style="font-size:26px;font-weight:500;letter-spacing:-0.04em;line-height:1;">30+</span>
+              <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);line-height:1.5;"><span data-l="en">Products built</span><span data-l="hr">Izgrađenih proizvoda</span></span>
+            </div>
+            <div style="border-top:1px solid var(--rule);padding-top:16px;display:flex;flex-direction:column;gap:10px;">
+              <span style="font-size:26px;font-weight:500;letter-spacing:-0.04em;line-height:1;">0</span>
+              <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);line-height:1.5;"><span data-l="en">Layers between you and the build</span><span data-l="hr">Slojeva između vas i izrade</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:48px 20px;border-bottom:1px solid var(--rule);">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:24px;">
+          <h2 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.025em;"><span data-l="en">Latest thinking</span><span data-l="hr">Najnovije</span></h2>
+          <a data-ctalink href="#insights" style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Insights</span><span data-l="hr">Zapisi</span></a>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr;gap:40px;">
+          <div style="border-top:1px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:10px;align-items:flex-start;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--graphite);">2026 / 08<span aria-hidden="true" style="display:inline-block;width:3.4px;height:3.4px;background:currentColor;margin:0 10px;vertical-align:middle;"></span><span data-l="en">Architecture</span><span data-l="hr">Arhitektura</span></span>
+            <span style="font-size:16px;font-weight:500;letter-spacing:-0.02em;line-height:1.25;min-height:2.5em;margin-bottom:0;"><span data-l="en">Deleting code is a feature</span><span data-l="hr">Brisanje koda je funkcija</span></span>
+            <div style="padding-top:2px;width:100%;">
+              <div style="aspect-ratio:16/10;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">diagram / modules removed in week four</span></div>
+            </div>
+            <a data-ctalink href="#insight" style="margin-top:4px;font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Read the insight</span><span data-l="hr">Pročitajte zapis</span></a>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:10px;align-items:flex-start;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--graphite);">2026 / 06<span aria-hidden="true" style="display:inline-block;width:3.4px;height:3.4px;background:currentColor;margin:0 10px;vertical-align:middle;"></span><span data-l="en">Product</span><span data-l="hr">Proizvod</span></span>
+            <span style="font-size:16px;font-weight:500;letter-spacing:-0.02em;line-height:1.25;min-height:2.5em;margin-bottom:0;"><span data-l="en">The two decisions a user actually makes</span><span data-l="hr">Dvije odluke koje korisnik zaista donosi</span></span>
+            <div style="padding-top:2px;width:100%;">
+              <div style="aspect-ratio:16/10;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">screens / nine-step flow reduced to two</span></div>
+            </div>
+            <a data-ctalink href="#insight" style="margin-top:4px;font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Read the insight</span><span data-l="hr">Pročitajte zapis</span></a>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:10px;align-items:flex-start;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--graphite);">2026 / 04<span aria-hidden="true" style="display:inline-block;width:3.4px;height:3.4px;background:currentColor;margin:0 10px;vertical-align:middle;"></span><span data-l="en">Delivery</span><span data-l="hr">Dostava</span></span>
+            <span style="font-size:16px;font-weight:500;letter-spacing:-0.02em;line-height:1.25;min-height:2.5em;margin-bottom:0;"><span data-l="en">Fixed price is a design constraint</span><span data-l="hr">Fiksna cijena je dizajnersko ograničenje</span></span>
+            <div style="padding-top:2px;width:100%;">
+              <div style="aspect-ratio:16/10;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">photo / signed scope on a desk</span></div>
+            </div>
+            <a data-ctalink href="#insight" style="margin-top:4px;font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Read the insight</span><span data-l="hr">Pročitajte zapis</span></a>
+          </div>
+        </div>
+      </div>
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:56px 20px;display:flex;flex-direction:column;gap:24px;align-items:flex-start;">
+        <h2 style="margin:0;font-size:26px;font-weight:500;letter-spacing:-0.04em;line-height:1.05;max-width:22ch;"><span data-l="en">Tell us what you are trying to build.</span><span data-l="hr">Recite nam što želite izgraditi.</span></h2>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+          <a href="#contact" style="display:inline-flex;align-items:center;background:var(--ink);color:var(--paper);box-shadow:inset 0 0 0 1px var(--ink);padding:14px 22px;font-size:14px;font-weight:500;transition:background 160ms linear,color 160ms linear;" style-hover="background:var(--paper);color:var(--ink)"><span data-l="en">Start a project</span><span data-l="hr">Započnite projekt</span></a>
+          <a data-ctalink data-plain href="#work" style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Work</span><span data-l="hr">Radovi</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ WORK ══════════════════════════════════════ -->
+    <section data-route="work" data-screen-label="Work">
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:48px 20px 32px;border-bottom:1px solid var(--rule);">
+        <div style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);margin-bottom:20px;"><span data-l="en">Work</span><span data-l="hr">Radovi</span></div>
+        <h1 style="margin:0;font-size:30px;font-weight:500;letter-spacing:-0.045em;line-height:1.02;max-width:20ch;"><span data-l="en">Projects worth explaining.</span><span data-l="hr">Projekti koje vrijedi objasniti.</span></h1>
+        <p style="margin:20px 0 0;max-width:48ch;font-size:17px;line-height:1.55;color:var(--ink-2);"><span data-l="en">We show few projects on purpose. Each one is documented the same way: what was wrong, what we removed, what we built, what changed.</span><span data-l="hr">Namjerno prikazujemo malo projekata. Svaki je dokumentiran jednako: što nije radilo, što smo uklonili, što smo izgradili, što se promijenilo.</span></p>
+      </div>
+
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:0 20px 48px;">
+        <div style="display:grid;grid-template-columns:1fr;gap:20px;align-items:center;padding:28px 0;border-bottom:1px solid var(--rule);">
+          <div style="aspect-ratio:16/10;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;">
+            <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;color:var(--graphite);">product shot / core banking console</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);">Fintech<span aria-hidden="true" style="display:inline-block;width:3.4px;height:3.4px;background:currentColor;margin:0 10px;vertical-align:middle;"></span>2026</span>
+            <span style="font-size:21px;font-weight:500;letter-spacing:-0.035em;line-height:1.1;"><span data-l="en">Core banking, rebuilt in 14 weeks</span><span data-l="hr">Jezgra bankarskog sustava, iznova u 14 tjedana</span></span>
+            <span style="font-size:15px;line-height:1.55;color:var(--ink-2);max-width:44ch;"><span data-l="en">A ledger nobody dared touch, replaced without a single day of downtime.</span><span data-l="hr">Glavna knjiga koju se nitko nije usudio dirati, zamijenjena bez dana zastoja.</span></span>
+            <a data-ctalink href="#case" style="align-self:flex-start;margin-top:8px;font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Read the case study</span><span data-l="hr">Pročitajte studiju</span></a>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr;gap:20px;align-items:center;padding:28px 0;border-bottom:1px solid var(--rule);">
+          <div style="aspect-ratio:16/10;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;">
+            <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;color:var(--graphite);">product shot / dispatch dashboard</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);">Logistics<span aria-hidden="true" style="display:inline-block;width:3.4px;height:3.4px;background:currentColor;margin:0 10px;vertical-align:middle;"></span>2025</span>
+            <span style="font-size:21px;font-weight:500;letter-spacing:-0.035em;line-height:1.1;"><span data-l="en">Eleven tools replaced by one</span><span data-l="hr">Jedanaest alata zamijenjeno jednim</span></span>
+            <span style="font-size:15px;line-height:1.55;color:var(--ink-2);max-width:44ch;"><span data-l="en">Dispatchers ran the country on spreadsheets and phone calls. Now on one screen.</span><span data-l="hr">Dispečeri su vodili zemlju na tablicama i telefonima. Sada na jednom ekranu.</span></span>
+            <span style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);margin-top:6px;">[ case study in progress ]</span>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr;gap:20px;align-items:center;padding:28px 0;border-bottom:1px solid var(--rule);">
+          <div style="aspect-ratio:16/10;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;">
+            <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;color:var(--graphite);">product shot / scheduling flow</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);">Healthcare<span aria-hidden="true" style="display:inline-block;width:3.4px;height:3.4px;background:currentColor;margin:0 10px;vertical-align:middle;"></span>2025</span>
+            <span style="font-size:21px;font-weight:500;letter-spacing:-0.035em;line-height:1.1;"><span data-l="en">Nine clicks became two</span><span data-l="hr">Devet klikova postalo je dva</span></span>
+            <span style="font-size:15px;line-height:1.55;color:var(--ink-2);max-width:44ch;"><span data-l="en">A booking flow rebuilt around the two things patients actually decide.</span><span data-l="hr">Rezervacija pregrađena oko dvije stvari koje pacijent zaista odlučuje.</span></span>
+            <span style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);margin-top:6px;">[ case study in progress ]</span>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr;gap:20px;align-items:center;padding:28px 0;">
+          <div style="aspect-ratio:16/10;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;">
+            <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;color:var(--graphite);">product shot / metering platform</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);">Energy<span aria-hidden="true" style="display:inline-block;width:3.4px;height:3.4px;background:currentColor;margin:0 10px;vertical-align:middle;"></span>2024</span>
+            <span style="font-size:21px;font-weight:500;letter-spacing:-0.035em;line-height:1.1;"><span data-l="en">A monolith, unbundled</span><span data-l="hr">Monolit, rasklopljen</span></span>
+            <span style="font-size:15px;line-height:1.55;color:var(--ink-2);max-width:44ch;"><span data-l="en">Twelve years of code split into four services a small team can hold in its head.</span><span data-l="hr">Dvanaest godina koda razdvojeno u četiri servisa koje mali tim može držati u glavi.</span></span>
+            <span style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);margin-top:6px;">[ case study in progress ]</span>
+          </div>
+        </div>
+
+        <div style="border-top:1px solid var(--rule);margin-top:40px;padding-top:40px;display:flex;flex-direction:column;gap:20px;align-items:flex-start;">
+          <h2 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.035em;line-height:1.1;max-width:24ch;"><span data-l="en">Recognise the problem?</span><span data-l="hr">Prepoznajete problem?</span></h2>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+            <a href="#contact" style="display:inline-flex;align-items:center;background:var(--ink);color:var(--paper);box-shadow:inset 0 0 0 1px var(--ink);padding:14px 22px;font-size:14px;font-weight:500;transition:background 160ms linear,color 160ms linear;" style-hover="background:var(--paper);color:var(--ink)"><span data-l="en">Start a project</span><span data-l="hr">Započnite projekt</span></a>
+            <a data-ctalink data-plain href="#services" style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Services</span><span data-l="hr">Usluge</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ CASE STUDY ════════════════════════════════ -->
+    <section data-route="case" data-screen-label="Case study">
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:40px 20px 32px;">
+        <a href="#work" style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)">← <span data-l="en">Work</span><span data-l="hr">Radovi</span></a>
+        <h1 style="margin:24px 0 0;font-size:30px;font-weight:500;letter-spacing:-0.045em;line-height:1.02;max-width:22ch;"><span data-l="en">Core banking, rebuilt in 14 weeks</span><span data-l="hr">Jezgra bankarskog sustava, iznova u 14 tjedana</span></h1>
+        <div style="margin-top:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:24px;font-weight:500;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--graphite);border-top:1px solid var(--rule);padding-top:18px;">
+          <div style="display:flex;flex-direction:column;gap:10px;"><span><span data-l="en">Client</span><span data-l="hr">Klijent</span></span><span style="color:var(--ink);letter-spacing:0.06em;">Northbank d.d.</span></div>
+          <div style="display:flex;flex-direction:column;gap:10px;"><span><span data-l="en">Sector</span><span data-l="hr">Sektor</span></span><span style="color:var(--ink);letter-spacing:0.06em;">Fintech</span></div>
+          <div style="display:flex;flex-direction:column;gap:10px;"><span><span data-l="en">Engagement</span><span data-l="hr">Angažman</span></span><span style="color:var(--ink);letter-spacing:0.06em;"><span data-l="en">14 weeks, 2026</span><span data-l="hr">14 tjedana, 2026.</span></span></div>
+          <div style="display:flex;flex-direction:column;gap:10px;"><span><span data-l="en">Scope</span><span data-l="hr">Obuhvat</span></span><span style="color:var(--ink);letter-spacing:0.06em;"><span data-l="en">Modernization</span><span data-l="hr">Modernizacija</span></span></div>
+        </div>
+      </div>
+
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:32px 20px;">
+        <div style="aspect-ratio:16/9;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;">
+          <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--graphite);">hero product shot / 16:9 / greyscale</span>
+        </div>
+      </div>
+
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:24px 20px 48px;display:flex;flex-direction:column;gap:28px;">
+        <div style="display:grid;grid-template-columns:1fr;gap:28px;">
+          <div style="border-top:1px solid var(--rule);padding-top:20px;display:flex;flex-direction:column;gap:14px;">
+            <div style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">Context</span><span data-l="hr">Kontekst</span></div>
+            <p style="margin:0;font-size:17px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">A regional lender ran its accounts, payments and reporting on a ledger written in 2009. Every release needed a weekend, every change needed the one engineer who remembered why it worked.</span><span data-l="hr">Regionalni kreditor vodio je račune, plaćanja i izvještavanje na glavnoj knjizi napisanoj 2009. Svako izdanje trajalo je vikend, svaka promjena ovisila je o jednom inženjeru koji se sjećao zašto to radi.</span></p>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:20px;display:flex;flex-direction:column;gap:14px;">
+            <div style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">The problem</span><span data-l="hr">Problem</span></div>
+            <p style="margin:0;font-size:17px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Not the code. The coupling. Thirty-one modules shared one database schema, so nothing could be changed in isolation and nothing could be tested honestly.</span><span data-l="hr">Problem nije bio kod, nego povezanost. Trideset i jedan modul dijelio je jednu bazu, pa se ništa nije moglo mijenjati izolirano niti pošteno testirati.</span></p>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:20px;display:flex;flex-direction:column;gap:14px;">
+            <div style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">What we removed</span><span data-l="hr">Što smo uklonili</span></div>
+            <p style="margin:0;font-size:17px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Nineteen of the thirty-one modules were unused, duplicated, or reporting the same number twice. They were deleted, not migrated.</span><span data-l="hr">Devetnaest od trideset i jednog modula bilo je neiskorišteno, duplicirano ili je isti broj prikazivalo dvaput. Obrisani su, ne migrirani.</span></p>
+            <p style="margin:0;font-size:17px;line-height:1.6;color:var(--ink);text-wrap:pretty;"><span data-l="en">Two thirds of the system left the building before a line of new code was written.</span><span data-l="hr">Dvije trećine sustava otišle su prije nego je napisana prva nova linija koda.</span></p>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:20px;display:flex;flex-direction:column;gap:14px;">
+            <div style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">What we built</span><span data-l="hr">Što smo izgradili</span></div>
+            <p style="margin:0;font-size:17px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">An event-sourced ledger with four bounded services, an immutable audit trail the regulator reads directly, and a console that replaced three internal tools. Deployed behind a parallel run for six weeks, then switched over on a Tuesday afternoon.</span><span data-l="hr">Glavna knjiga temeljena na događajima s četiri omeđena servisa, nepromjenjiv zapis revizije koji regulator čita direktno i konzola koja je zamijenila tri interna alata. Šest tjedana paralelnog rada, a onda prijelaz u utorak poslijepodne.</span></p>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr;gap:16px;">
+          <div style="aspect-ratio:4/3;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;">
+            <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;color:var(--graphite);">screenshot / ledger console</span>
+          </div>
+          <div style="aspect-ratio:4/3;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;">
+            <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;color:var(--graphite);">screenshot / audit trail</span>
+          </div>
+        </div>
+
+        <div style="border-top:1px solid var(--rule);padding-top:28px;">
+          <div style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);margin-bottom:20px;"><span data-l="en">Results</span><span data-l="hr">Rezultati</span></div>
+          <div style="display:grid;grid-template-columns:1fr;gap:20px;">
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <span style="font-size:28px;font-weight:500;letter-spacing:-0.04em;line-height:1;">48ms</span>
+              <span style="font-size:14px;line-height:1.5;color:var(--ink-2);"><span data-l="en">p95 latency, from 340ms</span><span data-l="hr">p95 latencija, s 340 ms</span></span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <span style="font-size:28px;font-weight:500;letter-spacing:-0.04em;line-height:1;">−62%</span>
+              <span style="font-size:14px;line-height:1.5;color:var(--ink-2);"><span data-l="en">infrastructure cost per month</span><span data-l="hr">mjesečni trošak infrastrukture</span></span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <span style="font-size:28px;font-weight:500;letter-spacing:-0.04em;line-height:1;">0</span>
+              <span style="font-size:14px;line-height:1.5;color:var(--ink-2);"><span data-l="en">minutes of downtime at switchover</span><span data-l="hr">minuta zastoja pri prijelazu</span></span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <span style="font-size:28px;font-weight:500;letter-spacing:-0.04em;line-height:1;">2h</span>
+              <span style="font-size:14px;line-height:1.5;color:var(--ink-2);"><span data-l="en">to ship a release, from one weekend</span><span data-l="hr">do izdanja, prije cijeli vikend</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div style="border-top:1px solid var(--rule);padding-top:28px;">
+          <blockquote style="margin:0;display:flex;flex-direction:column;gap:20px;">
+            <p style="margin:0;font-size:19px;font-weight:500;letter-spacing:-0.03em;line-height:1.22;text-wrap:pretty;"><span data-l="en">“They removed two thirds of the system and the product got better. We expected a rewrite and got something our own engineers can maintain — with a migration we barely noticed.”</span><span data-l="hr">„Uklonili su dvije trećine sustava i proizvod je postao bolji. Očekivali smo pisanje iznova, a dobili smo nešto što naši inženjeri mogu održavati — uz migraciju koju gotovo nismo osjetili.”</span></p>
+            <footer style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);">Ivan Kovač<span aria-hidden="true" style="display:inline-block;width:3.4px;height:3.4px;background:currentColor;margin:0 10px;vertical-align:middle;"></span>CTO, Northbank d.d.</footer>
+          </blockquote>
+        </div>
+
+        <div style="border-top:1px solid var(--rule);padding-top:28px;display:flex;flex-direction:column;gap:20px;align-items:flex-start;">
+          <h2 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.035em;line-height:1.1;max-width:24ch;"><span data-l="en">Have a system nobody wants to touch?</span><span data-l="hr">Imate sustav koji nitko ne želi dirati?</span></h2>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+            <a href="#contact" style="display:inline-flex;align-items:center;background:var(--ink);color:var(--paper);box-shadow:inset 0 0 0 1px var(--ink);padding:14px 22px;font-size:14px;font-weight:500;transition:background 160ms linear,color 160ms linear;" style-hover="background:var(--paper);color:var(--ink)"><span data-l="en">Start a project</span><span data-l="hr">Započnite projekt</span></a>
+            <a data-ctalink data-plain href="#services" style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Services</span><span data-l="hr">Usluge</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ SERVICES ══════════════════════════════════ -->
+    <section data-route="services" data-screen-label="Services">
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:48px 20px 32px;border-bottom:1px solid var(--rule);">
+        <div style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);margin-bottom:20px;"><span data-l="en">Services</span><span data-l="hr">Usluge</span></div>
+        <h1 style="margin:0;font-size:30px;font-weight:500;letter-spacing:-0.045em;line-height:1.02;max-width:20ch;"><span data-l="en">Four ways we work.</span><span data-l="hr">Četiri načina na koja radimo.</span></h1>
+        <p style="margin:20px 0 0;max-width:50ch;font-size:17px;line-height:1.55;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Four services, not a menu of twenty. Each one names the problem it solves and exactly what you receive, so you can tell before we talk whether we are the right studio for it.</span><span data-l="hr">Četiri usluge, ne jelovnik od dvadeset. Svaka imenuje problem koji rješava i točno ono što dobivate, pa i prije razgovora znate jesmo li pravi studio za to.</span></p>
+      </div>
+
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:0 20px 48px;">
+        <div style="padding:32px 0;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:22px;">
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="display:flex;gap:14px;align-items:baseline;">
+              <span style="font-weight:500;font-size:11px;letter-spacing:0.14em;color:var(--graphite);">01</span>
+              <h2 style="margin:0;font-size:20px;font-weight:500;letter-spacing:-0.03em;line-height:1.15;"><span data-l="en">Product design &amp; development</span><span data-l="hr">Dizajn i razvoj proizvoda</span></h2>
+            </div>
+            <p style="margin:0;max-width:78ch;font-size:16px;line-height:1.6;color:var(--ink-2);"><span data-l="en">A product taken from a blank page to something people use every day — interface, architecture and delivery handled by the same hands.</span><span data-l="hr">Proizvod od prazne stranice do nečega što ljudi koriste svaki dan — sučelje, arhitektura i dostava u istim rukama.</span></p>
+            <div style="aspect-ratio:21/8;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">photo / design session, wall of screens</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr;gap:20px;">
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">Solves</span><span data-l="hr">Rješava</span></span>
+              <span style="font-size:15.5px;line-height:1.55;color:var(--ink-2);"><span data-l="en">“We know what we want to build and need it built properly, once.”</span><span data-l="hr">„Znamo što želimo izgraditi i treba nam napravljeno kako treba, iz prve.”</span></span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">You receive</span><span data-l="hr">Dobivate</span></span>
+              <span style="font-size:15.5px;line-height:1.55;color:var(--ink-2);"><span data-l="en">A shipped product, the source, the infrastructure, and documentation your own team can pick up.</span><span data-l="hr">Objavljen proizvod, izvorni kod, infrastrukturu i dokumentaciju koju vaš tim može preuzeti.</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:32px 0;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:22px;">
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="display:flex;gap:14px;align-items:baseline;">
+              <span style="font-weight:500;font-size:11px;letter-spacing:0.14em;color:var(--graphite);">02</span>
+              <h2 style="margin:0;font-size:20px;font-weight:500;letter-spacing:-0.03em;line-height:1.15;"><span data-l="en">Custom software</span><span data-l="hr">Softver po mjeri</span></h2>
+            </div>
+            <p style="margin:0;max-width:78ch;font-size:16px;line-height:1.6;color:var(--ink-2);"><span data-l="en">Internal systems shaped around how the work actually happens, instead of forcing the work into someone else's product.</span><span data-l="hr">Interni sustavi oblikovani prema stvarnom načinu rada, umjesto da se rad prilagođava tuđem proizvodu.</span></p>
+            <div style="aspect-ratio:21/8;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">screens / one internal system replacing eleven</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr;gap:20px;">
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">Solves</span><span data-l="hr">Rješava</span></span>
+              <span style="font-size:15.5px;line-height:1.55;color:var(--ink-2);"><span data-l="en">“Our process lives in eleven spreadsheets and three people's heads.”</span><span data-l="hr">„Naš proces živi u jedanaest tablica i u glavama triju ljudi.”</span></span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">You receive</span><span data-l="hr">Dobivate</span></span>
+              <span style="font-size:15.5px;line-height:1.55;color:var(--ink-2);"><span data-l="en">One system, integrated with what you already run, with the manual steps removed.</span><span data-l="hr">Jedan sustav, integriran s postojećim, bez ručnih koraka.</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:32px 0;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:22px;">
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="display:flex;gap:14px;align-items:baseline;">
+              <span style="font-weight:500;font-size:11px;letter-spacing:0.14em;color:var(--graphite);">03</span>
+              <h2 style="margin:0;font-size:20px;font-weight:500;letter-spacing:-0.03em;line-height:1.15;"><span data-l="en">Modernization</span><span data-l="hr">Modernizacija</span></h2>
+            </div>
+            <p style="margin:0;max-width:78ch;font-size:16px;line-height:1.6;color:var(--ink-2);"><span data-l="en">Fragile systems rebuilt into clean architecture, preserving everything that already works and deleting everything that doesn't.</span><span data-l="hr">Krhki sustavi prelaze u čistu arhitekturu, uz zadržavanje svega što radi i brisanje svega što ne radi.</span></p>
+            <div style="aspect-ratio:21/8;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">photo / old system beside its replacement</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr;gap:20px;">
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">Solves</span><span data-l="hr">Rješava</span></span>
+              <span style="font-size:15.5px;line-height:1.55;color:var(--ink-2);"><span data-l="en">“It works, but every change is expensive and nobody wants to touch it.”</span><span data-l="hr">„Radi, ali svaka promjena je skupa i nitko to ne želi dirati.”</span></span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">You receive</span><span data-l="hr">Dobivate</span></span>
+              <span style="font-size:15.5px;line-height:1.55;color:var(--ink-2);"><span data-l="en">A migration plan, a parallel run, a switchover without downtime, and a smaller system afterwards.</span><span data-l="hr">Plan migracije, paralelni rad, prijelaz bez zastoja i manji sustav nakon toga.</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:32px 0;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:22px;">
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="display:flex;gap:14px;align-items:baseline;">
+              <span style="font-weight:500;font-size:11px;letter-spacing:0.14em;color:var(--graphite);">04</span>
+              <h2 style="margin:0;font-size:20px;font-weight:500;letter-spacing:-0.03em;line-height:1.15;"><span data-l="en">Technical strategy</span><span data-l="hr">Tehnička strategija</span></h2>
+            </div>
+            <p style="margin:0;max-width:78ch;font-size:16px;line-height:1.6;color:var(--ink-2);"><span data-l="en">A senior second opinion before an expensive decision: build or buy, rewrite or refactor, hire or outsource.</span><span data-l="hr">Stručno drugo mišljenje prije skupe odluke: graditi ili kupiti, pisati iznova ili refaktorirati, zaposliti ili prepustiti.</span></p>
+            <div style="aspect-ratio:21/8;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">photo / architecture decision on a whiteboard</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr;gap:20px;">
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">Solves</span><span data-l="hr">Rješava</span></span>
+              <span style="font-size:15.5px;line-height:1.55;color:var(--ink-2);"><span data-l="en">“Three vendors gave us three answers and all of them are selling something.”</span><span data-l="hr">„Tri dobavljača dala su tri odgovora i svi nešto prodaju.”</span></span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">You receive</span><span data-l="hr">Dobivate</span></span>
+              <span style="font-size:15.5px;line-height:1.55;color:var(--ink-2);"><span data-l="en">A written assessment, a recommended path, the cost of each option, and no obligation to hire us for it.</span><span data-l="hr">Pisanu procjenu, preporučeni put, trošak svake opcije i nikakvu obvezu da nas angažirate.</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding-top:40px;display:flex;flex-direction:column;gap:20px;align-items:flex-start;">
+          <h2 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.035em;line-height:1.1;max-width:24ch;"><span data-l="en">Not sure which one you need?</span><span data-l="hr">Nisu sigurni što vam treba?</span></h2>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+            <a href="#contact" style="display:inline-flex;align-items:center;background:var(--ink);color:var(--paper);box-shadow:inset 0 0 0 1px var(--ink);padding:14px 22px;font-size:14px;font-weight:500;transition:background 160ms linear,color 160ms linear;" style-hover="background:var(--paper);color:var(--ink)"><span data-l="en">Start a project</span><span data-l="hr">Započnite projekt</span></a>
+            <a data-ctalink data-plain href="#approach" style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Approach</span><span data-l="hr">Pristup</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ APPROACH ══════════════════════════════════ -->
+    <section data-route="approach" data-screen-label="Approach">
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:48px 20px 32px;border-bottom:1px solid var(--rule);">
+        <div style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);margin-bottom:20px;"><span data-l="en">Approach</span><span data-l="hr">Pristup</span></div>
+        <h1 style="margin:0;font-size:30px;font-weight:500;letter-spacing:-0.045em;line-height:1.02;max-width:20ch;"><span data-l="en">Six steps, no surprises.</span><span data-l="hr">Šest koraka, bez iznenađenja.</span></h1>
+        <p style="margin:20px 0 0;max-width:48ch;font-size:17px;line-height:1.55;color:var(--ink-2);"><span data-l="en">The same sequence on every engagement. You always know what is happening this week and what you will see at the end of it.</span><span data-l="hr">Isti slijed na svakom projektu. Uvijek znate što se radi ovaj tjedan i što ćete na kraju vidjeti.</span></p>
+      </div>
+
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:0 20px 48px;">
+        <div style="display:grid;grid-template-columns:1fr;gap:28px;">
+          <div style="padding-top:40px;display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;gap:14px;align-items:baseline;">
+              <span style="font-weight:500;font-size:11px;letter-spacing:0.14em;color:var(--graphite);">01</span>
+              <h2 style="margin:0;font-size:19px;font-weight:500;letter-spacing:-0.03em;"><span data-l="en">Discovery</span><span data-l="hr">Otkrivanje</span></h2>
+            </div>
+            <p style="margin:0;font-size:16px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">One week. We read the code, talk to the people who use the system, and write down what is actually true. No proposal before this.</span><span data-l="hr">Jedan tjedan. Čitamo kod, razgovaramo s ljudima koji koriste sustav i zapisujemo što je stvarno točno. Nema ponude prije toga.</span></p>
+            <div style="aspect-ratio:16/9;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">photo / notes from a discovery week</span></div>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:28px;display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;gap:14px;align-items:baseline;">
+              <span style="font-weight:500;font-size:11px;letter-spacing:0.14em;color:var(--graphite);">02</span>
+              <h2 style="margin:0;font-size:19px;font-weight:500;letter-spacing:-0.03em;"><span data-l="en">Definition</span><span data-l="hr">Definiranje</span></h2>
+            </div>
+            <p style="margin:0;font-size:16px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Scope, sequence, fixed price and a list of what we are deliberately not building. Signed before anything starts.</span><span data-l="hr">Obuhvat, slijed, fiksna cijena i popis onoga što namjerno ne gradimo. Potpisano prije početka.</span></p>
+            <div style="aspect-ratio:16/9;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">document / signed scope and fixed price</span></div>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;gap:14px;align-items:baseline;">
+              <span style="font-weight:500;font-size:11px;letter-spacing:0.14em;color:var(--graphite);">03</span>
+              <h2 style="margin:0;font-size:19px;font-weight:500;letter-spacing:-0.03em;"><span data-l="en">Design</span><span data-l="hr">Dizajn</span></h2>
+            </div>
+            <p style="margin:0;font-size:16px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Interface and architecture decided together, because one determines the other. You see real screens, not mood boards.</span><span data-l="hr">Sučelje i arhitektura odlučuju se zajedno, jer jedno određuje drugo. Vidite prave ekrane, ne mood boardove.</span></p>
+            <div style="aspect-ratio:16/9;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">screens / real interface, first pass</span></div>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;gap:14px;align-items:baseline;">
+              <span style="font-weight:500;font-size:11px;letter-spacing:0.14em;color:var(--graphite);">04</span>
+              <h2 style="margin:0;font-size:19px;font-weight:500;letter-spacing:-0.03em;"><span data-l="en">Build</span><span data-l="hr">Izrada</span></h2>
+            </div>
+            <p style="margin:0;font-size:16px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Weekly releases to a staging environment you can open at any time. One update every Friday, in writing, in plain language.</span><span data-l="hr">Tjedna izdanja na okruženju koje možete otvoriti kad želite. Jedan pisani izvještaj svakog petka, bez žargona.</span></p>
+            <div style="aspect-ratio:16/9;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">screens / weekly staging release</span></div>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding:18px 0;display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;gap:14px;align-items:baseline;">
+              <span style="font-weight:500;font-size:11px;letter-spacing:0.14em;color:var(--graphite);">05</span>
+              <h2 style="margin:0;font-size:19px;font-weight:500;letter-spacing:-0.03em;"><span data-l="en">Launch</span><span data-l="hr">Pokretanje</span></h2>
+            </div>
+            <p style="margin:0;font-size:16px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Parallel run, migration, switchover. Monitoring and alerting in place before the first real user arrives.</span><span data-l="hr">Paralelni rad, migracija, prijelaz. Nadzor i upozorenja postavljeni prije prvog pravog korisnika.</span></p>
+            <div style="aspect-ratio:16/9;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">photo / switchover under monitoring</span></div>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding:18px 0;display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;gap:14px;align-items:baseline;">
+              <span style="font-weight:500;font-size:11px;letter-spacing:0.14em;color:var(--graphite);">06</span>
+              <h2 style="margin:0;font-size:19px;font-weight:500;letter-spacing:-0.03em;"><span data-l="en">Support</span><span data-l="hr">Podrška</span></h2>
+            </div>
+            <p style="margin:0;font-size:16px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">A monthly retainer if you want us close, a clean handover if you don’t. Either way the system is yours and documented.</span><span data-l="hr">Mjesečni angažman ako nas želite blizu ili čista predaja ako ne. U svakom slučaju sustav je vaš i dokumentiran.</span></p>
+            <div style="aspect-ratio:16/9;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">photo / handover documentation</span></div>
+          </div>
+        </div>
+
+        <div style="border-top:1px solid var(--rule);margin-top:40px;padding-top:28px;display:flex;flex-wrap:wrap;gap:18px;">
+          <div style="flex:1 1 100%;font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);padding-top:6px;"><span data-l="en">How engagements are priced</span><span data-l="hr">Kako se projekti naplaćuju</span></div>
+          <div style="flex:1 1 420px;display:flex;flex-direction:column;gap:14px;font-size:16px;line-height:1.6;color:var(--ink-2);">
+            <p style="margin:0;"><span data-l="en">Discovery is a fixed fee and stands on its own — you can take the findings elsewhere. Projects are fixed price per phase. Retainers are monthly, cancellable with 30 days notice.</span><span data-l="hr">Otkrivanje se naplaćuje fiksno i stoji samostalno — nalaze možete odnijeti kamo želite. Projekti su fiksne cijene po fazi. Angažmani su mjesečni, uz 30 dana otkaznog roka.</span></p>
+            <p style="margin:0;color:var(--ink);"><span data-l="en">No hourly billing. Estimating is our job, not yours.</span><span data-l="hr">Bez naplate po satu. Procjena je naš posao, ne vaš.</span></p>
+          </div>
+        </div>
+
+        <div style="border-top:1px solid var(--rule);margin-top:40px;padding-top:28px;display:flex;flex-wrap:wrap;gap:18px;">
+          <div style="flex:1 1 100%;font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);padding-top:6px;"><span data-l="en">Questions we are asked first</span><span data-l="hr">Pitanja koja prva dobivamo</span></div>
+          <div style="flex:1 1 420px;display:grid;grid-template-columns:1fr;gap:22px;">
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <h3 style="margin:0;font-size:17px;font-weight:500;letter-spacing:-0.02em;line-height:1.25;"><span data-l="en">How is a project priced?</span><span data-l="hr">Kako se projekt naplaćuje?</span></h3>
+            <p style="margin:0;font-size:15.5px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Discovery is a fixed fee. Every phase after it is fixed price, agreed and signed before it starts. There is no hourly billing and no change-request theatre.</span><span data-l="hr">Otkrivanje je fiksna naknada. Svaka faza nakon toga ima fiksnu cijenu, dogovorenu i potpisanu prije početka. Nema naplate po satu ni pregovaranja oko svake promjene.</span></p>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:10px;">
+            <h3 style="margin:0;font-size:17px;font-weight:500;letter-spacing:-0.02em;line-height:1.25;"><span data-l="en">How soon can you start?</span><span data-l="hr">Kada možete početi?</span></h3>
+            <p style="margin:0;font-size:15.5px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Usually two to four weeks out. One project runs at a time, so the start date you are given is a real one.</span><span data-l="hr">Obično za dva do četiri tjedna. U isto vrijeme traje samo jedan projekt, pa je datum početka koji dobijete stvaran.</span></p>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:10px;">
+            <h3 style="margin:0;font-size:17px;font-weight:500;letter-spacing:-0.02em;line-height:1.25;"><span data-l="en">Who owns the code?</span><span data-l="hr">Tko je vlasnik koda?</span></h3>
+            <p style="margin:0;font-size:15.5px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">You do — source, infrastructure and documentation, from the first commit. Ownership transfers as each phase is paid.</span><span data-l="hr">Vi — izvorni kod, infrastruktura i dokumentacija, od prvog commita. Vlasništvo prelazi na vas kako se plaća svaka faza.</span></p>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:10px;">
+            <h3 style="margin:0;font-size:17px;font-weight:500;letter-spacing:-0.02em;line-height:1.25;"><span data-l="en">Will you sign an NDA?</span><span data-l="hr">Potpisujete li NDA?</span></h3>
+            <p style="margin:0;font-size:15.5px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Yes, before the first technical conversation if you prefer. Client names appear on this site only with written permission.</span><span data-l="hr">Da, i prije prvog tehničkog razgovora ako tako želite. Imena klijenata objavljujemo isključivo uz pisano dopuštenje.</span></p>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:10px;">
+            <h3 style="margin:0;font-size:17px;font-weight:500;letter-spacing:-0.02em;line-height:1.25;"><span data-l="en">Can you work with our existing team?</span><span data-l="hr">Možete li raditi s našim timom?</span></h3>
+            <p style="margin:0;font-size:15.5px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Often the best setup. We can lead the build, pair with your engineers, or review what they ship — and we write so they can take it over.</span><span data-l="hr">Često je to najbolji raspored. Možemo voditi izradu, raditi u paru s vašim inženjerima ili pregledavati ono što isporučuju — i pišemo tako da mogu preuzeti.</span></p>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:10px;">
+            <h3 style="margin:0;font-size:17px;font-weight:500;letter-spacing:-0.02em;line-height:1.25;"><span data-l="en">What happens after launch?</span><span data-l="hr">Što se događa nakon pokretanja?</span></h3>
+            <p style="margin:0;font-size:15.5px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">A monthly retainer if you want us close, or a documented handover and we step away. No lock-in either way.</span><span data-l="hr">Mjesečni angažman ako nas želite blizu ili dokumentirana predaja i mi se povlačimo. Ni u jednom slučaju nema zaključavanja.</span></p>
+          </div>
+          </div>
+        </div>
+
+        <div style="border-top:1px solid var(--rule);margin-top:40px;padding-top:40px;display:flex;flex-direction:column;gap:20px;align-items:flex-start;">
+          <h2 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.035em;line-height:1.1;max-width:24ch;"><span data-l="en">Know what you need built?</span><span data-l="hr">Znate što treba izgraditi?</span></h2>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+            <a href="#contact" style="display:inline-flex;align-items:center;background:var(--ink);color:var(--paper);box-shadow:inset 0 0 0 1px var(--ink);padding:14px 22px;font-size:14px;font-weight:500;transition:background 160ms linear,color 160ms linear;" style-hover="background:var(--paper);color:var(--ink)"><span data-l="en">Start a project</span><span data-l="hr">Započnite projekt</span></a>
+            <a data-ctalink data-plain href="#skills" style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Skills</span><span data-l="hr">Vještine</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ══ SKILLS ════════════════════════════════════ -->
+    <section data-route="skills" data-screen-label="Skills">
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:48px 20px 32px;border-bottom:1px solid var(--rule);">
+        <div style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);margin-bottom:20px;"><span data-l="en">Skills</span><span data-l="hr">Vještine</span></div>
+        <h1 style="margin:0;font-size:30px;font-weight:500;letter-spacing:-0.045em;line-height:1.02;max-width:20ch;"><span data-l="en">What we build, in plain language.</span><span data-l="hr">Što gradimo, bez žargona.</span></h1>
+        <p style="margin:20px 0 0;max-width:52ch;font-size:17px;line-height:1.55;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Six things every project needs. The tools are listed too, but the tools are the least interesting part — what matters is what each one does for your business.</span><span data-l="hr">Šest stvari koje svaki projekt treba. Alate navodimo, ali alati su najmanje zanimljiv dio — važno je što svaki od njih znači za vaše poslovanje.</span></p>
+      </div>
+
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:0 20px 48px;">
+        <div style="padding:28px 0;display:flex;flex-wrap:wrap;gap:18px;">
+          <div style="flex:1 1 100%;display:flex;flex-direction:column;gap:10px;">
+            <span style="font-weight:500;font-size:11px;letter-spacing:0.14em;color:var(--graphite);">01</span>
+            <h2 style="margin:0;font-size:19px;font-weight:500;letter-spacing:-0.03em;line-height:1.15;"><span data-l="en">The part people see</span><span data-l="hr">Dio koji ljudi vide</span></h2>
+          </div>
+          <div style="flex:1 1 420px;display:flex;flex-direction:column;gap:16px;">
+            <p style="margin:0;max-width:62ch;font-size:17px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Screens your team and your customers actually work in — fast, clear, and usable without training.</span><span data-l="hr">Ekrani u kojima vaš tim i vaši korisnici zaista rade — brzi, jasni i upotrebljivi bez edukacije.</span></p>
+            <p style="margin:0;max-width:62ch;font-size:16px;line-height:1.55;color:var(--ink);"><span data-l="en">Dashboards, internal apps, customer portals, public websites.</span><span data-l="hr">Nadzorne ploče, interne aplikacije, portali za korisnike, javne stranice.</span></p>
+            <div style="display:flex;flex-wrap:wrap;gap:12px 18px;align-items:baseline;">
+              <span style="flex:1 1 100%;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);padding-top:8px;"><span data-l="en">Tools we use</span><span data-l="hr">Alati koje koristimo</span></span>
+              <span style="flex:1 1 320px;display:flex;flex-wrap:wrap;gap:10px;">
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">React.js</span>
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Vue.js</span>
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">.NET Blazor</span>
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">.NET MVC</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div style="border-top:1px solid var(--rule);padding:28px 0;display:flex;flex-wrap:wrap;gap:18px;">
+          <div style="flex:1 1 100%;display:flex;flex-direction:column;gap:10px;">
+            <span style="font-weight:500;font-size:11px;letter-spacing:0.14em;color:var(--graphite);">02</span>
+            <h2 style="margin:0;font-size:19px;font-weight:500;letter-spacing:-0.03em;line-height:1.15;"><span data-l="en">The part that does the work</span><span data-l="hr">Dio koji radi posao</span></h2>
+          </div>
+          <div style="flex:1 1 420px;display:flex;flex-direction:column;gap:16px;">
+            <p style="margin:0;max-width:62ch;font-size:17px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">The rules, calculations and connections behind those screens: pricing, invoicing, permissions, and talking to the systems you already pay for.</span><span data-l="hr">Pravila, izračuni i povezivanje iza tih ekrana: cijene, računi, ovlasti i razgovor sa sustavima koje već plaćate.</span></p>
+            <p style="margin:0;max-width:62ch;font-size:16px;line-height:1.55;color:var(--ink);"><span data-l="en">One source of truth instead of spreadsheets and copy-paste.</span><span data-l="hr">Jedan izvor istine umjesto tablica i kopiranja.</span></p>
+            <div style="display:flex;flex-wrap:wrap;gap:12px 18px;align-items:baseline;">
+              <span style="flex:1 1 100%;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);padding-top:8px;"><span data-l="en">Tools we use</span><span data-l="hr">Alati koje koristimo</span></span>
+              <span style="flex:1 1 320px;display:flex;flex-wrap:wrap;gap:10px;">
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">.NET</span>
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">ASP.NET Core</span>
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">EF Core</span>
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Identity</span>
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">MediatR</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div style="border-top:1px solid var(--rule);padding:28px 0;display:flex;flex-wrap:wrap;gap:18px;">
+          <div style="flex:1 1 100%;display:flex;flex-direction:column;gap:10px;">
+            <span style="font-weight:500;font-size:11px;letter-spacing:0.14em;color:var(--graphite);">03</span>
+            <h2 style="margin:0;font-size:19px;font-weight:500;letter-spacing:-0.03em;line-height:1.15;"><span data-l="en">Where your information lives</span><span data-l="hr">Gdje žive vaši podaci</span></h2>
+          </div>
+          <div style="flex:1 1 420px;display:flex;flex-direction:column;gap:16px;">
+            <p style="margin:0;max-width:62ch;font-size:17px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Your data kept correct and safe, and structured so it can answer the questions you actually ask of it.</span><span data-l="hr">Vaši podaci ostaju točni i sigurni, i strukturirani tako da mogu odgovoriti na pitanja koja zaista postavljate.</span></p>
+            <p style="margin:0;max-width:62ch;font-size:16px;line-height:1.55;color:var(--ink);"><span data-l="en">Backups, history, and reports that add up.</span><span data-l="hr">Sigurnosne kopije, povijest i izvještaji koji se poklapaju.</span></p>
+            <div style="display:flex;flex-wrap:wrap;gap:12px 18px;align-items:baseline;">
+              <span style="flex:1 1 100%;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);padding-top:8px;"><span data-l="en">Tools we use</span><span data-l="hr">Alati koje koristimo</span></span>
+              <span style="flex:1 1 320px;display:flex;flex-wrap:wrap;gap:10px;">
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">PostgreSQL</span>
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Azure Storage</span>
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Redis</span>
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Mongo DB</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div style="border-top:1px solid var(--rule);padding:28px 0;display:flex;flex-wrap:wrap;gap:18px;">
+          <div style="flex:1 1 100%;display:flex;flex-direction:column;gap:10px;">
+            <span style="font-weight:500;font-size:11px;letter-spacing:0.14em;color:var(--graphite);">04</span>
+            <h2 style="margin:0;font-size:19px;font-weight:500;letter-spacing:-0.03em;line-height:1.15;"><span data-l="en">Keeping it running</span><span data-l="hr">Da sve radi bez prekida</span></h2>
+          </div>
+          <div style="flex:1 1 420px;display:flex;flex-direction:column;gap:16px;">
+            <p style="margin:0;max-width:62ch;font-size:17px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Hosting, updates and monitoring, so a new version goes live without downtime and problems are noticed before your customers call.</span><span data-l="hr">Hosting, ažuriranja i nadzor, tako da nova verzija izlazi bez prekida, a problemi se primijete prije nego korisnik pozove.</span></p>
+            <p style="margin:0;max-width:62ch;font-size:16px;line-height:1.55;color:var(--ink);"><span data-l="en">Predictable releases, no midnight surprises.</span><span data-l="hr">Predvidljiva izdanja, bez iznenađenja u noći.</span></p>
+            <div style="display:flex;flex-wrap:wrap;gap:12px 18px;align-items:baseline;">
+              <span style="flex:1 1 100%;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);padding-top:8px;"><span data-l="en">Tools we use</span><span data-l="hr">Alati koje koristimo</span></span>
+              <span style="flex:1 1 320px;display:flex;flex-wrap:wrap;gap:10px;">
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">GitLab</span>
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Docker</span>
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Aspire</span>
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Azure</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div style="border-top:1px solid var(--rule);padding:28px 0;display:flex;flex-wrap:wrap;gap:18px;">
+          <div style="flex:1 1 100%;display:flex;flex-direction:column;gap:10px;">
+            <span style="font-weight:500;font-size:11px;letter-spacing:0.14em;color:var(--graphite);">05</span>
+            <h2 style="margin:0;font-size:19px;font-weight:500;letter-spacing:-0.03em;line-height:1.15;"><span data-l="en">Proving it works</span><span data-l="hr">Dokaz da radi</span></h2>
+          </div>
+          <div style="flex:1 1 420px;display:flex;flex-direction:column;gap:16px;">
+            <p style="margin:0;max-width:62ch;font-size:17px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Every change is tested and reviewed before it reaches you, so today’s fix does not quietly break last month’s feature.</span><span data-l="hr">Svaka promjena testirana je i pregledana prije nego dođe do vas, da današnji popravak tiho ne pokvari prošlomjesečnu funkciju.</span></p>
+            <p style="margin:0;max-width:62ch;font-size:16px;line-height:1.55;color:var(--ink);"><span data-l="en">Fewer regressions, shorter fix cycles.</span><span data-l="hr">Manje vraćanja unatrag, kraći ciklusi popravaka.</span></p>
+            <div style="display:flex;flex-wrap:wrap;gap:12px 18px;align-items:baseline;">
+              <span style="flex:1 1 100%;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);padding-top:8px;"><span data-l="en">Tools we use</span><span data-l="hr">Alati koje koristimo</span></span>
+              <span style="flex:1 1 320px;display:flex;flex-wrap:wrap;gap:10px;">
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">xUnit</span>
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">NSubstitute</span>
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Selenium</span>
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">SonarQube</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div style="border-top:1px solid var(--rule);padding:28px 0;display:flex;flex-wrap:wrap;gap:18px;">
+          <div style="flex:1 1 100%;display:flex;flex-direction:column;gap:10px;">
+            <span style="font-weight:500;font-size:11px;letter-spacing:0.14em;color:var(--graphite);">06</span>
+            <h2 style="margin:0;font-size:19px;font-weight:500;letter-spacing:-0.03em;line-height:1.15;"><span data-l="en">Built to last</span><span data-l="hr">Građeno da traje</span></h2>
+          </div>
+          <div style="flex:1 1 420px;display:flex;flex-direction:column;gap:16px;">
+            <p style="margin:0;max-width:62ch;font-size:17px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">The system is split into clear, separate parts with your business rules at the centre, and the work runs in short cycles you can see into — so priorities can change without the plan falling apart.</span><span data-l="hr">Sustav je podijeljen u jasne, odvojene dijelove s vašim poslovnim pravilima u središtu, a rad teče u kratkim ciklusima u koje imate uvid — pa se prioriteti mogu mijenjati bez rušenja plana.</span></p>
+            <p style="margin:0;max-width:62ch;font-size:16px;line-height:1.55;color:var(--ink);"><span data-l="en">Documented, explainable, and yours to take over at any point.</span><span data-l="hr">Dokumentirano, objašnjivo i vaše za preuzimanje u svakom trenutku.</span></p>
+            <div style="display:flex;flex-wrap:wrap;gap:12px 18px;align-items:baseline;">
+              <span style="flex:1 1 100%;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);padding-top:8px;"><span data-l="en">Tools we use</span><span data-l="hr">Alati koje koristimo</span></span>
+              <span style="flex:1 1 320px;display:flex;flex-wrap:wrap;gap:10px;">
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Clean architecture</span>
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Domain-driven design</span>
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Modular monolith</span>
+                <span style="display:inline-flex;align-items:center;padding:8px 14px;font-size:14px;line-height:1;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">Agile</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div style="border-top:1px solid var(--rule);margin-top:40px;padding-top:40px;display:flex;flex-direction:column;gap:20px;align-items:flex-start;">
+          <h2 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.035em;line-height:1.1;max-width:24ch;"><span data-l="en">Not sure which part you need?</span><span data-l="hr">Nisu sigurni koji vam dio treba?</span></h2>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+            <a href="#contact" style="display:inline-flex;align-items:center;background:var(--ink);color:var(--paper);box-shadow:inset 0 0 0 1px var(--ink);padding:14px 22px;font-size:14px;font-weight:500;transition:background 160ms linear,color 160ms linear;" style-hover="background:var(--paper);color:var(--ink)"><span data-l="en">Start a project</span><span data-l="hr">Započnite projekt</span></a>
+            <a data-ctalink data-plain href="#about" style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">About</span><span data-l="hr">O studiju</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ ABOUT ═════════════════════════════════════ -->
+    <section data-route="about" data-screen-label="About">
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:48px 20px 32px;border-bottom:1px solid var(--rule);">
+        <div style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);margin-bottom:20px;"><span data-l="en">About</span><span data-l="hr">O studiju</span></div>
+        <h1 style="margin:0;font-size:30px;font-weight:500;letter-spacing:-0.045em;line-height:1.02;max-width:22ch;"><span data-l="en">Deliberately small, senior, and focused.</span><span data-l="hr">Namjerno malen, iskusan i fokusiran.</span></h1>
+        <p style="margin:20px 0 0;max-width:50ch;font-size:17px;line-height:1.55;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">One engineer, one project at a time. No account managers between you and the person writing the code, and no growth plan that changes that.</span><span data-l="hr">Jedan inženjer, jedan projekt u isto vrijeme. Nema menadžera između vas i osobe koja piše kod, ni plana rasta koji bi to promijenio.</span></p>
+      </div>
+
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:40px 20px;border-bottom:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:18px;">
+        <div style="flex:1 1 100%;font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);padding-top:6px;"><span data-l="en">Manifesto</span><span data-l="hr">Manifest</span></div>
+        <div style="flex:1 1 420px;display:flex;flex-direction:column;gap:18px;font-size:16px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;">
+          <p style="margin:0;"><span data-l="en">Every product begins with noise. Too many features. Too many opinions. Too many ways to go wrong.</span><span data-l="hr">Svaki proizvod počinje šumom. Previše funkcija. Previše mišljenja. Previše načina da se pogriješi.</span></p>
+          <p style="margin:0;color:var(--ink);"><span data-l="en">Our work is to remove it.</span><span data-l="hr">Naš je posao taj šum ukloniti.</span></p>
+          <p style="margin:0;"><span data-l="en">The best software feels inevitable, as if it could not have been built any other way. That feeling is never an accident. It is the result of disciplined thinking, deliberate design, and engineering that holds up long after launch.</span><span data-l="hr">Najbolji softver djeluje neizbježno, kao da se nije mogao izgraditi drugačije. Taj osjećaj nikada nije slučajan. Rezultat je discipliniranog razmišljanja, promišljenog dizajna i inženjerstva koje traje dugo nakon objave.</span></p>
+          <p style="margin:0;"><span data-l="en">Complexity is easy. Anyone can add. Clarity is earned. It takes judgment to know what to leave out.</span><span data-l="hr">Složenost je lako postići. Dodavati zna svatko. Jasnoća se zarađuje. Treba prosudba da se zna što izostaviti.</span></p>
+          <p style="margin:0;font-size:18px;font-weight:500;letter-spacing:-0.03em;color:var(--ink);line-height:1.2;"><span data-l="en">Software, reduced to what matters.</span><span data-l="hr">Softver, sveden na ono što je važno.</span></p>
+        </div>
+      </div>
+
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:40px 20px;border-bottom:1px solid var(--rule);">
+        <div style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);margin-bottom:24px;"><span data-l="en">Principles</span><span data-l="hr">Načela</span></div>
+        <div style="display:grid;grid-template-columns:1fr;gap:1px;background:var(--rule);border-top:1px solid var(--rule);border-left:1px solid var(--rule);">
+          <div style="background:var(--paper);padding:18px;display:flex;flex-direction:column;gap:6px;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;color:var(--graphite);">01</span>
+            <span style="font-size:16px;line-height:1.35;"><span data-l="en">Purpose before features.</span><span data-l="hr">Svrha prije funkcija.</span></span>
+          </div>
+          <div style="background:var(--paper);padding:18px;display:flex;flex-direction:column;gap:6px;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;color:var(--graphite);">02</span>
+            <span style="font-size:16px;line-height:1.35;"><span data-l="en">Engineered to endure.</span><span data-l="hr">Građeno da traje.</span></span>
+          </div>
+          <div style="background:var(--paper);padding:18px;display:flex;flex-direction:column;gap:6px;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;color:var(--graphite);">03</span>
+            <span style="font-size:16px;line-height:1.35;"><span data-l="en">Clarity at every layer.</span><span data-l="hr">Jasnoća na svakom sloju.</span></span>
+          </div>
+          <div style="background:var(--paper);padding:18px;display:flex;flex-direction:column;gap:6px;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;color:var(--graphite);">04</span>
+            <span style="font-size:16px;line-height:1.35;"><span data-l="en">Craft without compromise.</span><span data-l="hr">Izrada bez kompromisa.</span></span>
+          </div>
+          <div style="background:var(--paper);padding:18px;display:flex;flex-direction:column;gap:6px;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;color:var(--graphite);">05</span>
+            <span style="font-size:16px;line-height:1.35;"><span data-l="en">Honest partnership.</span><span data-l="hr">Iskreno partnerstvo.</span></span>
+          </div>
+          <div style="background:var(--paper);padding:18px;display:flex;flex-direction:column;gap:6px;">
+            <span style="font-size:16px;line-height:1.35;color:var(--graphite);"><span data-l="en">Simple by design, built to last.</span><span data-l="hr">Jednostavan po dizajnu, građen da traje.</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:40px 20px;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:1fr;gap:24px;align-items:start;">
+        <div style="display:flex;flex-direction:column;gap:18px;max-width:50ch;">
+          <div style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">How the studio works</span><span data-l="hr">Kako studio radi</span></div>
+          <p style="margin:0;font-size:17px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Minimalist is one senior engineer, by design. The person who scopes your project is the person who designs it, writes it, and stands behind it afterwards. No account layer, no handoffs, no diluted accountability.</span><span data-l="hr">Minimalist je namjerno jedan iskusan inženjer. Osoba koja definira vaš projekt ista je koja ga dizajnira, piše i za njega odgovara i nakon predaje. Bez posrednika, bez predavanja posla, bez razvodnjene odgovornosti.</span></p>
+          <p style="margin:0;font-size:17px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Five-plus years building software and more than thirty products shipped, most of it in regulated and legacy-heavy environments. Design, architecture, code, migration and support are all done by the same person — nothing is subcontracted and nothing is handed off.</span><span data-l="hr">Više od pet godina razvoja softvera i više od trideset objavljenih proizvoda, većinom u reguliranim okruženjima i uz zastarjele sustave. Dizajn, arhitektura, kod, migracija i podrška — sve radi ista osoba. Ništa se ne prepušta podizvođačima i ništa se ne predaje dalje.</span></p>
+          <div style="display:grid;grid-template-columns:1fr;gap:20px 20px;border-top:1px solid var(--rule);padding-top:18px;font-size:14px;line-height:1.5;color:var(--ink-2);">
+            <div><span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);display:block;margin-bottom:6px;"><span data-l="en">Name</span><span data-l="hr">Ime</span></span>Filip Mučnjak</div>
+            <div><span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);display:block;margin-bottom:6px;"><span data-l="en">Role</span><span data-l="hr">Uloga</span></span><span data-l="en">Founder<span aria-hidden="true" style="display:inline-block;width:3.4px;height:3.4px;background:currentColor;margin:0 10px;vertical-align:middle;"></span>Principal engineer</span><span data-l="hr">Osnivač<span aria-hidden="true" style="display:inline-block;width:3.4px;height:3.4px;background:currentColor;margin:0 10px;vertical-align:middle;"></span>Glavni inženjer</span></div>
+            <div><span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);display:block;margin-bottom:6px;"><span data-l="en">Email</span><span data-l="hr">E-pošta</span></span><a href="mailto:filip.mucnjak@minimalist.hr" style="color:var(--ink);border-bottom:1px solid var(--rule);transition:border-color 120ms linear;" style-hover="border-bottom-color:var(--ink)">filip.mucnjak@minimalist.hr</a></div>
+            <div><span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);display:block;margin-bottom:6px;"><span data-l="en">Portfolio</span><span data-l="hr">Portfelj</span></span><a href="https://mucnjakf.github.io/Portfolio/" target="_blank" rel="noopener" style="color:var(--ink);border-bottom:1px solid var(--rule);transition:border-color 120ms linear;" style-hover="border-bottom-color:var(--ink)">mucnjakf.github.io/Portfolio</a></div>
+            <div><span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);display:block;margin-bottom:6px;"><span data-l="en">Experience</span><span data-l="hr">Iskustvo</span></span><span data-l="en">5+ years, 30+ products</span><span data-l="hr">5+ godina, 30+ proizvoda</span></div>
+            <div><span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);display:block;margin-bottom:6px;"><span data-l="en">Languages</span><span data-l="hr">Jezici</span></span><span data-l="en">Croatian, English</span><span data-l="hr">Hrvatski, engleski</span></div>
+            <div><span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);display:block;margin-bottom:6px;"><span data-l="en">Working with</span><span data-l="hr">Radimo s</span></span><span data-l="en">Clients across the EU and US</span><span data-l="hr">Klijentima u EU i SAD-u</span></div>
+          <div style="border-top:1px solid var(--rule);padding-top:20px;display:flex;flex-direction:column;gap:12px;">
+            <div style="aspect-ratio:4/5;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;">
+              <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;color:var(--graphite);">portrait / 4:5 / greyscale, flat light</span>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:40px 20px;display:flex;flex-direction:column;gap:20px;align-items:flex-start;">
+        <h2 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.035em;line-height:1.1;max-width:24ch;"><span data-l="en">One project at a time. Yours could be next.</span><span data-l="hr">Jedan projekt u isto vrijeme. Vaš može biti sljedeći.</span></h2>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+          <a href="#contact" style="display:inline-flex;align-items:center;background:var(--ink);color:var(--paper);box-shadow:inset 0 0 0 1px var(--ink);padding:14px 22px;font-size:14px;font-weight:500;transition:background 160ms linear,color 160ms linear;" style-hover="background:var(--paper);color:var(--ink)"><span data-l="en">Start a project</span><span data-l="hr">Započnite projekt</span></a>
+          <a data-ctalink data-plain href="#insights" style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Insights</span><span data-l="hr">Zapisi</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ INSIGHTS ══════════════════════════════════ -->
+    <section data-route="insights" data-screen-label="Insights">
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:48px 20px 32px;border-bottom:1px solid var(--rule);">
+        <div style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);margin-bottom:20px;"><span data-l="en">Insights</span><span data-l="hr">Zapisi</span></div>
+        <h1 style="margin:0;font-size:30px;font-weight:500;letter-spacing:-0.045em;line-height:1.02;max-width:22ch;"><span data-l="en">Notes on simplifying complex systems.</span><span data-l="hr">Zapisi o pojednostavljivanju složenih sustava.</span></h1>
+        <p style="margin:20px 0 0;max-width:46ch;font-size:17px;line-height:1.55;color:var(--ink-2);"><span data-l="en">Published when there is something worth saying. Roughly once a month.</span><span data-l="hr">Objavljujemo kada imamo što reći. Približno jednom mjesečno.</span></p>
+      </div>
+
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:0 20px 48px;">
+        <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;padding:24px 0;border-bottom:1px solid var(--rule);">
+          <span style="flex:1 1 100%;display:block;">
+            <div style="aspect-ratio:4/3;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">diagram / modules removed in week four</span></div>
+          </span>
+          <span style="flex:1 1 340px;display:flex;flex-direction:column;gap:12px;">
+            <span style="font-weight:500;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--graphite);">2026 / 08<span aria-hidden="true" style="display:inline-block;width:3.4px;height:3.4px;background:currentColor;margin:0 10px;vertical-align:middle;"></span><span data-l="en">Architecture</span><span data-l="hr">Arhitektura</span></span>
+            <span style="font-size:19px;font-weight:500;letter-spacing:-0.03em;line-height:1.15;"><span data-l="en">Deleting code is a feature</span><span data-l="hr">Brisanje koda je funkcija</span></span>
+          </span>
+          <span style="flex:1 1 320px;display:flex;flex-direction:column;gap:16px;align-items:flex-start;font-size:15px;line-height:1.55;color:var(--ink-2);">
+            <span><span data-l="en">Why the first four weeks of a modernization should produce a smaller system, not a bigger one.</span><span data-l="hr">Zašto prva četiri tjedna modernizacije trebaju dati manji, a ne veći sustav.</span></span>
+            <a data-ctalink href="#insight" style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Read the insight</span><span data-l="hr">Pročitajte zapis</span></a>
+          </span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;padding:24px 0;border-bottom:1px solid var(--rule);">
+          <span style="flex:1 1 100%;display:block;">
+            <div style="aspect-ratio:4/3;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">screens / nine-step flow reduced to two</span></div>
+          </span>
+          <span style="flex:1 1 340px;display:flex;flex-direction:column;gap:12px;">
+            <span style="font-weight:500;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--graphite);">2026 / 06<span aria-hidden="true" style="display:inline-block;width:3.4px;height:3.4px;background:currentColor;margin:0 10px;vertical-align:middle;"></span><span data-l="en">Product</span><span data-l="hr">Proizvod</span></span>
+            <span style="font-size:19px;font-weight:500;letter-spacing:-0.03em;line-height:1.15;"><span data-l="en">The two decisions a user actually makes</span><span data-l="hr">Dvije odluke koje korisnik zaista donosi</span></span>
+          </span>
+          <span style="flex:1 1 320px;display:flex;flex-direction:column;gap:16px;align-items:flex-start;font-size:15px;line-height:1.55;color:var(--ink-2);">
+            <span><span data-l="en">Most flows ask nine questions to answer two. How to find which two.</span><span data-l="hr">Većina tokova pita devet pitanja da odgovori na dva. Kako pronaći ta dva.</span></span>
+            <a data-ctalink href="#insight" style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Read the insight</span><span data-l="hr">Pročitajte zapis</span></a>
+          </span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;padding:24px 0;border-bottom:1px solid var(--rule);">
+          <span style="flex:1 1 100%;display:block;">
+            <div style="aspect-ratio:4/3;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">photo / signed scope on a desk</span></div>
+          </span>
+          <span style="flex:1 1 340px;display:flex;flex-direction:column;gap:12px;">
+            <span style="font-weight:500;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--graphite);">2026 / 04<span aria-hidden="true" style="display:inline-block;width:3.4px;height:3.4px;background:currentColor;margin:0 10px;vertical-align:middle;"></span><span data-l="en">Delivery</span><span data-l="hr">Dostava</span></span>
+            <span style="font-size:19px;font-weight:500;letter-spacing:-0.03em;line-height:1.15;"><span data-l="en">Fixed price is a design constraint</span><span data-l="hr">Fiksna cijena je dizajnersko ograničenje</span></span>
+          </span>
+          <span style="flex:1 1 320px;display:flex;flex-direction:column;gap:16px;align-items:flex-start;font-size:15px;line-height:1.55;color:var(--ink-2);">
+            <span><span data-l="en">What changes when the studio carries the estimate risk instead of the client.</span><span data-l="hr">Što se mijenja kada rizik procjene nosi studio, a ne klijent.</span></span>
+            <a data-ctalink href="#insight" style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Read the insight</span><span data-l="hr">Pročitajte zapis</span></a>
+          </span>
+        </div>
+
+        <div style="margin-top:40px;padding-top:12px;display:flex;flex-direction:column;gap:20px;align-items:flex-start;">
+          <h2 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.035em;line-height:1.1;max-width:24ch;"><span data-l="en">Have a system worth simplifying?</span><span data-l="hr">Imate sustav koji vrijedi pojednostaviti?</span></h2>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+            <a href="#contact" style="display:inline-flex;align-items:center;background:var(--ink);color:var(--paper);box-shadow:inset 0 0 0 1px var(--ink);padding:14px 22px;font-size:14px;font-weight:500;transition:background 160ms linear,color 160ms linear;" style-hover="background:var(--paper);color:var(--ink)"><span data-l="en">Start a project</span><span data-l="hr">Započnite projekt</span></a>
+            <a data-ctalink data-plain href="#work" style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Work</span><span data-l="hr">Radovi</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ INSIGHT DETAIL ════════════════════════════ -->
+    <section data-route="insight" data-screen-label="Insight detail">
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:40px 20px 32px;border-bottom:1px solid var(--rule);">
+        <a href="#insights" style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)">← <span data-l="en">Insights</span><span data-l="hr">Zapisi</span></a>
+        <h1 style="margin:24px 0 0;font-size:30px;font-weight:500;letter-spacing:-0.045em;line-height:1.02;max-width:22ch;"><span data-l="en">Deleting code is a feature</span><span data-l="hr">Brisanje koda je funkcija</span></h1>
+      </div>
+
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:28px 20px 0;">
+        <div style="aspect-ratio:21/8;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 5px,var(--stripe-b) 5px 10px);display:flex;align-items:flex-end;padding:14px;"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.04em;color:var(--graphite);">diagram / modules removed in week four</span></div>
+      </div>
+
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:36px 20px 48px;display:flex;flex-wrap:wrap;gap:24px;">
+        <div style="flex:1 1 100%;display:grid;grid-template-columns:1fr 1fr;gap:22px;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);">
+          <span style="display:flex;flex-direction:column;gap:10px;"><span><span data-l="en">Written by</span><span data-l="hr">Autor</span></span><span style="color:var(--ink);letter-spacing:0.06em;">Filip Mučnjak</span></span>
+          <span style="display:flex;flex-direction:column;gap:10px;"><span><span data-l="en">Date</span><span data-l="hr">Datum</span></span><span style="color:var(--ink);letter-spacing:0.06em;">2026 / 08</span></span>
+          <span style="display:flex;flex-direction:column;gap:10px;"><span><span data-l="en">Category</span><span data-l="hr">Kategorija</span></span><span style="color:var(--ink);letter-spacing:0.06em;"><span data-l="en">Architecture</span><span data-l="hr">Arhitektura</span></span></span>
+          <span style="display:flex;flex-direction:column;gap:10px;"><span><span data-l="en">Reading time</span><span data-l="hr">Vrijeme čitanja</span></span><span style="color:var(--ink);letter-spacing:0.06em;">6 min</span></span>
+        </div>
+        <article style="flex:1 1 460px;display:flex;flex-direction:column;gap:22px;font-size:16px;line-height:1.65;color:var(--ink-2);text-wrap:pretty;">
+          <p style="margin:0;font-size:18px;line-height:1.45;color:var(--ink);"><span data-l="en">Most modernization projects start by adding: a new service, a new layer, a new abstraction over the part nobody understands. The first four weeks should do the opposite.</span><span data-l="hr">Većina modernizacija počinje dodavanjem: novi servis, novi sloj, nova abstrakcija nad onim što nitko ne razumije. Prva četiri tjedna trebaju raditi suprotno.</span></p>
+          <p style="margin:0;"><span data-l="en">On every legacy system we have opened, somewhere between a third and two thirds of the code is not doing work anyone depends on. Reports nobody reads. Feature flags permanently on. Two implementations of the same calculation, one of them wrong but never called.</span><span data-l="hr">U svakom zastarjelom sustavu koji smo otvorili, između trećine i dvije trećine koda ne radi ništa na što se bilo ko oslanja. Izvještaji koje nitko ne čita. Zastavice trajno uključene. Dvije implementacije istog izračuna, jedna pogrešna ali nikad pozvana.</span></p>
+          <h2 style="margin:10px 0 0;font-size:19px;font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:var(--ink);"><span data-l="en">Measure before you argue</span><span data-l="hr">Izmjerite prije rasprave</span></h2>
+          <p style="margin:0;"><span data-l="en">Nobody wins a deletion argument with an opinion. Instrument the entry points, let it run for two weeks, and bring the call counts to the meeting. A module with zero invocations in a full billing cycle is not a risk, it is dead weight.</span><span data-l="hr">Raspravu o brisanju ne dobiva se mišljenjem. Instrumentirajte ulazne točke, pustite dva tjedna i donesite brojeve poziva na sastanak. Modul s nula poziva u punom obračunskom ciklusu nije rizik, nego balast.</span></p>
+          <blockquote style="margin:6px 0;padding-left:20px;border-left:1px solid var(--rule);font-size:18px;line-height:1.35;font-weight:500;letter-spacing:-0.02em;color:var(--ink);"><span data-l="en">Every line you delete is a line you never have to migrate, test, document, or explain to the next engineer.</span><span data-l="hr">Svaka obrisana linija je linija koju nikada nećete migrirati, testirati, dokumentirati ni objašnjavati sljedećem inženjeru.</span></blockquote>
+          <h2 style="margin:10px 0 0;font-size:19px;font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:var(--ink);"><span data-l="en">Delete in public</span><span data-l="hr">Brišite javno</span></h2>
+          <p style="margin:0;"><span data-l="en">Removal is only frightening when it is invisible. We keep a single list of everything proposed for deletion, with the evidence next to it, and review it weekly with the client. Anything contested stays. In practice almost nothing is contested twice.</span><span data-l="hr">Uklanjanje je strašno samo kada je nevidljivo. Vodimo jedan popis svega predloženog za brisanje, s dokazima uz svaku stavku, i tjedno ga pregledavamo s klijentom. Što je sporno, ostaje. U praksi gotovo ništa nije sporno dvaput.</span></p>
+          <p style="margin:0;"><span data-l="en">The result is not a smaller estimate. It is a smaller system — one a team of two can hold in their heads, deploy on a Tuesday, and still understand in three years.</span><span data-l="hr">Rezultat nije manja procjena. Rezultat je manji sustav — onaj koji dva čovjeka mogu držati u glavi, objaviti u utorak i razumjeti i za tri godine.</span></p>
+        </article>
+      </div>
+
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:0 20px 56px;">
+        <div style="border-top:1px solid var(--rule);padding-top:28px;display:flex;flex-direction:column;gap:20px;align-items:flex-start;">
+          <h2 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.035em;line-height:1.1;max-width:24ch;"><span data-l="en">Have a system that needs less of itself?</span><span data-l="hr">Imate sustav kojem treba manje njega samog?</span></h2>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+            <a href="#contact" style="display:inline-flex;align-items:center;background:var(--ink);color:var(--paper);box-shadow:inset 0 0 0 1px var(--ink);padding:14px 22px;font-size:14px;font-weight:500;transition:background 160ms linear,color 160ms linear;" style-hover="background:var(--paper);color:var(--ink)"><span data-l="en">Start a project</span><span data-l="hr">Započnite projekt</span></a>
+            <a data-ctalink data-plain href="#work" style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Work</span><span data-l="hr">Radovi</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ CONTACT ═══════════════════════════════════ -->
+    <section data-route="contact" data-screen-label="Contact">
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:48px 20px 32px;border-bottom:1px solid var(--rule);">
+        <div style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);margin-bottom:20px;"><span data-l="en">Contact</span><span data-l="hr">Kontakt</span></div>
+        <h1 style="margin:0;font-size:30px;font-weight:500;letter-spacing:-0.045em;line-height:1.02;max-width:20ch;"><span data-l="en">Let's talk about what you're building.</span><span data-l="hr">Razgovarajmo o tome što gradite.</span></h1>
+        <p style="margin:20px 0 0;max-width:48ch;font-size:17px;line-height:1.55;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Tell us the problem in your own words. You get a written reply within one business day, and a short call only if it would actually help.</span><span data-l="hr">Opišite problem svojim riječima. Pisani odgovor dobivate u jednom radnom danu, a kratak poziv samo ako bi zaista pomogao.</span></p>
+      </div>
+
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:32px 20px 48px;display:grid;grid-template-columns:1fr;gap:32px;align-items:start;">
+
+        <form data-inquiry novalidate style="display:flex;flex-direction:column;gap:20px;">
+          <div data-formbody style="display:flex;flex-direction:column;gap:24px;">
+            <div style="display:grid;grid-template-columns:1fr;gap:20px;">
+              <label style="display:flex;flex-direction:column;gap:8px;">
+                <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">Name</span><span data-l="hr">Ime</span></span>
+                <input type="text" name="name" required autocomplete="name" placeholder="Ana Horvat" style="background:transparent;border:0;box-shadow:inset 0 0 0 1px var(--rule);padding:14px;font-size:16px;min-height:48px;transition:box-shadow 120ms linear;" style-focus="box-shadow:inset 0 0 0 1px var(--ink);outline:none" />
+              </label>
+              <label style="display:flex;flex-direction:column;gap:8px;">
+                <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">Email</span><span data-l="hr">E-pošta</span></span>
+                <input type="email" name="email" required autocomplete="email" placeholder="ana@company.com" style="background:transparent;border:0;box-shadow:inset 0 0 0 1px var(--rule);padding:14px;font-size:16px;min-height:48px;transition:box-shadow 120ms linear;" style-focus="box-shadow:inset 0 0 0 1px var(--ink);outline:none" />
+              </label>
+              <label style="display:flex;flex-direction:column;gap:8px;">
+                <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">Company</span><span data-l="hr">Kompanija</span></span>
+                <input type="text" name="company" autocomplete="organization" placeholder="Company d.o.o." style="background:transparent;border:0;box-shadow:inset 0 0 0 1px var(--rule);padding:14px;font-size:16px;min-height:48px;transition:box-shadow 120ms linear;" style-focus="box-shadow:inset 0 0 0 1px var(--ink);outline:none" />
+              </label>
+              <label style="display:flex;flex-direction:column;gap:8px;">
+                <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">Role</span><span data-l="hr">Pozicija</span></span>
+                <input type="text" name="role" placeholder="CTO" style="background:transparent;border:0;box-shadow:inset 0 0 0 1px var(--rule);padding:14px;font-size:16px;min-height:48px;transition:box-shadow 120ms linear;" style-focus="box-shadow:inset 0 0 0 1px var(--ink);outline:none" />
+              </label>
+            </div>
+
+            <fieldset style="margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:16px;">
+              <legend style="padding:0 0 4px;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">Timeline</span><span data-l="hr">Rok</span></legend>
+              <div style="display:flex;flex-wrap:wrap;gap:10px;">
+                <label style="position:relative;display:inline-flex;cursor:pointer;">
+                  <input data-chip type="radio" name="timeline" value="asap" />
+                  <span style="display:inline-flex;align-items:center;min-height:46px;padding:12px 18px;font-size:14px;box-shadow:inset 0 0 0 1px var(--rule);transition:background 140ms linear,color 140ms linear,box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)"><span data-l="en">As soon as possible</span><span data-l="hr">Što prije</span></span>
+                </label>
+                <label style="position:relative;display:inline-flex;cursor:pointer;">
+                  <input data-chip type="radio" name="timeline" value="1-3m" />
+                  <span style="display:inline-flex;align-items:center;min-height:46px;padding:12px 18px;font-size:14px;box-shadow:inset 0 0 0 1px var(--rule);transition:background 140ms linear,color 140ms linear,box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)"><span data-l="en">1–3 months</span><span data-l="hr">1–3 mjeseca</span></span>
+                </label>
+                <label style="position:relative;display:inline-flex;cursor:pointer;">
+                  <input data-chip type="radio" name="timeline" value="3-6m" />
+                  <span style="display:inline-flex;align-items:center;min-height:46px;padding:12px 18px;font-size:14px;box-shadow:inset 0 0 0 1px var(--rule);transition:background 140ms linear,color 140ms linear,box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)"><span data-l="en">3–6 months</span><span data-l="hr">3–6 mjeseci</span></span>
+                </label>
+                <label style="position:relative;display:inline-flex;cursor:pointer;">
+                  <input data-chip type="radio" name="timeline" value="exploring" />
+                  <span style="display:inline-flex;align-items:center;min-height:46px;padding:12px 18px;font-size:14px;box-shadow:inset 0 0 0 1px var(--rule);transition:background 140ms linear,color 140ms linear,box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)"><span data-l="en">Still exploring</span><span data-l="hr">Još istražujemo</span></span>
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset style="margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:16px;">
+              <legend style="padding:0 0 4px;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">Budget range<span aria-hidden="true" style="display:inline-block;width:3.4px;height:3.4px;background:currentColor;margin:0 10px;vertical-align:middle;"></span>EUR</span><span data-l="hr">Raspon proračuna<span aria-hidden="true" style="display:inline-block;width:3.4px;height:3.4px;background:currentColor;margin:0 10px;vertical-align:middle;"></span>EUR</span></legend>
+              <div style="display:flex;flex-wrap:wrap;gap:10px;">
+                <label style="position:relative;display:inline-flex;cursor:pointer;">
+                  <input data-chip type="radio" name="budget" value="lt15" />
+                  <span style="display:inline-flex;align-items:center;min-height:46px;padding:12px 18px;font-size:14px;box-shadow:inset 0 0 0 1px var(--rule);transition:background 140ms linear,color 140ms linear,box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">&lt; €15,000</span>
+                </label>
+                <label style="position:relative;display:inline-flex;cursor:pointer;">
+                  <input data-chip type="radio" name="budget" value="15-40" />
+                  <span style="display:inline-flex;align-items:center;min-height:46px;padding:12px 18px;font-size:14px;box-shadow:inset 0 0 0 1px var(--rule);transition:background 140ms linear,color 140ms linear,box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">€15,000 – €40,000</span>
+                </label>
+                <label style="position:relative;display:inline-flex;cursor:pointer;">
+                  <input data-chip type="radio" name="budget" value="40-100" />
+                  <span style="display:inline-flex;align-items:center;min-height:46px;padding:12px 18px;font-size:14px;box-shadow:inset 0 0 0 1px var(--rule);transition:background 140ms linear,color 140ms linear,box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">€40,000 – €100,000</span>
+                </label>
+                <label style="position:relative;display:inline-flex;cursor:pointer;">
+                  <input data-chip type="radio" name="budget" value="gt100" />
+                  <span style="display:inline-flex;align-items:center;min-height:46px;padding:12px 18px;font-size:14px;box-shadow:inset 0 0 0 1px var(--rule);transition:background 140ms linear,color 140ms linear,box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)">€100,000 +</span>
+                </label>
+                <label style="position:relative;display:inline-flex;cursor:pointer;">
+                  <input data-chip type="radio" name="budget" value="unsure" />
+                  <span style="display:inline-flex;align-items:center;min-height:46px;padding:12px 18px;font-size:14px;box-shadow:inset 0 0 0 1px var(--rule);transition:background 140ms linear,color 140ms linear,box-shadow 140ms linear;" style-hover="box-shadow:inset 0 0 0 1px var(--ink)"><span data-l="en">Not sure yet</span><span data-l="hr">Još ne znamo</span></span>
+                </label>
+              </div>
+            </fieldset>
+
+            <label style="display:flex;flex-direction:column;gap:8px;">
+              <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">What do you want to build?</span><span data-l="hr">Što želite izgraditi?</span></span>
+              <textarea name="brief" rows="5" required style="background:transparent;border:0;box-shadow:inset 0 0 0 1px var(--rule);padding:14px;font-size:16px;min-height:48px;line-height:1.55;resize:vertical;transition:box-shadow 120ms linear;" style-focus="box-shadow:inset 0 0 0 1px var(--ink);outline:none"></textarea>
+              <span style="font-size:13px;line-height:1.5;color:var(--graphite);"><span data-l="en">The problem, who it affects, and what happens if it stays unsolved.</span><span data-l="hr">Problem, koga pogađa i što se događa ako ostane neriješen.</span></span>
+            </label>
+
+            <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+              <button type="submit" style="display:inline-flex;align-items:center;background:var(--ink);color:var(--paper);box-shadow:inset 0 0 0 1px var(--ink);border:0;padding:14px 22px;font-size:14px;font-weight:500;cursor:pointer;transition:background 160ms linear,color 160ms linear;" style-hover="background:var(--paper);color:var(--ink)"><span data-l="en">Send inquiry</span><span data-l="hr">Pošaljite upit</span></button>
+              <span style="font-size:13px;line-height:1.5;color:var(--graphite);max-width:32ch;"><span data-l="en">We reply within one business day.</span><span data-l="hr">Odgovaramo u jednom radnom danu.</span></span>
+            </div>
+          </div>
+
+          <div data-formdone role="status" style="box-shadow:inset 0 0 0 1px var(--rule);padding:24px;display:flex;flex-direction:column;gap:12px;">
+            <span style="font-size:19px;font-weight:500;letter-spacing:-0.03em;"><span data-l="en">Thank you — your inquiry is in.</span><span data-l="hr">Hvala — vaš je upit primljen.</span></span>
+            <span style="font-size:15px;line-height:1.6;color:var(--ink-2);"><span data-l="en">You will get a reply from a real person within one business day, with either questions or a proposed call.</span><span data-l="hr">Odgovor od prave osobe dobit ćete u jednom radnom danu, s pitanjima ili predlogom poziva.</span></span>
+            <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--graphite);">[ demo state — connect form to your inbox ]</span>
+          </div>
+        </form>
+
+        <div style="border-top:1px solid var(--rule);margin-top:16px;padding-top:36px;display:flex;flex-direction:column;gap:24px;">
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">Or write directly</span><span data-l="hr">Ili pišite direktno</span></span>
+            <a href="mailto:hello@minimalist.hr" style="font-size:18px;font-weight:500;letter-spacing:-0.03em;border-bottom:1px solid var(--rule);align-self:flex-start;transition:border-color 120ms linear;" style-hover="border-bottom-color:var(--ink)">hello@minimalist.hr</a>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:8px;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">Studio</span><span data-l="hr">Studio</span></span>
+            <span style="font-size:16px;line-height:1.6;color:var(--ink-2);">Hamići 13<br />10000 Zagreb, <span data-l="en">Croatia</span><span data-l="hr">Hrvatska</span></span>
+          </div>
+          <div style="border-top:1px solid var(--rule);padding-top:18px;display:flex;flex-direction:column;gap:8px;">
+            <span style="font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">Introductory call</span><span data-l="hr">Uvodni poziv</span></span>
+            <span style="font-size:16px;line-height:1.6;color:var(--ink-2);"><span data-l="en">Thirty minutes, no pitch deck.</span><span data-l="hr">Trideset minuta, bez prezentacije.</span> <a href="facetime:hello@minimalist.hr" style="border-bottom:1px solid var(--rule);" style-hover="border-bottom-color:var(--ink)"><span data-l="en">Call on FaceTime</span><span data-l="hr">Nazovite putem FaceTimea</span></a></span>
+          </div>
+          <p style="margin:0;font-size:13px;line-height:1.6;color:var(--graphite);max-width:40ch;"><span data-l="en">What you send is used only to answer your inquiry. Nothing is shared, nothing is added to a mailing list.</span><span data-l="hr">Ono što pošaljete koristi se isključivo za odgovor na vaš upit. Ništa se ne dijeli i ne dodaje na mailing listu.</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ LEGAL ═════════════════════════════════════ -->
+    <section data-route="legal" data-screen-label="Legal">
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:48px 20px;display:flex;flex-direction:column;gap:28px;">
+        <div style="display:flex;flex-direction:column;gap:20px;">
+          <h1 style="margin:0;font-size:28px;font-weight:500;letter-spacing:-0.04em;line-height:1.05;max-width:20ch;"><span data-l="en">Privacy, terms and studio details</span><span data-l="hr">Privatnost, uvjeti i podaci o studiju</span></h1>
+          <p style="margin:0;max-width:60ch;font-size:17px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">This site uses privacy-friendly analytics with no cookies and no personal data, so no consent banner is required. Anything you send through the inquiry form is used only to answer that inquiry.</span><span data-l="hr">Ova stranica koristi analitiku koja poštuje privatnost, bez kolačića i bez osobnih podataka, pa banner za privolu nije potreban. Sve što pošaljete putem obrasca koristi se isključivo za odgovor na taj upit.</span></p>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:18px;border-top:1px solid var(--rule);padding-top:24px;">
+          <div style="flex:1 1 100%;font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);padding-top:6px;"><span data-l="en">Privacy policy</span><span data-l="hr">Politika privatnosti</span></div>
+          <div style="flex:1 1 420px;display:flex;flex-direction:column;gap:14px;font-size:16px;line-height:1.65;color:var(--ink-2);text-wrap:pretty;">
+            <p style="margin:0;"><span data-l="en">We collect only what you choose to send us: your name, email address, company, role and the description of your project. Nothing else is gathered, and no profile is built from your visit.</span><span data-l="hr">Prikupljamo samo ono što nam sami pošaljete: ime, e-adresu, tvrtku, poziciju i opis projekta. Ništa se drugo ne prikuplja niti se iz vašeg posjeta gradi profil.</span></p>
+            <p style="margin:0;"><span data-l="en">That data is used to answer your inquiry and to prepare a proposal if you ask for one. It is stored for twelve months, then deleted. It is never sold, never shared with third parties for marketing, and never added to a mailing list.</span><span data-l="hr">Ti se podaci koriste za odgovor na upit i pripremu ponude ako je zatražite. Čuvaju se dvanaest mjeseci, zatim se brišu. Nikada se ne prodaju, ne dijele trećim stranama u marketinške svrhe niti dodaju na mailing listu.</span></p>
+            <p style="margin:0;"><span data-l="en">You may ask at any time to see, correct, export or delete what we hold. Write to hello@minimalist.hr and we answer within one business day. You also have the right to complain to the Croatian Personal Data Protection Agency (AZOP).</span><span data-l="hr">U svakom trenutku možete zatražiti uvid, ispravak, izvoz ili brisanje podataka koje čuvamo. Pišite na hello@minimalist.hr i odgovaramo u jednom radnom danu. Imate i pravo podnijeti pritužbu Agenciji za zaštitu osobnih podataka (AZOP).</span></p>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:18px;border-top:1px solid var(--rule);padding-top:24px;">
+          <div style="flex:1 1 100%;font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);padding-top:6px;"><span data-l="en">Terms of use</span><span data-l="hr">Uvjeti korištenja</span></div>
+          <div style="flex:1 1 420px;display:flex;flex-direction:column;gap:14px;font-size:16px;line-height:1.65;color:var(--ink-2);text-wrap:pretty;">
+            <p style="margin:0;"><span data-l="en">Everything published here is general information offered in good faith. It is not a binding offer and not professional advice for a specific situation.</span><span data-l="hr">Sve objavljeno ovdje općenita je informacija dana u dobroj vjeri. Ne predstavlja obvezujuću ponudu ni stručni savjet za konkretnu situaciju.</span></p>
+            <p style="margin:0;"><span data-l="en">Scope, price, timeline and deliverables of any engagement are agreed only in a signed contract. Where a contract and this site differ, the contract applies.</span><span data-l="hr">Obuhvat, cijena, rokovi i isporuke svakog angažmana ugovaraju se isključivo potpisanim ugovorom. U slučaju razlike između ugovora i ove stranice, primjenjuje se ugovor.</span></p>
+            <p style="margin:0;"><span data-l="en">Text, marks and case material on this site belong to Minimalist unless stated otherwise; client names and figures are published with permission. Short excerpts may be quoted with attribution. Links to other sites are not endorsements. Croatian law applies, with the courts in Zagreb having jurisdiction.</span><span data-l="hr">Tekst, znakovi i materijali studija pripadaju Minimalistu osim ako je drukčije navedeno; imena klijenata i brojke objavljeni su uz dopuštenje. Kraće citate smijete prenijeti uz navođenje izvora. Poveznice na druge stranice nisu preporuka. Primjenjuje se hrvatsko pravo, uz nadležnost sudova u Zagrebu.</span></p>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:18px;border-top:1px solid var(--rule);padding-top:24px;">
+          <div style="flex:1 1 100%;font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);padding-top:6px;"><span data-l="en">Studio details</span><span data-l="hr">Podaci o studiju</span></div>
+          <div style="flex:1 1 420px;display:flex;flex-direction:column;gap:14px;font-size:16px;line-height:1.65;color:var(--ink-2);text-wrap:pretty;">
+            <div style="display:flex;flex-wrap:wrap;gap:6px 10px;"><span style="flex:0 0 100%;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);padding-top:4px;"><span data-l="en">Legal entity name</span><span data-l="hr">Naziv obrta</span></span><span style="flex:1 1 240px;color:var(--ink);">Minimalist, obrt za razvoj softvera</span></div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px 10px;"><span style="flex:0 0 100%;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);padding-top:4px;"><span data-l="en">Founder</span><span data-l="hr">Vlasnik</span></span><span style="flex:1 1 240px;color:var(--ink);">Filip Mučnjak</span></div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px 10px;"><span style="flex:0 0 100%;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);padding-top:4px;"><span data-l="en">Address</span><span data-l="hr">Adresa</span></span><span style="flex:1 1 240px;color:var(--ink);">Hamići 13, 10000 Zagreb, <span data-l="en">Croatia</span><span data-l="hr">Hrvatska</span></span></div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px 10px;"><span style="flex:0 0 100%;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);padding-top:4px;"><span data-l="en">Personal identification number</span><span data-l="hr">OIB</span></span><span style="flex:1 1 240px;color:var(--ink);">43828040803</span></div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px 10px;"><span style="flex:0 0 100%;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);padding-top:4px;"><span data-l="en">Business registration number</span><span data-l="hr">Matični broj obrta</span></span><span style="flex:1 1 240px;color:var(--ink);">99363119</span></div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px 10px;"><span style="flex:0 0 100%;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);padding-top:4px;"><span data-l="en">Bank</span><span data-l="hr">Banka</span></span><span style="flex:1 1 240px;color:var(--ink);">ERSTE &amp; STEIERMÄRKISCHE BANK d.d.</span></div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px 10px;"><span style="flex:0 0 100%;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);padding-top:4px;"><span data-l="en">IBAN</span><span data-l="hr">IBAN</span></span><span style="flex:1 1 240px;color:var(--ink);">HR3824020061140662890</span></div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px 10px;"><span style="flex:0 0 100%;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);padding-top:4px;"><span data-l="en">Email</span><span data-l="hr">E-pošta</span></span><span style="flex:1 1 240px;color:var(--ink);"><a href="mailto:hello@minimalist.hr" style="border-bottom:1px solid var(--rule);" style-hover="border-bottom-color:var(--ink)">hello@minimalist.hr</a></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 404 ═══════════════════════════════════════ -->
+    <section data-route="notfound" data-screen-label="404">
+      <div style="width:100%;max-width:1240px;margin:0 auto;padding:56px 20px 56px;min-height:520px;display:flex;flex-direction:column;gap:24px;align-items:flex-start;">
+        <div style="font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--graphite);"><span data-l="en">Error 404</span><span data-l="hr">Greška 404</span></div>
+        <h1 style="margin:0;font-size:38px;font-weight:500;letter-spacing:-0.045em;line-height:0.98;max-width:16ch;"><span data-l="en">This page was removed.</span><span data-l="hr">Ova je stranica uklonjena.</span></h1>
+        <p style="margin:0;max-width:44ch;font-size:16px;line-height:1.55;color:var(--ink-2);text-wrap:pretty;"><span data-l="en">Or it never existed. Either way, less is the point — here is the way back.</span><span data-l="hr">Ili nikada nije ni postojala. U svakom slučaju, manje je i poanta — evo puta natrag.</span></p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+          <a href="#home" style="display:inline-flex;align-items:center;background:var(--ink);color:var(--paper);box-shadow:inset 0 0 0 1px var(--ink);padding:14px 22px;font-size:14px;font-weight:500;transition:background 160ms linear,color 160ms linear;" style-hover="background:var(--paper);color:var(--ink)"><span data-l="en">Back to home</span><span data-l="hr">Natrag na početnu</span></a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer style="border-top:1px solid var(--rule);background:var(--paper);">
+    <div style="width:100%;max-width:1240px;margin:0 auto;padding:36px 20px 24px;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;">
+      <div style="grid-column:1 / -1;display:flex;flex-direction:column;gap:14px;">
+        <a href="#home" style="display:inline-flex;align-items:baseline;gap:4.4px;align-self:flex-start;">
+          <span style="font-size:17px;font-weight:500;letter-spacing:-0.035em;">MINIMALIST</span>
+          <span style="width:3.4px;height:3.4px;background:currentColor;flex:none;"></span>
+        </a>
+        <span style="font-size:14px;line-height:1.55;color:var(--ink-2);max-width:26ch;"><span data-l="en">Less noise. Better software.</span><span data-l="hr">Manje šuma. Bolji softver.</span></span>
+      </div>
+
+      <nav aria-label="Footer" style="display:flex;flex-direction:column;gap:8px;font-size:14px;">
+          <a href="#work" style="color:var(--ink-2);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Work</span><span data-l="hr">Radovi</span></a>
+          <a href="#services" style="color:var(--ink-2);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Services</span><span data-l="hr">Usluge</span></a>
+          <a href="#approach" style="color:var(--ink-2);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Approach</span><span data-l="hr">Pristup</span></a>
+          <a href="#skills" style="color:var(--ink-2);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Skills</span><span data-l="hr">Vještine</span></a>
+      </nav>
+
+      <nav aria-label="Footer secondary" style="display:flex;flex-direction:column;gap:8px;font-size:14px;">
+          <a href="#about" style="color:var(--ink-2);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">About</span><span data-l="hr">O studiju</span></a>
+          <a href="#insights" style="color:var(--ink-2);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Insights</span><span data-l="hr">Zapisi</span></a>
+          <a href="#contact" style="color:var(--ink-2);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Contact</span><span data-l="hr">Kontakt</span></a>
+          <a href="#legal" style="color:var(--ink-2);transition:color 140ms linear;" style-hover="color:var(--ink)"><span data-l="en">Legal</span><span data-l="hr">Pravno</span></a>
+      </nav>
+
+      <div style="grid-column:1 / -1;display:flex;flex-direction:column;gap:8px;font-size:14px;">
+        <a href="mailto:hello@minimalist.hr" style="color:var(--ink);border-bottom:1px solid var(--rule);align-self:flex-start;transition:border-color 120ms linear;" style-hover="border-bottom-color:var(--ink)">hello@minimalist.hr</a>
+        <span style="display:flex;flex-direction:column;gap:2px;color:var(--ink-2);line-height:1.5;">
+          <span>Minimalist, obrt za razvoj softvera</span>
+          <span>Hamići 13, 10000 Zagreb, <span data-l="en">Croatia</span><span data-l="hr">Hrvatska</span></span>
+        </span>
+      </div>
+    </div>
+    <div style="width:100%;max-width:1240px;margin:0 auto;padding:18px 20px 32px;display:flex;justify-content:center;text-align:center;gap:16px;flex-wrap:wrap;border-top:1px solid var(--rule);font-weight:500;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--graphite);">
+      <span>© 2026 Minimalist. <span data-l="en">All rights reserved.</span><span data-l="hr">Sva prava pridržana.</span></span>
+    </div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:920},&quot;defaultTheme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Dark&quot;,&quot;Light&quot;],&quot;default&quot;:&quot;Dark&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Site&quot;},&quot;defaultLanguage&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;English&quot;,&quot;Croatian&quot;],&quot;default&quot;:&quot;English&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Site&quot;},&quot;showInsights&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Site&quot;},&quot;preview404&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Site&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    const H = document.documentElement;
+    let t = null, l = null;
+    try { t = localStorage.getItem("mn-theme"); l = localStorage.getItem("mn-lang"); } catch (e) {}
+    if (!t) H.setAttribute("data-theme", (this.props.defaultTheme ?? "Dark") === "Light" ? "light" : "dark");
+    if (!l) H.setAttribute("data-lang", (this.props.defaultLanguage ?? "English") === "Croatian" ? "hr" : "en");
+    this.syncFlags();
+  }
+  componentDidUpdate() { this.syncFlags(); }
+  syncFlags() {
+    const H = document.documentElement;
+    if (this.props.preview404) {
+      H.setAttribute("data-page", "notfound");
+    } else if (H.getAttribute("data-page") === "notfound") {
+      const r = (location.hash || "#home").slice(1);
+      H.setAttribute("data-page", r === "notfound" ? "home" : r);
+    }
+    const show = this.props.showInsights ?? true;
+    document.querySelectorAll("a[href='#insights']").forEach((a) => { a.style.display = show ? "" : "none"; });
+  }
+  renderVals() { return {}; }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="db450f9d-f69b-4b07-a335-717f6f46dba7"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<style>/* vietnamese */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("93c0c33a-bd39-486d-aa6b-65f725fb5269") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("ce0cbf3a-8224-4cab-9aad-11b747937b25") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("290713f4-36f7-4b12-9a42-e34c0fd37ea8") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("93c0c33a-bd39-486d-aa6b-65f725fb5269") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("ce0cbf3a-8224-4cab-9aad-11b747937b25") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("290713f4-36f7-4b12-9a42-e34c0fd37ea8") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("93c0c33a-bd39-486d-aa6b-65f725fb5269") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("ce0cbf3a-8224-4cab-9aad-11b747937b25") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("290713f4-36f7-4b12-9a42-e34c0fd37ea8") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
+<style>
+  html, body { margin: 0; padding: 0; background: #F5F4F1; }
+  * { box-sizing: border-box; }
+  a { color: #111110; text-decoration: none; border-bottom: 1px solid rgba(17,17,16,0.35); }
+  a:hover { color: #111110; border-bottom-color: #111110; }
+</style>
+</helmet>
+
+<div style="background:#F5F4F1;color:#111110;font-family:Archivo, Helvetica, Arial, sans-serif;-webkit-font-smoothing:antialiased;width:100%;max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,64px) 96px;">
+
+  <!-- ── Cover ───────────────────────────────────────── -->
+  <section style="min-height:min(92vh,860px);display:flex;flex-direction:column;justify-content:space-between;padding:clamp(28px,5vw,64px) 0 clamp(32px,5vw,72px);border-bottom:1px solid #DCDAD3;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap;">
+      <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;line-height:1.7;">
+        <div>Brand Identity</div>
+        <div>Version 1.0 &nbsp;/&nbsp; 2026</div>
+      </div>
+      <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;text-align:right;line-height:1.7;">
+        <div>minimalist.hr</div>
+        <div>Internal &amp; partner use</div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:clamp(24px,4vw,44px);">
+      <div style="display:flex;align-items:baseline;gap:clamp(10px,1.6vw,18px);flex-wrap:wrap;">
+        <span style="font-size:clamp(40px,10.4vw,132px);font-weight:500;letter-spacing:-0.045em;line-height:0.86;">MINIMALIST</span>
+        <span style="width:clamp(8px,2.08vw,26.4px);height:clamp(8px,2.08vw,26.4px);background:currentColor;flex:none;"></span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <p style="margin:0;font-size:clamp(18px,1.9vw,26px);font-weight:500;letter-spacing:-0.03em;line-height:1.2;color:#111110;">Complex problems. Simple solutions.</p>
+        <p style="margin:0;max-width:48ch;font-size:clamp(15px,1.4vw,19px);line-height:1.55;color:#3B3A36;text-wrap:pretty;">We design and build software that does exactly what it should, performs without friction, and stands the test of time.</p>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px;font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8A8880;border-top:1px solid #DCDAD3;padding-top:18px;">
+      <div>01 &nbsp;Foundation</div>
+      <div>02 &nbsp;Logo system</div>
+      <div>03 &nbsp;Color</div>
+      <div>04 &nbsp;Type</div>
+      <div>05 &nbsp;Device &amp; icons</div>
+      <div>06 &nbsp;Photography</div>
+      <div>07 &nbsp;Applications</div>
+      <div>08 &nbsp;Motion</div>
+      <div>09 &nbsp;Voice</div>
+      <div>10 &nbsp;Assets</div>
+    </div>
+  </section>
+
+  <!-- ── 01 Foundation ───────────────────────────────── -->
+  <section style="padding:clamp(56px,8vw,110px) 0;border-bottom:1px solid #DCDAD3;">
+    <div style="display:flex;gap:14px;align-items:baseline;margin-bottom:clamp(28px,4vw,48px);">
+      <span style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:11px;letter-spacing:0.14em;color:#8A8880;">01</span>
+      <h2 style="margin:0;font-size:clamp(22px,2.6vw,34px);font-weight:500;letter-spacing:-0.025em;">Foundation</h2>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:clamp(24px,3vw,48px);">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Positioning</div>
+        <p style="margin:0;font-size:17px;line-height:1.5;color:#111110;text-wrap:pretty;">Minimalist is a software development studio that designs and engineers clear, reliable, and enduring digital products for companies that refuse to compromise on quality.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Principles</div>
+        <ol style="margin:0;padding-left:18px;font-size:17px;line-height:1.65;color:#3B3A36;">
+          <li>Purpose before features.</li>
+          <li>Engineered to endure.</li>
+          <li>Clarity at every layer.</li>
+          <li>Craft without compromise.</li>
+          <li>Honest partnership.</li>
+        </ol>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Identity in one line</div>
+        <p style="margin:0;font-size:17px;line-height:1.5;color:#3B3A36;text-wrap:pretty;">One typeface, no colour, generous void. The work is the ornament.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 02 Logo system ──────────────────────────────── -->
+  <section style="padding:clamp(56px,8vw,110px) 0;border-bottom:1px solid #DCDAD3;">
+    <div style="display:flex;gap:14px;align-items:baseline;margin-bottom:16px;">
+      <span style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:11px;letter-spacing:0.14em;color:#8A8880;">02</span>
+      <h2 style="margin:0;font-size:clamp(22px,2.6vw,34px);font-weight:500;letter-spacing:-0.025em;">Logo system</h2>
+    </div>
+    <p style="margin:0 0 clamp(28px,4vw,44px);max-width:60ch;font-size:16px;line-height:1.55;color:#3B3A36;">Two marks, one voice. The wordmark signs; the integrated mark stands in wherever the name has to fit a square. Nothing else is sanctioned.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,48%),1fr));gap:1px;background:#DCDAD3;border:1px solid #DCDAD3;">
+
+      <!-- A -->
+      <div style="background:#F5F4F1;padding:clamp(22px,2.6vw,34px);display:flex;flex-direction:column;gap:28px;min-height:260px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">
+          <span>01 &nbsp;/&nbsp; Wordmark</span>
+          <sc-if value="{{ isA }}" hint-placeholder-val="{{ true }}"><span style="color:#111110;border-bottom:1px solid #111110;">Primary</span></sc-if>
+        </div>
+        <div style="flex:1;display:flex;align-items:center;">
+          <span style="display:flex;align-items:baseline;gap:clamp(6px,0.7vw,9px);">
+            <span style="font-size:clamp(20px,2.4vw,30px);font-weight:500;letter-spacing:-0.04em;line-height:0.9;">MINIMALIST</span>
+            <span style="width:clamp(4px,0.48vw,6px);height:clamp(4px,0.48vw,6px);background:currentColor;flex:none;"></span>
+          </span>
+        </div>
+        <p style="margin:0;font-size:13px;line-height:1.5;color:#8A8880;">Tracking −4%, weight 500, closed by a square in the text colour — punctuation, not a symbol. The primary signature everywhere the name can run wide.</p>
+      </div>
+
+      <!-- E -->
+      <div style="background:#F5F4F1;padding:clamp(22px,2.6vw,34px);display:flex;flex-direction:column;gap:28px;min-height:260px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">
+          <span>02 &nbsp;/&nbsp; Integrated mark</span>
+          <sc-if value="{{ isE }}" hint-placeholder-val="{{ true }}"><span style="color:#111110;border-bottom:1px solid #111110;">Primary</span></sc-if>
+        </div>
+        <div style="flex:1;display:flex;align-items:center;">
+          <span style="width:clamp(104px,10vw,130px);height:clamp(104px,10vw,130px);background:#111110;color:#F5F4F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(5px,0.5vw,6px);flex:none;">
+            <span style="font-size:clamp(52px,5vw,65px);font-weight:500;letter-spacing:-0.04em;line-height:0.85;">M</span>
+            <span style="font-size:clamp(7.44px,0.718vw,9.25px);font-weight:500;letter-spacing:-0.005em;line-height:1;">INIMALIST</span>
+          </span>
+        </div>
+        <p style="margin:0;font-size:13px;line-height:1.5;color:#8A8880;">Both elements live inside the square: the M at cap scale, INIMALIST set to exactly the M’s ink width beneath it. Self-contained — never set the full wordmark beside it. Floor 96px in layouts; below that the M square goes alone. Icons are the exception — favicons and app icons carry the full mark down to 48px.</p>
+      </div>
+
+    </div>
+
+    <div style="margin-top:clamp(36px,4vw,56px);border:1px solid #DCDAD3;background:#FFFFFF;display:flex;flex-wrap:wrap;">
+      <div style="flex:1 1 280px;padding:clamp(24px,3vw,34px);display:flex;flex-direction:column;gap:12px;border-right:1px solid #DCDAD3;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Which mark, where</div>
+        <p style="margin:0;font-size:15px;line-height:1.55;color:#3B3A36;">The <strong style="font-weight:500;">wordmark</strong> signs anything that can hold a horizontal line of type: site header, letterhead, deck covers, email, contracts, signage.</p>
+        <p style="margin:0;font-size:15px;line-height:1.55;color:#3B3A36;">The <strong style="font-weight:500;">integrated mark</strong> takes over wherever the layout is square or the name must fit a fixed box: avatars, app icons, favicons, merchandise, stamps on photography.</p>
+        <p style="margin:0;font-size:13px;line-height:1.5;color:#8A8880;">Never both on one surface. Never the integrated mark beside the wordmark.</p>
+      </div>
+      <div style="flex:1 1 240px;padding:clamp(24px,3vw,34px);display:flex;flex-direction:column;gap:12px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">The square</div>
+        <p style="margin:0;font-size:15px;line-height:1.55;color:#3B3A36;">Sized at 20% of the wordmark's font size, baseline-aligned, set one optical space after the T. Always the same colour as the lettering.</p>
+        <p style="margin:0;font-size:13px;line-height:1.5;color:#8A8880;">It is part of the wordmark — never dropped, never tinted away from the text, never used on its own as a mark.</p>
+      </div>
+    </div>
+
+    <!-- the four sanctioned treatments -->
+    <div style="margin-top:clamp(36px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,24%),1fr));gap:1px;background:#DCDAD3;border:1px solid #DCDAD3;">
+      <div style="background:#FFFFFF;padding:32px 26px;display:flex;flex-direction:column;gap:22px;align-items:flex-start;min-height:200px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Wordmark / paper</div>
+        <div style="margin:auto 0;"><span style="display:inline-flex;align-items:baseline;gap:4.8px;"><span style="font-size:17px;font-weight:500;letter-spacing:-0.035em;color:#111110;">MINIMALIST</span><span style="width:3.4px;height:3.4px;background:currentColor;flex:none;"></span></span></div>
+      </div>
+      <div style="background:#111110;padding:32px 26px;display:flex;flex-direction:column;gap:22px;align-items:flex-start;min-height:200px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#7C7A73;">Wordmark / inverted</div>
+        <div style="margin:auto 0;"><span style="display:inline-flex;align-items:baseline;gap:4.8px;color:#F5F4F1;"><span style="font-size:17px;font-weight:500;letter-spacing:-0.035em;">MINIMALIST</span><span style="width:3.4px;height:3.4px;background:currentColor;flex:none;"></span></span></div>
+      </div>
+      <div style="background:#FFFFFF;padding:32px 26px;display:flex;flex-direction:column;gap:22px;align-items:flex-start;min-height:200px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Integrated mark</div>
+        <div style="margin:auto 0;"><span style="width:96px;height:96px;background:#111110;color:#F5F4F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4.8px;flex:none;"><span style="font-size:48px;font-weight:500;letter-spacing:-0.04em;line-height:0.85;">M</span><span style="font-size:6.83px;font-weight:500;letter-spacing:-0.005em;line-height:1;">INIMALIST</span></span></div>
+      </div>
+      <div style="background:#F5F4F1;padding:32px 26px;display:flex;flex-direction:column;gap:22px;align-items:flex-start;min-height:200px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Avatar / app icon</div>
+        <div style="margin:auto 0;"><span style="width:96px;height:96px;background:#111110;color:#F5F4F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4.8px;flex:none;"><span style="font-size:48px;font-weight:500;letter-spacing:-0.04em;line-height:0.85;">M</span><span style="font-size:6.83px;font-weight:500;letter-spacing:-0.005em;line-height:1;">INIMALIST</span></span></div>
+      </div>
+    </div>
+
+    <p style="margin:14px 0 0;font-size:13px;line-height:1.5;color:#8A8880;">Four treatments, nothing else: the wordmark on paper and inverted, the integrated mark, and the same mark as an avatar or app icon — INIMALIST intact down to 96px. The Primary tweak decides which mark signs the applications below.</p>
+
+    <!-- clearspace + minimum size -->
+    <div style="margin-top:clamp(36px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,48%),1fr));gap:clamp(24px,3vw,44px);">
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;"><sc-if value="{{ showWord }}" hint-placeholder-val="{{ true }}"><span>Clearspace &nbsp;=&nbsp; one cap height of the wordmark, all sides</span></sc-if><sc-if value="{{ markE }}"><span>Clearspace &nbsp;=&nbsp; 25% of the square, all sides</span></sc-if></div>
+        <div style="background:#FFFFFF;border:1px solid #DCDAD3;padding:44px;display:flex;justify-content:center;">
+          <div style="padding:11.5px;outline:1px dashed {{ clearspaceOutline }};display:flex;align-items:center;gap:10px;">
+            <sc-if value="{{ markE }}"><span style="width:96px;height:96px;background:#111110;color:#F5F4F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4.8px;flex:none;"><span style="font-size:48px;font-weight:500;letter-spacing:-0.04em;line-height:0.85;">M</span><span style="font-size:6.83px;font-weight:500;letter-spacing:-0.005em;line-height:1;">INIMALIST</span></span></sc-if>
+            <sc-if value="{{ showWord }}" hint-placeholder-val="{{ true }}"><span style="display:inline-flex;align-items:baseline;gap:4.8px;"><span style="font-size:17px;font-weight:500;letter-spacing:-0.035em;color:#111110;">MINIMALIST</span><span style="width:3.4px;height:3.4px;background:currentColor;flex:none;"></span></span></sc-if>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Minimum size</div>
+        <div style="background:#FFFFFF;border:1px solid #DCDAD3;padding:44px;display:flex;flex-direction:column;gap:24px;justify-content:center;">
+          <div style="display:flex;align-items:center;gap:16px;">
+            <span style="display:inline-flex;align-items:baseline;gap:4.3px;color:#111110;"><span style="font-size:15.3px;font-weight:500;letter-spacing:-0.035em;">MINIMALIST</span><span style="width:3.06px;height:3.06px;background:currentColor;flex:none;"></span></span>
+            <span style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;color:#8A8880;">90px / 24mm — screen &amp; print floor</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;">
+            <span style="width:96px;height:96px;background:#111110;color:#F5F4F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4.8px;flex:none;"><span style="font-size:48px;font-weight:500;letter-spacing:-0.04em;line-height:0.85;">M</span><span style="font-size:6.83px;font-weight:500;letter-spacing:-0.005em;line-height:1;">INIMALIST</span></span>
+            <span style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;color:#8A8880;">96px / 25mm — integrated mark floor</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;">
+            <span style="width:32px;height:32px;background:#111110;color:#F5F4F1;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:500;letter-spacing:-0.04em;line-height:1;flex:none;">M</span>
+            <span style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;color:#8A8880;">32px — M square ceiling; alone at this size and below</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- don'ts -->
+    <div style="margin-top:clamp(36px,4vw,56px);">
+      <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;margin-bottom:14px;">Never</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,32%),1fr));gap:1px;background:#DCDAD3;border:1px solid #DCDAD3;">
+        <div style="background:#FFFFFF;padding:24px 20px;display:flex;flex-direction:column;gap:18px;min-height:150px;">
+          <div style="flex:1;display:flex;align-items:center;"><span style="display:inline-flex;align-items:baseline;gap:4.2px;"><span style="font-size:15px;font-weight:500;letter-spacing:0.22em;">MINIMALIST</span><span style="width:3px;height:3px;background:currentColor;flex:none;"></span></span></div>
+          <div style="font-size:12px;color:#8A8880;line-height:1.45;">Re-track the wordmark</div>
+        </div>
+        <div style="background:#FFFFFF;padding:24px 20px;display:flex;flex-direction:column;gap:18px;min-height:150px;">
+          <div style="flex:1;display:flex;align-items:center;"><span style="display:inline-flex;align-items:baseline;gap:4.2px;font-style:italic;"><span style="font-size:15px;font-weight:500;letter-spacing:-0.035em;">MINIMALIST</span><span style="width:3px;height:3px;background:currentColor;flex:none;transform:skewX(-12deg);"></span></span></div>
+          <div style="font-size:12px;color:#8A8880;line-height:1.45;">Slant, outline or stretch</div>
+        </div>
+        <div style="background:#FFFFFF;padding:24px 20px;display:flex;flex-direction:column;gap:18px;min-height:150px;">
+          <div style="flex:1;display:flex;align-items:center;"><span style="display:inline-flex;align-items:baseline;gap:4.2px;"><span style="font-size:15px;font-weight:500;letter-spacing:-0.035em;color:#8A8880;">MINIMALIST</span><span style="width:3px;height:3px;background:#8A8880;flex:none;"></span></span></div>
+          <div style="font-size:12px;color:#8A8880;line-height:1.45;">Tint the mark grey or any colour</div>
+        </div>
+        <div style="background:#FFFFFF;padding:24px 20px;display:flex;flex-direction:column;gap:18px;min-height:150px;">
+          <div style="flex:1;display:flex;align-items:center;">
+            <div style="padding:5px 7px;background:repeating-linear-gradient(45deg,#E6E4DE 0 6px,#F2F0EA 6px 12px);"><span style="display:inline-flex;align-items:baseline;gap:4.2px;"><span style="font-size:15px;font-weight:500;letter-spacing:-0.035em;">MINIMALIST</span><span style="width:3px;height:3px;background:currentColor;flex:none;"></span></span></div>
+          </div>
+          <div style="font-size:12px;color:#8A8880;line-height:1.45;">Place on busy imagery</div>
+        </div>
+        <div style="background:#FFFFFF;padding:24px 20px;display:flex;flex-direction:column;gap:18px;min-height:150px;">
+          <div style="flex:1;display:flex;align-items:center;">
+            <span style="display:inline-flex;align-items:baseline;gap:1px;"><span style="font-size:15px;font-weight:500;letter-spacing:-0.035em;">MINIMALIST</span><span style="width:3px;height:3px;background:currentColor;flex:none;"></span></span>
+          </div>
+          <div style="font-size:12px;color:#8A8880;line-height:1.45;">Close up the square's optical space</div>
+        </div>
+        <div style="background:#FFFFFF;padding:24px 20px;display:flex;flex-direction:column;gap:18px;min-height:150px;">
+          <div style="flex:1;display:flex;align-items:center;gap:8px;">
+            <span style="width:32px;height:32px;background:#111110;color:#F5F4F1;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:500;letter-spacing:-0.04em;line-height:1;flex:none;">M</span>
+            <span style="display:inline-flex;align-items:baseline;gap:3px;"><span style="font-size:13px;font-weight:500;letter-spacing:-0.035em;">MINIMALIST</span><span style="width:2.6px;height:2.6px;background:currentColor;flex:none;"></span></span>
+          </div>
+          <div style="font-size:12px;color:#8A8880;line-height:1.45;">Set both marks together</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 03 Color ────────────────────────────────────── -->
+  <section style="padding:clamp(56px,8vw,110px) 0;border-bottom:1px solid #DCDAD3;">
+    <div style="display:flex;gap:14px;align-items:baseline;margin-bottom:16px;">
+      <span style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:11px;letter-spacing:0.14em;color:#8A8880;">03</span>
+      <h2 style="margin:0;font-size:clamp(22px,2.6vw,34px);font-weight:500;letter-spacing:-0.025em;">Color</h2>
+    </div>
+    <p style="margin:0 0 clamp(28px,4vw,44px);max-width:60ch;font-size:16px;line-height:1.55;color:#3B3A36;">Four neutrals, no accent. The identity carries on contrast and void alone — colour is what every other studio reaches for.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,24%),1fr));gap:1px;background:#DCDAD3;border:1px solid #DCDAD3;">
+      <div style="display:flex;flex-direction:column;">
+        <div style="background:#111110;height:130px;"></div>
+        <div style="background:#F5F4F1;padding:16px;flex:1;font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.8;color:#8A8880;">
+          <div style="color:#111110;">Ink</div>
+          <div>#111110</div>
+          <div>Text, marks, inverted fields</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;">
+        <div style="background:#F5F4F1;height:130px;border-bottom:1px solid #DCDAD3;"></div>
+        <div style="background:#F5F4F1;padding:16px;flex:1;font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.8;color:#8A8880;">
+          <div style="color:#111110;">Paper</div>
+          <div>#F5F4F1</div>
+          <div>Default ground, 80% of surfaces</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;">
+        <div style="background:#8A8880;height:130px;"></div>
+        <div style="background:#F5F4F1;padding:16px;flex:1;font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.8;color:#8A8880;">
+          <div style="color:#111110;">Graphite</div>
+          <div>#8A8880</div>
+          <div>Labels, metadata, captions</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;">
+        <div style="background:#DCDAD3;height:130px;"></div>
+        <div style="background:#F5F4F1;padding:16px;flex:1;font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.8;color:#8A8880;">
+          <div style="color:#111110;">Rule</div>
+          <div>#DCDAD3</div>
+          <div>Hairlines, dividers, grids</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:clamp(20px,3vw,40px);font-size:14px;line-height:1.6;color:#3B3A36;">
+      <div><strong style="font-weight:500;">Ratio</strong><br>Ink and paper hold the layout. Graphite is the only step between them; never introduce a fifth value.</div>
+      <div><strong style="font-weight:500;">Contrast</strong><br>Ink on paper 15.8:1, paper on ink the same. Graphite on paper 3.3:1 — labels and captions only, never body copy.</div>
+      <div><strong style="font-weight:500;">Dark mode</strong><br>Ink ground, paper text, graphite unchanged. Hairlines drop to #2C2B28.</div>
+    </div>
+  </section>
+
+  <!-- ── 04 Typography ───────────────────────────────── -->
+  <section style="padding:clamp(56px,8vw,110px) 0;border-bottom:1px solid #DCDAD3;">
+    <div style="display:flex;gap:14px;align-items:baseline;margin-bottom:16px;">
+      <span style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:11px;letter-spacing:0.14em;color:#8A8880;">04</span>
+      <h2 style="margin:0;font-size:clamp(22px,2.6vw,34px);font-weight:500;letter-spacing:-0.025em;">Typography</h2>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,48%),1fr));gap:1px;background:#DCDAD3;border:1px solid #DCDAD3;margin-bottom:clamp(28px,4vw,44px);">
+      <div style="background:#F5F4F1;padding:clamp(22px,2.6vw,32px);display:flex;flex-direction:column;gap:16px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Text &nbsp;/&nbsp; Archivo 400 / 500</div>
+        <div style="font-size:clamp(40px,6vw,76px);font-weight:500;letter-spacing:-0.04em;line-height:0.95;">Aa</div>
+        <div style="font-size:14px;line-height:1.6;color:#3B3A36;">Neo-grotesque, the only typeface. Weights 400 and 500; headlines tracked −2.5 to −4.5%.</div>
+      </div>
+      <div style="background:#F5F4F1;padding:clamp(22px,2.6vw,32px);display:flex;flex-direction:column;gap:16px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Label &nbsp;/&nbsp; Archivo 500 uppercase</div>
+        <div style="font-weight:500;font-size:clamp(30px,4.2vw,52px);line-height:0.95;letter-spacing:0.14em;">AA</div>
+        <div style="font-size:14px;line-height:1.6;color:#3B3A36;">Labels, metadata, numbers. Uppercase, weight 500, tracked +14%, 10–11px.</div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;">
+      <div style="display:flex;align-items:baseline;gap:24px;padding:20px 0;border-top:1px solid #DCDAD3;flex-wrap:wrap;">
+        <span style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.12em;color:#8A8880;width:150px;flex:none;">Display / 500 / −4.5%</span>
+        <span style="font-size:clamp(28px,4.4vw,56px);font-weight:500;letter-spacing:-0.045em;line-height:1.02;">Built to be handed over</span>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:24px;padding:20px 0;border-top:1px solid #DCDAD3;flex-wrap:wrap;">
+        <span style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.12em;color:#8A8880;width:150px;flex:none;">Title / 500 / −2.5%</span>
+        <span style="font-size:clamp(20px,2.6vw,32px);font-weight:500;letter-spacing:-0.025em;">Platform engineering, delivered in weeks</span>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:24px;padding:20px 0;border-top:1px solid #DCDAD3;flex-wrap:wrap;">
+        <span style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.12em;color:#8A8880;width:150px;flex:none;">Body / 400 / 17px</span>
+        <span style="font-size:17px;line-height:1.55;color:#3B3A36;max-width:52ch;">Copy sits at 17/26 with a 52-character measure. Two sizes of body text per document, no more.</span>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:24px;padding:20px 0;border-top:1px solid #DCDAD3;border-bottom:1px solid #DCDAD3;flex-wrap:wrap;">
+        <span style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.12em;color:#8A8880;width:150px;flex:none;">Label / 500 / +14%</span>
+        <span style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;">Case study &nbsp;/&nbsp; Fintech &nbsp;/&nbsp; 2026</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 05 Device & icons ───────────────────────────── -->
+  <section style="padding:clamp(56px,8vw,110px) 0;border-bottom:1px solid #DCDAD3;">
+    <div style="display:flex;gap:14px;align-items:baseline;margin-bottom:16px;">
+      <span style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:11px;letter-spacing:0.14em;color:#8A8880;">05</span>
+      <h2 style="margin:0;font-size:clamp(22px,2.6vw,34px);font-weight:500;letter-spacing:-0.025em;">Graphic device &amp; icons</h2>
+    </div>
+    <p style="margin:0 0 clamp(28px,4vw,44px);max-width:60ch;font-size:16px;line-height:1.55;color:#3B3A36;">The device is subtraction: a hairline grid with one cell filled ink. It structures layouts and needs no illustration.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,32%),1fr));gap:1px;background:#DCDAD3;border:1px solid #DCDAD3;">
+      <div style="background:#F5F4F1;padding:26px;display:flex;flex-direction:column;gap:20px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Grid device</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#DCDAD3;border:1px solid #DCDAD3;aspect-ratio:1;">
+          <div style="background:#F5F4F1;"></div><div style="background:#F5F4F1;"></div><div style="background:#F5F4F1;"></div><div style="background:#F5F4F1;"></div>
+          <div style="background:#F5F4F1;"></div><div style="background:#111110;"></div><div style="background:#F5F4F1;"></div><div style="background:#F5F4F1;"></div>
+          <div style="background:#F5F4F1;"></div><div style="background:#F5F4F1;"></div><div style="background:#F5F4F1;"></div><div style="background:#F5F4F1;"></div>
+          <div style="background:#F5F4F1;"></div><div style="background:#F5F4F1;"></div><div style="background:#F5F4F1;"></div><div style="background:#F5F4F1;"></div>
+        </div>
+      </div>
+      <div style="background:#F5F4F1;padding:26px;display:flex;flex-direction:column;gap:20px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Icon construction</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
+          <div style="aspect-ratio:1;border:1.5px solid #111110;"></div>
+          <div style="aspect-ratio:1;border:1.5px solid #111110;border-radius:50%;"></div>
+          <div style="aspect-ratio:1;border:1.5px solid #111110;border-bottom-color:transparent;border-right-color:transparent;"></div>
+          <div style="aspect-ratio:1;display:flex;align-items:center;"><div style="width:100%;height:1.5px;background:#111110;"></div></div>
+          <div style="aspect-ratio:1;display:flex;justify-content:center;"><div style="height:100%;width:1.5px;background:#111110;"></div></div>
+          <div style="aspect-ratio:1;background:#111110;"></div>
+        </div>
+        <div style="font-size:13px;line-height:1.5;color:#8A8880;">24px box, 1.5px stroke, square caps, no rounding except true circles.</div>
+      </div>
+      <div style="background:#F5F4F1;padding:26px;display:flex;flex-direction:column;gap:20px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Image treatment</div>
+        <div style="aspect-ratio:1;background:repeating-linear-gradient(90deg,#E9E7E1 0 5px,#F2F0EA 5px 10px);display:flex;align-items:flex-end;padding:12px;">
+          <span style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;color:#8A8880;">team / workspace photo</span>
+        </div>
+        <div style="font-size:13px;line-height:1.5;color:#8A8880;">Desaturated, flat light, square crop. Full direction in section 06.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 06 Photography ──────────────────────────────── -->
+  <section style="padding:clamp(56px,8vw,110px) 0;border-bottom:1px solid #DCDAD3;">
+    <div style="display:flex;gap:14px;align-items:baseline;margin-bottom:16px;">
+      <span style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:11px;letter-spacing:0.14em;color:#8A8880;">06</span>
+      <h2 style="margin:0;font-size:clamp(22px,2.6vw,34px);font-weight:500;letter-spacing:-0.025em;">Photography</h2>
+    </div>
+    <p style="margin:0 0 clamp(28px,4vw,44px);max-width:60ch;font-size:16px;line-height:1.55;color:#3B3A36;">Photography is the only place the brand admits texture. It documents — rooms, hands, screens, weather — and never performs. Black and white throughout, so it never competes with the type. The images below are stand-ins for treatment and crop only — the subject brief is opposite.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,29%),1fr));gap:clamp(16px,2vw,26px);margin-bottom:clamp(32px,4vw,48px);">
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="aspect-ratio:4/5;background:#E9E7E1;overflow:hidden;">
+            <img src="a3a3f7bf-e617-473e-9db5-e78a653d8c80" alt="Placeholder — treatment reference" style="width:100%;height:100%;object-fit:cover;display:block;filter:contrast(0.92) brightness(1.04);">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px;">
+            <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">4:5 portrait</div>
+            <div style="font-size:13px;line-height:1.5;color:#8A8880;">The default crop. Used in case studies and team pages.</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="aspect-ratio:4/5;background:#E9E7E1;overflow:hidden;">
+            <img src="c1d3df72-8718-49c1-8446-9edd402fa05c" alt="Placeholder — treatment reference" style="width:100%;height:100%;object-fit:cover;display:block;filter:contrast(0.92) brightness(1.04);">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px;">
+            <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">4:5 portrait</div>
+            <div style="font-size:13px;line-height:1.5;color:#8A8880;">Same crop, same treatment — the set must look like one shoot.</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="aspect-ratio:4/5;background:#E9E7E1;overflow:hidden;">
+            <img src="528e6e1a-0b72-497b-9c44-e0bb41e5a005" alt="Placeholder — treatment reference" style="width:100%;height:100%;object-fit:cover;display:block;filter:contrast(0.92) brightness(1.04);">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px;">
+            <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">4:5 portrait</div>
+            <div style="font-size:13px;line-height:1.5;color:#8A8880;">Tighter subject. Carries a section break or a quiet page.</div>
+          </div>
+        </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,48%),1fr));gap:1px;background:#DCDAD3;border:1px solid #DCDAD3;margin-bottom:clamp(32px,4vw,48px);">
+      <div style="background:#F5F4F1;padding:clamp(22px,2.6vw,32px);display:flex;flex-direction:column;gap:14px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Subjects to shoot</div>
+        <div style="font-size:15px;line-height:1.7;color:#3B3A36;">
+          <div><strong style="font-weight:500;">Workspace</strong> — desks mid-work; cables, coffee, screens on.</div>
+          <div><strong style="font-weight:500;">People</strong> — working, not posing. Backs, hands, profiles; no eye contact.</div>
+          <div><strong style="font-weight:500;">Detail</strong> — one object, close, flat light.</div>
+          <div><strong style="font-weight:500;">Place</strong> — the studio and the city it sits in, in plain weather.</div>
+        </div>
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;margin-top:8px;">Treatment</div>
+        <div style="font-size:15px;line-height:1.7;color:#3B3A36;">
+          <div>Greyscale, no exception — no split tone, no warm wash.</div>
+          <div>Contrast 0.92, brightness 1.04 — flat, document-grade.</div>
+          <div>Crops: 4:5, 3:2 or 1:1. No rounding, no drop shadow.</div>
+          <div>Available light only. No flash, no bokeh backgrounds.</div>
+        </div>
+      </div>
+      <div style="background:#F5F4F1;padding:clamp(22px,2.6vw,32px);display:flex;flex-direction:column;gap:14px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Never</div>
+        <div style="font-size:15px;line-height:1.7;color:#8A8880;">
+          <div>Stock abstraction — glowing networks, circuit boards, handshakes.</div>
+          <div>Screens composited with fake dashboards.</div>
+          <div>Anyone smiling at the lens in a white-cyc studio.</div>
+          <div>Colour, gradients or duotone of any kind.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,48%),1fr));gap:clamp(16px,2vw,26px);">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="position:relative;aspect-ratio:16/9;overflow:hidden;background:#111110;">
+          <img src="328bec09-8470-40bd-abd9-0f9f09e2a127" alt="Full-bleed opener" style="width:100%;height:100%;object-fit:cover;display:block;filter:contrast(0.88) brightness(0.42);">
+          <div style="position:absolute;inset:0;padding:clamp(20px,3vw,36px);display:flex;flex-direction:column;justify-content:space-between;">
+            <span style="display:inline-flex;align-items:baseline;gap:3.4px;color:#F5F4F1;align-self:flex-start;"><span style="font-size:17px;font-weight:500;letter-spacing:-0.035em;">MINIMALIST</span><span style="width:3.4px;height:3.4px;background:currentColor;flex:none;"></span></span>
+            <span style="font-size:clamp(18px,2.4vw,30px);font-weight:500;letter-spacing:-0.035em;line-height:1.1;color:#F5F4F1;max-width:18ch;">Less noise. Better software.</span>
+          </div>
+        </div>
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Type on image</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;padding:clamp(4px,1vw,12px) 0;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Setting type over photography</div>
+        <p style="margin:0;font-size:15px;line-height:1.55;color:#3B3A36;">Darken the image to 42% brightness and set paper type at full opacity — never a translucent scrim, never a gradient fade. If the copy still fights the image, the image is wrong.</p>
+        <p style="margin:0;font-size:15px;line-height:1.55;color:#3B3A36;">One line of headline and the mark, nothing more. Body copy always sits on paper or ink, never on a photograph.</p>
+        <p style="margin:0;font-size:13px;line-height:1.5;color:#8A8880;">Minimum contrast 4.5:1 against the darkest region the type crosses — check the light corner, not the average.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 07 Applications ─────────────────────────────── -->
+  <section style="padding:clamp(56px,8vw,110px) 0;border-bottom:1px solid #DCDAD3;">
+    <div style="display:flex;gap:14px;align-items:baseline;margin-bottom:clamp(28px,4vw,44px);">
+      <span style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:11px;letter-spacing:0.14em;color:#8A8880;">07</span>
+      <h2 style="margin:0;font-size:clamp(22px,2.6vw,34px);font-weight:500;letter-spacing:-0.025em;">Applications</h2>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:clamp(20px,2.4vw,32px);">
+
+      <!-- business card front -->
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="aspect-ratio:85/55;background:#111110;padding:22px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div><sc-if value="{{ showWord }}" hint-placeholder-val="{{ true }}"><span style="display:inline-flex;align-items:baseline;gap:3.9px;color:#F5F4F1;"><span style="font-size:14px;font-weight:500;letter-spacing:-0.035em;">MINIMALIST</span><span style="width:2.8px;height:2.8px;background:currentColor;flex:none;"></span></span></sc-if><sc-if value="{{ markE }}"><span style="width:96px;height:96px;background:#F5F4F1;color:#111110;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4.8px;flex:none;"><span style="font-size:48px;font-weight:500;letter-spacing:-0.04em;line-height:0.85;">M</span><span style="font-size:6.83px;font-weight:500;letter-spacing:-0.005em;line-height:1;">INIMALIST</span></span></sc-if></div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px;">
+            <div style="font-size:13px;line-height:1.5;color:#F5F4F1;">
+              <div style="font-weight:500;">Ivan Horvat</div>
+              <div style="color:#8A8880;">Principal Engineer</div>
+            </div>
+            <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:9px;letter-spacing:0.1em;color:#8A8880;text-align:right;line-height:1.7;">
+              <div>ivan@minimalist.hr</div>
+              <div>minimalist.hr</div>
+            </div>
+          </div>
+        </div>
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#8A8880;">Card front &nbsp;/&nbsp; 85×55mm</div>
+      </div>
+
+      <!-- business card back -->
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="aspect-ratio:85/55;background:#F5F4F1;border:1px solid #DCDAD3;display:flex;align-items:center;justify-content:center;">
+          <div style="display:inline-flex;align-items:baseline;gap:4.5px;color:#111110;"><span style="font-size:16px;font-weight:500;letter-spacing:-0.035em;">MINIMALIST</span><span style="width:3.2px;height:3.2px;background:currentColor;flex:none;"></span></div>
+        </div>
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#8A8880;">Card back</div>
+      </div>
+
+      <!-- letterhead -->
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="aspect-ratio:210/297;background:#FFFFFF;border:1px solid #DCDAD3;padding:22px;display:flex;flex-direction:column;gap:18px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <sc-if value="{{ showWord }}" hint-placeholder-val="{{ true }}"><span style="display:inline-flex;align-items:baseline;gap:3.4px;"><span style="font-size:12px;font-weight:500;letter-spacing:-0.035em;color:#111110;">MINIMALIST</span><span style="width:2.4px;height:2.4px;background:currentColor;flex:none;"></span></span></sc-if><sc-if value="{{ markE }}"><span style="width:22px;height:22px;background:#111110;color:#F5F4F1;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;letter-spacing:-0.04em;line-height:1;flex:none;">M</span></sc-if>
+            <span style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:7px;letter-spacing:0.1em;color:#8A8880;">ZAGREB / HR</span>
+          </div>
+          <div style="height:1px;background:#DCDAD3;"></div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="height:5px;width:38%;background:#111110;"></div>
+            <div style="height:4px;width:88%;background:#E5E3DC;"></div>
+            <div style="height:4px;width:92%;background:#E5E3DC;"></div>
+            <div style="height:4px;width:70%;background:#E5E3DC;"></div>
+            <div style="height:4px;width:84%;background:#E5E3DC;margin-top:10px;"></div>
+            <div style="height:4px;width:60%;background:#E5E3DC;"></div>
+          </div>
+          <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;">
+            <span style="width:26px;height:1px;background:#111110;"></span>
+            <span style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:7px;color:#8A8880;">minimalist.hr</span>
+          </div>
+        </div>
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#8A8880;">Letterhead &nbsp;/&nbsp; A4</div>
+      </div>
+
+      <!-- deck cover -->
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="aspect-ratio:16/9;background:#F5F4F1;border:1px solid #DCDAD3;padding:22px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div style="display:flex;justify-content:space-between;font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:#8A8880;">
+            <sc-if value="{{ showWord }}" hint-placeholder-val="{{ true }}"><span style="display:inline-flex;align-items:baseline;gap:2.8px;color:#111110;"><span style="font-family:Archivo,Helvetica,Arial,sans-serif;font-size:10px;font-weight:500;letter-spacing:-0.03em;text-transform:none;">MINIMALIST</span><span style="width:2px;height:2px;background:currentColor;flex:none;"></span></span></sc-if><sc-if value="{{ markE }}"><span style="width:28px;height:28px;background:#111110;color:#F5F4F1;display:flex;align-items:center;justify-content:center;font-family:Archivo,Helvetica,Arial,sans-serif;font-size:17px;font-weight:500;letter-spacing:-0.04em;text-transform:none;line-height:1;flex:none;">M</span></sc-if><span>09 / 2026</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="font-size:clamp(15px,2vw,24px);font-weight:500;letter-spacing:-0.035em;line-height:1.05;">Core banking, rebuilt in 14 weeks</div>
+            <div style="display:flex;align-items:center;gap:8px;font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:#8A8880;">
+              <span style="width:14px;height:1px;background:#111110;"></span><span>Client engagement review</span>
+            </div>
+          </div>
+        </div>
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#8A8880;">Deck cover &nbsp;/&nbsp; 16:9</div>
+      </div>
+
+      <!-- web hero -->
+      <div style="display:flex;flex-direction:column;gap:10px;grid-column:1/-1;">
+        <div style="background:#FFFFFF;border:1px solid #DCDAD3;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid #DCDAD3;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <sc-if value="{{ markE }}"><span style="width:22px;height:22px;background:#111110;color:#F5F4F1;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;letter-spacing:-0.04em;line-height:1;flex:none;">M</span></sc-if>
+              <sc-if value="{{ showWord }}" hint-placeholder-val="{{ true }}"><span style="display:inline-flex;align-items:baseline;gap:3.4px;"><span style="font-size:12px;font-weight:500;letter-spacing:-0.035em;color:#111110;">MINIMALIST</span><span style="width:2.4px;height:2.4px;background:currentColor;flex:none;"></span></span></sc-if>
+            </div>
+            <div style="display:flex;gap:20px;font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:#8A8880;">
+              <span>Work</span><span>Approach</span><span>Team</span><span style="color:#111110;">Contact</span>
+            </div>
+          </div>
+          <div style="padding:clamp(32px,6vw,80px) 20px;display:flex;flex-direction:column;gap:22px;align-items:flex-start;">
+            <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Software development &nbsp;/&nbsp; Zagreb</div>
+            <div style="font-size:clamp(24px,4.6vw,54px);font-weight:500;letter-spacing:-0.045em;line-height:1.02;max-width:20ch;">Complex problems. Simple solutions.</div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+              <span style="background:#111110;color:#F5F4F1;padding:11px 18px;font-size:13px;">Start a project</span>
+              <span style="border:1px solid #DCDAD3;padding:11px 18px;font-size:13px;color:#3B3A36;">See the work</span>
+            </div>
+          </div>
+        </div>
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#8A8880;">Web hero</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 08 Motion ───────────────────────────────────── -->
+  <section style="padding:clamp(56px,8vw,110px) 0;border-bottom:1px solid #DCDAD3;">
+    <div style="display:flex;gap:14px;align-items:baseline;margin-bottom:16px;">
+      <span style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:11px;letter-spacing:0.14em;color:#8A8880;">08</span>
+      <h2 style="margin:0;font-size:clamp(22px,2.6vw,34px);font-weight:500;letter-spacing:-0.025em;">Motion</h2>
+    </div>
+    <p style="margin:0 0 clamp(28px,4vw,44px);max-width:60ch;font-size:16px;line-height:1.55;color:#3B3A36;">Motion reveals structure, never personality. Hover each tile.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,32%),1fr));gap:1px;background:#DCDAD3;border:1px solid #DCDAD3;">
+      <div style="background:#F5F4F1;padding:26px;display:flex;flex-direction:column;gap:18px;cursor:default;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Reveal &nbsp;/&nbsp; 240ms</div>
+        <div style="height:70px;display:flex;align-items:center;">
+          <div style="width:30%;height:2px;background:#111110;transition:width 240ms cubic-bezier(0.2,0,0,1);" style-hover="width:100%"></div>
+        </div>
+        <div style="font-size:13px;line-height:1.5;color:#8A8880;">cubic-bezier(.2,0,0,1) — rules and underlines extend from the left.</div>
+      </div>
+      <div style="background:#F5F4F1;padding:26px;display:flex;flex-direction:column;gap:18px;cursor:default;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Lift &nbsp;/&nbsp; 160ms</div>
+        <div style="height:70px;display:flex;align-items:center;">
+          <div style="width:44px;height:44px;background:#111110;transition:transform 160ms cubic-bezier(0.2,0,0,1);" style-hover="transform:translateY(-6px)"></div>
+        </div>
+        <div style="font-size:13px;line-height:1.5;color:#8A8880;">Translate only. No scale, no shadow bloom, no bounce.</div>
+      </div>
+      <div style="background:#F5F4F1;padding:26px;display:flex;flex-direction:column;gap:18px;cursor:default;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">State &nbsp;/&nbsp; 120ms</div>
+        <div style="height:70px;display:flex;align-items:center;">
+          <div style="padding:11px 18px;border:1px solid #DCDAD3;font-size:13px;transition:background 120ms linear,color 120ms linear,border-color 120ms linear;" style-hover="background:#111110;color:#F5F4F1;border-color:#111110">Start a project</div>
+        </div>
+        <div style="font-size:13px;line-height:1.5;color:#8A8880;">Colour transitions are linear and under 150ms. Everything else is instant.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 09 Voice ────────────────────────────────────── -->
+  <section style="padding:clamp(56px,8vw,110px) 0;">
+    <div style="display:flex;gap:14px;align-items:baseline;margin-bottom:clamp(28px,4vw,44px);">
+      <span style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:11px;letter-spacing:0.14em;color:#8A8880;">09</span>
+      <h2 style="margin:0;font-size:clamp(22px,2.6vw,34px);font-weight:500;letter-spacing:-0.025em;">Voice &amp; messaging</h2>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:clamp(24px,3vw,44px);margin-bottom:clamp(32px,4vw,52px);">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Rules</div>
+        <ol style="margin:0;padding-left:18px;font-size:16px;line-height:1.7;color:#3B3A36;">
+          <li>Quiet confidence. Never raise the voice.</li>
+          <li>Short sentences. Precise words.</li>
+          <li>State the fact, then stop.</li>
+          <li>No jargon, no hype, no filler.</li>
+          <li>Never "passionate", "cutting-edge", "solutions-driven".</li>
+        </ol>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Say this</div>
+        <p style="margin:0;font-size:16px;line-height:1.6;color:#111110;">"We rebuild fragile systems into clean architecture, preserving everything that already works."</p>
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;margin-top:14px;">Not this</div>
+        <p style="margin:0;font-size:16px;line-height:1.6;color:#8A8880;">"A passionate team delivering innovative, cutting-edge solutions that drive real business value at scale."</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Boilerplate &nbsp;/&nbsp; 34 words</div>
+        <p style="margin:0;font-size:16px;line-height:1.6;color:#3B3A36;">Minimalist partners with ambitious companies to create software that performs at the highest level and stays simple at its core. Deliberately small, senior, and focused. No layers, no handoffs, no diluted accountability.</p>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,46%),1fr));gap:clamp(24px,3vw,44px);border-top:1px solid #DCDAD3;padding:clamp(24px,3vw,36px) 0 clamp(32px,4vw,52px);">
+      <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Manifesto &nbsp;/&nbsp; the long-form voice</div>
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:56ch;font-size:16px;line-height:1.6;color:#3B3A36;text-wrap:pretty;">
+        <p style="margin:0;">Every product begins with noise. Too many features. Too many opinions. Too many ways to go wrong.</p>
+        <p style="margin:0;color:#111110;">Our work is to remove it.</p>
+        <p style="margin:0;">The best software feels inevitable, as if it could not have been built any other way. That feeling is never an accident. It is the result of disciplined thinking, deliberate design, and engineering that holds up long after launch.</p>
+        <p style="margin:0;">Complexity is easy. Anyone can add.<br>Clarity is earned. It takes judgment to know what to leave out.</p>
+        <p style="margin:0;">That judgment is what we bring.</p>
+        <p style="margin:0;font-size:clamp(17px,1.8vw,22px);font-weight:500;letter-spacing:-0.03em;color:#111110;line-height:1.2;">Less noise. Better software.</p>
+      </div>
+    </div>
+
+    <div style="background:#111110;padding:clamp(32px,5vw,64px);display:flex;flex-direction:column;gap:clamp(22px,3vw,34px);">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,44%),1fr));gap:clamp(24px,3vw,40px);">
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Primary tagline</div>
+          <div style="font-size:clamp(22px,2.8vw,34px);font-weight:500;letter-spacing:-0.035em;color:#F5F4F1;line-height:1.1;">Simple by design. Built to last.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Brand line</div>
+          <div style="font-size:clamp(22px,2.8vw,34px);font-weight:500;letter-spacing:-0.035em;color:#F5F4F1;line-height:1.1;">Complex problems. Simple solutions.</div>
+        </div>
+      </div>
+      <div style="height:1px;background:#2C2B28;"></div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Supporting lines &nbsp;/&nbsp; one per surface, never stacked</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:clamp(18px,2.4vw,32px);">
+          <div style="font-size:clamp(15px,1.5vw,19px);color:#F5F4F1;line-height:1.3;">Less noise. Better software.</div>
+          <div style="font-size:clamp(15px,1.5vw,19px);color:#F5F4F1;line-height:1.3;">Software without the unnecessary.</div>
+          <div style="font-size:clamp(15px,1.5vw,19px);color:#F5F4F1;line-height:1.3;">Your product doesn't need more. It needs better.</div>
+        </div>
+      </div>
+      <div style="height:1px;background:#2C2B28;"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:baseline;gap:8px;">
+          <span style="display:inline-flex;align-items:baseline;gap:4.8px;color:#F5F4F1;"><span style="font-size:17px;font-weight:500;letter-spacing:-0.035em;">MINIMALIST</span><span style="width:3.4px;height:3.4px;background:currentColor;flex:none;"></span></span>
+        </div>
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#8A8880;">Brand identity v1.0 &nbsp;/&nbsp; minimalist.hr</div>
+      </div>
+    </div>
+  </section>
+  <!-- ── 10 Assets & naming ──────────────────────────── -->
+  <section style="padding:clamp(56px,8vw,110px) 0;border-top:1px solid #DCDAD3;">
+    <div style="display:flex;gap:14px;align-items:baseline;margin-bottom:16px;">
+      <span style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;font-size:11px;">10</span>
+      <h2 style="margin:0;font-size:clamp(22px,2.6vw,34px);font-weight:500;letter-spacing:-0.025em;">Assets &amp; naming</h2>
+    </div>
+    <p style="margin:0 0 clamp(28px,4vw,44px);max-width:62ch;font-size:16px;line-height:1.55;color:#3B3A36;text-wrap:pretty;">Master artwork lives in <span style="color:#111110;">/assets</span>. Never redraw a mark, screenshot one out of this document, or rebuild one in a deck — export from the master or ask for the file. <a href="Minimalist Assets.dc.html">Open the export sheet</a>.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,48%),1fr));gap:1px;background:#DCDAD3;border:1px solid #DCDAD3;margin-bottom:clamp(32px,4vw,48px);">
+      <div style="background:#F5F4F1;padding:clamp(22px,2.6vw,32px);display:flex;flex-direction:column;gap:14px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Naming convention</div>
+        <div style="font-size:clamp(15px,1.5vw,19px);letter-spacing:-0.02em;color:#111110;">minimalist-<span style="color:#8A8880;">mark</span>-<span style="color:#8A8880;">colour</span>.<span style="color:#8A8880;">ext</span></div>
+        <div style="font-size:15px;line-height:1.7;color:#3B3A36;">
+          <div><strong style="font-weight:500;">mark</strong> — wordmark, mark, square</div>
+          <div><strong style="font-weight:500;">colour</strong> — ink or paper, named for the artwork, not the background</div>
+          <div><strong style="font-weight:500;">ext</strong> — svg, png, ico</div>
+        </div>
+        <div style="font-size:13px;line-height:1.5;color:#8A8880;">Lowercase, hyphens only. No version numbers, no dates, no "final". The folder is the version.</div>
+      </div>
+      <div style="background:#F5F4F1;padding:clamp(22px,2.6vw,32px);display:flex;flex-direction:column;gap:14px;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Which format</div>
+        <div style="font-size:15px;line-height:1.7;color:#3B3A36;">
+          <div><strong style="font-weight:500;">PNG</strong> — the default for anyone outside the studio. Renders identically everywhere.</div>
+          <div><strong style="font-weight:500;">SVG</strong> — for editing and for our own sites, where Archivo is already loaded.</div>
+          <div><strong style="font-weight:500;">ICO</strong> — favicon only. One file, six sizes.</div>
+        </div>
+        <div style="font-size:13px;line-height:1.5;color:#8A8880;">Send vector only when the recipient asked for it, and outline the type first. Otherwise the PNG is the safer file.</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,48%),1fr));gap:clamp(24px,3vw,44px);">
+      <div style="display:flex;flex-direction:column;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;padding-bottom:12px;">PNG &nbsp;/&nbsp; drop-in masters</div>
+        <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;padding:11px 0;border-top:1px solid #DCDAD3;align-items:baseline;">
+          <span style="font-size:14px;letter-spacing:-0.01em;color:#111110;">minimalist-wordmark-ink.png</span>
+          <span style="font-size:13px;line-height:1.45;color:#8A8880;">2331×280, transparent, trimmed. Light grounds.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;padding:11px 0;border-top:1px solid #DCDAD3;align-items:baseline;">
+          <span style="font-size:14px;letter-spacing:-0.01em;color:#111110;">minimalist-wordmark-paper.png</span>
+          <span style="font-size:13px;line-height:1.45;color:#8A8880;">2331×280, transparent, trimmed. Dark grounds.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;padding:11px 0;border-top:1px solid #DCDAD3;align-items:baseline;">
+          <span style="font-size:14px;letter-spacing:-0.01em;color:#111110;">minimalist-mark-ink.png</span>
+          <span style="font-size:13px;line-height:1.45;color:#8A8880;">1024×1024, ink square.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;padding:11px 0;border-top:1px solid #DCDAD3;align-items:baseline;">
+          <span style="font-size:14px;letter-spacing:-0.01em;color:#111110;">minimalist-mark-paper.png</span>
+          <span style="font-size:13px;line-height:1.45;color:#8A8880;">1024×1024, paper square.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;padding:11px 0;border-top:1px solid #DCDAD3;align-items:baseline;">
+          <span style="font-size:14px;letter-spacing:-0.01em;color:#111110;">minimalist-square-ink.png</span>
+          <span style="font-size:13px;line-height:1.45;color:#8A8880;">1024×1024. M alone, for 32px and below.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;padding:11px 0;border-top:1px solid #DCDAD3;align-items:baseline;">
+          <span style="font-size:14px;letter-spacing:-0.01em;color:#111110;">minimalist-square-paper.png</span>
+          <span style="font-size:13px;line-height:1.45;color:#8A8880;">1024×1024. M alone, for ink layouts.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;padding:11px 0;border-top:1px solid #DCDAD3;align-items:baseline;">
+          <span style="font-size:14px;letter-spacing:-0.01em;color:#111110;">favicon.ico</span>
+          <span style="font-size:13px;line-height:1.45;color:#8A8880;">One file: M alone at 16/32, full mark 48 and up.</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;">
+        <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;padding-bottom:12px;">SVG &nbsp;/&nbsp; editable source</div>
+        <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;padding:11px 0;border-top:1px solid #DCDAD3;align-items:baseline;">
+          <span style="font-size:14px;letter-spacing:-0.01em;color:#111110;">minimalist-wordmark-ink.svg</span>
+          <span style="font-size:13px;line-height:1.45;color:#8A8880;">Wordmark, transparent.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;padding:11px 0;border-top:1px solid #DCDAD3;align-items:baseline;">
+          <span style="font-size:14px;letter-spacing:-0.01em;color:#111110;">minimalist-wordmark-paper.svg</span>
+          <span style="font-size:13px;line-height:1.45;color:#8A8880;">Wordmark, transparent, for dark grounds.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;padding:11px 0;border-top:1px solid #DCDAD3;align-items:baseline;">
+          <span style="font-size:14px;letter-spacing:-0.01em;color:#111110;">minimalist-mark-ink.svg</span>
+          <span style="font-size:13px;line-height:1.45;color:#8A8880;">Integrated mark, ink square.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;padding:11px 0;border-top:1px solid #DCDAD3;align-items:baseline;">
+          <span style="font-size:14px;letter-spacing:-0.01em;color:#111110;">minimalist-mark-paper.svg</span>
+          <span style="font-size:13px;line-height:1.45;color:#8A8880;">Integrated mark, paper square.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;padding:11px 0;border-top:1px solid #DCDAD3;align-items:baseline;">
+          <span style="font-size:14px;letter-spacing:-0.01em;color:#111110;">minimalist-square-ink.svg</span>
+          <span style="font-size:13px;line-height:1.45;color:#8A8880;">M square, ink.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;padding:11px 0;border-top:1px solid #DCDAD3;align-items:baseline;">
+          <span style="font-size:14px;letter-spacing:-0.01em;color:#111110;">minimalist-square-paper.svg</span>
+          <span style="font-size:13px;line-height:1.45;color:#8A8880;">M square, paper.</span>
+        </div>
+        <p style="margin:16px 0 0;font-size:13px;line-height:1.5;color:#8A8880;">The lettering is live type, not outlines: these need Archivo installed, and the type outlined before the file goes to a printer or any third party. If you are not editing the artwork, send the PNG.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:clamp(28px,3vw,40px);padding:clamp(22px,2.6vw,32px);border:1px solid #DCDAD3;background:#FFFFFF;display:flex;flex-direction:column;gap:12px;">
+      <div style="font-family:Archivo,Helvetica,Arial,sans-serif;font-weight:500;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A8880;">Before you send a file</div>
+      <div style="font-size:15px;line-height:1.7;color:#3B3A36;">
+        <div>Named to the convention — a renamed file is an untracked file.</div>
+        <div>Correct artwork colour for the ground it lands on, not the one on your screen.</div>
+        <div>PNG unless the recipient asked for vector.</div>
+        <div>If it is vector and it leaves the company, the type is outlined.</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;primaryLogo&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Wordmark&quot;,&quot;Integrated mark&quot;],&quot;default&quot;:&quot;Wordmark&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Logo&quot;},&quot;showClearspace&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Logo&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const primary = this.props.primaryLogo ?? "Wordmark";
+    return {
+      isA: primary === "Wordmark",
+      isE: primary === "Integrated mark",
+      markE: primary === "Integrated mark",
+      showWord: primary === "Wordmark",
+
+      clearspaceOutline: (this.props.showClearspace ?? true) ? "#111110" : "transparent"
+    };
+  }
+}
+</script>
+
+
+<div id="__claude_design_branding"><style>#__claude_design_branding{position:fixed;right:16px;bottom:16px;z-index:2147483646;display:flex;align-items:center;gap:7px;height:30px;padding:0 5px 0 10px;border-radius:999px;font-family:"Anthropic Sans",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;font-size:12.5px;font-weight:400;line-height:1;letter-spacing:normal;text-transform:none;color:#141413;background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);box-shadow:0 0 0 .5px rgba(31,30,29,.14),0 2px 10px rgba(0,0,0,.09)}
+#__claude_design_branding *{box-sizing:border-box;margin:0}
+#__claude_design_branding a{color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+#__claude_design_branding a:hover span{text-decoration:underline}
+#__claude_design_branding svg{flex:none}
+#__claude_design_branding a svg{color:#D97757}
+#__claude_design_branding button{width:20px;height:20px;padding:0;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:currentColor;opacity:.55;border:0;background:none;cursor:pointer;flex:none;font:inherit;transition:opacity .14s}
+#__claude_design_branding button:hover{opacity:1;background:rgba(127,127,127,.22)}
+@media print{#__claude_design_branding{display:none}}</style><a href="https://claude.com/product/design" target="_blank" rel="noopener noreferrer"><svg width="14" height="14" viewBox="0 0 20 21" fill="none" aria-hidden="true"><path fill="currentColor" d="M9.99902 0C15.5258 0.000170936 19.999 4.50643 19.999 10.0547C19.999 11.7656 19.5863 12.9976 18.7861 13.8203C17.9924 14.6362 16.9465 14.9138 15.9854 15.0078C15.05 15.0993 14.0097 15.0262 13.2549 15.0186C12.8524 15.0145 12.5177 15.0267 12.2441 15.0703C11.9682 15.1144 11.8143 15.1813 11.7305 15.2432C11.4745 15.4322 11.3353 15.7121 11.2656 16.1602C11.2303 16.3875 11.2168 16.6362 11.209 16.9131C11.2017 17.1715 11.1986 17.4893 11.1807 17.7705C11.1469 18.2975 11.0495 19.0865 10.4199 19.5908C9.7846 20.0996 8.88652 20.1057 7.85449 19.877C7.36399 19.7682 6.88652 19.6232 6.42578 19.4453C2.66989 17.9949 0.000187748 14.3414 0 10.0547C0 4.50643 4.47223 0.000171048 9.99902 0ZM9.99902 1.60547C5.36781 1.60564 1.60547 5.38391 1.60547 10.0547C1.60566 13.6582 3.84823 16.7296 7.00391 17.9482C7.39027 18.0974 7.79085 18.2184 8.20215 18.3096C9.1375 18.5169 9.384 18.3633 9.41602 18.3379C9.4524 18.3087 9.54558 18.1915 9.5791 17.668C9.5947 17.4239 9.59473 17.1786 9.60352 16.8672C9.61179 16.5742 9.62831 16.2435 9.67969 15.9131C9.78359 15.2455 10.0474 14.4906 10.7764 13.9521C11.1479 13.6778 11.5842 13.5493 11.9912 13.4844C12.4007 13.4191 12.8434 13.4088 13.2705 13.4131C14.1753 13.4222 15.0071 13.4905 15.8291 13.4102C16.6257 13.3322 17.2249 13.1235 17.6357 12.7012C18.0401 12.2855 18.3935 11.5261 18.3936 10.0547C18.3936 5.38391 14.6302 1.60564 9.99902 1.60547ZM5.11621 9.86719C5.86386 9.91468 6.45486 10.5348 6.45508 11.2939C6.45506 12.0838 5.81519 12.7245 5.02539 12.7246C4.28481 12.7246 3.67573 12.1617 3.60254 11.4404L3.59473 11.2939L3.60156 11.1533C3.66942 10.4596 4.23282 9.91186 4.93359 9.86719H5.11621ZM14.9814 7.19141C15.729 7.23889 16.3199 7.85919 16.3203 8.61816C16.3203 9.40801 15.6804 10.0487 14.8906 10.0488C14.1501 10.0487 13.5409 9.48586 13.4678 8.76465L13.46 8.61816L13.4668 8.47754C13.5348 7.78403 14.0983 7.23618 14.7988 7.19141H14.9814ZM6.4541 4.93457C7.20161 4.9822 7.79275 5.60231 7.79297 6.36133C7.79288 7.151 7.15291 7.7917 6.36328 7.79199C5.62274 7.79199 5.01369 7.22903 4.94043 6.50781L4.93262 6.36133L4.93945 6.2207C5.00731 5.52698 5.5707 4.97922 6.27148 4.93457H6.4541ZM11.3867 3.59668C12.1343 3.64419 12.7253 4.26436 12.7256 5.02344C12.7256 5.81326 12.0857 6.45393 11.2959 6.4541C10.5553 6.4541 9.94622 5.89123 9.87305 5.16992L9.86523 5.02344L9.87207 4.88281C9.93996 4.18912 10.5033 3.64133 11.2041 3.59668H11.3867Z"></path></svg><span>Made with Claude Design</span></a><button type="button" aria-label="Dismiss" onclick="this.parentElement.remove()"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg></button></div></body></html>
