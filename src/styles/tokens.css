@@ -1,0 +1,114 @@
+/*
+ * Design tokens: the single place for brand values (plan §3, §5).
+ *
+ * Values come from design/*.extracted.html. Fluid sizes are mobile-first:
+ * the clamp() minimum is the mobile design value, the maximum is the desktop
+ * design value. Never add a colour or gradient (brand rule).
+ *
+ * Breakpoints (media queries can't read custom properties, so use these literals):
+ *   sm  40rem  (640px)   mobile layout, relaxed
+ *   md  60rem  (960px)   desktop design applies
+ *   lg  77.5rem (1240px) container reaches max width
+ */
+
+/* Colour: dark is the default theme (also the no-JS fallback). */
+:root,
+:root[data-theme='dark'] {
+  --paper: #111110;
+  --raise: #191917;
+  --ink: #f5f4f1;
+  --ink-2: #c9c7c0;
+  --graphite: #8a8880; /* labels, metadata, captions only; never body copy */
+  --rule: #2c2b28;
+  --stripe-a: #1b1b19;
+  --stripe-b: #131312;
+
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  --paper: #f5f4f1;
+  --raise: #ffffff;
+  --ink: #111110;
+  --ink-2: #3b3a36;
+  --graphite: #7e7c75;
+  --rule: #dcdad3;
+  --stripe-a: #e9e7e1;
+  --stripe-b: #f2f0ea;
+
+  color-scheme: light;
+}
+
+:root {
+  /* Typography: Archivo 400/500 only */
+  --font-sans: Archivo, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace; /* metadata and code only */
+  --weight-regular: 400;
+  --weight-medium: 500;
+
+  /* Type scale. Fixed steps are identical in both designs. */
+  --text-label-sm: 10px; /* legal line, form labels */
+  --text-label: 11px; /* nav, section labels */
+  --text-label-lg: 12px; /* mobile menu links */
+  --text-xs: 13px;
+  --text-sm: 14px; /* buttons, footer links */
+  --text-md: 15px;
+  --text-base: 16px; /* UI copy, form inputs (never below 16px: prevents iOS zoom) */
+  --text-body: 17px; /* reading text */
+
+  /* Fluid steps: clamp(mobile, fluid, desktop) */
+  --text-lead: clamp(16px, 1.5vw, 19px);
+  --text-lg: clamp(17px, 1.8vw, 22px);
+  --text-xl: clamp(19px, 2.2vw, 26px);
+  --text-2xl: clamp(22px, 2.6vw, 34px);
+  --text-3xl: clamp(22px, 3vw, 36px);
+  --text-4xl: clamp(26px, 3.4vw, 42px);
+  --text-5xl: clamp(28px, 3.6vw, 46px);
+  --text-6xl: clamp(30px, 5.4vw, 66px); /* page titles */
+  --text-display: clamp(44px, 8vw, 104px); /* home hero */
+  --text-display-sm: clamp(38px, 8vw, 104px); /* 404 */
+  --text-wordmark: clamp(15px, 1.5vw, 18px); /* header; mobile design uses 16px */
+  --text-wordmark-footer: 17px;
+
+  /* Tracking */
+  --tracking-display: -0.045em;
+  --tracking-headline: -0.04em;
+  --tracking-wordmark: -0.035em;
+  --tracking-title: -0.03em;
+  --tracking-subtitle: -0.025em;
+  --tracking-snug: -0.02em;
+  --tracking-meta: 0.04em;
+  --tracking-label-tight: 0.12em;
+  --tracking-label: 0.14em;
+
+  /* Leading */
+  --leading-none: 1;
+  --leading-display: 0.98;
+  --leading-tight: 1.1;
+  --leading-snug: 1.25;
+  --leading-normal: 1.5;
+  --leading-body: 1.55;
+  --leading-relaxed: 1.6;
+
+  /* Measure */
+  --measure-body: 52ch;
+
+  /* Layout */
+  --container-max: 1240px;
+  --gutter: clamp(20px, 4vw, 64px);
+  --header-height: clamp(60px, 7vw, 76px);
+  --tap-target: 44px;
+  --row-min-height: 48px;
+  --hairline: 1px;
+
+  /* Motion (plan §3.5) */
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --duration-state: 140ms; /* colour changes, linear */
+  --duration-lift: 160ms; /* translate only */
+  --duration-switch: 220ms; /* theme toggle knob */
+  --duration-reveal: 240ms; /* rules and underlines extend from the left */
+  --duration-menu: 260ms; /* menu icon bars */
+
+  /* Stacking */
+  --z-header: 20;
+}
