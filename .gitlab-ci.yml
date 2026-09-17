@@ -47,9 +47,10 @@ check:
       - .pnpm-store
     policy: pull-push   # this job refreshes the dependency cache
   script:
+    - pnpm run lint
+    - pnpm run format:check
     - pnpm run check
     # Add as the project grows:
-    # - pnpm run lint
     # - pnpm run test
 
 # ---------------------------------------------------------------- build
