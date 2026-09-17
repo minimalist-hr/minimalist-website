@@ -21,6 +21,9 @@ export default defineConfig([
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
       '@typescript-eslint/consistent-type-imports': 'error',
+      // role="list" is intentional: Safari/VoiceOver drops list semantics when list-style is
+      // removed, and base.css only resets lists marked with it.
+      'astro/jsx-a11y/no-redundant-roles': ['error', { ul: ['list'], ol: ['list'] }],
     },
   },
 ]);

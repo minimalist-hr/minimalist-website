@@ -1,0 +1,99 @@
+---
+/**
+ * EN / HR switch. Links to the equivalent page in the other language (plan §7);
+ * the URL is the source of truth, so nothing is stored.
+ */
+import { localeMeta, locales, type Locale } from '../i18n/config';
+import { localizedPath, useTranslations, type Alternates } from '../i18n/utils';
+
+interface Props {
+  locale: Locale;
+  /** Localised paths of the current page. Without them (e.g. 404), each language links home. */
+  alternates?: Alternates | undefined;
+  /** `header`: compact desktop size. `menu`: larger size inside the mobile menu. */
+  variant?: 'header' | 'menu';
+}
+
+const { locale, alternates, variant = 'header' } = Astro.props;
+const t = useTranslations(locale);
+
+const links = locales.map((l) => ({
+  locale: l,
+  href: alternates?.[l] ?? localizedPath('home', l),
+  label: localeMeta[l].label,
+  lang: localeMeta[l].htmlLang,
+  current: l === locale,
+}));
+---
+
+<div class="lang-switch" data-variant={variant} role="group" aria-label={t('a11y.language')}>
+  {links.map((link, index) => (
+    <>
+      {index > 0 && (
+        <span class="divider" aria-hidden="true">
+          /
+        </span>
+      )}
+      <a
+        href={link.href}
+        hreflang={link.lang}
+        lang={link.lang}
+        aria-current={link.current ? 'true' : undefined}
+      >
+        {link.label}
+      </a>
+    </>
+  ))}
+</div>
+
+<style>
+  .lang-switch {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label-tight);
+    line-height: var(--leading-none);
+  }
+
+  .lang-switch[data-variant='menu'] {
+    gap: 10px;
+    font-size: var(--text-label-lg);
+  }
+
+  a {
+    position: relative;
+    color: var(--graphite);
+    transition: color var(--duration-state) linear;
+  }
+
+  /* Enlarge the hit area without changing the layout. */
+  a::before {
+    content: '';
+    position: absolute;
+    inset: -14px -3px;
+  }
+
+  [data-variant='menu'] a {
+    padding: 8px 2px;
+  }
+
+  [data-variant='menu'] a::before {
+    inset: -6px -4px;
+  }
+
+  a[aria-current] {
+    color: var(--ink);
+  }
+
+  @media (hover: hover) {
+    a:hover {
+      color: var(--ink);
+    }
+  }
+
+  .divider {
+    color: var(--rule);
+  }
+</style>

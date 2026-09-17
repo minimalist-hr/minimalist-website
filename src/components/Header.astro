@@ -1,0 +1,175 @@
+---
+/**
+ * Site header (plan §5.3). Mobile design below md: wordmark + menu button with dropdown.
+ * Desktop design from md: wordmark, primary nav, language switch and theme toggle.
+ */
+import type { Locale } from '../i18n/config';
+import { localizedPath, useTranslations, type Alternates } from '../i18n/utils';
+import { buildNav, primaryNav } from '../lib/navigation';
+import LangSwitch from './LangSwitch.astro';
+import MobileMenu from './MobileMenu.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import Wordmark from './Wordmark.astro';
+
+interface Props {
+  locale: Locale;
+  alternates?: Alternates | undefined;
+}
+
+const { locale, alternates } = Astro.props;
+const t = useTranslations(locale);
+const items = buildNav(primaryNav, locale, Astro.url.pathname);
+---
+
+<header class="site-header">
+  <div class="bar container">
+    <a class="home" href={localizedPath('home', locale)} aria-label={t('a11y.home')}>
+      <Wordmark />
+    </a>
+
+    <nav class="desktop-nav" aria-label={t('a11y.primaryNav')}>
+      <ul role="list">
+        {items.map((item) => (
+          <li>
+            <a href={item.href} aria-current={item.current ? 'page' : undefined}>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="desktop-controls">
+      <LangSwitch locale={locale} alternates={alternates} />
+      <ThemeToggle locale={locale} />
+    </div>
+
+    <div class="mobile-only">
+      <MobileMenu locale={locale} items={items} alternates={alternates} />
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    padding-top: env(safe-area-inset-top);
+    background: var(--paper);
+    border-bottom: var(--hairline) solid var(--rule);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    height: var(--header-height);
+  }
+
+  .home {
+    display: flex;
+    flex: none;
+    align-items: center;
+    min-height: var(--tap-target);
+  }
+
+  .desktop-nav,
+  .desktop-controls {
+    display: none;
+  }
+
+  @media (max-width: 59.99rem) {
+    /* No JS: the mobile menu panel is shown as a list on its own row; don't stick. */
+    :global(:root:not([data-js])) .site-header {
+      position: static;
+    }
+
+    :global(:root:not([data-js])) .bar {
+      flex-wrap: wrap;
+      height: auto;
+      min-height: var(--header-height);
+    }
+
+    :global(:root:not([data-js])) .mobile-only {
+      display: contents;
+    }
+  }
+
+  /* ---- Desktop design (md and up) ---- */
+  @media (min-width: 60rem) {
+    .bar {
+      gap: 20px;
+    }
+
+    .mobile-only {
+      display: none;
+    }
+
+    .desktop-nav {
+      display: block;
+    }
+
+    .desktop-nav ul {
+      display: flex;
+      align-items: center;
+      gap: clamp(14px, 2.2vw, 30px);
+    }
+
+    .desktop-nav a {
+      position: relative;
+      display: block;
+      padding-block: 12px; /* tap target; the underline sits under the text */
+      font-size: var(--text-label);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-label);
+      line-height: var(--leading-snug);
+      text-transform: uppercase;
+      white-space: nowrap;
+      color: var(--graphite);
+      transition: color var(--duration-state) linear;
+    }
+
+    /* Reveal: 1px rule extends from the left on hover and for the current page. */
+    .desktop-nav a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 11px;
+      height: var(--hairline);
+      background: var(--ink);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--duration-reveal) var(--ease);
+    }
+
+    .desktop-nav a[aria-current='page'] {
+      color: var(--ink);
+    }
+
+    .desktop-nav a[aria-current='page']::after {
+      transform: scaleX(1);
+    }
+
+    .desktop-controls {
+      display: flex;
+      flex: none;
+      align-items: center;
+      gap: 14px;
+      padding-left: clamp(12px, 1.6vw, 20px);
+      border-left: var(--hairline) solid var(--rule);
+    }
+  }
+
+  @media (min-width: 60rem) and (hover: hover) {
+    .desktop-nav a:hover {
+      color: var(--ink);
+    }
+
+    .desktop-nav a:hover::after {
+      transform: scaleX(1);
+    }
+  }
+</style>

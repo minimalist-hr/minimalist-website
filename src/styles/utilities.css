@@ -6,7 +6,8 @@
     width: 100%;
     max-width: var(--container-max);
     margin-inline: auto;
-    padding-inline: var(--gutter);
+    padding-left: max(var(--gutter), env(safe-area-inset-left));
+    padding-right: max(var(--gutter), env(safe-area-inset-right));
   }
 
   /* Uppercase label style (brand: 500, +14%, 10–11px). Graphite is allowed here. */

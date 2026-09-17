@@ -1,10 +1,11 @@
 ---
 /**
- * Page shell for every page: <head> (theme, SEO, fonts), skip link and <main>.
- * Header and footer are added here once they exist.
+ * Page shell for every page: <head> (theme, SEO, fonts), skip link, header, <main>, footer.
  */
 import '../styles/global.css';
 
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
 import SeoHead from '../components/SeoHead.astro';
 import ThemeScript from '../components/ThemeScript.astro';
 import { localeMeta } from '../i18n/config';
@@ -31,7 +32,11 @@ const t = useTranslations(locale);
 <html lang={localeMeta[locale].htmlLang} data-theme="dark">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!-- Marks JS as available before first paint, so JS-only controls never flash. -->
+    <script is:inline>
+      document.documentElement.dataset.js = '';
+    </script>
     <meta name="color-scheme" content="dark light" />
     <ThemeScript />
 
@@ -51,9 +56,11 @@ const t = useTranslations(locale);
     <a class="skip-link visually-hidden" href="#main">
       {t('a11y.skipToContent')}
     </a>
+    <Header locale={locale} alternates={alternates} />
     <main id="main" tabindex="-1">
       <slot />
     </main>
+    <Footer locale={locale} />
   </body>
 </html>
 
