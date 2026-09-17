@@ -1,0 +1,37 @@
+---
+/**
+ * MINIMALIST wordmark with its closing square (plan §3.3).
+ * Live text + CSS square: inherits currentColor in both themes. Size via the `size` prop
+ * (any CSS length or token). Decorative: wrap it in a link with an accessible name.
+ */
+interface Props {
+  size?: string;
+}
+
+const { size = 'var(--text-wordmark)' } = Astro.props;
+---
+
+<span class="wordmark" style={`--wordmark-size: ${size}`} aria-hidden="true">
+  MINIMALIST<span class="square"></span>
+</span>
+
+<style>
+  .wordmark {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.26em; /* one optical space after the T */
+    font-size: var(--wordmark-size);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-wordmark);
+    line-height: var(--leading-none);
+    white-space: nowrap;
+  }
+
+  /* 20% of the font size, baseline-aligned, always the text colour. */
+  .square {
+    flex: none;
+    width: 0.2em;
+    height: 0.2em;
+    background: currentColor;
+  }
+</style>

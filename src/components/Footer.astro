@@ -1,0 +1,183 @@
+---
+/**
+ * Site footer. Mobile design: 2-column grid with brand and contact spanning both columns.
+ * Desktop design (md and up): brand, two nav columns and contact side by side.
+ */
+import type { Locale } from '../i18n/config';
+import { localizedPath, useTranslations } from '../i18n/utils';
+import { buildNav, footerNav } from '../lib/navigation';
+import { siteConfig } from '../site.config';
+import Wordmark from './Wordmark.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const pathname = Astro.url.pathname;
+
+const columns = [
+  { label: t('a11y.footerNav'), items: buildNav(footerNav.primary, locale, pathname) },
+  { label: t('a11y.footerNavSecondary'), items: buildNav(footerNav.secondary, locale, pathname) },
+];
+
+const { company, email } = siteConfig;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="grid container">
+    <div class="brand">
+      <a class="home" href={localizedPath('home', locale)} aria-label={t('a11y.home')}>
+        <Wordmark size="var(--text-wordmark-footer)" />
+      </a>
+      <p class="tagline">{t('site.tagline')}</p>
+    </div>
+
+    {columns.map((column) => (
+      <nav aria-label={column.label}>
+        <ul role="list" class="links">
+          {column.items.map((item) => (
+            <li>
+              <a href={item.href} aria-current={item.current ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    ))}
+
+    <div class="contact">
+      <a class="email" href={`mailto:${email}`}>
+        {email}
+      </a>
+      <address>
+        <span>{company.legalName}</span>
+        <span>{`${company.street}, ${company.postalCode} ${company.city}, ${t('footer.country')}`}</span>
+      </address>
+    </div>
+  </div>
+
+  <div class="legal container">
+    <p>
+      © {year} {siteConfig.name}. {t('footer.rights')}
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--paper);
+    border-top: var(--hairline) solid var(--rule);
+    font-size: var(--text-sm);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(24px, 3vw, 48px);
+    align-items: start;
+    padding-block: clamp(36px, 5vw, 72px) clamp(24px, 3vw, 40px);
+  }
+
+  .brand,
+  .contact {
+    grid-column: 1 / -1;
+  }
+
+  .brand {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .home {
+    align-self: flex-start;
+  }
+
+  .tagline {
+    max-width: 26ch;
+    line-height: var(--leading-body);
+    color: var(--ink-2);
+  }
+
+  .links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .links a {
+    color: var(--ink-2);
+    transition: color var(--duration-state) linear;
+  }
+
+  .links a[aria-current='page'] {
+    color: var(--ink);
+  }
+
+  .contact {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .email {
+    align-self: flex-start;
+    color: var(--ink);
+    border-bottom: var(--hairline) solid var(--rule);
+    transition: border-color var(--duration-state) linear;
+  }
+
+  address {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-style: normal;
+    line-height: var(--leading-normal);
+    color: var(--ink-2);
+  }
+
+  @media (hover: hover) {
+    .links a:hover {
+      color: var(--ink);
+    }
+
+    .email:hover {
+      border-bottom-color: var(--ink);
+    }
+  }
+
+  .legal {
+    display: flex;
+    justify-content: center;
+    padding-top: 18px;
+    padding-bottom: max(clamp(32px, 4vw, 52px), env(safe-area-inset-bottom));
+    border-top: var(--hairline) solid var(--rule);
+    font-size: var(--text-label-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label-tight);
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--graphite);
+  }
+
+  /* ---- Desktop design (md and up) ---- */
+  @media (min-width: 60rem) {
+    .grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .brand,
+    .contact {
+      grid-column: auto;
+    }
+
+    .legal {
+      justify-content: space-between;
+      text-align: left;
+    }
+  }
+</style>

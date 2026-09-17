@@ -1,0 +1,123 @@
+---
+/**
+ * Dark/light switch with a sliding square knob (plan §6).
+ * The knob position is pure CSS (driven by <html data-theme>); the script only toggles,
+ * persists the choice and keeps every toggle on the page in sync. Hidden without JS.
+ */
+import type { Locale } from '../i18n/config';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  locale: Locale;
+  /** `header`: 38×22 desktop switch. `menu`: 44×26 switch inside the mobile menu. */
+  variant?: 'header' | 'menu';
+}
+
+const { locale, variant = 'header' } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<button
+  class="theme-toggle"
+  data-theme-toggle
+  data-variant={variant}
+  type="button"
+  role="switch"
+  aria-checked="false"
+  aria-label={t('a11y.lightMode')}
+>
+  <span class="knob" aria-hidden="true"></span>
+</button>
+
+<script>
+  import { themeColors, themeStorageKey, type Theme } from '../lib/theme';
+
+  const root = document.documentElement;
+  const toggles = document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]');
+
+  function currentTheme(): Theme {
+    return root.dataset.theme === 'light' ? 'light' : 'dark';
+  }
+
+  function syncToggles(theme: Theme) {
+    const checked = String(theme === 'light');
+    toggles.forEach((toggle) => toggle.setAttribute('aria-checked', checked));
+  }
+
+  function applyTheme(theme: Theme) {
+    root.dataset.theme = theme;
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', themeColors[theme]);
+    try {
+      localStorage.setItem(themeStorageKey, theme);
+    } catch {
+      // Storage unavailable: the choice lasts for this page view only.
+    }
+    syncToggles(theme);
+  }
+
+  toggles.forEach((toggle) =>
+    toggle.addEventListener('click', () =>
+      applyTheme(currentTheme() === 'dark' ? 'light' : 'dark'),
+    ),
+  );
+  syncToggles(currentTheme());
+</script>
+
+<style>
+  .theme-toggle {
+    --toggle-width: 38px;
+    --toggle-height: 22px;
+    --knob-size: 14px;
+    --knob-inset: 3px;
+
+    position: relative;
+    display: flex;
+    flex: none;
+    align-items: center;
+    width: var(--toggle-width);
+    height: var(--toggle-height);
+    padding: 0;
+    background: none;
+    border: var(--hairline) solid var(--rule);
+    transition: border-color var(--duration-state) linear;
+  }
+
+  .theme-toggle[data-variant='menu'] {
+    --toggle-width: 44px;
+    --toggle-height: 26px;
+    --knob-size: 16px;
+    --knob-inset: 4px;
+  }
+
+  /* 44px hit area around the smaller visual switch. */
+  .theme-toggle::before {
+    content: '';
+    position: absolute;
+    inset: calc((var(--toggle-height) - 44px) / 2) calc((var(--toggle-width) - 44px) / 2);
+  }
+
+  .knob {
+    width: var(--knob-size);
+    height: var(--knob-size);
+    margin-left: var(--knob-inset);
+    background: var(--ink);
+    transition: transform var(--duration-switch) var(--ease);
+  }
+
+  /* Knob travels the inner width: width − 2 borders − 2 insets − knob. */
+  :global(:root[data-theme='light']) .knob {
+    transform: translateX(
+      calc(var(--toggle-width) - 2 * var(--hairline) - 2 * var(--knob-inset) - var(--knob-size))
+    );
+  }
+
+  @media (hover: hover) {
+    .theme-toggle:hover {
+      border-color: var(--ink);
+    }
+  }
+
+  :global(:root:not([data-js])) .theme-toggle {
+    display: none;
+  }
+</style>

@@ -67,7 +67,7 @@
   --text-6xl: clamp(30px, 5.4vw, 66px); /* page titles */
   --text-display: clamp(44px, 8vw, 104px); /* home hero */
   --text-display-sm: clamp(38px, 8vw, 104px); /* 404 */
-  --text-wordmark: clamp(15px, 1.5vw, 18px); /* header; mobile design uses 16px */
+  --text-wordmark: clamp(16px, 1.5vw, 18px); /* header */
   --text-wordmark-footer: 17px;
 
   /* Tracking */

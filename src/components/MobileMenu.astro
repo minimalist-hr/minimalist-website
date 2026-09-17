@@ -1,0 +1,238 @@
+---
+/**
+ * Mobile menu (below md): 44px button + dropdown panel under the header (plan §5.3, §5.4).
+ * Open state lives on <html data-menu="open">. Closes on Esc (focus returns to the button),
+ * on link click and when the viewport grows past md.
+ * Without JS the button is hidden and the panel is shown as a plain list.
+ */
+import type { Locale } from '../i18n/config';
+import { useTranslations, type Alternates } from '../i18n/utils';
+import type { NavItem } from '../lib/navigation';
+import LangSwitch from './LangSwitch.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+  locale: Locale;
+  items: NavItem[];
+  alternates?: Alternates | undefined;
+}
+
+const { locale, items, alternates } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<button
+  class="menu-button"
+  data-menu-toggle
+  type="button"
+  aria-expanded="false"
+  aria-controls="mobile-menu"
+  aria-label={t('a11y.openMenu')}
+  data-label-open={t('a11y.openMenu')}
+  data-label-close={t('a11y.closeMenu')}
+>
+  <span class="bars" aria-hidden="true">
+    <span class="bar" data-bar="top"></span>
+    <span class="bar" data-bar="mid"></span>
+    <span class="bar" data-bar="bot"></span>
+  </span>
+</button>
+
+<nav id="mobile-menu" class="panel" aria-label={t('a11y.primaryNav')}>
+  <ul role="list">
+    {items.map((item) => (
+      <li>
+        <a href={item.href} aria-current={item.current ? 'page' : undefined}>
+          <span>{item.label}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+  <div class="panel-controls">
+    <LangSwitch locale={locale} alternates={alternates} variant="menu" />
+    <ThemeToggle locale={locale} variant="menu" />
+  </div>
+</nav>
+
+<script>
+  const root = document.documentElement;
+  const button = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const panel = document.getElementById('mobile-menu');
+  const desktop = window.matchMedia('(min-width: 60rem)');
+
+  function setOpen(open: boolean) {
+    if (!button) return;
+    root.dataset.menu = open ? 'open' : 'closed';
+    button.setAttribute('aria-expanded', String(open));
+    const label = open ? button.dataset.labelClose : button.dataset.labelOpen;
+    if (label) button.setAttribute('aria-label', label);
+  }
+
+  const isOpen = () => root.dataset.menu === 'open';
+
+  button?.addEventListener('click', () => setOpen(!isOpen()));
+
+  panel?.addEventListener('click', (event) => {
+    if (event.target instanceof Element && event.target.closest('a')) setOpen(false);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && isOpen()) {
+      setOpen(false);
+      button?.focus();
+    }
+  });
+
+  desktop.addEventListener('change', (event) => {
+    if (event.matches) setOpen(false);
+  });
+</script>
+
+<style>
+  .menu-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--tap-target);
+    height: var(--tap-target);
+    margin-right: -11px; /* align the 22px icon with the gutter, keep the 44px target */
+    padding: 0;
+    color: var(--graphite);
+    background: none;
+    border: 0;
+    transition: color var(--duration-state) linear;
+  }
+
+  @media (hover: hover) {
+    .menu-button:hover {
+      color: var(--ink);
+    }
+  }
+
+  .bars {
+    position: relative;
+    display: block;
+    width: 22px;
+    height: 14px;
+  }
+
+  .bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1.5px;
+    background: currentColor;
+    transition: transform var(--duration-menu) var(--ease);
+  }
+
+  [data-bar='top'] {
+    top: 0;
+  }
+
+  [data-bar='mid'] {
+    top: 6.25px;
+    transition:
+      opacity var(--duration-lift) linear,
+      transform var(--duration-menu) var(--ease);
+  }
+
+  [data-bar='bot'] {
+    top: 12.5px;
+  }
+
+  :global(:root[data-menu='open']) [data-bar='top'] {
+    transform: translateY(6.25px) rotate(45deg);
+  }
+
+  :global(:root[data-menu='open']) [data-bar='mid'] {
+    opacity: 0;
+    transform: scaleX(0.4);
+  }
+
+  :global(:root[data-menu='open']) [data-bar='bot'] {
+    transform: translateY(-6.25px) rotate(-45deg);
+  }
+
+  /* Dropdown panel directly under the header, full width. */
+  .panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: none;
+    flex-direction: column;
+    max-height: calc(100dvh - var(--header-height) - env(safe-area-inset-top));
+    overflow-y: auto; /* landscape phones */
+    overscroll-behavior: contain;
+    padding: 4px var(--gutter) 18px;
+    padding-left: max(var(--gutter), env(safe-area-inset-left));
+    padding-right: max(var(--gutter), env(safe-area-inset-right));
+    background: var(--paper);
+    border-bottom: var(--hairline) solid var(--rule);
+  }
+
+  :global(:root[data-menu='open']) .panel {
+    display: flex;
+  }
+
+  li:not(:last-child) {
+    border-bottom: var(--hairline) solid var(--rule);
+  }
+
+  a {
+    display: flex;
+    min-height: var(--row-min-height);
+    font-size: var(--text-label-lg);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--graphite);
+    transition: color var(--duration-state) linear;
+  }
+
+  a span {
+    align-self: center;
+    padding-bottom: 3px;
+  }
+
+  a[aria-current='page'] span {
+    box-shadow: 0 var(--hairline) 0 0 var(--ink);
+  }
+
+  @media (hover: hover) {
+    a:hover {
+      color: var(--ink);
+    }
+
+    a:hover span {
+      box-shadow: 0 var(--hairline) 0 0 var(--ink);
+    }
+  }
+
+  .panel-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 10px;
+    padding-top: 16px;
+    border-top: var(--hairline) solid var(--rule);
+  }
+
+  /*
+   * No JS: no toggle button; the panel becomes a static list that wraps onto its own row
+   * in the header bar (see Header.astro).
+   */
+  :global(:root:not([data-js])) .menu-button {
+    display: none;
+  }
+
+  :global(:root:not([data-js])) .panel {
+    position: static;
+    display: flex;
+    flex-basis: 100%;
+    max-height: none;
+    padding-inline: 0;
+    border-bottom: 0;
+  }
+</style>
