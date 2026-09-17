@@ -7,13 +7,15 @@ interface Props {
   label?: string | undefined;
   /** Hairline above the row. */
   bordered?: boolean;
+  /** Vertical padding for stacked rows, e.g. the Skills areas (design). */
+  padded?: boolean;
   class?: string;
 }
 
-const { label, bordered = false, class: className } = Astro.props;
+const { label, bordered = false, padded = false, class: className } = Astro.props;
 ---
 
-<div class:list={['row', className]} data-bordered={bordered}>
+<div class:list={['row', className]} data-bordered={bordered} data-padded={padded}>
   <div class="side">
     {label && <p class="label">{label}</p>}
     <slot name="side" />
@@ -32,6 +34,10 @@ const { label, bordered = false, class: className } = Astro.props;
 
   .row[data-bordered='true'] {
     border-top: var(--hairline) solid var(--rule);
+  }
+
+  .row[data-padded='true'] {
+    padding-block: clamp(28px, 3.5vw, 48px);
   }
 
   .side {

@@ -109,7 +109,7 @@ const details = [
         </li>
       ))}
       <li class="principle">
-        <span class="principle-text">{text.principlesClose}</span>
+        <span class="principle-text principle-close">{text.principlesClose}</span>
       </li>
     </ol>
   </Section>
@@ -205,6 +205,12 @@ const details = [
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-snug);
     line-height: var(--leading-snug);
+  }
+
+  /* The closing line is set in graphite, as in the design. */
+  .principle-close {
+    line-height: 1.35;
+    color: var(--graphite);
   }
 
   .studio {

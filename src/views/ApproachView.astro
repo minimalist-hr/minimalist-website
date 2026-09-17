@@ -6,13 +6,12 @@
 import CtaBand from '../components/CtaBand.astro';
 import FaqList from '../components/FaqList.astro';
 import LabelledRow from '../components/LabelledRow.astro';
-import NumberedBlock from '../components/NumberedBlock.astro';
 import PageHeader from '../components/PageHeader.astro';
 import Section from '../components/Section.astro';
+import Timeline from '../components/Timeline.astro';
 import { faq } from '../data/faq';
 import { steps } from '../data/steps';
 import type { Locale } from '../i18n/config';
-import { pick } from '../i18n/localized';
 import { alternatesFor, localizedPath, useTranslations } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
@@ -55,28 +54,24 @@ const [pricingIntro, pricingNote] = text.pricing;
   </Section>
 
   <Section bordered={false} flushTop>
-    <div class="grid">
-      {steps.map((step, index) => (
-        <NumberedBlock
-          number={step.number}
-          title={pick(step.title, locale)}
-          description={pick(step.detail, locale)}
-          caption={step.caption}
-          bordered={index > 1}
-        />
-      ))}
+    <div class="steps">
+      <Timeline steps={steps} locale={locale} />
     </div>
 
-    <LabelledRow class="block" label={t('approach.pricingLabel')} bordered>
-      <div class="pricing">
-        <p>{pricingIntro}</p>
-        <p class="note">{pricingNote}</p>
-      </div>
-    </LabelledRow>
+    <div class="block">
+      <LabelledRow label={t('approach.pricingLabel')}>
+        <div class="pricing">
+          <p>{pricingIntro}</p>
+          <p class="note">{pricingNote}</p>
+        </div>
+      </LabelledRow>
+    </div>
 
-    <LabelledRow class="block" label={t('approach.faqLabel')} bordered>
-      <FaqList items={faq} locale={locale} />
-    </LabelledRow>
+    <div class="block">
+      <LabelledRow label={t('approach.faqLabel')}>
+        <FaqList items={faq} locale={locale} />
+      </LabelledRow>
+    </div>
 
     <div class="closing">
       <CtaBand
@@ -89,15 +84,15 @@ const [pricingIntro, pricingNote] = text.pricing;
 </BaseLayout>
 
 <style>
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: clamp(28px, 3.2vw, 52px);
+  .steps {
+    padding-top: clamp(40px, 5vw, 72px);
   }
 
+  /* The rule and spacing live here, not on the row component, so they apply reliably. */
   .block {
     margin-top: clamp(40px, 5vw, 72px);
     padding-top: clamp(28px, 3.5vw, 48px);
+    border-top: var(--hairline) solid var(--rule);
   }
 
   .pricing {
@@ -117,11 +112,5 @@ const [pricingIntro, pricingNote] = text.pricing;
     margin-top: clamp(40px, 5vw, 72px);
     padding-top: clamp(40px, 5vw, 72px);
     border-top: var(--hairline) solid var(--rule);
-  }
-
-  @media (min-width: 60rem) {
-    .grid {
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 44%), 1fr));
-    }
   }
 </style>

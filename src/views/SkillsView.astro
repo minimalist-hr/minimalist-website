@@ -45,7 +45,7 @@ const t = useTranslations(locale);
 
   <Section bordered={false} flushTop>
     {skillGroups.map((group, index) => (
-      <LabelledRow class="area" bordered={index > 0}>
+      <LabelledRow bordered={index > 0} padded>
         <div class="heading" slot="side">
           <span class="number">{String(index + 1).padStart(2, '0')}</span>
           <h2>{pick(group.label, locale)}</h2>
@@ -72,10 +72,6 @@ const t = useTranslations(locale);
 </BaseLayout>
 
 <style>
-  .area {
-    padding-block: clamp(28px, 3.5vw, 48px);
-  }
-
   .heading {
     display: flex;
     flex-direction: column;
