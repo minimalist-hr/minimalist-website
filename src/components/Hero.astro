@@ -61,16 +61,13 @@ const [first, ...rest] = phrases;
 </section>
 
 <style>
-  /* The rule runs the full width of the page, like the section rules below it. */
-  .hero {
-    border-bottom: var(--hairline) solid var(--rule);
-  }
-
+  /* The rule runs to the width of the content, like the section rules below it. */
   .hero-inner {
     display: flex;
     flex-direction: column;
     min-height: calc(100svh - var(--header-height) - env(safe-area-inset-top));
     padding-block: 44px 56px;
+    border-bottom: var(--hairline) solid var(--rule);
   }
 
   .available {
