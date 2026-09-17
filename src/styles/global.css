@@ -1,0 +1,10 @@
+/*
+ * Global stylesheet entry, imported once by BaseLayout.
+ * Layer order: reset < base < utilities. Unlayered Astro component styles win over all of them.
+ */
+@layer reset, base, utilities;
+
+@import './tokens.css';
+@import './fonts.css';
+@import './base.css';
+@import './utilities.css';

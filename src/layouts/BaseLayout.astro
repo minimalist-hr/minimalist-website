@@ -1,0 +1,81 @@
+---
+/**
+ * Page shell for every page: <head> (theme, SEO, fonts), skip link and <main>.
+ * Header and footer are added here once they exist.
+ */
+import '../styles/global.css';
+
+import SeoHead from '../components/SeoHead.astro';
+import ThemeScript from '../components/ThemeScript.astro';
+import { localeMeta } from '../i18n/config';
+import { getLocale, useTranslations, type Alternates } from '../i18n/utils';
+
+/** Main font file, preloaded. Must match the latin @font-face in src/styles/fonts.css. */
+const latinFont = '/fonts/archivo-latin-wght.woff2';
+
+interface Props {
+  /** Full document title, e.g. "Work — Minimalist". */
+  title: string;
+  /** Meta description; defaults to the site description. */
+  description?: string;
+  /** Localised paths of this page (see alternatesFor). Omit for non-indexable pages. */
+  alternates?: Alternates;
+}
+
+const { title, description, alternates } = Astro.props;
+const locale = getLocale(Astro.currentLocale, Astro.url);
+const t = useTranslations(locale);
+---
+
+<!doctype html>
+<html lang={localeMeta[locale].htmlLang} data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <ThemeScript />
+
+    <SeoHead
+      title={title}
+      description={description ?? t('site.description')}
+      locale={locale}
+      alternates={alternates}
+    />
+
+    <link rel="preload" href={latinFont} as="font" type="font/woff2" crossorigin />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body>
+    <a class="skip-link visually-hidden" href="#main">
+      {t('a11y.skipToContent')}
+    </a>
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style>
+  /* Hidden until focused (via .visually-hidden), then shown over the header. */
+  .skip-link:focus {
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    z-index: calc(var(--z-header) + 1);
+    padding: 12px 16px;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+  }
+
+  main {
+    flex: 1;
+  }
+
+  main:focus {
+    outline: none;
+  }
+</style>
