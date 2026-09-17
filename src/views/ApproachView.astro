@@ -1,0 +1,127 @@
+---
+/**
+ * Approach page, shared by /approach/ and /hr/pristup/:
+ * six steps, how engagements are priced, the questions asked first, closing CTA.
+ */
+import CtaBand from '../components/CtaBand.astro';
+import FaqList from '../components/FaqList.astro';
+import LabelledRow from '../components/LabelledRow.astro';
+import NumberedBlock from '../components/NumberedBlock.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import { faq } from '../data/faq';
+import { steps } from '../data/steps';
+import type { Locale } from '../i18n/config';
+import { pick } from '../i18n/localized';
+import { alternatesFor, localizedPath, useTranslations } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const copy = {
+  en: {
+    title: 'Approach — Minimalist',
+    heading: 'Six steps, no surprises.',
+    lede: 'The same sequence on every engagement. You always know what is happening this week and what you will see at the end of it.',
+    pricing: [
+      'Discovery is a fixed fee and stands on its own — you can take the findings elsewhere. Projects are fixed price per phase. Retainers are monthly, cancellable with 30 days notice.',
+      'No hourly billing. Estimating is our job, not yours.',
+    ],
+    cta: 'Know what you need built?',
+  },
+  hr: {
+    title: 'Pristup — Minimalist',
+    heading: 'Šest koraka, bez iznenađenja.',
+    lede: 'Isti slijed na svakom projektu. Uvijek znate što se radi ovaj tjedan i što ćete na kraju vidjeti.',
+    pricing: [
+      'Otkrivanje se naplaćuje fiksno i stoji samostalno — nalaze možete odnijeti kamo želite. Projekti su fiksne cijene po fazi. Angažmani su mjesečni, uz 30 dana otkaznog roka.',
+      'Bez naplate po satu. Procjena je naš posao, ne vaš.',
+    ],
+    cta: 'Znate što treba izgraditi?',
+  },
+} satisfies Record<Locale, Record<string, string | string[]>>;
+
+const { locale } = Astro.props;
+const text = copy[locale];
+const t = useTranslations(locale);
+const [pricingIntro, pricingNote] = text.pricing;
+---
+
+<BaseLayout title={text.title} description={text.lede} alternates={alternatesFor('approach')}>
+  <Section size="header">
+    <PageHeader label={t('nav.approach')} title={text.heading} lede={text.lede} />
+  </Section>
+
+  <Section bordered={false} flushTop>
+    <div class="grid">
+      {steps.map((step, index) => (
+        <NumberedBlock
+          number={step.number}
+          title={pick(step.title, locale)}
+          description={pick(step.detail, locale)}
+          caption={step.caption}
+          bordered={index > 1}
+        />
+      ))}
+    </div>
+
+    <LabelledRow class="block" label={t('approach.pricingLabel')} bordered>
+      <div class="pricing">
+        <p>{pricingIntro}</p>
+        <p class="note">{pricingNote}</p>
+      </div>
+    </LabelledRow>
+
+    <LabelledRow class="block" label={t('approach.faqLabel')} bordered>
+      <FaqList items={faq} locale={locale} />
+    </LabelledRow>
+
+    <div class="closing">
+      <CtaBand
+        title={text.cta}
+        action={{ href: localizedPath('contact', locale), label: t('cta.startProject') }}
+        secondary={{ href: localizedPath('skills', locale), label: t('nav.skills') }}
+      />
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(28px, 3.2vw, 52px);
+  }
+
+  .block {
+    margin-top: clamp(40px, 5vw, 72px);
+    padding-top: clamp(28px, 3.5vw, 48px);
+  }
+
+  .pricing {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--ink-2);
+  }
+
+  .note {
+    color: var(--ink);
+  }
+
+  .closing {
+    margin-top: clamp(40px, 5vw, 72px);
+    padding-top: clamp(40px, 5vw, 72px);
+    border-top: var(--hairline) solid var(--rule);
+  }
+
+  @media (min-width: 60rem) {
+    .grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 44%), 1fr));
+    }
+  }
+</style>

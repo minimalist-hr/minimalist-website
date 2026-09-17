@@ -1,0 +1,53 @@
+---
+/**
+ * A small uppercase label beside a block of content, wrapping to one column on narrow
+ * screens. Used for the pricing note, the FAQ and the Skills rows.
+ */
+interface Props {
+  label?: string | undefined;
+  /** Hairline above the row. */
+  bordered?: boolean;
+  class?: string;
+}
+
+const { label, bordered = false, class: className } = Astro.props;
+---
+
+<div class:list={['row', className]} data-bordered={bordered}>
+  <div class="side">
+    {label && <p class="label">{label}</p>}
+    <slot name="side" />
+  </div>
+  <div class="main">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(18px, 3vw, 44px);
+  }
+
+  .row[data-bordered='true'] {
+    border-top: var(--hairline) solid var(--rule);
+  }
+
+  .side {
+    flex: 0 0 240px;
+  }
+
+  .label {
+    padding-top: 6px;
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--graphite);
+  }
+
+  .main {
+    flex: 1 1 420px;
+  }
+</style>
