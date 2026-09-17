@@ -1,0 +1,112 @@
+# Minimalist website — GitLab CI/CD
+# main            -> checks, build, deploy to production (Cloudflare Workers)
+# any other branch -> checks, build, upload a preview version with a branch URL
+# Deploys only happen when checks and build pass.
+
+workflow:
+  rules:
+    # Run MR pipelines for branches with an open merge request...
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    # ...and skip the duplicate branch pipeline for those branches.
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - if: $CI_COMMIT_BRANCH
+
+variables:
+  WORKER_NAME: "minimalist-website"   # must match "name" in wrangler.jsonc
+
+stages:
+  - verify
+  - build
+  - deploy
+
+default:
+  image: node:24-slim
+  interruptible: true
+  cache:
+    key:
+      files:
+        - pnpm-lock.yaml
+    paths:
+      - .pnpm-store
+    policy: pull
+  before_script:
+    - corepack enable
+    - pnpm config set store-dir .pnpm-store
+    - pnpm install --frozen-lockfile
+
+# ---------------------------------------------------------------- verify
+
+check:
+  stage: verify
+  cache:
+    key:
+      files:
+        - pnpm-lock.yaml
+    paths:
+      - .pnpm-store
+    policy: pull-push   # this job refreshes the dependency cache
+  script:
+    - pnpm run check
+    # Add as the project grows:
+    # - pnpm run lint
+    # - pnpm run test
+
+# ---------------------------------------------------------------- build
+
+build:
+  stage: build
+  needs: [check]
+  script:
+    - pnpm run build
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 week
+
+# Later (Phase 3): accessibility + Lighthouse checks against the built site.
+# a11y_and_performance:
+#   stage: build
+#   needs: [build]
+#   script:
+#     - pnpm run test:e2e
+
+# ---------------------------------------------------------------- deploy
+
+deploy_preview:
+  stage: deploy
+  needs: [build]
+  interruptible: false
+  rules:
+    - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
+  script:
+    # Branch slug -> valid preview alias: lowercase, a-z0-9-, starts with a letter, short enough for a hostname label.
+    - ALIAS="$(printf '%s' "$CI_COMMIT_REF_SLUG" | cut -c1-40 | sed -E 's/-+$//')"
+    - case "$ALIAS" in [a-z]*) ;; *) ALIAS="b-$ALIAS" ;; esac
+    # Previews must never be indexed.
+    - printf '\n/*\n  X-Robots-Tag: noindex\n' >> dist/_headers
+    - MSG="$(printf '%s %s' "$CI_COMMIT_SHORT_SHA" "$CI_COMMIT_TITLE" | cut -c1-90)"
+    - pnpm exec wrangler versions upload --preview-alias "$ALIAS" --message "$MSG"
+    - echo "DEPLOY_URL=https://$ALIAS-$WORKER_NAME.$CF_WORKERS_SUBDOMAIN.workers.dev" >> deploy.env
+  artifacts:
+    reports:
+      dotenv: deploy.env
+  environment:
+    name: preview/$CI_COMMIT_REF_SLUG
+    url: $DEPLOY_URL
+
+deploy_production:
+  stage: deploy
+  needs: [build]
+  interruptible: false
+  resource_group: production   # never two production deploys at once
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    # Keep search engines out until launch. Set ALLOW_INDEXING=true in GitLab when the site goes live.
+    - if [ "$ALLOW_INDEXING" != "true" ]; then printf '\n/*\n  X-Robots-Tag: noindex\n' >> dist/_headers; fi
+    - MSG="$(printf '%s %s' "$CI_COMMIT_SHORT_SHA" "$CI_COMMIT_TITLE" | cut -c1-90)"
+    - pnpm exec wrangler deploy --message "$MSG"
+  environment:
+    name: production
+    url: $PRODUCTION_URL

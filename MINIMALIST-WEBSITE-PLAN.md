@@ -69,8 +69,8 @@ Use the extracted HTML for exact copy, spacing, sizes, tokens and component stru
 | Styling | **Plain CSS** with custom properties plus Astro scoped styles. No Tailwind, no UI kit | The brand is 4 colours and 1 typeface; tokens map 1:1 to CSS variables |
 | Content | **Astro Content Collections** (Markdown/MDX + typed schema) for case studies and insights | Adding content = adding a file |
 | JavaScript | Vanilla TS in small `<script>` islands only: theme toggle, language switch, mobile menu, form, reveal motion | No framework runtime shipped to the browser |
-| Hosting | **Cloudflare**: static assets and a serverless function for the contact form. Use whichever Cloudflare product is currently recommended for static sites with functions (Pages, or Workers with static assets) | Free, fast EU edge, preview deploys per branch |
-| Repo & CI | **GitLab**, connected to Cloudflare. `main` → production; other branches → preview URLs | Matches studio tooling |
+| Hosting | **Cloudflare Workers with static assets** (not Pages). Astro's `dist/` is served as static assets; the contact form is a small Worker script added in Phase 3 | Cloudflare's recommended target for new projects; free static requests, fast EU edge, preview URLs per branch |
+| Repo & CI/CD | **GitLab CI/CD** runs checks and build, then deploys with **Wrangler**. `main` → production; other branches → preview URLs. Cloudflare's own Git integration is **not** used | Deploys only happen when the pipeline passes; everything is defined in the repo |
 | Form spam | **Cloudflare Turnstile** | Invisible, cookieless |
 | Form email | Transactional email API with an EU data region (Brevo or Resend), called from the function | No database; minimal GDPR surface |
 | Analytics | **Cloudflare Web Analytics** (cookieless) | No cookie banner needed |
@@ -186,9 +186,6 @@ minimalist/
 │  ├─ minimalist-website-desktop-design.html
 │  ├─ minimalist-website-mobile-design.html
 │  └─ minimalist-brand-identity.html
-├─ functions/
-│  └─ api/
-│     └─ contact.ts                # Cloudflare function: POST /api/contact
 ├─ public/
 │  ├─ fonts/archivo-*.woff2
 │  ├─ favicon.svg, favicon.ico, apple-touch-icon.png, icon-192.png, icon-512.png
@@ -225,9 +222,12 @@ minimalist/
 │  │  ├─ fonts.css
 │  │  ├─ base.css                  # reset, typography defaults, focus styles
 │  │  └─ utilities.css             # container, grid, visually-hidden
-│  └─ site.config.ts               # showInsights, company info, email, socials
+│  ├─ site.config.ts               # showInsights, company info, email, socials
+│  └─ worker.ts                    # Phase 3: Worker script, handles POST /api/contact
 ├─ astro.config.mjs
-├─ wrangler.toml                   # if using Workers
+├─ wrangler.jsonc                  # Cloudflare Worker config (static assets, later the form script)
+├─ .gitlab-ci.yml                  # CI/CD pipeline (section 12.1)
+├─ .nvmrc                          # Node 24
 ├─ CLAUDE.md                       # short project rules for Claude Code
 └─ README.md
 ```
@@ -396,7 +396,10 @@ Radio chips must be real radio inputs (keyboard and screen-reader accessible) st
 - Client validation uses native constraints plus clear bilingual messages. Server validation is authoritative.
 - The form sends the current `locale` so the auto-reply (if enabled) and redirects use the right language.
 
-### 9.3 `functions/api/contact.ts`
+### 9.3 `src/worker.ts` (POST `/api/contact`)
+
+Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built file are served as static assets; `/api/contact` matches none, so it reaches the Worker. The Worker's `fetch` handler returns 404 for any other path.
+
 1. Accept `POST` only; parse form data or JSON.
 2. Reject if the honeypot is filled; enforce max lengths (e.g. name 120, brief 5000).
 3. Verify the Turnstile token server-side with the secret key.
@@ -419,7 +422,7 @@ Radio chips must be real radio inputs (keyboard and screen-reader accessible) st
 - JSON-LD structured data: `Organization` (name, url, logo, email, address) on home; `Article` on insights; `BreadcrumbList` on case studies and insights.
 - Semantic headings: one `h1` per page, logical order.
 - RSS feed for insights (optional, cheap with `@astrojs/rss`).
-- Preview deployments must send `X-Robots-Tag: noindex`.
+- Preview deployments must send `X-Robots-Tag: noindex`. The pipeline appends this to `dist/_headers` for previews, and for production until `ALLOW_INDEXING=true` is set at launch.
 
 ---
 
@@ -451,21 +454,61 @@ Radio chips must be real radio inputs (keyboard and screen-reader accessible) st
 
 ## 12. Infrastructure: Cloudflare, domain, email
 
-### 12.1 Cloudflare setup
-1. Create a Cloudflare account (free plan).
-2. **Add site** `minimalist.hr`. Cloudflare scans existing DNS records; review them.
-3. Cloudflare gives two nameservers. In the **.hr domain management** (CARNET's domain system or the registrar the domain was registered through), replace the current nameservers with Cloudflare's. Propagation takes minutes to a few hours.
-4. Wait for the zone to show **Active**.
-5. Create the project (Pages, or Workers with static assets) and **connect the GitLab repository**.
-   - Build command: `pnpm build` (or `npm run build`); output directory: `dist`.
-   - Production branch: `main`.
-6. Add custom domains `minimalist.hr` and `www.minimalist.hr`. Redirect `www` → apex (301) via a redirect rule.
-7. SSL/TLS mode: **Full (strict)**; enable **Always Use HTTPS**.
-8. Enable **Web Analytics** for the site.
-9. Create a **Turnstile** widget for `minimalist.hr` (plus `localhost` and the preview domain for testing); copy the site key and secret.
-10. Add environment variables and secrets (section 9.3) for production and preview.
+### 12.1 CI/CD pipeline (set up first, before feature work)
 
-### 12.2 Business email (e.g. `hello@minimalist.hr`)
+**How it works**
+- **Every push** runs `check` (types via `astro check`), then `build` (Astro → `dist/`).
+- **Branch other than `main`:** `deploy_preview` uploads a new Worker **version** without touching production, using a stable branch alias:
+  `https://<branch-slug>-minimalist-website.<subdomain>.workers.dev`. The URL appears in GitLab under Deployments → Environments and on the merge request.
+- **`main`:** `deploy_production` runs `wrangler deploy`. Production deploys never overlap (`resource_group`).
+- A failed check or build means nothing deploys.
+- Rollback: Cloudflare dashboard → Worker → Deployments → roll back to a previous version, or revert the commit and let the pipeline redeploy.
+
+**Files in the repo root:** `.gitlab-ci.yml`, `wrangler.jsonc`, `.gitignore`, `.nvmrc`.
+
+**One-time setup**
+
+1. **Cloudflare account** (free). Open Workers & Pages once and choose your **workers.dev subdomain**. Copy your **Account ID** from the dashboard sidebar.
+2. **API token:** My Profile → API Tokens → Create Token → template **"Edit Cloudflare Workers"**. Limit it to your account (and later the `minimalist.hr` zone). Copy the token; it is shown once.
+3. **GitLab → Settings → CI/CD → Variables:**
+
+   | Key | Value | Flags |
+   |---|---|---|
+   | `CLOUDFLARE_API_TOKEN` | token from step 2 | Masked and hidden. **Not** protected, so preview branches can deploy |
+   | `CLOUDFLARE_ACCOUNT_ID` | your account ID | Masked |
+   | `CF_WORKERS_SUBDOMAIN` | your workers.dev subdomain (just the name) | — |
+   | `PRODUCTION_URL` | `https://minimalist-website.<subdomain>.workers.dev/` for now; `https://minimalist.hr/` at launch | — |
+   | `ALLOW_INDEXING` | leave unset until launch, then `true` | — |
+
+4. **GitLab → Settings → Repository → Protected branches:** protect `main`, allow merge by Maintainers, no direct pushes (after the first bootstrap push).
+5. **GitLab → Settings → Merge requests:** enable **"Pipelines must succeed"**.
+6. **Scaffold the project** so the pipeline has something to build (generated files only, no feature code):
+   ```bash
+   pnpm create astro@latest . --template minimal --no-install --no-git
+   corepack use pnpm@latest
+   pnpm install
+   pnpm add -D wrangler @astrojs/check typescript
+   pnpm pkg set scripts.check="astro check"
+   ```
+   Also set `trailingSlash: 'always'` in `astro.config.mjs` to match `html_handling`.
+7. **Bootstrap push to `main`.** The first production deploy creates the Worker. Preview uploads need the Worker to exist, so `main` must deploy once before any branch previews.
+8. **Test previews:** create branch `ci-test`, change a line, push, open a merge request. Confirm the preview URL loads and sends `X-Robots-Tag: noindex` (`curl -I <url>`).
+
+**Notes**
+- Previews share production's Worker config and secrets. That's fine for a static site; for the contact form, add the workers.dev hostnames to the Turnstile widget.
+- Preview URLs are public but unlisted and noindexed. To lock them down, put them behind Cloudflare Access (free for small teams).
+- GitLab.com's free plan has a monthly compute-minutes limit. This pipeline takes a couple of minutes per run; check your usage under Settings → Usage quotas.
+
+### 12.2 Domain and custom domain (at launch)
+1. **Add site** `minimalist.hr` to Cloudflare. Cloudflare scans existing DNS records; review them.
+2. Cloudflare gives two nameservers. In the **.hr domain management** (CARNET's domain system or the registrar the domain was registered through), replace the current nameservers with Cloudflare's. Propagation takes minutes to a few hours.
+3. When the zone shows **Active**: Worker → Settings → Domains & Routes → add custom domains `minimalist.hr` and `www.minimalist.hr`. Redirect `www` → apex (301) with a redirect rule.
+4. SSL/TLS: **Full (strict)**; enable **Always Use HTTPS**.
+5. Enable **Web Analytics** for the site.
+6. Create a **Turnstile** widget for `minimalist.hr`, `localhost` and your workers.dev hostnames; add keys as Worker secrets and `PUBLIC_` build variables.
+7. Update GitLab variables and `wrangler.jsonc` per the Phase 4 checklist.
+
+### 12.3 Business email (e.g. `hello@minimalist.hr`)
 - Choose a provider: Google Workspace, Microsoft 365 or Zoho Mail.
 - In Cloudflare DNS, add the provider's records:
   - **MX** records
@@ -475,8 +518,6 @@ Radio chips must be real radio inputs (keyboard and screen-reader accessible) st
 - MX/TXT records are DNS-only (grey cloud) by nature; only web records are proxied.
 - Send a test from the contact form and confirm it lands in the inbox, not spam.
 
-### 12.3 Rollback
-Every deploy is immutable. Roll back from the Cloudflare dashboard to the previous deployment if a release breaks.
 
 ---
 
@@ -491,7 +532,7 @@ Every deploy is immutable. Roll back from the Cloudflare dashboard to the previo
 - [ ] `BaseLayout` with head, SEO props, no-flash theme script, skip link
 - [ ] Header (desktop nav + mobile sticky header with dropdown menu per section 5.3), Footer, Wordmark, ThemeToggle (knob switch), LangSwitch
 - [ ] i18n config, `ui.ts`, `routes.ts`, helpers
-- [ ] GitLab repo + Cloudflare project connected; preview deploys working
+- [ ] CI/CD live before any feature work (section 12.1): pipeline green on `main`, production workers.dev URL loads, a test branch produces a preview URL
 - [ ] Favicon set and default OG image from the integrated mark
 
 **Done when:** an empty EN and HR page deploy to a preview URL, theme and language switch work, and the header is correct from 320px to 2560px.
@@ -512,8 +553,9 @@ Every deploy is immutable. Roll back from the Cloudflare dashboard to the previo
 
 ### Phase 3: Functionality and quality
 - [ ] Contact form UI (no-JS + JS paths)
-- [ ] `functions/api/contact.ts` with Turnstile, validation, email send
-- [ ] Local testing with `wrangler` and `.dev.vars`
+- [ ] `src/worker.ts` with Turnstile, validation, email send; `main` added to `wrangler.jsonc`
+- [ ] Local testing with `wrangler dev` and `.dev.vars`; secrets set with `wrangler secret put`
+- [ ] Add accessibility and Lighthouse checks as a pipeline job
 - [ ] SEO: meta, canonical, hreflang, sitemap, robots, JSON-LD, RSS
 - [ ] Security headers, cache headers, noindex on previews
 - [ ] Cloudflare Web Analytics
@@ -527,6 +569,7 @@ Every deploy is immutable. Roll back from the Cloudflare dashboard to the previo
 - [ ] Business email set up; SPF/DKIM/DMARC verified
 - [ ] Cross-device testing (section 5.4 widths and browsers)
 - [ ] Nameservers switched to Cloudflare; custom domain + `www` redirect live
+- [ ] GitLab variables: `PRODUCTION_URL=https://minimalist.hr/`, `ALLOW_INDEXING=true`; set `"workers_dev": false` in `wrangler.jsonc`
 - [ ] Final smoke test on production: all routes EN/HR, form sends, 404 works, sitemap reachable
 - [ ] Submit sitemap to Google Search Console and Bing Webmaster Tools
 
@@ -568,7 +611,7 @@ Every deploy is immutable. Roll back from the Cloudflare dashboard to the previo
 pnpm create astro@latest minimalist     # scaffold (minimal template, TypeScript strict)
 pnpm dev                                # local dev
 pnpm build && pnpm preview              # production build check
-npx wrangler pages dev dist             # run static site + functions locally (if using Pages)
+pnpm exec wrangler dev                  # run built site (+ Worker script, once added) locally on the Workers runtime
 npx @axe-core/cli http://localhost:4321 # accessibility scan
 npx lighthouse http://localhost:4321 --preset=desktop
 ```

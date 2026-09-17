@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "minimalist-website",
+  "compatibility_date": "2026-09-17",
+
+  // Static assets built by Astro. No Worker script yet;
+  // the contact form adds "main": "./src/worker.ts" in Phase 3.
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+    "html_handling": "force-trailing-slash"
+  },
+
+  // workers.dev URL is the production URL until minimalist.hr is connected.
+  // After launch on the custom domain, set "workers_dev": false.
+  "workers_dev": true,
+  "preview_urls": true,
+
+  "observability": {
+    "enabled": true
+  }
+}
