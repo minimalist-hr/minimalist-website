@@ -1,0 +1,21 @@
+---
+/** Croatian case studies, with translated slugs from the file names. */
+import type { GetStaticPaths } from 'astro';
+
+import { getEntryAlternates, getPublishedWork, slugOf } from '../../../lib/content';
+import CaseStudyView from '../../../views/CaseStudyView.astro';
+
+export const getStaticPaths = (async () => {
+  const entries = await getPublishedWork('hr');
+  return Promise.all(
+    entries.map(async (entry) => ({
+      params: { slug: slugOf(entry) },
+      props: { entry, alternates: await getEntryAlternates('work', entry.data.translationKey) },
+    })),
+  );
+}) satisfies GetStaticPaths;
+
+const { entry, alternates } = Astro.props;
+---
+
+<CaseStudyView entry={entry} locale="hr" alternates={alternates} />

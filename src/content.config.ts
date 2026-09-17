@@ -35,8 +35,26 @@ const work = defineCollection({
     featured: z.boolean().default(false),
     order: z.number().int(),
     coverCaption: z.string(),
+    /** Case study page: 16:9 hero image caption. */
+    heroCaption: z.string().optional(),
+    /**
+     * Case study body as labelled blocks, in the design's order:
+     * Context / The problem / What we removed / What we built (plan §8).
+     * `lead: true` sets a paragraph in ink rather than secondary text.
+     */
+    sections: z
+      .array(
+        z.object({
+          label: z.string(),
+          paragraphs: z.array(z.object({ text: z.string(), lead: z.boolean().default(false) })),
+        }),
+      )
+      .optional(),
+    gallery: z.array(z.object({ caption: z.string() })).optional(),
     results: z.array(z.object({ value: z.string(), label: z.string() })).optional(),
     quote: z.object({ text: z.string(), name: z.string(), role: z.string() }).optional(),
+    /** Closing question on the case study page. */
+    ctaTitle: z.string().optional(),
   }),
 });
 

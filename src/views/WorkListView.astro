@@ -1,0 +1,70 @@
+---
+/**
+ * Work list page, shared by /work/ and /hr/radovi/.
+ */
+import CtaBand from '../components/CtaBand.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import WorkRow from '../components/WorkRow.astro';
+import type { Locale } from '../i18n/config';
+import { alternatesFor, localizedPath, useTranslations } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getWork } from '../lib/content';
+
+interface Props {
+  locale: Locale;
+}
+
+const copy = {
+  en: {
+    title: 'Work — Minimalist',
+    heading: 'Projects worth explaining.',
+    lede: 'We show few projects on purpose. Each one is documented the same way: what was wrong, what we removed, what we built, what changed.',
+    cta: 'Recognise the problem?',
+  },
+  hr: {
+    title: 'Radovi — Minimalist',
+    heading: 'Projekti koje vrijedi objasniti.',
+    lede: 'Namjerno prikazujemo malo projekata. Svaki je dokumentiran jednako: što nije radilo, što smo uklonili, što smo izgradili, što se promijenilo.',
+    cta: 'Prepoznajete problem?',
+  },
+} satisfies Record<Locale, Record<string, string>>;
+
+const { locale } = Astro.props;
+const text = copy[locale];
+const t = useTranslations(locale);
+const entries = await getWork(locale);
+---
+
+<BaseLayout title={text.title} description={text.lede} alternates={alternatesFor('work')}>
+  <Section size="lead">
+    <PageHeader label={t('nav.work')} title={text.heading} lede={text.lede} />
+  </Section>
+
+  <Section bordered={false}>
+    {entries.map((entry, index) => (
+      <WorkRow
+        entry={entry}
+        locale={locale}
+        flipped={index % 2 === 1}
+        bordered={index < entries.length - 1}
+      />
+    ))}
+
+    <div class="closing">
+      <CtaBand
+        title={text.cta}
+        action={{ href: localizedPath('contact', locale), label: t('cta.startProject') }}
+        secondary={{ href: localizedPath('services', locale), label: t('nav.services') }}
+      />
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .closing {
+    margin-top: clamp(40px, 5vw, 72px);
+    padding-top: clamp(40px, 5vw, 72px);
+    border-top: var(--hairline) solid var(--rule);
+  }
+</style>
