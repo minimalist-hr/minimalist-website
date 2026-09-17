@@ -34,6 +34,8 @@ const en = {
 
   'footer.country': 'Croatia',
   'footer.rights': 'All rights reserved.',
+
+  'og.imageAlt': 'The Minimalist mark on an ink field',
 } as const;
 
 export type UiKey = keyof typeof en;
@@ -65,6 +67,8 @@ const hr: Record<UiKey, string> = {
 
   'footer.country': 'Hrvatska',
   'footer.rights': 'Sva prava pridržana.',
+
+  'og.imageAlt': 'Znak Minimalist na tamnoj podlozi',
 };
 
 export const ui: Record<Locale, Record<UiKey, string>> = { en, hr };
