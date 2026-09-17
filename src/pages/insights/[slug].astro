@@ -1,0 +1,21 @@
+---
+/** English insight articles. Drafts are excluded by getInsights. */
+import type { GetStaticPaths } from 'astro';
+
+import { getEntryAlternates, getInsights, slugOf } from '../../lib/content';
+import InsightView from '../../views/InsightView.astro';
+
+export const getStaticPaths = (async () => {
+  const entries = await getInsights('en');
+  return Promise.all(
+    entries.map(async (entry) => ({
+      params: { slug: slugOf(entry) },
+      props: { entry, alternates: await getEntryAlternates('insights', entry.data.translationKey) },
+    })),
+  );
+}) satisfies GetStaticPaths;
+
+const { entry, alternates } = Astro.props;
+---
+
+<InsightView entry={entry} locale="en" alternates={alternates} />

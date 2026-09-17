@@ -3,9 +3,9 @@
  * Insight card: date and category, title, placeholder image, link to the article.
  */
 import type { Locale } from '../i18n/config';
-import { localeMeta } from '../i18n/config';
 import { useTranslations } from '../i18n/utils';
 import { insightPath, type InsightEntry } from '../lib/content';
+import { formatInsightDate } from '../lib/format';
 import CtaLink from './CtaLink.astro';
 import ImageFrame from './ImageFrame.astro';
 import MetaRow from './MetaRow.astro';
@@ -19,10 +19,7 @@ const { entry, locale } = Astro.props;
 const { title, category, coverCaption, date } = entry.data;
 const t = useTranslations(locale);
 
-/** The design shows "2026 / 08"; Croatian dates carry a trailing dot (plan §7). */
-const month = new Intl.DateTimeFormat(localeMeta[locale].intl, { month: '2-digit' }).format(date);
-const year = date.getFullYear();
-const dateLabel = locale === 'hr' ? `${year}. / ${month}` : `${year} / ${month}`;
+const dateLabel = formatInsightDate(date, locale);
 ---
 
 <article class="card">

@@ -1,0 +1,171 @@
+---
+/**
+ * Insight article, shared by /insights/[slug]/ and /hr/zapisi/[slug]/.
+ * Long-form reading layout: sidebar metadata beside the article body (design).
+ */
+import { render } from 'astro:content';
+
+import CtaBand from '../components/CtaBand.astro';
+import CtaLink from '../components/CtaLink.astro';
+import ImageFrame from '../components/ImageFrame.astro';
+import MetaPanel from '../components/MetaPanel.astro';
+import type { Locale } from '../i18n/config';
+import { localizedPath, useTranslations, type Alternates } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { InsightEntry } from '../lib/content';
+import { formatInsightDate, readingTimeMinutes } from '../lib/format';
+import { siteConfig } from '../site.config';
+
+interface Props {
+  entry: InsightEntry;
+  locale: Locale;
+  alternates: Alternates;
+}
+
+const { entry, locale, alternates } = Astro.props;
+const t = useTranslations(locale);
+const { title, excerpt, category, coverCaption, date, author, ctaTitle } = entry.data;
+const { Content } = await render(entry);
+
+/** Articles still to be written have no body; the excerpt stands in for it. */
+const body = entry.body?.trim() ?? '';
+const hasBody = body.length > 0;
+
+const meta = [
+  { label: t('insight.writtenBy'), value: author ?? siteConfig.author },
+  { label: t('insight.date'), value: formatInsightDate(date, locale) },
+  { label: t('insight.category'), value: category },
+];
+if (hasBody) {
+  meta.push({
+    label: t('insight.readingTime'),
+    value: `${readingTimeMinutes(body)} ${t('insight.minutesShort')}`,
+  });
+}
+---
+
+<BaseLayout title={`${title} — ${siteConfig.name}`} description={excerpt} alternates={alternates}>
+  <article>
+    <header class="container head rule-bottom">
+      <CtaLink href={localizedPath('insights', locale)} variant="plain">
+        ← {t('insights.backToInsights')}
+      </CtaLink>
+      <h1>{title}</h1>
+    </header>
+
+    <div class="container hero-image">
+      <ImageFrame caption={coverCaption} ratio="21/8" />
+    </div>
+
+    <div class="container body">
+      <MetaPanel class="sidebar" items={meta} variant="stack" />
+      <div class="prose">{hasBody ? <Content /> : <p>{excerpt}</p>}</div>
+    </div>
+
+    <div class="container closing rule-top">
+      <CtaBand
+        title={ctaTitle ?? t('insights.ctaTitle')}
+        action={{ href: localizedPath('contact', locale), label: t('cta.startProject') }}
+        secondary={{ href: localizedPath('work', locale), label: t('nav.work') }}
+      />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .head {
+    padding-block: clamp(40px, 6vw, 88px) clamp(32px, 4vw, 56px);
+  }
+
+  h1 {
+    max-width: 22ch;
+    margin-top: clamp(24px, 3vw, 40px);
+    font-size: var(--text-6xl);
+    letter-spacing: var(--tracking-display);
+    line-height: 1.02;
+  }
+
+  .hero-image {
+    padding-top: clamp(28px, 4vw, 56px);
+  }
+
+  .body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(24px, 4vw, 64px);
+    padding-block: clamp(36px, 5vw, 72px) clamp(48px, 7vw, 104px);
+  }
+
+  .sidebar {
+    flex: 0 0 190px;
+  }
+
+  .prose {
+    display: flex;
+    flex: 1 1 460px;
+    flex-direction: column;
+    gap: 22px;
+    font-size: clamp(16px, 1.6vw, 18px);
+    line-height: var(--leading-relaxed);
+    color: var(--ink-2);
+  }
+
+  /* Markdown output: styled here because the content comes from <Content /> */
+  .prose :global(p) {
+    max-width: var(--measure-body);
+    text-wrap: pretty;
+  }
+
+  /* The design sets the opening paragraph larger and in ink. */
+  .prose :global(p:first-child) {
+    font-size: var(--text-lg);
+    line-height: 1.45;
+    color: var(--ink);
+  }
+
+  .prose :global(h2) {
+    margin-top: 10px;
+    font-size: var(--text-xl);
+    letter-spacing: var(--tracking-title);
+    line-height: var(--leading-snug);
+    color: var(--ink);
+  }
+
+  .prose :global(blockquote) {
+    max-width: var(--measure-body);
+    margin: 6px 0;
+    padding-left: 20px;
+    border-left: var(--hairline) solid var(--rule);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-snug);
+    line-height: 1.35;
+    color: var(--ink);
+  }
+
+  .prose :global(a) {
+    color: var(--ink);
+    border-bottom: var(--hairline) solid var(--rule);
+    transition: border-color var(--duration-state) linear;
+  }
+
+  .prose :global(a:hover) {
+    border-bottom-color: var(--ink);
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    max-width: var(--measure-body);
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .prose :global(li + li) {
+    margin-top: 8px;
+  }
+
+  .closing {
+    padding-top: clamp(28px, 3.5vw, 48px);
+    padding-bottom: clamp(56px, 8vw, 120px);
+  }
+</style>
