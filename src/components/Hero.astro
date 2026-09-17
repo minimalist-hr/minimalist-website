@@ -23,55 +23,61 @@ const { available, label, phrases, lede, action, secondary, scroll } = Astro.pro
 const [first, ...rest] = phrases;
 ---
 
-<section class="hero container">
-  <p class="available">
-    <span class="signal" aria-hidden="true">
-      <span class="signal-dot"></span>
-      <span class="signal-ping"></span>
-    </span>
-    {available}
-  </p>
-
-  <p class="studio-label">{label}</p>
-
-  <h1>
-    <span class="phrase">{first}</span>
-    {rest.map((phrase, index) => (
-      <span class="phrase" aria-hidden="true" style={`--delay: ${(index + 1) * 4.5}s`}>
-        {phrase}
+<section class="hero">
+  <div class="hero-inner container">
+    <p class="available">
+      <span class="signal" aria-hidden="true">
+        <span class="signal-dot"></span>
+        <span class="signal-ping"></span>
       </span>
-    ))}
-  </h1>
+      {available}
+    </p>
 
-  <p class="lede">{lede}</p>
+    <p class="studio-label">{label}</p>
 
-  <div class="actions">
-    <Button href={action.href}>{action.label}</Button>
-    <CtaLink href={secondary.href} variant="plain">
-      {secondary.label}
-    </CtaLink>
+    <h1>
+      <span class="phrase">{first}</span>
+      {rest.map((phrase, index) => (
+        <span class="phrase" aria-hidden="true" style={`--delay: ${(index + 1) * 4.5}s`}>
+          {phrase}
+        </span>
+      ))}
+    </h1>
+
+    <p class="lede">{lede}</p>
+
+    <div class="actions">
+      <Button href={action.href}>{action.label}</Button>
+      <CtaLink href={secondary.href} variant="plain">
+        {secondary.label}
+      </CtaLink>
+    </div>
+
+    <p class="scroll" aria-hidden="true">
+      <span class="scroll-text">{scroll}</span>
+      <span class="scroll-arrow">↓</span>
+    </p>
   </div>
-
-  <p class="scroll" aria-hidden="true">
-    <span class="scroll-text">{scroll}</span>
-    <span class="scroll-arrow">↓</span>
-  </p>
 </section>
 
 <style>
+  /* The rule runs the full width of the page, like the section rules below it. */
   .hero {
+    border-bottom: var(--hairline) solid var(--rule);
+  }
+
+  .hero-inner {
     display: flex;
     flex-direction: column;
     min-height: calc(100svh - var(--header-height) - env(safe-area-inset-top));
-    padding-block: clamp(44px, 10vw, 150px) clamp(28px, 4vw, 56px);
-    border-bottom: var(--hairline) solid var(--rule);
+    padding-block: 44px 56px;
   }
 
   .available {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: clamp(20px, 3vw, 48px);
+    margin-bottom: 48px;
     font-size: var(--text-lead);
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-snug);
@@ -122,7 +128,7 @@ const [first, ...rest] = phrases;
   }
 
   .studio-label {
-    margin-bottom: clamp(24px, 4vw, 44px);
+    margin-bottom: 40px;
     font-size: var(--text-label);
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-label);
@@ -176,7 +182,7 @@ const [first, ...rest] = phrases;
 
   .lede {
     max-width: 42ch;
-    margin-top: clamp(24px, 3vw, 40px);
+    margin-top: 40px;
     font-size: var(--text-lead);
     line-height: var(--leading-body);
     color: var(--ink-2);
@@ -187,7 +193,7 @@ const [first, ...rest] = phrases;
     flex-wrap: wrap;
     align-items: center;
     gap: clamp(16px, 2vw, 28px);
-    margin-top: clamp(28px, 4vw, 56px);
+    margin-top: 56px;
   }
 
   .scroll {
@@ -223,8 +229,28 @@ const [first, ...rest] = phrases;
     }
   }
 
-  /* ---- Desktop design (md and up) ---- */
+  /* ---- Desktop design (md and up): the design's tighter fluid rhythm ---- */
   @media (min-width: 60rem) {
+    .hero-inner {
+      padding-block: clamp(56px, 10vw, 150px) clamp(28px, 4vw, 44px);
+    }
+
+    .available {
+      margin-bottom: clamp(20px, 3vw, 32px);
+    }
+
+    .studio-label {
+      margin-bottom: clamp(24px, 4vw, 44px);
+    }
+
+    .lede {
+      margin-top: clamp(24px, 3vw, 40px);
+    }
+
+    .actions {
+      margin-top: clamp(28px, 4vw, 48px);
+    }
+
     h1 {
       max-width: 18ch;
       letter-spacing: var(--tracking-display);

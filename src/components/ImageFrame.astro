@@ -22,6 +22,8 @@ const { caption, ratio = '4/3', class: className } = Astro.props;
 <style>
   .frame {
     display: flex;
+    /* full width of its slot: never sized by the caption length */
+    width: 100%;
     align-items: flex-end;
     aspect-ratio: var(--frame-ratio);
     padding: 14px;

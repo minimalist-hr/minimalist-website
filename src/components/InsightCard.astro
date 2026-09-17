@@ -28,7 +28,9 @@ const dateLabel = locale === 'hr' ? `${year}. / ${month}` : `${year} / ${month}`
 <article class="card">
   <MetaRow items={[dateLabel, category]} />
   <h3>{title}</h3>
-  <ImageFrame class="image" caption={coverCaption} ratio="16/10" />
+  <div class="image-slot">
+    <ImageFrame caption={coverCaption} ratio="16/10" />
+  </div>
   <CtaLink href={insightPath(entry, locale)}>{t('insights.readInsight')}</CtaLink>
 </article>
 
@@ -50,8 +52,11 @@ const dateLabel = locale === 'hr' ? `${year}. / ${month}` : `${year} / ${month}`
     line-height: var(--leading-snug);
   }
 
-  .image {
+  /* margin-top:auto keeps the image (and the link under it) level across cards
+     whether the title runs to one line or two. */
+  .image-slot {
     width: 100%;
-    margin-top: 2px;
+    margin-top: auto;
+    padding-top: 2px;
   }
 </style>
