@@ -6,17 +6,22 @@
 interface Props {
   /** Hairline under the section. The last section before the footer sets this to false. */
   bordered?: boolean;
-  /** `lead` uses the larger padding the design gives the first and last blocks. */
-  size?: 'default' | 'lead';
+  /**
+   * `lead`  — larger padding, used by the closing block (design).
+   * `header` — page header: normal space above, tighter below (design).
+   */
+  size?: 'default' | 'lead' | 'header';
+  /** Drops the top padding, for a section that follows a page header. */
+  flushTop?: boolean;
   class?: string;
   id?: string;
 }
 
-const { bordered = true, size = 'default', class: className, id } = Astro.props;
+const { bordered = true, size = 'default', flushTop = false, class: className, id } = Astro.props;
 ---
 
-<section class:list={['section', className]} data-size={size} id={id}>
-  <div class="container" data-bordered={bordered}>
+<section class:list={['section', className]} data-size={size} data-flush-top={flushTop} id={id}>
+  <div class:list={['container', bordered && 'rule-bottom']}>
     <slot />
   </div>
 </section>
@@ -32,6 +37,10 @@ const { bordered = true, size = 'default', class: className, id } = Astro.props;
     padding-top: clamp(56px, 8vw, 120px);
   }
 
+  .section[data-flush-top='true'] {
+    padding-top: 0;
+  }
+
   .container {
     padding-bottom: clamp(48px, 7vw, 104px);
   }
@@ -40,7 +49,8 @@ const { bordered = true, size = 'default', class: className, id } = Astro.props;
     padding-bottom: clamp(56px, 8vw, 120px);
   }
 
-  .container[data-bordered='true'] {
-    border-bottom: var(--hairline) solid var(--rule);
+  /* Page header: the design keeps a tighter gap between the lede and its rule. */
+  .section[data-size='header'] .container {
+    padding-bottom: clamp(32px, 4vw, 56px);
   }
 </style>

@@ -24,7 +24,7 @@ const [first, ...rest] = phrases;
 ---
 
 <section class="hero">
-  <div class="hero-inner container">
+  <div class="hero-inner container rule-bottom">
     <p class="available">
       <span class="signal" aria-hidden="true">
         <span class="signal-dot"></span>
@@ -61,13 +61,12 @@ const [first, ...rest] = phrases;
 </section>
 
 <style>
-  /* The rule runs to the width of the content, like the section rules below it. */
+  /* The rule (.rule-bottom) runs to the width of the text, like the sections below. */
   .hero-inner {
     display: flex;
     flex-direction: column;
     min-height: calc(100svh - var(--header-height) - env(safe-area-inset-top));
     padding-block: 44px 56px;
-    border-bottom: var(--hairline) solid var(--rule);
   }
 
   .available {

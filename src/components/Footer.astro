@@ -60,7 +60,7 @@ const year = new Date().getFullYear();
     </div>
   </div>
 
-  <div class="legal container">
+  <div class="legal container rule-top">
     <p>
       © {year} {siteConfig.name}. {t('footer.rights')}
     </p>
@@ -155,7 +155,6 @@ const year = new Date().getFullYear();
     justify-content: center;
     padding-top: 18px;
     padding-bottom: max(clamp(32px, 4vw, 52px), env(safe-area-inset-bottom));
-    border-top: var(--hairline) solid var(--rule);
     font-size: var(--text-label-sm);
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-label-tight);

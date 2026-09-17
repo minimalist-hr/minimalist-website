@@ -37,11 +37,11 @@ const entries = await getWork(locale);
 ---
 
 <BaseLayout title={text.title} description={text.lede} alternates={alternatesFor('work')}>
-  <Section size="lead">
+  <Section size="header">
     <PageHeader label={t('nav.work')} title={text.heading} lede={text.lede} />
   </Section>
 
-  <Section bordered={false}>
+  <Section bordered={false} flushTop>
     {entries.map((entry, index) => (
       <WorkRow
         entry={entry}
