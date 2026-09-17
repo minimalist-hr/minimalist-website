@@ -84,7 +84,9 @@ deploy_preview:
     - ALIAS="$(printf '%s' "$CI_COMMIT_REF_SLUG" | cut -c1-40 | sed -E 's/-+$//')"
     - case "$ALIAS" in [a-z]*) ;; *) ALIAS="b-$ALIAS" ;; esac
     # Previews must never be indexed.
-    - printf '\n/*\n  X-Robots-Tag: noindex\n' >> dist/_headers
+    # Block scalar (|): an unquoted ": " in a plain YAML list item is parsed as a mapping.
+    - |
+      printf '\n/*\n  X-Robots-Tag: noindex\n' >> dist/_headers
     - MSG="$(printf '%s %s' "$CI_COMMIT_SHORT_SHA" "$CI_COMMIT_TITLE" | cut -c1-90)"
     - pnpm exec wrangler versions upload --preview-alias "$ALIAS" --message "$MSG"
     - echo "DEPLOY_URL=https://$ALIAS-$WORKER_NAME.$CF_WORKERS_SUBDOMAIN.workers.dev" >> deploy.env
@@ -104,7 +106,8 @@ deploy_production:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     # Keep search engines out until launch. Set ALLOW_INDEXING=true in GitLab when the site goes live.
-    - if [ "$ALLOW_INDEXING" != "true" ]; then printf '\n/*\n  X-Robots-Tag: noindex\n' >> dist/_headers; fi
+    - |
+      if [ "$ALLOW_INDEXING" != "true" ]; then printf '\n/*\n  X-Robots-Tag: noindex\n' >> dist/_headers; fi
     - MSG="$(printf '%s %s' "$CI_COMMIT_SHORT_SHA" "$CI_COMMIT_TITLE" | cut -c1-90)"
     - pnpm exec wrangler deploy --message "$MSG"
   environment:
