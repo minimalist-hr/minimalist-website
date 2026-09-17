@@ -32,6 +32,13 @@ const en = {
   'a11y.openMenu': 'Menu',
   'a11y.closeMenu': 'Close menu',
 
+  'cta.startProject': 'Start a project',
+  'cta.seeWork': 'See the work',
+
+  'work.readCaseStudy': 'Read the case study',
+  'work.inProgress': '[ case study in progress ]',
+  'insights.readInsight': 'Read the insight',
+
   'footer.country': 'Croatia',
   'footer.rights': 'All rights reserved.',
 
@@ -64,6 +71,13 @@ const hr: Record<UiKey, string> = {
   'a11y.lightMode': 'Svijetla tema',
   'a11y.openMenu': 'Izbornik',
   'a11y.closeMenu': 'Zatvori izbornik',
+
+  'cta.startProject': 'Započnite projekt',
+  'cta.seeWork': 'Pogledajte radove',
+
+  'work.readCaseStudy': 'Pročitajte studiju',
+  'work.inProgress': '[ studija u izradi ]',
+  'insights.readInsight': 'Pročitajte zapis',
 
   'footer.country': 'Hrvatska',
   'footer.rights': 'Sva prava pridržana.',

@@ -1,0 +1,71 @@
+---
+/**
+ * Case study card used in "Selected work". Published entries link to the case study;
+ * entries still being written show "[ case study in progress ]" (plan §8).
+ */
+import type { Locale } from '../i18n/config';
+import { useTranslations } from '../i18n/utils';
+import { workPath, type WorkEntry } from '../lib/content';
+import CtaLink from './CtaLink.astro';
+import ImageFrame from './ImageFrame.astro';
+import MetaRow from './MetaRow.astro';
+
+interface Props {
+  entry: WorkEntry;
+  locale: Locale;
+}
+
+const { entry, locale } = Astro.props;
+const { title, sector, year, cardMetric, coverCaption, status } = entry.data;
+const t = useTranslations(locale);
+---
+
+<article class="card">
+  <ImageFrame caption={coverCaption} ratio="4/3" />
+  <div class="body">
+    <MetaRow items={[sector, year]} />
+    <h3>{title}</h3>
+    {cardMetric && <p class="metric">{cardMetric}</p>}
+    {status === 'published' ? (
+      <CtaLink href={workPath(entry, locale)}>{t('work.readCaseStudy')}</CtaLink>
+    ) : (
+      <p class="in-progress">{t('work.inProgress')}</p>
+    )}
+  </div>
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+    letter-spacing: var(--tracking-title);
+    line-height: var(--leading-tight);
+  }
+
+  .metric {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--ink-2);
+  }
+
+  .in-progress {
+    margin-top: 4px;
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--graphite);
+  }
+</style>

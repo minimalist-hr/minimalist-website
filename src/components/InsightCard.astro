@@ -1,0 +1,57 @@
+---
+/**
+ * Insight card: date and category, title, placeholder image, link to the article.
+ */
+import type { Locale } from '../i18n/config';
+import { localeMeta } from '../i18n/config';
+import { useTranslations } from '../i18n/utils';
+import { insightPath, type InsightEntry } from '../lib/content';
+import CtaLink from './CtaLink.astro';
+import ImageFrame from './ImageFrame.astro';
+import MetaRow from './MetaRow.astro';
+
+interface Props {
+  entry: InsightEntry;
+  locale: Locale;
+}
+
+const { entry, locale } = Astro.props;
+const { title, category, coverCaption, date } = entry.data;
+const t = useTranslations(locale);
+
+/** The design shows "2026 / 08"; Croatian dates carry a trailing dot (plan §7). */
+const month = new Intl.DateTimeFormat(localeMeta[locale].intl, { month: '2-digit' }).format(date);
+const year = date.getFullYear();
+const dateLabel = locale === 'hr' ? `${year}. / ${month}` : `${year} / ${month}`;
+---
+
+<article class="card">
+  <MetaRow items={[dateLabel, category]} />
+  <h3>{title}</h3>
+  <ImageFrame class="image" caption={coverCaption} ratio="16/10" />
+  <CtaLink href={insightPath(entry, locale)}>{t('insights.readInsight')}</CtaLink>
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding-top: 18px;
+    border-top: var(--hairline) solid var(--rule);
+  }
+
+  h3 {
+    /* min-height keeps images aligned across cards with one- or two-line titles */
+    min-height: 2.5em;
+    font-size: var(--text-base);
+    letter-spacing: var(--tracking-snug);
+    line-height: var(--leading-snug);
+  }
+
+  .image {
+    width: 100%;
+    margin-top: 2px;
+  }
+</style>

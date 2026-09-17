@@ -1,0 +1,37 @@
+---
+/**
+ * Image slot. Until real photography exists, renders the striped placeholder with its
+ * caption exactly as in the design (plan §3.4). Real images replace the placeholder later,
+ * keeping the same reserved aspect ratio so nothing shifts.
+ */
+interface Props {
+  /** Placeholder caption, e.g. "product shot / core banking console". */
+  caption: string;
+  /** Reserved ratio, e.g. "4/3" or "16/10". */
+  ratio?: string;
+  class?: string;
+}
+
+const { caption, ratio = '4/3', class: className } = Astro.props;
+---
+
+<div class:list={['frame', className]} style={`--frame-ratio: ${ratio}`}>
+  <span class="caption">{caption}</span>
+</div>
+
+<style>
+  .frame {
+    display: flex;
+    align-items: flex-end;
+    aspect-ratio: var(--frame-ratio);
+    padding: 14px;
+    background: repeating-linear-gradient(90deg, var(--stripe-a) 0 5px, var(--stripe-b) 5px 10px);
+  }
+
+  .caption {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    letter-spacing: var(--tracking-meta);
+    color: var(--graphite);
+  }
+</style>

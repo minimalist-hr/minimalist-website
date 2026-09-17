@@ -1,0 +1,39 @@
+---
+/**
+ * Uppercase metadata line with the brand square as separator, e.g. "Fintech ▪ 2026".
+ */
+interface Props {
+  items: (string | number)[];
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+---
+
+<span class:list={['meta', className]}>
+  {items.map((item, index) => (
+    <>
+      {index > 0 && <span class="dot" aria-hidden="true" />}
+      {item}
+    </>
+  ))}
+</span>
+
+<style>
+  .meta {
+    font-size: var(--text-label-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--graphite);
+  }
+
+  .dot {
+    display: inline-block;
+    width: 3.4px;
+    height: 3.4px;
+    margin: 0 10px;
+    vertical-align: middle;
+    background: currentColor;
+  }
+</style>
