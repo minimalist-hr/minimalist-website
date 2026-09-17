@@ -1,0 +1,46 @@
+---
+/**
+ * Home page, shared by / and /hr/. Pages only pass the locale; markup lives here once.
+ * Placeholder until the home sections are built in Phase 2.
+ */
+import type { Locale } from '../i18n/config';
+import { alternatesFor } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const copy = {
+  en: {
+    title: 'Minimalist — Complex problems. Simple solutions.',
+    heading: 'Complex problems. Simple solutions.',
+  },
+  hr: {
+    title: 'Minimalist — Složeni problemi. Jednostavna rješenja.',
+    heading: 'Složeni problemi. Jednostavna rješenja.',
+  },
+} satisfies Record<Locale, Record<string, string>>;
+
+const { locale } = Astro.props;
+const text = copy[locale];
+---
+
+<BaseLayout title={text.title} alternates={alternatesFor('home')}>
+  <section class="container hero">
+    <h1>{text.heading}</h1>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-block: clamp(56px, 10vw, 150px);
+  }
+
+  h1 {
+    max-width: 16ch;
+    font-size: var(--text-display);
+    letter-spacing: var(--tracking-display);
+    line-height: var(--leading-display);
+  }
+</style>
