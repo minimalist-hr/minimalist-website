@@ -2,7 +2,7 @@
 /**
  * Mobile menu (below md): 44px button + dropdown panel under the header (plan §5.3, §5.4).
  * Open state lives on <html data-menu="open">. Closes on Esc (focus returns to the button),
- * on link click and when the viewport grows past md.
+ * on link click, when focus leaves it and when the viewport grows past md.
  * Without JS the button is hidden and the panel is shown as a plain list.
  */
 import type { Locale } from '../i18n/config';
@@ -75,6 +75,17 @@ const t = useTranslations(locale);
   panel?.addEventListener('click', (event) => {
     if (event.target instanceof Element && event.target.closest('a')) setOpen(false);
   });
+
+  // Tabbing out of the menu closes it, so the open panel never covers the focused element.
+  // (relatedTarget is null when focus goes nowhere, e.g. a click on the panel's padding.)
+  function closeIfFocusLeft(event: FocusEvent) {
+    const next = event.relatedTarget;
+    if (!isOpen() || !(next instanceof Node)) return;
+    if (!panel?.contains(next) && !button?.contains(next)) setOpen(false);
+  }
+
+  button?.addEventListener('focusout', closeIfFocusLeft);
+  panel?.addEventListener('focusout', closeIfFocusLeft);
 
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && isOpen()) {
