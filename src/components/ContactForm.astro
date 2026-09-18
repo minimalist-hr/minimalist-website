@@ -31,7 +31,9 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = useTranslations(locale);
-const withEmail = (text: string) => text.replace('{email}', siteConfig.email);
+const { email } = siteConfig;
+/** Copy with an {email} placeholder; the address is rendered as a mailto link. */
+const [noscriptBefore, noscriptAfter = ''] = t('form.noscript').split('{email}');
 
 const timelineOptions = timelineValues.map((value) => ({
   value,
@@ -53,7 +55,8 @@ const messages = {
   sending: t('form.sending'),
   invalid: t('form.errorInvalid'),
   verification: t('form.errorVerification'),
-  send: withEmail(t('form.errorSend')),
+  send: t('form.errorSend'),
+  email,
   fields: {
     name: t('form.errorName'),
     email: t('form.errorEmail'),
@@ -71,7 +74,11 @@ const messages = {
   data-messages={JSON.stringify(messages)}
 >
   <noscript>
-    <p class="notice">{withEmail(t('form.noscript'))}</p>
+    <p class="notice">
+      {noscriptBefore}
+      <a href={`mailto:${email}`}>{email}</a>
+      {noscriptAfter}
+    </p>
   </noscript>
 
   <div class="body" data-form-body>
@@ -187,6 +194,18 @@ const messages = {
     font-weight: var(--weight-medium);
     line-height: var(--leading-body);
     color: var(--ink);
+  }
+
+  /* :global — the error message link is created by the script, outside Astro's scoping. */
+  .notice :global(a) {
+    border-bottom: var(--hairline) solid var(--rule);
+    transition: border-color var(--duration-state) linear;
+  }
+
+  @media (hover: hover) {
+    .notice :global(a:hover) {
+      border-bottom-color: var(--ink);
+    }
   }
 
   .actions {

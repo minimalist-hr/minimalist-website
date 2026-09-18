@@ -10,7 +10,9 @@ interface Messages {
   sending: string;
   invalid: string;
   verification: string;
+  /** May contain {email}, rendered as a mailto link. */
   send: string;
+  email: string;
   fields: Record<string, string>;
   tooLong: string;
 }
@@ -149,8 +151,17 @@ export function enhanceContactForm(form: HTMLFormElement): void {
     fieldControl(fields[0] ?? '')?.focus();
   }
 
+  /** Shows a message; an {email} placeholder becomes a mailto link (built as a node, not HTML). */
   function showStatus(message: string) {
-    status.textContent = message;
+    const [before = '', after] = message.split('{email}');
+    if (after === undefined) {
+      status.textContent = message;
+    } else {
+      const link = document.createElement('a');
+      link.href = `mailto:${messages.email}`;
+      link.textContent = messages.email;
+      status.replaceChildren(before, link, after);
+    }
     status.hidden = false;
   }
 
