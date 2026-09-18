@@ -42,4 +42,10 @@ export default defineConfig([
     },
     rules: { '@typescript-eslint/no-require-imports': 'off' },
   },
+
+  // Node scripts (scripts/*.mjs).
+  {
+    files: ['scripts/**/*.mjs'],
+    languageOptions: { globals: { console: 'readonly', process: 'readonly' } },
+  },
 ]);

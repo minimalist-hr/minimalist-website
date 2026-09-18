@@ -1,7 +1,9 @@
 # scripts
 
-Manual asset scripts. They are not part of `pnpm run build`; run them only when the master
-artwork in `design/assets/` changes, then commit the regenerated files.
+`lighthouse.mjs` runs the Lighthouse audit (`pnpm run test:lighthouse`, see lighthouserc.cjs).
+
+The rest are manual asset scripts. They are not part of `pnpm run build`; run them only when
+the master artwork in `design/assets/` changes, then commit the regenerated files.
 
 ## outline-svg-text.py
 

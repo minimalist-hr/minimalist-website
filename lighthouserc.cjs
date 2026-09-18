@@ -1,5 +1,6 @@
 /**
- * Lighthouse CI (plan §11.1), run in CI on merge requests (`pnpm run test:lighthouse`).
+ * Lighthouse CI (plan §11.1), run in CI on merge requests (`pnpm run test:lighthouse`, which
+ * runs scripts/lighthouse.mjs: one run at a time, with retries).
  * Mobile emulation (Lighthouse's default) against the built site on the Workers runtime.
  * Run `pnpm run build` first. Uses Playwright's Chromium, so there is one browser to manage.
  */
