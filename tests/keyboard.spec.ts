@@ -27,6 +27,13 @@ const TAB_PAGES = [
   '/does-not-exist/',
 ];
 
+/**
+ * Safari (WebKit) skips links on Tab unless "Press Tab to highlight each item" is on, and
+ * Playwright's WebKit cannot send Option+Tab. Tests that need a link to take focus skip
+ * WebKit; check those on a Mac with Option+Tab.
+ */
+const WEBKIT_LINKS = 'WebKit does not Tab to links by default (use Option+Tab on a Mac)';
+
 /** Upper bound on focus stops per page, so a focus trap fails instead of hanging. */
 const MAX_STOPS = 250;
 
@@ -78,7 +85,8 @@ async function walkFocus(page: Page, key: 'Tab' | 'Shift+Tab') {
 }
 
 test.describe('skip link', () => {
-  test('is the first stop, visible, and moves focus to main', async ({ page }) => {
+  test('is the first stop, visible, and moves focus to main', async ({ page, browserName }) => {
+    test.skip(browserName === 'webkit', WEBKIT_LINKS);
     await page.goto('/');
     await page.keyboard.press('Tab');
     const skip = page.locator('.skip-link');
@@ -113,7 +121,11 @@ test.describe('mobile menu', () => {
     test.skip(!isMobile, 'The menu button only exists below md');
   });
 
-  test('opens from the keyboard, closes on Esc and returns focus', async ({ page }) => {
+  test('opens from the keyboard, closes on Esc and returns focus', async ({
+    page,
+    browserName,
+  }) => {
+    test.skip(browserName === 'webkit', WEBKIT_LINKS);
     await page.goto('/');
     const button = page.locator('[data-menu-toggle]');
     await button.focus();
@@ -126,7 +138,11 @@ test.describe('mobile menu', () => {
     await expect(button).toBeFocused();
   });
 
-  test('closes when focus leaves it, so it never covers the focused element', async ({ page }) => {
+  test('closes when focus leaves it, so it never covers the focused element', async ({
+    page,
+    browserName,
+  }) => {
+    test.skip(browserName === 'webkit', WEBKIT_LINKS);
     await page.goto('/');
     const button = page.locator('[data-menu-toggle]');
     await button.focus();
