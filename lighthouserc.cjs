@@ -19,7 +19,14 @@ module.exports = {
       url: [`${base}/`, `${base}/work/core-banking-rebuilt/`, `${base}/contact/`],
       // Median of three runs, to smooth out noisy shared CI runners.
       numberOfRuns: 3,
-      settings: { chromeFlags: '--no-sandbox --headless=new' },
+      settings: {
+        // --disable-dev-shm-usage: Docker's 64 MB /dev/shm crashes Chrome tabs in CI.
+        chromeFlags: '--no-sandbox --headless=new --disable-dev-shm-usage',
+        // Turnstile is third-party and its challenge never settles in the headless CI
+        // container, so the contact page never finishes loading. Block it: the audit
+        // measures our code, and the form already handles Turnstile failing to load.
+        blockedUrlPatterns: ['*challenges.cloudflare.com*'],
+      },
     },
     assert: {
       assertions: {
