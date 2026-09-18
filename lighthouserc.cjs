@@ -15,8 +15,9 @@ module.exports = {
       startServerReadyPattern: 'Ready on',
       startServerReadyTimeout: 120000,
       chromePath: chromium.executablePath(),
-      // The pages plan §11.1 names: home, a case study, contact.
-      url: [`${base}/`, `${base}/work/core-banking-rebuilt/`, `${base}/contact/`],
+      // Plan §11.1 names home, a case study and contact. Until a case study is published,
+      // the insight article stands in for the long-form template.
+      url: [`${base}/`, `${base}/insights/deleting-code-is-a-feature/`, `${base}/contact/`],
       // Median of three runs, to smooth out noisy shared CI runners.
       numberOfRuns: 3,
       settings: {

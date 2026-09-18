@@ -9,7 +9,7 @@ engagement: '14 tjedana, 2026.'
 scope: 'Modernizacija'
 summary: 'Glavna knjiga koju se nitko nije usudio dirati, zamijenjena bez dana zastoja.'
 cardMetric: 'p95 latencija 340 ms → 48 ms. Infrastruktura 62% jeftinija.'
-status: published
+status: in-progress
 featured: true
 order: 1
 coverCaption: 'product shot / core banking console'

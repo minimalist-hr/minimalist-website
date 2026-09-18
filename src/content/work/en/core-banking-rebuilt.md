@@ -9,7 +9,7 @@ engagement: '14 weeks, 2026'
 scope: 'Modernization'
 summary: 'A ledger nobody dared touch, replaced without a single day of downtime.'
 cardMetric: 'p95 latency 340ms → 48ms. Infrastructure cost down 62%.'
-status: published
+status: in-progress
 featured: true
 order: 1
 coverCaption: 'product shot / core banking console'
