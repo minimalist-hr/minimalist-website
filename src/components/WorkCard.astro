@@ -1,7 +1,8 @@
 ---
 /**
  * Case study card used in "Selected work". Published entries link to the case study;
- * entries still being written show "[ case study in progress ]" (plan §8).
+ * entries still being written show "[ case study in progress ]" (plan §8). The line under
+ * the title is the result metric, or the summary until there is one.
  */
 import type { Locale } from '../i18n/config';
 import { useTranslations } from '../i18n/utils';
@@ -16,7 +17,7 @@ interface Props {
 }
 
 const { entry, locale } = Astro.props;
-const { title, sector, year, cardMetric, coverCaption, status } = entry.data;
+const { title, sector, year, cardMetric, summary, coverCaption, status } = entry.data;
 const t = useTranslations(locale);
 ---
 
@@ -25,7 +26,7 @@ const t = useTranslations(locale);
   <div class="body">
     <MetaRow items={[sector, year]} />
     <h3>{title}</h3>
-    {cardMetric && <p class="metric">{cardMetric}</p>}
+    <p class="metric">{cardMetric ?? summary}</p>
     {status === 'published' ? (
       <CtaLink href={workPath(entry, locale)}>{t('work.readCaseStudy')}</CtaLink>
     ) : (
