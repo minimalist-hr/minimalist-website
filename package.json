@@ -16,7 +16,7 @@
     "format:check": "prettier --check .",
     "types:worker": "wrangler types src/worker/worker-configuration.d.ts --strict-vars false",
     "test:a11y": "playwright test",
-    "test:lighthouse": "lhci autorun"
+    "test:lighthouse": "node scripts/lighthouse.mjs"
   },
   "dependencies": {
     "astro": "^7.3.3"
