@@ -1,43 +1,35 @@
-# Astro Starter Kit: Minimal
+# Minimalist website
 
-```sh
-pnpm create astro@latest -- --template minimal
-```
+The studio website at [minimalist.hr](https://minimalist.hr), in English and Croatian.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Astro (static) with plain CSS, served by a Cloudflare Worker with static assets. The Worker
+also handles the contact form (Turnstile, then email through Resend). GitLab CI checks, builds
+and deploys every push: `main` to production, other branches to preview URLs.
 
-## 🚀 Project Structure
+- `MINIMALIST-WEBSITE-PLAN.md`: the build plan; section 17 records how the launched site
+  differs from it.
+- `CLAUDE.md`: project rules (brand constraints, responsive, i18n, workflow).
+- `design/`: the designs this site implements.
 
-Inside of your Astro project, you'll see the following folders and files:
+## Commands
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+Node 24 (`.nvmrc`) and pnpm (`corepack enable`).
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+| Command                       | Action                                                                                       |
+| :---------------------------- | :------------------------------------------------------------------------------------------- |
+| `pnpm install`                | Install dependencies                                                                         |
+| `pnpm dev`                    | Local dev server                                                                             |
+| `pnpm run lint`               | ESLint                                                                                       |
+| `pnpm run format`             | Prettier (CI runs `format:check`)                                                            |
+| `pnpm run check`              | Type checks (site and Worker)                                                                |
+| `pnpm run build`              | Static build to `dist/`                                                                      |
+| `pnpm exec wrangler dev`      | Built site and Worker on the Workers runtime (copy `.dev.vars.example` to `.dev.vars` first) |
+| `pnpm run test:a11y`          | Accessibility, keyboard and reflow checks, Chromium (build first)                            |
+| `pnpm run test:a11y:browsers` | The same in Chromium, Firefox and WebKit                                                     |
+| `pnpm run test:lighthouse`    | Lighthouse CI (build first)                                                                  |
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Content
 
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                | Action                                           |
-| :--------------------- | :----------------------------------------------- |
-| `pnpm install`         | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Case studies and insights are Markdown files in `src/content/work/` and `src/content/insights/`,
+one per language (`en/`, `hr/`), paired by `translationKey`. A case study with
+`status: in-progress` shows only its card.
