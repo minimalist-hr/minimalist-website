@@ -60,7 +60,7 @@
 
 - `src/worker/` handles `POST /api/contact`; every other request goes back to `env.ASSETS` so the 404 pages keep working. The form/Worker contract lives in `src/lib/inquiry.ts`.
 - Email goes through the `Mailer` interface in `src/worker/mail/`. To change provider, add one implementation and select it by `MAIL_PROVIDER`; nothing else changes. Never log message contents.
-- Production sends through Resend (`MAIL_PROVIDER=resend`, secret `RESEND_API_KEY`, domain `minimalist.hr` verified in the eu-west-1 region). iCloud keeps the inbox and the root MX records; never onboard `minimalist.hr` to Cloudflare Email Routing. The Cloudflare `send_email` binding stays as a fallback (needs Workers Paid).
+- Production sends through Resend (`MAIL_PROVIDER=resend`, secret `RESEND_API_KEY`, domain `minimalist.hr` verified in the eu-west-1 region). iCloud keeps the inbox and the root MX records; never onboard `minimalist.hr` to Cloudflare Email Routing.
 
 ## Secrets
 

@@ -74,7 +74,7 @@ Use the extracted HTML for exact copy, spacing, sizes, tokens and component stru
 | Hosting | **Cloudflare Workers with static assets** (not Pages). Astro's `dist/` is served as static assets; the contact form is a small Worker script added in Phase 3 | Cloudflare's recommended target for new projects; free static requests, fast EU edge, preview URLs per branch |
 | Repo & CI/CD | **GitLab CI/CD** runs checks and build, then deploys with **Wrangler**. `main` → production; other branches → preview URLs. Cloudflare's own Git integration is **not** used | Deploys only happen when the pipeline passes; everything is defined in the repo |
 | Form spam | **Cloudflare Turnstile** | Invisible, cookieless |
-| Form email | **Resend** (sending region eu-west-1), called from the Worker; Cloudflare Email Service kept as a fallback | No database; minimal GDPR surface. Resend stores logs in the US (section 17) |
+| Form email | **Resend** (sending region eu-west-1), called from the Worker | No database; minimal GDPR surface. Resend stores logs in the US (section 17) |
 | Analytics | **Cloudflare Web Analytics** (cookieless) | No cookie banner needed |
 | Fonts | **Self-hosted Archivo** (variable, woff2), subsets **latin + latin-ext** | Performance, GDPR, Croatian diacritics |
 | Package manager | **pnpm** (version pinned in `package.json`) | — |
@@ -639,7 +639,7 @@ Where the build differs from the sections above. All of these were agreed during
 - Web Analytics uses automatic injection; Cloudflare only injects the beacon for browser requests.
 
 **Contact form and email**
-- The Worker lives in `src/worker/`; the form/Worker contract in `src/lib/inquiry.ts`. Email goes through a `Mailer` interface: `resend` in production, `cloudflare` (Email Service binding, needs Workers Paid) as a fallback, `console` locally.
+- The Worker lives in `src/worker/`; the form/Worker contract in `src/lib/inquiry.ts`. Email goes through a `Mailer` interface: `resend` in production, `console` locally. A Cloudflare Email Service implementation existed until launch and was removed (it needs Workers Paid); it is in the git history.
 - Cloudflare Email Sending needs the Workers Paid plan, and Email Routing would take over iCloud's MX records, so production sends through Resend.
 - The Turnstile widget has only `minimalist.hr` (workers.dev cannot be added); locally the test keys are used.
 - Without JavaScript the form shows the email address instead of posting, because Turnstile needs JavaScript.
