@@ -9,13 +9,26 @@ interface Props {
   bordered?: boolean;
   /** Vertical padding for stacked rows, e.g. the Skills areas (design). */
   padded?: boolean;
+  /** Width of the label column; the design uses 240px, and 200px on Legal. */
+  sideWidth?: string;
   class?: string;
 }
 
-const { label, bordered = false, padded = false, class: className } = Astro.props;
+const {
+  label,
+  bordered = false,
+  padded = false,
+  sideWidth = '240px',
+  class: className,
+} = Astro.props;
 ---
 
-<div class:list={['row', className]} data-bordered={bordered} data-padded={padded}>
+<div
+  class:list={['row', className]}
+  data-bordered={bordered}
+  data-padded={padded}
+  style={`--side-width: ${sideWidth}`}
+>
   <div class="side">
     {label && <p class="label">{label}</p>}
     <slot name="side" />
@@ -41,7 +54,7 @@ const { label, bordered = false, padded = false, class: className } = Astro.prop
   }
 
   .side {
-    flex: 0 0 240px;
+    flex: 0 0 var(--side-width);
   }
 
   .label {

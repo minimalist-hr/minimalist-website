@@ -1,0 +1,176 @@
+---
+/**
+ * Contact page, shared by /contact/ and /hr/kontakt/: inquiry form beside direct contact
+ * details, the studio address, the introductory call and a short privacy note.
+ */
+import ContactForm from '../components/ContactForm.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import type { Locale } from '../i18n/config';
+import { alternatesFor, localizedPath, useTranslations } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../site.config';
+
+interface Props {
+  locale: Locale;
+}
+
+const copy = {
+  en: {
+    title: 'Contact — Minimalist',
+    heading: 'Let’s talk about what you’re building.',
+    lede: 'Tell us the problem in your own words. You get a written reply within one business day, and a short call only if it would actually help.',
+    writeDirectly: 'Or write directly',
+    studio: 'Studio',
+    introCall: 'Introductory call',
+    introCallText: 'Thirty minutes, no pitch deck.',
+    introCallLink: 'Call on FaceTime',
+    privacy:
+      'What you send is used only to answer your inquiry. Nothing is shared, nothing is added to a mailing list.',
+    privacyLink: 'Privacy policy',
+  },
+  hr: {
+    title: 'Kontakt — Minimalist',
+    heading: 'Razgovarajmo o tome što gradite.',
+    lede: 'Opišite problem svojim riječima. Pisani odgovor dobivate u jednom radnom danu, a kratak poziv samo ako bi zaista pomogao.',
+    writeDirectly: 'Ili pišite direktno',
+    studio: 'Studio',
+    introCall: 'Uvodni poziv',
+    introCallText: 'Trideset minuta, bez prezentacije.',
+    introCallLink: 'Nazovite putem FaceTimea',
+    privacy:
+      'Ono što pošaljete koristi se isključivo za odgovor na vaš upit. Ništa se ne dijeli i ne dodaje na mailing listu.',
+    privacyLink: 'Politika privatnosti',
+  },
+} satisfies Record<Locale, Record<string, string>>;
+
+const { locale } = Astro.props;
+const text = copy[locale];
+const t = useTranslations(locale);
+const { company, email, introCall } = siteConfig;
+---
+
+<BaseLayout title={text.title} description={text.lede} alternates={alternatesFor('contact')}>
+  <Section size="header">
+    <PageHeader label={t('nav.contact')} title={text.heading} lede={text.lede} />
+  </Section>
+
+  <Section bordered={false}>
+    <div class="layout">
+      <ContactForm locale={locale} />
+
+      <aside class="aside">
+        <div class="block">
+          <p class="label">{text.writeDirectly}</p>
+          <a class="email" href={`mailto:${email}`}>
+            {email}
+          </a>
+        </div>
+
+        <div class="block ruled">
+          <p class="label">{text.studio}</p>
+          <address>
+            {company.street}
+            <br />
+            {`${company.postalCode} ${company.city}, ${t('footer.country')}`}
+          </address>
+        </div>
+
+        <div class="block ruled">
+          <p class="label">{text.introCall}</p>
+          <p class="text">
+            {text.introCallText}{' '}
+            <a class="inline-link" href={introCall}>
+              {text.introCallLink}
+            </a>
+          </p>
+        </div>
+
+        <p class="privacy">
+          {text.privacy}{' '}
+          <a class="inline-link" href={localizedPath('legal', locale)}>
+            {text.privacyLink}
+          </a>
+        </p>
+      </aside>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(40px, 5vw, 80px);
+    align-items: start;
+  }
+
+  .aside {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(24px, 3vw, 36px);
+  }
+
+  .block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ruled {
+    padding-top: 18px;
+    border-top: var(--hairline) solid var(--rule);
+  }
+
+  .label {
+    font-size: var(--text-label-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--graphite);
+  }
+
+  .email {
+    align-self: flex-start;
+    font-size: var(--text-xl);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-title);
+    border-bottom: var(--hairline) solid var(--rule);
+    transition: border-color var(--duration-state) linear;
+  }
+
+  address,
+  .text {
+    font-size: var(--text-base);
+    font-style: normal;
+    line-height: var(--leading-relaxed);
+    color: var(--ink-2);
+  }
+
+  .inline-link {
+    color: var(--ink);
+    border-bottom: var(--hairline) solid var(--rule);
+    transition: border-color var(--duration-state) linear;
+  }
+
+  .privacy {
+    max-width: 40ch;
+    font-size: var(--text-xs);
+    line-height: var(--leading-relaxed);
+    color: var(--graphite);
+  }
+
+  @media (hover: hover) {
+    .email:hover,
+    .inline-link:hover {
+      border-bottom-color: var(--ink);
+    }
+  }
+
+  /* ---- Desktop design (md and up): form and details side by side ---- */
+  @media (min-width: 60rem) {
+    .layout {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

@@ -1,18 +1,20 @@
 ---
 /**
  * Top of a list or overview page: small label, page title, optional lede.
+ * `compact` is the smaller title the design uses for the Legal page.
  */
 interface Props {
-  label: string;
+  label?: string | undefined;
   title: string;
   lede?: string | undefined;
+  compact?: boolean;
 }
 
-const { label, title, lede } = Astro.props;
+const { label, title, lede, compact = false } = Astro.props;
 ---
 
-<div class="page-header">
-  <p class="label">{label}</p>
+<div class="page-header" data-compact={compact}>
+  {label && <p class="label">{label}</p>}
   <h1>{title}</h1>
   {lede && <p class="lede">{lede}</p>}
 </div>
@@ -34,11 +36,23 @@ const { label, title, lede } = Astro.props;
     line-height: 1.02;
   }
 
+  [data-compact='true'] h1 {
+    font-size: var(--text-title-compact);
+    letter-spacing: var(--tracking-headline);
+    line-height: 1.05;
+  }
+
   .lede {
     max-width: 48ch;
     margin-top: clamp(20px, 2.5vw, 32px);
     font-size: var(--text-body);
     line-height: var(--leading-body);
     color: var(--ink-2);
+  }
+
+  [data-compact='true'] .lede {
+    max-width: 60ch;
+    margin-top: 20px;
+    line-height: var(--leading-relaxed);
   }
 </style>

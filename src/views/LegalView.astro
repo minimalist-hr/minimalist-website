@@ -1,0 +1,204 @@
+---
+/**
+ * Legal page, shared by /legal/ and /hr/pravno/: privacy policy, terms of use and the
+ * studio's business details (plan §14).
+ * ⚠️ Copy comes from the design and must be reviewed by someone qualified before launch.
+ */
+import LabelledRow from '../components/LabelledRow.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import type { Locale } from '../i18n/config';
+import { alternatesFor, useTranslations } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../site.config';
+
+interface Props {
+  locale: Locale;
+}
+
+const { company, email } = siteConfig;
+
+const copy = {
+  en: {
+    title: 'Legal — Minimalist',
+    heading: 'Privacy, terms and studio details',
+    lede: 'This site uses privacy-friendly analytics with no cookies and no personal data, so no consent banner is required. Anything you send through the inquiry form is used only to answer that inquiry.',
+    privacyLabel: 'Privacy policy',
+    privacy: [
+      'We collect only what you choose to send us: your name, email address, company, role and the description of your project. Nothing else is gathered, and no profile is built from your visit.',
+      'That data is used to answer your inquiry and to prepare a proposal if you ask for one. It is stored for twelve months, then deleted. It is never sold, never shared with third parties for marketing, and never added to a mailing list.',
+      `You may ask at any time to see, correct, export or delete what we hold. Write to ${email} and we answer within one business day. You also have the right to complain to the Croatian Personal Data Protection Agency (AZOP).`,
+    ],
+    termsLabel: 'Terms of use',
+    terms: [
+      'Everything published here is general information offered in good faith. It is not a binding offer and not professional advice for a specific situation.',
+      'Scope, price, timeline and deliverables of any engagement are agreed only in a signed contract. Where a contract and this site differ, the contract applies.',
+      'Text, marks and case material on this site belong to Minimalist unless stated otherwise; client names and figures are published with permission. Short excerpts may be quoted with attribution. Links to other sites are not endorsements. Croatian law applies, with the courts in Zagreb having jurisdiction.',
+    ],
+    detailsLabel: 'Studio details',
+    fields: {
+      legalName: 'Legal entity name',
+      owner: 'Founder',
+      address: 'Address',
+      oib: 'Personal identification number',
+      registrationNumber: 'Business registration number',
+      bank: 'Bank',
+      iban: 'IBAN',
+      email: 'Email',
+    },
+  },
+  hr: {
+    title: 'Pravne informacije — Minimalist',
+    heading: 'Privatnost, uvjeti i podaci o studiju',
+    lede: 'Ova stranica koristi analitiku koja poštuje privatnost, bez kolačića i bez osobnih podataka, pa banner za privolu nije potreban. Sve što pošaljete putem obrasca koristi se isključivo za odgovor na taj upit.',
+    privacyLabel: 'Politika privatnosti',
+    privacy: [
+      'Prikupljamo samo ono što nam sami pošaljete: ime, e-adresu, tvrtku, poziciju i opis projekta. Ništa se drugo ne prikuplja niti se iz vašeg posjeta gradi profil.',
+      'Ti se podaci koriste za odgovor na upit i pripremu ponude ako je zatražite. Čuvaju se dvanaest mjeseci, zatim se brišu. Nikada se ne prodaju, ne dijele trećim stranama u marketinške svrhe niti dodaju na mailing listu.',
+      `U svakom trenutku možete zatražiti uvid, ispravak, izvoz ili brisanje podataka koje čuvamo. Pišite na ${email} i odgovaramo u jednom radnom danu. Imate i pravo podnijeti pritužbu Agenciji za zaštitu osobnih podataka (AZOP).`,
+    ],
+    termsLabel: 'Uvjeti korištenja',
+    terms: [
+      'Sve objavljeno ovdje općenita je informacija dana u dobroj vjeri. Ne predstavlja obvezujuću ponudu ni stručni savjet za konkretnu situaciju.',
+      'Obuhvat, cijena, rokovi i isporuke svakog angažmana ugovaraju se isključivo potpisanim ugovorom. U slučaju razlike između ugovora i ove stranice, primjenjuje se ugovor.',
+      'Tekst, znakovi i materijali studija pripadaju Minimalistu osim ako je drukčije navedeno; imena klijenata i brojke objavljeni su uz dopuštenje. Kraće citate smijete prenijeti uz navođenje izvora. Poveznice na druge stranice nisu preporuka. Primjenjuje se hrvatsko pravo, uz nadležnost sudova u Zagrebu.',
+    ],
+    detailsLabel: 'Podaci o studiju',
+    fields: {
+      legalName: 'Naziv obrta',
+      owner: 'Vlasnik',
+      address: 'Adresa',
+      oib: 'OIB',
+      registrationNumber: 'Matični broj obrta',
+      bank: 'Banka',
+      iban: 'IBAN',
+      email: 'E-pošta',
+    },
+  },
+} satisfies Record<Locale, Record<string, string | string[] | Record<string, string>>>;
+
+const { locale } = Astro.props;
+const text = copy[locale];
+const t = useTranslations(locale);
+
+const details = [
+  { label: text.fields.legalName, value: company.legalName },
+  { label: text.fields.owner, value: company.owner },
+  {
+    label: text.fields.address,
+    value: `${company.street}, ${company.postalCode} ${company.city}, ${t('footer.country')}`,
+  },
+  { label: text.fields.oib, value: company.oib },
+  { label: text.fields.registrationNumber, value: company.registrationNumber },
+  { label: text.fields.bank, value: company.bank },
+  { label: text.fields.iban, value: company.iban },
+];
+---
+
+<BaseLayout title={text.title} description={text.lede} alternates={alternatesFor('legal')}>
+  <Section bordered={false}>
+    <PageHeader title={text.heading} lede={text.lede} compact />
+
+    <div class="block">
+      <LabelledRow label={text.privacyLabel} sideWidth="200px">
+        <div class="prose">
+          {text.privacy.map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
+        </div>
+      </LabelledRow>
+    </div>
+
+    <div class="block">
+      <LabelledRow label={text.termsLabel} sideWidth="200px">
+        <div class="prose">
+          {text.terms.map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
+        </div>
+      </LabelledRow>
+    </div>
+
+    <div class="block">
+      <LabelledRow label={text.detailsLabel} sideWidth="200px">
+        <dl class="details">
+          {details.map((detail) => (
+            <div class="detail">
+              <dt>{detail.label}</dt>
+              <dd>{detail.value}</dd>
+            </div>
+          ))}
+          <div class="detail">
+            <dt>{text.fields.email}</dt>
+            <dd>
+              <a href={`mailto:${email}`}>{email}</a>
+            </dd>
+          </div>
+        </dl>
+      </LabelledRow>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .block {
+    margin-top: clamp(28px, 4vw, 52px);
+    padding-top: clamp(24px, 3vw, 40px);
+    border-top: var(--hairline) solid var(--rule);
+  }
+
+  .prose {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 68ch;
+    font-size: var(--text-base);
+    line-height: 1.65;
+    color: var(--ink-2);
+    text-wrap: pretty;
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin: 0;
+    font-size: var(--text-base);
+    line-height: 1.65;
+  }
+
+  .detail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+  }
+
+  dt {
+    flex: 0 0 200px;
+    padding-top: 4px;
+    font-size: var(--text-label-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    line-height: 1.7;
+    text-transform: uppercase;
+    color: var(--graphite);
+  }
+
+  dd {
+    flex: 1 1 240px;
+    margin: 0;
+    overflow-wrap: anywhere; /* the IBAN must not push the page wider on phones */
+    color: var(--ink);
+  }
+
+  dd a {
+    border-bottom: var(--hairline) solid var(--rule);
+    transition: border-color var(--duration-state) linear;
+  }
+
+  @media (hover: hover) {
+    dd a:hover {
+      border-bottom-color: var(--ink);
+    }
+  }
+</style>

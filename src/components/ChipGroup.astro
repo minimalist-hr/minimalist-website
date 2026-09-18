@@ -1,0 +1,116 @@
+---
+/**
+ * Single-choice "chips" (plan §9.1, §11.2): real radio inputs in a fieldset with a legend,
+ * so they work with the keyboard and screen readers; only their look is a chip.
+ * Checked = ink fill with paper text. Chips wrap onto new lines on narrow screens.
+ */
+interface Props {
+  name: string;
+  legend: string;
+  /** Optional unit shown after the legend with the brand square, e.g. "EUR". */
+  unit?: string;
+  options: { value: string; label: string }[];
+}
+
+const { name, legend, unit, options } = Astro.props;
+---
+
+<fieldset class="group">
+  <legend>
+    {legend}
+    {unit && (
+      <>
+        <span class="dot" aria-hidden="true" />
+        {unit}
+      </>
+    )}
+  </legend>
+  <div class="chips">
+    {options.map((option) => (
+      <label class="chip">
+        <input type="radio" name={name} value={option.value} />
+        <span class="chip-face">{option.label}</span>
+      </label>
+    ))}
+  </div>
+</fieldset>
+
+<style>
+  .group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  legend {
+    padding: 0 0 4px;
+    font-size: var(--text-label-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--graphite);
+  }
+
+  .dot {
+    display: inline-block;
+    width: 3.4px;
+    height: 3.4px;
+    margin: 0 10px;
+    vertical-align: middle;
+    background: currentColor;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .chip {
+    position: relative;
+    display: inline-flex;
+    cursor: pointer;
+  }
+
+  /* The radio stays in the accessibility tree and takes focus; only the chip is seen. */
+  input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .chip-face {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap-target);
+    padding: 9px 16px;
+    font-size: var(--text-sm);
+    box-shadow: inset 0 0 0 var(--hairline) var(--rule);
+    transition:
+      background var(--duration-state) linear,
+      color var(--duration-state) linear,
+      box-shadow var(--duration-state) linear;
+  }
+
+  @media (hover: hover) {
+    .chip:hover .chip-face {
+      box-shadow: inset 0 0 0 var(--hairline) var(--ink);
+    }
+  }
+
+  input:checked + .chip-face {
+    color: var(--paper);
+    background: var(--ink);
+    box-shadow: inset 0 0 0 var(--hairline) var(--ink);
+  }
+
+  input:focus-visible + .chip-face {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+</style>

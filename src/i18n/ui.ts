@@ -62,6 +62,24 @@ const en = {
   'footer.rights': 'All rights reserved.',
 
   'og.imageAlt': 'The Minimalist mark on an ink field',
+
+  'form.name': 'Name',
+  'form.email': 'Email',
+  'form.company': 'Company',
+  'form.role': 'Role',
+  'form.timeline': 'Timeline',
+  'form.timeline.asap': 'As soon as possible',
+  'form.timeline.1-3m': '1–3 months',
+  'form.timeline.3-6m': '3–6 months',
+  'form.timeline.exploring': 'Still exploring',
+  'form.budget': 'Budget range',
+  'form.budget.unsure': 'Not sure yet',
+  'form.brief': 'What do you want to build?',
+  'form.briefHint': 'The problem, who it affects, and what happens if it stays unsolved.',
+  'form.submit': 'Send inquiry',
+  'form.replyTime': 'We reply within one business day.',
+  'form.honeypot': 'Leave this field empty',
+  'form.required': 'required',
 } as const;
 
 export type UiKey = keyof typeof en;
@@ -121,6 +139,24 @@ const hr: Record<UiKey, string> = {
   'footer.rights': 'Sva prava pridržana.',
 
   'og.imageAlt': 'Znak Minimalist na tamnoj podlozi',
+
+  'form.name': 'Ime',
+  'form.email': 'E-pošta',
+  'form.company': 'Kompanija',
+  'form.role': 'Pozicija',
+  'form.timeline': 'Rok',
+  'form.timeline.asap': 'Što prije',
+  'form.timeline.1-3m': '1–3 mjeseca',
+  'form.timeline.3-6m': '3–6 mjeseci',
+  'form.timeline.exploring': 'Još istražujemo',
+  'form.budget': 'Raspon proračuna',
+  'form.budget.unsure': 'Još ne znamo',
+  'form.brief': 'Što želite izgraditi?',
+  'form.briefHint': 'Problem, koga pogađa i što se događa ako ostane neriješen.',
+  'form.submit': 'Pošaljite upit',
+  'form.replyTime': 'Odgovaramo u jednom radnom danu.',
+  'form.honeypot': 'Ostavite ovo polje praznim',
+  'form.required': 'obavezno',
 };
 
 export const ui: Record<Locale, Record<UiKey, string>> = { en, hr };

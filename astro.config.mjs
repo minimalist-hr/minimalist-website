@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 
 import { defaultLocale, locales } from './src/i18n/config.ts';
+import { localized404 } from './src/integrations/localized-404.ts';
 import { siteConfig } from './src/site.config.ts';
 
 // https://astro.build/config
@@ -18,4 +19,6 @@ export default defineConfig({
     defaultLocale,
     routing: { prefixDefaultLocale: false },
   },
+
+  integrations: [localized404(locales.filter((locale) => locale !== defaultLocale))],
 });

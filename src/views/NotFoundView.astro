@@ -1,0 +1,77 @@
+---
+/**
+ * Not-found page (plan §2). Built twice: /404.html (English) and /hr/404.html (Croatian).
+ * The host serves the nearest 404.html, so a missing /hr/… page gets the Croatian one.
+ * Not indexed, no canonical or hreflang.
+ */
+import Button from '../components/Button.astro';
+import type { Locale } from '../i18n/config';
+import { localizedPath } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const copy = {
+  en: {
+    title: 'Page not found — Minimalist',
+    label: 'Error 404',
+    heading: 'This page was removed.',
+    text: 'Or it never existed. Either way, less is the point — here is the way back.',
+    action: 'Back to home',
+  },
+  hr: {
+    title: 'Stranica nije pronađena — Minimalist',
+    label: 'Greška 404',
+    heading: 'Ova je stranica uklonjena.',
+    text: 'Ili nikada nije ni postojala. U svakom slučaju, manje je i poanta — evo puta natrag.',
+    action: 'Natrag na početnu',
+  },
+} satisfies Record<Locale, Record<string, string>>;
+
+const { locale } = Astro.props;
+const text = copy[locale];
+---
+
+<BaseLayout title={text.title} description={text.text} noindex>
+  <section class="container not-found">
+    <p class="label">{text.label}</p>
+    <h1>{text.heading}</h1>
+    <p class="text">{text.text}</p>
+    <Button href={localizedPath('home', locale)}>{text.action}</Button>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: clamp(24px, 3vw, 40px);
+    min-height: calc(100svh - var(--header-height) - 240px);
+    padding-block: clamp(56px, 10vw, 150px) clamp(56px, 8vw, 120px);
+  }
+
+  .label {
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--graphite);
+  }
+
+  h1 {
+    max-width: 16ch;
+    font-size: var(--text-display-sm);
+    letter-spacing: var(--tracking-display);
+    line-height: var(--leading-display);
+  }
+
+  .text {
+    max-width: 44ch;
+    font-size: var(--text-lead);
+    line-height: var(--leading-body);
+    color: var(--ink-2);
+  }
+</style>

@@ -21,9 +21,11 @@ interface Props {
   description?: string;
   /** Localised paths of this page (see alternatesFor). Omit for non-indexable pages. */
   alternates?: Alternates;
+  /** Keep this page out of search results (e.g. the 404). */
+  noindex?: boolean;
 }
 
-const { title, description, alternates } = Astro.props;
+const { title, description, alternates, noindex = false } = Astro.props;
 const locale = getLocale(Astro.currentLocale, Astro.url);
 const t = useTranslations(locale);
 ---
@@ -38,6 +40,7 @@ const t = useTranslations(locale);
       document.documentElement.dataset.js = '';
     </script>
     <meta name="color-scheme" content="dark light" />
+    {noindex && <meta name="robots" content="noindex" />}
     <ThemeScript />
 
     <SeoHead
