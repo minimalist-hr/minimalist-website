@@ -4,5 +4,6 @@
 # set with `pnpm exec wrangler secret put TURNSTILE_SECRET_KEY`.
 TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA
 
-# Log instead of sending real email while developing.
+# Log instead of sending real email while developing. To test a real send, set
+# MAIL_PROVIDER=resend and RESEND_API_KEY to a key from the Resend dashboard.
 MAIL_PROVIDER=console
