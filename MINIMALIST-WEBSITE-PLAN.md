@@ -569,10 +569,10 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 - [x] Security headers, cache headers, noindex on previews
 - [x] Cloudflare Web Analytics
 - [x] Accessibility pass (keyboard-only run, screen reader spot check, axe) *(keyboard and reflow checks automated in `tests/keyboard.spec.ts`)*
-- [x] Lighthouse mobile ≥ targets on Home, Case study, Contact *(an insight article stands in until a case study is published)*
+- [x] Lighthouse mobile ≥ targets on Home, Case study, Contact
 
 ### Phase 4: Content and launch
-- [ ] Replace placeholder copy, metrics, clients and quotes with verified content *(copy verified; launched with one case study in progress, Lift-Mučnjak, and one insight; more after launch)*
+- [ ] Replace placeholder copy, metrics, clients and quotes with verified content *(copy verified; one case study, Lift-Mučnjak, with placeholder text and tech stack, and one insight; real text and more content after launch)*
 - [ ] Real photography per brand brief (greyscale, 4:5 / 3:2 / 1:1), processed and optimised *(after launch; striped placeholders until then)*
 - [ ] Legal: privacy policy and company details reviewed (section 14) *(text completed to GDPR Art. 13; review by someone qualified still open)*
 - [x] Business email set up; SPF/DKIM/DMARC verified *(iCloud + Resend; a test inquiry passed DKIM and DMARC)*
@@ -607,7 +607,7 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 3. **Contact address** shown on site (e.g. `hello@minimalist.hr`). → **`hello@minimalist.hr`**.
 4. **Hero headline:** both designs rotate four taglines (section 3.5). Keep the rotation, or launch with a single static headline? → **Rotation kept.**
 5. **Insights at launch:** show with the three articles, or hide until real posts exist? → **Shown, with one article**; the other two were removed.
-6. **Which case studies** are real and approved for publication? → **Lift-Mučnjak** (company website), shown as "in progress" until its text is written; the three design placeholders were removed.
+6. **Which case studies** are real and approved for publication? → **Lift-Mučnjak** (company website), published with placeholder text and no figures or quote; the three design placeholders were removed.
 7. **Studio address and call details:** the mobile design shows "Hamići 13, 10000 Zagreb" and an "Introductory call" block. Confirm these are real before launch. → Address confirmed; the call block has no link (calls are arranged by email).
 8. **Auto-reply** to form senders: yes or no? → **Not at launch**; later.
 9. **Later:** a git-based CMS (e.g. Keystatic) if non-developers need to edit content. Not needed for launch.
@@ -647,7 +647,9 @@ Where the build differs from the sections above. All of these were agreed during
 **Design and content**
 - Light-theme `--graphite` is `#67655E` (brand: `#7E7C75`) to meet WCAG AA contrast.
 - FAQ is on the Services page; Approach uses a timeline. Rules end with the text everywhere except the header's bottom border and the footer's top rule.
-- One case study (Lift-Mučnjak, in progress: card only, no page) and one insight at launch. The home grids keep their card width with fewer cards.
+- One case study (Lift-Mučnjak) and one insight. The case study text is a placeholder written from what is known about the client: no invented figures or quote. Case studies have an optional `stack` (a short note and the tools as tags), shown full width under "Tech stack" below the gallery; the Lift-Mučnjak stack is invented for now. The home grids keep their card width with fewer cards.
+- On mobile, the About portrait comes after the studio text and details (desktop keeps it on the left). The footer tagline is "Complex problems. Simple solutions." / "Složeni problemi. Jednostavna rješenja.", one whole sentence per line. About principles set their text directly under the number.
+- A contact field's error clears as soon as its value is valid (email uses the same pattern as the Worker, from `src/lib/inquiry.ts`); the error summary goes once no field has one.
 - The privacy policy covers GDPR Art. 13 and names Cloudflare, Resend and Apple as processors.
 
 **Accessibility (beyond axe)**
@@ -656,7 +658,7 @@ Where the build differs from the sections above. All of these were agreed during
 - Tested in Chromium, Firefox and WebKit. Safari skips links on Tab unless Option+Tab or "Press Tab to highlight each item" is used; the link-only keyboard tests skip WebKit for that reason.
 
 **Open after launch**
-- Lift-Mučnjak case study text, results and quote; then set it to `published` and point Lighthouse back at it.
+- Lift-Mučnjak: replace the placeholder text and the invented tech stack with the real ones; add results and a quote if the client agrees.
 - More insights; photography; legal review by someone qualified (mention the iCloud mailbox has no DPA).
 - DMARC from `p=none` to `p=quarantine` after a few weeks of passing mail.
 - RSS feed and a contact auto-reply (deferred).

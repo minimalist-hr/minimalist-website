@@ -1,6 +1,7 @@
 import { isLocale, type Locale } from '../i18n/config';
 import {
   budgetValues,
+  emailPattern,
   fieldLimits,
   timelineValues,
   type Budget,
@@ -22,7 +23,6 @@ export interface Inquiry {
 export type ParseResult = { ok: true; inquiry: Inquiry } | { ok: false; fields: string[] };
 
 /** Deliberately simple: the real check is that the reply arrives. */
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function text(form: FormData, key: string): string {
   const value = form.get(key);
@@ -52,7 +52,7 @@ export function parseInquiry(form: FormData): ParseResult {
 
   const fields: string[] = [];
   if (!name || name.length > fieldLimits.name) fields.push('name');
-  if (!EMAIL_PATTERN.test(email) || email.length > fieldLimits.email) fields.push('email');
+  if (!emailPattern.test(email) || email.length > fieldLimits.email) fields.push('email');
   if (company.length > fieldLimits.company) fields.push('company');
   if (role.length > fieldLimits.role) fields.push('role');
   if (!brief || brief.length > fieldLimits.brief) fields.push('brief');

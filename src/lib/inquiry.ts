@@ -19,6 +19,12 @@ export const fieldLimits = {
   brief: 5000,
 } as const;
 
+/**
+ * What counts as a valid email address, for the form and the Worker alike. Stricter than
+ * the browser's own check, which accepts addresses without a dot in the domain.
+ */
+export const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 /** Form field that must stay empty; bots fill it in. */
 export const honeypotField = 'website';
 

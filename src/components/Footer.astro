@@ -32,7 +32,13 @@ const year = new Date().getFullYear();
       <a class="home" href={localizedPath('home', locale)} aria-label={t('a11y.home')}>
         <Wordmark size="var(--text-wordmark-footer)" />
       </a>
-      <p class="tagline">{t('site.tagline')}</p>
+      <p class="tagline">
+        {t('site.tagline')
+          .split(/(?<=\.)\s+/)
+          .map((sentence) => (
+            <span>{sentence}</span>
+          ))}
+      </p>
     </div>
 
     {columns.map((column) => (
@@ -97,10 +103,15 @@ const year = new Date().getFullYear();
     align-self: flex-start;
   }
 
+  /* One sentence per line, each kept whole. */
   .tagline {
-    max-width: 26ch;
     line-height: var(--leading-body);
     color: var(--ink-2);
+  }
+
+  .tagline span {
+    display: block;
+    white-space: nowrap;
   }
 
   .links {

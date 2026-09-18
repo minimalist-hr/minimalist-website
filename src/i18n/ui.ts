@@ -10,7 +10,7 @@ import type { Locale } from './config';
 const en = {
   'site.description':
     'Minimalist is a software development studio. We design and build software that does exactly what it should. Complex problems. Simple solutions.',
-  'site.tagline': 'Less noise. Better software.',
+  'site.tagline': 'Complex problems. Simple solutions.',
 
   'nav.work': 'Work',
   'nav.services': 'Services',
@@ -48,6 +48,7 @@ const en = {
   'case.engagement': 'Engagement',
   'case.scope': 'Scope',
   'case.results': 'Results',
+  'case.stack': 'Tech stack',
   'insights.readInsight': 'Read the insight',
   'insights.backToInsights': 'Insights',
   'insights.ctaTitle': 'Have a system worth simplifying?',
@@ -97,7 +98,7 @@ export type UiKey = keyof typeof en;
 const hr: Record<UiKey, string> = {
   'site.description':
     'Minimalist je studio za razvoj softvera. Osmišljavamo i razvijamo softver koji radi upravo ono što treba. Složeni problemi. Jednostavna rješenja.',
-  'site.tagline': 'Manje šuma. Bolji softver.',
+  'site.tagline': 'Složeni problemi. Jednostavna rješenja.',
 
   'nav.work': 'Radovi',
   'nav.services': 'Usluge',
@@ -135,6 +136,7 @@ const hr: Record<UiKey, string> = {
   'case.engagement': 'Angažman',
   'case.scope': 'Obuhvat',
   'case.results': 'Rezultati',
+  'case.stack': 'Tehnologije',
   'insights.readInsight': 'Pročitajte zapis',
   'insights.backToInsights': 'Zapisi',
   'insights.ctaTitle': 'Imate sustav koji vrijedi pojednostaviti?',
