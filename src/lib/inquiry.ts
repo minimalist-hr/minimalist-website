@@ -1,0 +1,32 @@
+/**
+ * The inquiry form's contract (plan §9.1), shared by the form (src/components/ContactForm.astro)
+ * and the Worker that receives it (src/worker/). Keep this file free of browser, Astro and
+ * Workers APIs so both sides can import it.
+ */
+
+export const timelineValues = ['asap', '1-3m', '3-6m', 'exploring'] as const;
+export type Timeline = (typeof timelineValues)[number];
+
+export const budgetValues = ['lt15', '15-40', '40-100', 'gt100', 'unsure'] as const;
+export type Budget = (typeof budgetValues)[number];
+
+/** Maximum lengths, enforced by the form (maxlength) and again by the Worker. */
+export const fieldLimits = {
+  name: 120,
+  email: 200,
+  company: 120,
+  role: 120,
+  brief: 5000,
+} as const;
+
+/** Form field that must stay empty; bots fill it in. */
+export const honeypotField = 'website';
+
+/** Where the form posts. */
+export const contactEndpoint = '/api/contact';
+
+/** JSON body the Worker returns to the JavaScript submit. */
+export type InquiryResponse =
+  | { ok: true }
+  | { ok: false; error: 'invalid'; fields: string[] }
+  | { ok: false; error: 'verification' | 'send' | 'unavailable' };

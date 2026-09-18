@@ -1,12 +1,26 @@
 ---
 /**
- * Project inquiry form (plan §9). Fields and names follow §9.1.
+ * Project inquiry form (plan §9). Field names, limits and allowed values come from
+ * src/lib/inquiry.ts, the same contract the Worker validates against.
  *
- * Works as a normal POST without JavaScript. The endpoint (`/api/contact`), Turnstile, and
- * the JavaScript submit with inline success/error states arrive in Phase 3 with the Worker.
+ * With JavaScript (the script below): inline bilingual validation, Turnstile, a fetch submit
+ * with a sending state, and an inline success or error message that receives focus.
+ * Without JavaScript the form still posts, but Turnstile needs JavaScript, so a note offers
+ * the email address instead.
  */
+import { PUBLIC_TURNSTILE_SITE_KEY } from 'astro:env/client';
+
 import type { Locale } from '../i18n/config';
 import { useTranslations } from '../i18n/utils';
+import {
+  budgetValues,
+  contactEndpoint,
+  fieldLimits,
+  honeypotField,
+  timelineValues,
+  type Budget,
+} from '../lib/inquiry';
+import { siteConfig } from '../site.config';
 import Button from './Button.astro';
 import ChipGroup from './ChipGroup.astro';
 import TextField from './TextField.astro';
@@ -17,92 +31,147 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = useTranslations(locale);
+const { email } = siteConfig;
+/** Copy with an {email} placeholder; the address is rendered as a mailto link. */
+const [noscriptBefore, noscriptAfter = ''] = t('form.noscript').split('{email}');
 
-const timelineOptions = [
-  { value: 'asap', label: t('form.timeline.asap') },
-  { value: '1-3m', label: t('form.timeline.1-3m') },
-  { value: '3-6m', label: t('form.timeline.3-6m') },
-  { value: 'exploring', label: t('form.timeline.exploring') },
-];
+const timelineOptions = timelineValues.map((value) => ({
+  value,
+  label: t(`form.timeline.${value}`),
+}));
 
 /** Amounts are not translated; only the "not sure" option is. */
-const budgetOptions = [
-  { value: 'lt15', label: '< €15,000' },
-  { value: '15-40', label: '€15,000 – €40,000' },
-  { value: '40-100', label: '€40,000 – €100,000' },
-  { value: 'gt100', label: '€100,000 +' },
-  { value: 'unsure', label: t('form.budget.unsure') },
-];
+const budgetLabels: Record<Budget, string> = {
+  lt15: '< €15,000',
+  '15-40': '€15,000 – €40,000',
+  '40-100': '€40,000 – €100,000',
+  gt100: '€100,000 +',
+  unsure: t('form.budget.unsure'),
+};
+const budgetOptions = budgetValues.map((value) => ({ value, label: budgetLabels[value] }));
+
+/** Strings the script needs, passed as data so the script itself holds no copy. */
+const messages = {
+  sending: t('form.sending'),
+  invalid: t('form.errorInvalid'),
+  verification: t('form.errorVerification'),
+  send: t('form.errorSend'),
+  email,
+  fields: {
+    name: t('form.errorName'),
+    email: t('form.errorEmail'),
+    brief: t('form.errorBrief'),
+  },
+  tooLong: t('form.errorTooLong'),
+};
 ---
 
-<form class="form" action="/api/contact" method="post">
-  <input type="hidden" name="locale" value={locale} />
+<form
+  class="form"
+  action={contactEndpoint}
+  method="post"
+  data-contact-form
+  data-messages={JSON.stringify(messages)}
+>
+  <noscript>
+    <p class="notice">
+      {noscriptBefore}
+      <a href={`mailto:${email}`}>{email}</a>
+      {noscriptAfter}
+    </p>
+  </noscript>
 
-  <div class="pairs">
+  <div class="body" data-form-body>
+    <input type="hidden" name="locale" value={locale} />
+
+    <div class="pairs">
+      <TextField
+        name="name"
+        label={t('form.name')}
+        required
+        autocomplete="name"
+        placeholder="Ana Horvat"
+        maxlength={fieldLimits.name}
+      />
+      <TextField
+        name="email"
+        label={t('form.email')}
+        type="email"
+        required
+        autocomplete="email"
+        placeholder="ana@company.com"
+        maxlength={fieldLimits.email}
+      />
+      <TextField
+        name="company"
+        label={t('form.company')}
+        autocomplete="organization"
+        placeholder="Company d.o.o."
+        maxlength={fieldLimits.company}
+      />
+      <TextField
+        name="role"
+        label={t('form.role')}
+        autocomplete="organization-title"
+        placeholder="CTO"
+        maxlength={fieldLimits.role}
+      />
+    </div>
+
+    <ChipGroup name="timeline" legend={t('form.timeline')} options={timelineOptions} />
+    <ChipGroup name="budget" legend={t('form.budget')} unit="EUR" options={budgetOptions} />
+
     <TextField
-      name="name"
-      label={t('form.name')}
+      name="brief"
+      label={t('form.brief')}
+      hint={t('form.briefHint')}
       required
-      autocomplete="name"
-      placeholder="Ana Horvat"
-      maxlength={120}
+      multiline
+      maxlength={fieldLimits.brief}
     />
-    <TextField
-      name="email"
-      label={t('form.email')}
-      type="email"
-      required
-      autocomplete="email"
-      placeholder="ana@company.com"
-      maxlength={200}
-    />
-    <TextField
-      name="company"
-      label={t('form.company')}
-      autocomplete="organization"
-      placeholder="Company d.o.o."
-      maxlength={120}
-    />
-    <TextField
-      name="role"
-      label={t('form.role')}
-      autocomplete="organization-title"
-      placeholder="CTO"
-      maxlength={120}
-    />
+
+    <!-- Honeypot: invisible to people, filled in by bots; the Worker drops those. -->
+    <div class="honeypot" aria-hidden="true">
+      <label>
+        {t('form.honeypot')}
+        <input type="text" name={honeypotField} tabindex="-1" autocomplete="off" />
+      </label>
+    </div>
+
+    <!-- Turnstile renders here only when it needs an interaction (plan §9). -->
+    <div data-turnstile data-sitekey={PUBLIC_TURNSTILE_SITE_KEY} data-language={locale}></div>
+
+    <p class="notice" data-form-error role="alert" hidden></p>
+
+    <div class="actions">
+      <Button type="submit">{t('form.submit')}</Button>
+      <p class="note">{t('form.replyTime')}</p>
+    </div>
   </div>
 
-  <ChipGroup name="timeline" legend={t('form.timeline')} options={timelineOptions} />
-  <ChipGroup name="budget" legend={t('form.budget')} unit="EUR" options={budgetOptions} />
-
-  <TextField
-    name="brief"
-    label={t('form.brief')}
-    hint={t('form.briefHint')}
-    required
-    multiline
-    maxlength={5000}
-  />
-
-  <!-- Honeypot: invisible to people, filled in by bots; submissions with it are rejected. -->
-  <div class="honeypot" aria-hidden="true">
-    <label>
-      {t('form.honeypot')}
-      <input type="text" name="website" tabindex="-1" autocomplete="off" />
-    </label>
-  </div>
-
-  <div class="actions">
-    <Button type="submit">{t('form.submit')}</Button>
-    <p class="note">{t('form.replyTime')}</p>
+  <div class="success" data-form-success role="status" tabindex="-1" hidden>
+    <p class="success-title">{t('form.successTitle')}</p>
+    <p class="success-text">{t('form.successText')}</p>
   </div>
 </form>
 
+<script>
+  import { enhanceContactForm } from '../scripts/contact-form';
+
+  document.querySelectorAll<HTMLFormElement>('[data-contact-form]').forEach(enhanceContactForm);
+</script>
+
 <style>
-  .form {
+  .form,
+  .body {
     display: flex;
     flex-direction: column;
     gap: 24px;
+  }
+
+  /* `display` would otherwise override the hidden attribute set by the script. */
+  .body[hidden] {
+    display: none;
   }
 
   .pairs {
@@ -119,6 +188,26 @@ const budgetOptions = [
     overflow: hidden;
   }
 
+  .notice {
+    max-width: 52ch;
+    font-size: var(--text-md);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-body);
+    color: var(--ink);
+  }
+
+  /* :global — the error message link is created by the script, outside Astro's scoping. */
+  .notice :global(a) {
+    border-bottom: var(--hairline) solid var(--rule);
+    transition: border-color var(--duration-state) linear;
+  }
+
+  @media (hover: hover) {
+    .notice :global(a:hover) {
+      border-bottom-color: var(--ink);
+    }
+  }
+
   .actions {
     display: flex;
     flex-wrap: wrap;
@@ -133,6 +222,34 @@ const budgetOptions = [
     color: var(--graphite);
   }
 
+  .success {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: clamp(24px, 3vw, 36px);
+    box-shadow: inset 0 0 0 var(--hairline) var(--rule);
+  }
+
+  .success[hidden] {
+    display: none;
+  }
+
+  .success:focus {
+    outline: none;
+  }
+
+  .success-title {
+    font-size: var(--text-xl);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-title);
+  }
+
+  .success-text {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--ink-2);
+  }
+
   /* Name/email and company/role sit in pairs from sm up (plan §5.2). */
   @media (min-width: 40rem) {
     .pairs {
@@ -142,7 +259,8 @@ const budgetOptions = [
   }
 
   @media (min-width: 60rem) {
-    .form {
+    .form,
+    .body {
       gap: clamp(24px, 3vw, 34px);
     }
   }

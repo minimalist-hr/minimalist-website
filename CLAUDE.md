@@ -41,6 +41,11 @@
 - Before changing `.gitlab-ci.yml`, `wrangler.jsonc`, `.gitignore` or `.nvmrc`, explain the problem first.
 - CLI tools change: when a command or flag from the plan doesn't match, check `--help` or the current docs and say what differs.
 
+## Worker (contact form)
+
+- `src/worker/` handles `POST /api/contact`; every other request goes back to `env.ASSETS` so the 404 pages keep working. The form/Worker contract lives in `src/lib/inquiry.ts`.
+- Email goes through the `Mailer` interface in `src/worker/mail/`. To change provider, add one implementation and select it by `MAIL_PROVIDER`; nothing else changes. Never log message contents.
+
 ## Secrets
 
 - Never write, ask for or echo Cloudflare API tokens, account IDs or other secrets. They live only in GitLab CI/CD variables and Cloudflare secrets. Local dev secrets go in `.dev.vars` (gitignored); commit only `.dev.vars.example`.
@@ -51,7 +56,8 @@
 pnpm dev                 # local dev server
 pnpm run lint            # eslint (TS, Astro, a11y rules)
 pnpm run format          # prettier --write (format:check in CI)
-pnpm run check           # astro check (types)
+pnpm run check           # astro check (site types) + tsc for the Worker
 pnpm run build           # static build to dist/
-pnpm exec wrangler dev   # serve dist/ on the Workers runtime (http://127.0.0.1:8787)
+pnpm run types:worker    # regenerate Worker types after changing wrangler.jsonc
+pnpm exec wrangler dev   # serve dist/ + the Worker locally (needs .dev.vars, see .dev.vars.example)
 ```

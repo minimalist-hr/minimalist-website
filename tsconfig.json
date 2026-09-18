@@ -1,5 +1,6 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"]
+  // The Worker has its own runtime types and tsconfig (src/worker/tsconfig.json).
+  "exclude": ["dist", "src/worker"]
 }

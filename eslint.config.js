@@ -5,7 +5,13 @@ import { defineConfig, globalIgnores } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig([
-  globalIgnores(['dist/', '.astro/', '.wrangler/', 'design/']),
+  globalIgnores([
+    'dist/',
+    '.astro/',
+    '.wrangler/',
+    'design/',
+    'src/worker/worker-configuration.d.ts',
+  ]),
 
   js.configs.recommended,
   tseslint.configs.strict,
