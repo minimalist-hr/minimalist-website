@@ -36,6 +36,13 @@
     "MAIL_PROVIDER": "resend"
   },
 
+  // Custom domains: Cloudflare creates the DNS records. www redirects to the apex with a
+  // Redirect Rule in the dashboard (it runs before the Worker and the static assets).
+  "routes": [
+    { "pattern": "minimalist.hr", "custom_domain": true },
+    { "pattern": "www.minimalist.hr", "custom_domain": true }
+  ],
+
   // workers.dev URL is the production URL until minimalist.hr is connected.
   // After launch on the custom domain, set "workers_dev": false.
   "workers_dev": true,
