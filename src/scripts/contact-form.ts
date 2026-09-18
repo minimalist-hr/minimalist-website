@@ -172,8 +172,13 @@ export function enhanceContactForm(form: HTMLFormElement): void {
     });
   }
 
+  // aria-disabled, not disabled: disabling the focused button would drop keyboard focus
+  // to the top of the page. The `sending` flag blocks a second submit instead.
+  let sending = false;
+
   function setBusy(busy: boolean) {
-    submit.disabled = busy;
+    sending = busy;
+    submit.setAttribute('aria-disabled', String(busy));
     submit.textContent = busy ? messages.sending : submitLabel;
     form.setAttribute('aria-busy', String(busy));
   }
@@ -181,6 +186,7 @@ export function enhanceContactForm(form: HTMLFormElement): void {
   // ---- Submit ----
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
+    if (sending) return;
     clearErrors();
 
     const invalid = invalidFields();
