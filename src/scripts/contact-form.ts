@@ -4,7 +4,7 @@
  * success or error message that receives focus. The markup and all copy live in
  * ContactForm.astro; this file only adds behaviour.
  */
-import type { InquiryResponse } from '../lib/inquiry';
+import { emailPattern, type InquiryResponse } from '../lib/inquiry';
 
 interface Messages {
   sending: string;
@@ -165,11 +165,20 @@ export function enhanceContactForm(form: HTMLFormElement): void {
     status.hidden = false;
   }
 
-  // Typing in a field clears its error; once no field has one, the summary goes too.
+  /** Native constraints, plus the same email pattern the Worker applies. */
+  function fieldIsValid(name: string): boolean {
+    const control = fieldControl(name);
+    if (!control) return true;
+    if (!control.checkValidity()) return false;
+    return name !== 'email' || emailPattern.test(control.value.trim());
+  }
+
+  // A field's error clears once what is typed is valid (so an email keeps its error until it
+  // is a real address); once no field has one, the summary goes too.
   form.addEventListener('input', (event) => {
     const target = event.target;
     if (!(target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement)) return;
-    if (target.getAttribute('aria-invalid') !== 'true') return;
+    if (target.getAttribute('aria-invalid') !== 'true' || !fieldIsValid(target.name)) return;
     setFieldError(target.name, null);
     if (!form.querySelector('[aria-invalid="true"]') && status.textContent === messages.invalid) {
       status.hidden = true;
@@ -178,10 +187,7 @@ export function enhanceContactForm(form: HTMLFormElement): void {
   });
 
   function invalidFields(): string[] {
-    return VALIDATED_FIELDS.filter((name) => {
-      const control = fieldControl(name);
-      return control ? !control.checkValidity() : false;
-    });
+    return VALIDATED_FIELDS.filter((name) => !fieldIsValid(name));
   }
 
   // aria-disabled, not disabled: disabling the focused button would drop keyboard focus
