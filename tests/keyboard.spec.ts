@@ -41,11 +41,20 @@ interface FocusStop {
   label: string;
   visible: boolean;
   obscured: boolean;
+  /** Focus has been here before in this walk: it wrapped around. */
+  revisited: boolean;
 }
 
-/** Describes the focused element: whether it shows an indicator and sits under the header. */
-function describeFocus(page: Page): Promise<FocusStop | null> {
-  return page.evaluate(() => {
+/**
+ * Describes the focused element: whether it shows an indicator and sits under the header.
+ * Waits two frames first, so focus scrolling (the browser's and Header.astro's) has settled.
+ * Marks the element with `walk`, so the walk can tell when focus wraps around.
+ */
+function describeFocus(page: Page, walk: string): Promise<FocusStop | null> {
+  return page.evaluate(async (walk) => {
+    const frame = () => new Promise((resolve) => requestAnimationFrame(resolve));
+    await frame();
+    await frame();
     const element = document.activeElement;
     if (!element || element === document.body) return null;
     const style = getComputedStyle(element);
@@ -60,23 +69,18 @@ function describeFocus(page: Page): Promise<FocusStop | null> {
     const obscured =
       !header?.contains(element) && style.position !== 'fixed' && rect.top < headerBottom - 1;
     const label = `${element.tagName.toLowerCase()} "${(element.textContent ?? '').trim().slice(0, 40) || element.getAttribute('aria-label') || element.getAttribute('name') || ''}"`;
-    return { label, visible, obscured };
-  });
+    const revisited = element.getAttribute('data-focus-walk') === walk;
+    element.setAttribute('data-focus-walk', walk);
+    return { label, visible, obscured, revisited };
+  }, walk);
 }
 
 async function walkFocus(page: Page, key: 'Tab' | 'Shift+Tab') {
   const problems: string[] = [];
-  const seen = new Set<string>();
   for (let stop = 0; stop < MAX_STOPS; stop++) {
     await page.keyboard.press(key);
-    const focus = await describeFocus(page);
-    if (!focus) return problems; // left the document: the walk is complete
-    const id = await page.evaluate(() => {
-      const element = document.activeElement;
-      return element ? [...document.querySelectorAll('*')].indexOf(element) : -1;
-    });
-    if (seen.has(String(id))) return problems; // wrapped around
-    seen.add(String(id));
+    const focus = await describeFocus(page, key);
+    if (!focus || focus.revisited) return problems; // left the document or wrapped around
     if (!focus.visible) problems.push(`no focus indicator: ${focus.label}`);
     if (focus.obscured) problems.push(`under the header: ${focus.label}`);
   }
@@ -100,6 +104,7 @@ test.describe('skip link', () => {
 test.describe('focus order', () => {
   for (const path of TAB_PAGES) {
     test(`${path} forwards and backwards`, async ({ page }) => {
+      test.slow(); // every focus stop, twice, waiting for scrolling to settle at each
       await page.goto(path);
       const forward = await walkFocus(page, 'Tab');
       expect(forward, forward.join('\n')).toEqual([]);

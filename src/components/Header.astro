@@ -53,7 +53,8 @@ const items = buildNav(primaryNav, locale, Astro.url.pathname);
 <script>
   // Keep keyboard focus clear of the sticky header (WCAG 2.4.11). html's scroll-padding-top
   // covers Chromium and Firefox; WebKit does not scroll to a focused element that is still
-  // partly visible, even when the header covers it.
+  // partly visible, even when the header covers it. The check waits a frame: browsers run
+  // focusin before their own scroll to the element, so measuring earlier races it.
   const header = document.querySelector<HTMLElement>('.site-header');
   const gap = 16;
 
@@ -62,8 +63,11 @@ const items = buildNav(primaryNav, locale, Astro.url.pathname);
     if (!header || !(target instanceof Element) || header.contains(target)) return;
     if (getComputedStyle(header).position !== 'sticky') return;
     if (getComputedStyle(target).position === 'fixed') return; // e.g. the skip link
-    const overlap = header.getBoundingClientRect().bottom - target.getBoundingClientRect().top;
-    if (overlap > 0) window.scrollBy({ top: -(overlap + gap), behavior: 'instant' });
+    requestAnimationFrame(() => {
+      if (document.activeElement !== target) return;
+      const overlap = header.getBoundingClientRect().bottom - target.getBoundingClientRect().top;
+      if (overlap > 0) window.scrollBy({ top: -(overlap + gap), behavior: 'instant' });
+    });
   });
 </script>
 
