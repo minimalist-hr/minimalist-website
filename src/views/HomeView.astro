@@ -21,6 +21,7 @@ import type { Locale } from '../i18n/config';
 import { alternatesFor, localizedPath, useTranslations } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getFeaturedWork, getInsights } from '../lib/content';
+import { organizationSchema } from '../lib/structured-data';
 import { siteConfig } from '../site.config';
 
 interface Props {
@@ -100,7 +101,12 @@ const paths = {
 };
 ---
 
-<BaseLayout title={text.title} description={text.lede} alternates={alternatesFor('home')}>
+<BaseLayout
+  title={text.title}
+  description={text.lede}
+  alternates={alternatesFor('home')}
+  structuredData={organizationSchema()}
+>
   <Hero
     available={text.available}
     label={text.studio}

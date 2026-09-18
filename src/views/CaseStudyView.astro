@@ -15,6 +15,7 @@ import { localizedPath, useTranslations, type Alternates } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { nextSection } from '../lib/navigation';
 import type { WorkEntry } from '../lib/content';
+import { breadcrumbSchema } from '../lib/structured-data';
 import { siteConfig } from '../site.config';
 
 interface Props {
@@ -49,7 +50,12 @@ meta.push({ label: t('case.engagement'), value: engagement ?? String(year) });
 if (scope) meta.push({ label: t('case.scope'), value: scope });
 ---
 
-<BaseLayout title={`${title} — ${siteConfig.name}`} description={summary} alternates={alternates}>
+<BaseLayout
+  title={`${title} — ${siteConfig.name}`}
+  description={summary}
+  alternates={alternates}
+  structuredData={breadcrumbSchema(locale, 'work', { name: title, path: alternates[locale] })}
+>
   <article>
     <header class="container head">
       <CtaLink href={localizedPath('work', locale)} variant="plain">

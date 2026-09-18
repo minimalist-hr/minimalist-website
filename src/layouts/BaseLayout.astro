@@ -6,10 +6,13 @@ import '../styles/global.css';
 
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import JsonLd from '../components/JsonLd.astro';
 import SeoHead from '../components/SeoHead.astro';
 import ThemeScript from '../components/ThemeScript.astro';
 import { localeMeta } from '../i18n/config';
 import { getLocale, useTranslations, type Alternates } from '../i18n/utils';
+import { jsFlagScript } from '../lib/inline-scripts';
+import type { StructuredData } from '../lib/structured-data';
 
 /** Main font file, preloaded. Must match the latin @font-face in src/styles/fonts.css. */
 const latinFont = '/fonts/archivo-latin-wght.woff2';
@@ -23,9 +26,11 @@ interface Props {
   alternates?: Alternates;
   /** Keep this page out of search results (e.g. the 404). */
   noindex?: boolean;
+  /** schema.org data for this page (see lib/structured-data.ts). */
+  structuredData?: StructuredData | StructuredData[];
 }
 
-const { title, description, alternates, noindex = false } = Astro.props;
+const { title, description, alternates, noindex = false, structuredData } = Astro.props;
 const locale = getLocale(Astro.currentLocale, Astro.url);
 const t = useTranslations(locale);
 ---
@@ -36,9 +41,7 @@ const t = useTranslations(locale);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <!-- Marks JS as available before first paint, so JS-only controls never flash. -->
-    <script is:inline>
-      document.documentElement.dataset.js = '';
-    </script>
+    <script is:inline set:html={jsFlagScript}></script>
     <meta name="color-scheme" content="dark light" />
     {noindex && <meta name="robots" content="noindex" />}
     <ThemeScript />
@@ -56,6 +59,7 @@ const t = useTranslations(locale);
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="generator" content={Astro.generator} />
+    {structuredData && <JsonLd data={structuredData} />}
   </head>
   <body>
     <a class="skip-link visually-hidden" href="#main">

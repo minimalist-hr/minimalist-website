@@ -14,6 +14,7 @@ import { localizedPath, useTranslations, type Alternates } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { nextSection } from '../lib/navigation';
 import type { InsightEntry } from '../lib/content';
+import { articleSchema, breadcrumbSchema } from '../lib/structured-data';
 import { formatInsightDate, readingTimeMinutes } from '../lib/format';
 import { siteConfig } from '../site.config';
 
@@ -45,7 +46,15 @@ if (hasBody) {
 }
 ---
 
-<BaseLayout title={`${title} — ${siteConfig.name}`} description={excerpt} alternates={alternates}>
+<BaseLayout
+  title={`${title} — ${siteConfig.name}`}
+  description={excerpt}
+  alternates={alternates}
+  structuredData={[
+    articleSchema(entry, locale, alternates[locale]),
+    breadcrumbSchema(locale, 'insights', { name: title, path: alternates[locale] }),
+  ]}
+>
   <article>
     <header class="container head rule-bottom">
       <CtaLink href={localizedPath('insights', locale)} variant="plain">
