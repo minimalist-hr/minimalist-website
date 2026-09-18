@@ -1,0 +1,17 @@
+{
+  // The Worker runs on the Workers runtime, not in a browser: its own lib and types,
+  // checked separately from the Astro site by `pnpm run check`.
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "es2022",
+    "moduleResolution": "bundler",
+    "lib": ["es2022"],
+    "types": ["./worker-configuration.d.ts"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  "include": ["./**/*.ts", "../lib/inquiry.ts", "../i18n/*.ts"]
+}

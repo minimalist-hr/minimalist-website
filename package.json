@@ -10,10 +10,11 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "check": "astro check",
+    "check": "astro check && tsc -p src/worker",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "types:worker": "wrangler types src/worker/worker-configuration.d.ts --strict-vars false"
   },
   "dependencies": {
     "astro": "^7.3.3"

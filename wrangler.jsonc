@@ -3,12 +3,35 @@
   "name": "minimalist-website",
   "compatibility_date": "2026-09-17",
 
-  // Static assets built by Astro. No Worker script yet;
-  // the contact form adds "main": "./src/worker.ts" in Phase 3.
+  // Worker script: handles POST /api/contact and hands every other request back to
+  // the static assets (see src/worker/index.ts).
+  "main": "./src/worker/index.ts",
+
+  // Static assets built by Astro. Requests that match a file are served directly;
+  // the rest reach the Worker, which returns env.ASSETS.fetch() so 404 pages still work.
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
     "not_found_handling": "404-page",
     "html_handling": "force-trailing-slash"
+  },
+
+  // Cloudflare Email Service. Locked to one recipient, so the form can never send
+  // anywhere else. Must match CONTACT_TO and be a verified destination address.
+  "send_email": [
+    {
+      "name": "EMAIL",
+      "destination_address": "hello@minimalist.hr"
+    }
+  ],
+
+  // Non-secret settings. Secrets (TURNSTILE_SECRET_KEY) are set with
+  // `wrangler secret put`, and locally in .dev.vars (see .dev.vars.example).
+  "vars": {
+    "CONTACT_TO": "hello@minimalist.hr",
+    "CONTACT_FROM": "form@minimalist.hr",
+    // "cloudflare" sends through the EMAIL binding; "console" only logs (local development).
+    "MAIL_PROVIDER": "cloudflare"
   },
 
   // workers.dev URL is the production URL until minimalist.hr is connected.
