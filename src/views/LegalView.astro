@@ -17,6 +17,7 @@ interface Props {
 }
 
 const { company, email } = siteConfig;
+/** `{email}` in the copy renders as a mailto link. */
 const controller = `${company.legalName}, ${company.street}, ${company.postalCode} ${company.city}`;
 
 const copy = {
@@ -26,13 +27,13 @@ const copy = {
     lede: 'This site uses privacy-friendly analytics with no cookies and no personal data, so no consent banner is required. Anything you send through the inquiry form is used only to answer that inquiry.',
     privacyLabel: 'Privacy policy',
     privacy: [
-      `The controller is ${controller}, owned by ${company.owner}. For anything about your data, write to ${email}.`,
+      `The controller is ${controller}, owned by ${company.owner}. For anything about your data, write to {email}.`,
       'Through the inquiry form we receive only what you enter: name, email address, company, role, timeline, budget and the description of your project. Name, email and description are needed to answer you; the rest is optional.',
       'We use it to answer your inquiry and, if you ask, to prepare a proposal. The legal basis is taking steps at your request before entering into a contract (Art. 6(1)(b) GDPR). There is no profiling, no automated decision-making and no mailing list, and the data is never sold.',
       'Pages are served by Cloudflare. To deliver them and protect the site from abuse, Cloudflare processes technical data such as your IP address and browser details. The form uses Cloudflare Turnstile to check that a person, not a bot, is sending it. Visits are counted with Cloudflare Web Analytics, which sets no cookies and does not identify you. The only thing stored in your browser is your light or dark theme choice. The legal basis is our legitimate interest in a secure, working site (Art. 6(1)(f) GDPR).',
       'Two providers process this data for us: Cloudflare, Inc. (hosting, security, analytics and delivery of form messages) and Apple (iCloud Mail, the mailbox where inquiries arrive). Both may process data outside the EU; those transfers rely on the EU–US Data Privacy Framework and standard contractual clauses.',
       'Inquiries are kept for twelve months after the last message, then deleted. If an inquiry leads to an engagement, the correspondence is kept as long as the contract and statutory record-keeping require.',
-      `You can ask to access, correct, delete or export your data, to restrict its use, or object to processing based on legitimate interest. Write to ${email}; we answer within one month at the latest, usually much sooner. You can also complain to the Croatian Personal Data Protection Agency (AZOP, azop.hr).`,
+      `You can ask to access, correct, delete or export your data, to restrict its use, or object to processing based on legitimate interest. Write to {email}; we answer within one month at the latest, usually much sooner. You can also complain to the Croatian Personal Data Protection Agency (AZOP, azop.hr).`,
     ],
     termsLabel: 'Terms of use',
     terms: [
@@ -60,13 +61,13 @@ const copy = {
     lede: 'Ova stranica koristi analitiku koja poštuje privatnost, bez kolačića i bez osobnih podataka, pa banner za privolu nije potreban. Sve što pošaljete putem obrasca koristi se isključivo za odgovor na taj upit.',
     privacyLabel: 'Politika privatnosti',
     privacy: [
-      `Voditelj obrade je ${controller}, vlasnik ${company.owner}. Za sve u vezi s vašim podacima pišite na ${email}.`,
+      `Voditelj obrade je ${controller}, vlasnik ${company.owner}. Za sve u vezi s vašim podacima pišite na {email}.`,
       'Putem obrasca za upit primamo samo ono što unesete: ime, e-adresu, tvrtku, poziciju, rok, budžet i opis projekta. Ime, e-adresa i opis potrebni su da bismo vam mogli odgovoriti; ostalo nije obavezno.',
       'Podatke koristimo za odgovor na upit i, ako to zatražite, za pripremu ponude. Pravna osnova je poduzimanje radnji na vaš zahtjev prije sklapanja ugovora (čl. 6. st. 1. t. (b) GDPR-a). Nema izrade profila, automatiziranog odlučivanja ni mailing liste, a podaci se nikada ne prodaju.',
       'Stranice isporučuje Cloudflare. Kako bi ih isporučio i zaštitio stranicu od zlouporabe, Cloudflare obrađuje tehničke podatke poput IP adrese i podataka o pregledniku. Obrazac koristi Cloudflare Turnstile kako bi provjerio da ga šalje osoba, a ne bot. Posjeti se broje putem Cloudflare Web Analyticsa, koji ne postavlja kolačiće i ne identificira vas. U vašem pregledniku sprema se samo odabir svijetle ili tamne teme. Pravna osnova je naš legitimni interes za sigurnu i ispravnu stranicu (čl. 6. st. 1. t. (f) GDPR-a).',
       'Podatke za nas obrađuju dva pružatelja usluga: Cloudflare, Inc. (hosting, zaštita, analitika i dostava poruka iz obrasca) i Apple (iCloud Mail, pretinac u koji stižu upiti). Oba mogu obrađivati podatke izvan EU-a; ti se prijenosi temelje na Okviru za privatnost podataka EU-a i SAD-a i standardnim ugovornim klauzulama.',
       'Upiti se čuvaju dvanaest mjeseci od posljednje poruke, a zatim se brišu. Ako upit dovede do suradnje, prepiska se čuva onoliko dugo koliko to zahtijevaju ugovor i zakonske obveze čuvanja dokumentacije.',
-      `Možete zatražiti pristup, ispravak, brisanje ili prijenos svojih podataka, ograničenje obrade te uložiti prigovor na obradu koja se temelji na legitimnom interesu. Pišite na ${email}; odgovaramo najkasnije u roku od mjesec dana, obično puno brže. Pritužbu možete podnijeti i Agenciji za zaštitu osobnih podataka (AZOP, azop.hr).`,
+      `Možete zatražiti pristup, ispravak, brisanje ili prijenos svojih podataka, ograničenje obrade te uložiti prigovor na obradu koja se temelji na legitimnom interesu. Pišite na {email}; odgovaramo najkasnije u roku od mjesec dana, obično puno brže. Pritužbu možete podnijeti i Agenciji za zaštitu osobnih podataka (AZOP, azop.hr).`,
     ],
     termsLabel: 'Uvjeti korištenja',
     terms: [
@@ -117,7 +118,11 @@ const details = [
       <LabelledRow label={text.privacyLabel} sideWidth="200px">
         <div class="prose">
           {text.privacy.map((paragraph) => (
-            <p>{paragraph}</p>
+            <p>
+              {paragraph
+                .split('{email}')
+                .map((part, index) => [index > 0 && <a href={`mailto:${email}`}>{email}</a>, part])}
+            </p>
           ))}
         </div>
       </LabelledRow>
@@ -205,12 +210,15 @@ const details = [
     color: var(--ink);
   }
 
+  .prose a,
   dd a {
+    color: var(--ink);
     border-bottom: var(--hairline) solid var(--rule);
     transition: border-color var(--duration-state) linear;
   }
 
   @media (hover: hover) {
+    .prose a:hover,
     dd a:hover {
       border-bottom-color: var(--ink);
     }
