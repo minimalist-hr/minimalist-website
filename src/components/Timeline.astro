@@ -97,4 +97,52 @@ const { steps, locale } = Astro.props;
     width: 100%;
     max-width: 640px;
   }
+
+  /*
+   * Desktop (md and up): two columns, and the rule snakes through the steps.
+   * Row 1 runs left to right (1, 2), drops down the right edge, row 2 runs right to left
+   * (3 on the right, 4 on the left), drops down the left edge, row 3 runs left to right.
+   * Source order stays 1–6, which is also the order along the line.
+   */
+  @media (min-width: 60rem) {
+    .timeline {
+      --pad: clamp(24px, 3vw, 40px);
+
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-auto-flow: row dense; /* lets step 4 fill the left cell of row 2 */
+      border-left: 0;
+    }
+
+    .step,
+    .step:not(:last-child) {
+      padding: var(--pad) var(--pad) clamp(40px, 5vw, 72px);
+      border-top: var(--hairline) solid var(--rule);
+    }
+
+    .step:nth-child(4n + 1),
+    .step:nth-child(4n + 4) {
+      grid-column: 1;
+    }
+
+    .step:nth-child(4n + 2),
+    .step:nth-child(4n + 3) {
+      grid-column: 2;
+    }
+
+    /* The drops between rows: right edge after step 2, left edge after step 4. */
+    .step:nth-child(4n + 2):not(:last-child) {
+      border-right: var(--hairline) solid var(--rule);
+    }
+
+    .step:nth-child(4n + 4):not(:last-child) {
+      border-left: var(--hairline) solid var(--rule);
+    }
+
+    /* The square sits on the line, above the step's number. */
+    .marker {
+      top: -4px;
+      left: var(--pad);
+    }
+  }
 </style>
