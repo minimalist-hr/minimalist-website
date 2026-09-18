@@ -1,0 +1,149 @@
+---
+/**
+ * Project inquiry form (plan §9). Fields and names follow §9.1.
+ *
+ * Works as a normal POST without JavaScript. The endpoint (`/api/contact`), Turnstile, and
+ * the JavaScript submit with inline success/error states arrive in Phase 3 with the Worker.
+ */
+import type { Locale } from '../i18n/config';
+import { useTranslations } from '../i18n/utils';
+import Button from './Button.astro';
+import ChipGroup from './ChipGroup.astro';
+import TextField from './TextField.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const timelineOptions = [
+  { value: 'asap', label: t('form.timeline.asap') },
+  { value: '1-3m', label: t('form.timeline.1-3m') },
+  { value: '3-6m', label: t('form.timeline.3-6m') },
+  { value: 'exploring', label: t('form.timeline.exploring') },
+];
+
+/** Amounts are not translated; only the "not sure" option is. */
+const budgetOptions = [
+  { value: 'lt15', label: '< €15,000' },
+  { value: '15-40', label: '€15,000 – €40,000' },
+  { value: '40-100', label: '€40,000 – €100,000' },
+  { value: 'gt100', label: '€100,000 +' },
+  { value: 'unsure', label: t('form.budget.unsure') },
+];
+---
+
+<form class="form" action="/api/contact" method="post">
+  <input type="hidden" name="locale" value={locale} />
+
+  <div class="pairs">
+    <TextField
+      name="name"
+      label={t('form.name')}
+      required
+      autocomplete="name"
+      placeholder="Ana Horvat"
+      maxlength={120}
+    />
+    <TextField
+      name="email"
+      label={t('form.email')}
+      type="email"
+      required
+      autocomplete="email"
+      placeholder="ana@company.com"
+      maxlength={200}
+    />
+    <TextField
+      name="company"
+      label={t('form.company')}
+      autocomplete="organization"
+      placeholder="Company d.o.o."
+      maxlength={120}
+    />
+    <TextField
+      name="role"
+      label={t('form.role')}
+      autocomplete="organization-title"
+      placeholder="CTO"
+      maxlength={120}
+    />
+  </div>
+
+  <ChipGroup name="timeline" legend={t('form.timeline')} options={timelineOptions} />
+  <ChipGroup name="budget" legend={t('form.budget')} unit="EUR" options={budgetOptions} />
+
+  <TextField
+    name="brief"
+    label={t('form.brief')}
+    hint={t('form.briefHint')}
+    required
+    multiline
+    maxlength={5000}
+  />
+
+  <!-- Honeypot: invisible to people, filled in by bots; submissions with it are rejected. -->
+  <div class="honeypot" aria-hidden="true">
+    <label>
+      {t('form.honeypot')}
+      <input type="text" name="website" tabindex="-1" autocomplete="off" />
+    </label>
+  </div>
+
+  <div class="actions">
+    <Button type="submit">{t('form.submit')}</Button>
+    <p class="note">{t('form.replyTime')}</p>
+  </div>
+</form>
+
+<style>
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .pairs {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: clamp(16px, 2vw, 28px);
+  }
+
+  .note {
+    max-width: 32ch;
+    font-size: var(--text-xs);
+    line-height: var(--leading-normal);
+    color: var(--graphite);
+  }
+
+  /* Name/email and company/role sit in pairs from sm up (plan §5.2). */
+  @media (min-width: 40rem) {
+    .pairs {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(20px, 2.5vw, 28px);
+    }
+  }
+
+  @media (min-width: 60rem) {
+    .form {
+      gap: clamp(24px, 3vw, 34px);
+    }
+  }
+</style>
