@@ -77,6 +77,6 @@ pnpm run build           # static build to dist/
 pnpm run types:worker    # regenerate Worker types after changing wrangler.jsonc
 pnpm run test:a11y       # axe + keyboard + reflow on every sitemap page, Chromium (build first)
 pnpm run test:a11y:browsers # the same in Chromium, Firefox and WebKit (local)
-pnpm run test:lighthouse # Lighthouse CI on home, an article, contact (build first)
+pnpm run test:lighthouse # Lighthouse CI on home, case study, contact (build first)
 pnpm exec wrangler dev   # serve dist/ + the Worker locally (needs .dev.vars, see .dev.vars.example)
 ```

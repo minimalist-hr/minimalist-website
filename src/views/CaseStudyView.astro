@@ -2,7 +2,7 @@
 /**
  * Case study page, shared by /work/[slug]/ and /hr/radovi/[slug]/.
  * Structure follows the design: back link, title, meta, hero image, labelled sections,
- * gallery, results, quote, closing CTA.
+ * tech stack, gallery, results, quote, closing CTA.
  */
 import MetaPanel from '../components/MetaPanel.astro';
 import CtaBand from '../components/CtaBand.astro';
@@ -10,6 +10,7 @@ import CtaLink from '../components/CtaLink.astro';
 import ImageFrame from '../components/ImageFrame.astro';
 import Quote from '../components/Quote.astro';
 import ResultList from '../components/ResultList.astro';
+import ToolTags from '../components/ToolTags.astro';
 import type { Locale } from '../i18n/config';
 import { localizedPath, useTranslations, type Alternates } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -36,6 +37,7 @@ const {
   scope,
   heroCaption,
   sections = [],
+  stack = [],
   gallery = [],
   results = [],
   quote,
@@ -72,7 +74,7 @@ if (scope) meta.push({ label: t('case.scope'), value: scope });
     )}
 
     <div class="container body">
-      {sections.length > 0 && (
+      {(sections.length > 0 || stack.length > 0) && (
         <div class="sections">
           {sections.map((section) => (
             <section class="block">
@@ -82,6 +84,12 @@ if (scope) meta.push({ label: t('case.scope'), value: scope });
               ))}
             </section>
           ))}
+          {stack.length > 0 && (
+            <section class="block">
+              <h2>{t('case.stack')}</h2>
+              <ToolTags tools={stack} />
+            </section>
+          )}
         </div>
       )}
 

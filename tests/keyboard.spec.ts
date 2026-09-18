@@ -19,6 +19,7 @@ function sitemapPaths(): string[] {
 const TAB_PAGES = [
   '/',
   '/work/',
+  '/work/lift-mucnjak-website/',
   '/insights/deleting-code-is-a-feature/',
   '/services/',
   '/contact/',
@@ -184,6 +185,25 @@ test.describe('contact form', () => {
     const first = page.locator('form [aria-invalid="true"]').first();
     await expect(first).toBeFocused();
     await expect(page.locator('[data-form-error]')).toBeVisible();
+  });
+
+  test('typing in a field clears its error, and the summary once none are left', async ({
+    page,
+  }) => {
+    await page.goto('/contact/');
+    await page.locator('form button[type="submit"]').click();
+    const summary = page.locator('[data-form-error]');
+    await expect(summary).toBeVisible();
+
+    await page.fill('[name="name"]', 'Ana');
+    await expect(page.locator('[name="name"]')).not.toHaveAttribute('aria-invalid', 'true');
+    await expect(page.locator('#name-error')).toBeHidden();
+    await expect(summary).toBeVisible(); // email and brief still have errors
+
+    await page.fill('[name="email"]', 'ana@example.com');
+    await page.fill('[name="brief"]', 'A short brief.');
+    await expect(page.locator('form [aria-invalid="true"]')).toHaveCount(0);
+    await expect(summary).toBeHidden();
   });
 
   test('keeps focus on the submit button while sending', async ({ page }) => {
