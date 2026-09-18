@@ -41,6 +41,12 @@
 - Before changing `.gitlab-ci.yml`, `wrangler.jsonc`, `.gitignore` or `.nvmrc`, explain the problem first.
 - CLI tools change: when a command or flag from the plan doesn't match, check `--help` or the current docs and say what differs.
 
+## Security (CSP)
+
+- The Content Security Policy is configured in `astro.config.mjs` (`security.csp`) and emitted per page; `public/_headers` adds the other security and cache headers.
+- **Never add an `is:inline` script directly.** Put its body in `src/lib/inline-scripts.ts` and render it with `set:html`; the config hashes those strings. Any other inline script is blocked by the CSP. Bundled `<script>` tags in components are hashed by Astro automatically.
+- A new third-party script, frame or API origin must be added to the CSP directives explicitly.
+
 ## Worker (contact form)
 
 - `src/worker/` handles `POST /api/contact`; every other request goes back to `env.ASSETS` so the 404 pages keep working. The form/Worker contract lives in `src/lib/inquiry.ts`.

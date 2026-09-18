@@ -2,18 +2,11 @@
 /**
  * Blocking inline script: applies the saved theme before first paint (no flash).
  * Must be rendered early in <head>, after the theme-color meta it updates.
+ * The script body lives in lib/inline-scripts.ts so the CSP can list its exact hash.
  */
-import { defaultTheme, themeColors, themeStorageKey } from '../lib/theme';
+import { themeScript } from '../lib/inline-scripts';
+import { defaultTheme, themeColors } from '../lib/theme';
 ---
 
 <meta name="theme-color" content={themeColors[defaultTheme]} />
-<script is:inline define:vars={{ defaultTheme, themeColors, themeStorageKey }}>
-  let theme = defaultTheme;
-  try {
-    if (localStorage.getItem(themeStorageKey) === 'light') theme = 'light';
-  } catch {
-    // Storage unavailable (private mode, blocked): keep the default.
-  }
-  document.documentElement.dataset.theme = theme;
-  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', themeColors[theme]);
-</script>
+<script is:inline set:html={themeScript}></script>
