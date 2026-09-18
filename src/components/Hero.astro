@@ -213,14 +213,13 @@ const [first, ...rest] = phrases;
     line-height: var(--leading-none);
   }
 
+  /* Moves only; no fade, so the text never drops below contrast (WCAG 1.4.3). */
   @keyframes cue {
     0%,
     100% {
-      opacity: 0.45;
       transform: translateY(0);
     }
     50% {
-      opacity: 1;
       transform: translateY(6px);
     }
   }
