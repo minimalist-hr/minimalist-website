@@ -19,7 +19,7 @@ function sitemapPaths(): string[] {
 const TAB_PAGES = [
   '/',
   '/work/',
-  '/work/core-banking-rebuilt/',
+  '/insights/deleting-code-is-a-feature/',
   '/services/',
   '/contact/',
   '/insights/',

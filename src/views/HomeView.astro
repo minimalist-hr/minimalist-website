@@ -237,16 +237,17 @@ const paths = {
   }
 
   /* Tablets: the mobile structure gains columns (plan §5.2) */
+  /* auto-fill keeps empty tracks, so a single work or insight card keeps its card width. */
   @media (min-width: 40rem) {
     .grid {
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
     }
   }
 
   /* ---- Desktop design (md and up) ---- */
   @media (min-width: 60rem) {
     .grid-work {
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 30%), 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 30%), 1fr));
       gap: clamp(20px, 3vw, 40px);
     }
 
@@ -266,7 +267,7 @@ const paths = {
     }
 
     .grid-insights {
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 28%), 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 28%), 1fr));
       gap: clamp(20px, 2.5vw, 36px);
     }
   }

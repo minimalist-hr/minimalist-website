@@ -24,9 +24,8 @@ const copy = {
     studio: 'Studio',
     introCall: 'Introductory call',
     introCallText: 'Thirty minutes, no pitch deck.',
-    introCallLink: 'Call on FaceTime',
     privacy:
-      'What you send is used only to answer your inquiry. Nothing is shared, nothing is added to a mailing list.',
+      'What you send is used only to answer your inquiry. It is never sold and never added to a mailing list.',
     privacyLink: 'Privacy policy',
   },
   hr: {
@@ -37,9 +36,8 @@ const copy = {
     studio: 'Studio',
     introCall: 'Uvodni poziv',
     introCallText: 'Trideset minuta, bez prezentacije.',
-    introCallLink: 'Nazovite putem FaceTimea',
     privacy:
-      'Ono što pošaljete koristi se isključivo za odgovor na vaš upit. Ništa se ne dijeli i ne dodaje na mailing listu.',
+      'Ono što pošaljete koristi se isključivo za odgovor na vaš upit. Nikada se ne prodaje i ne dodaje na mailing listu.',
     privacyLink: 'Politika privatnosti',
   },
 } satisfies Record<Locale, Record<string, string>>;
@@ -47,7 +45,7 @@ const copy = {
 const { locale } = Astro.props;
 const text = copy[locale];
 const t = useTranslations(locale);
-const { company, email, introCall } = siteConfig;
+const { company, email } = siteConfig;
 ---
 
 <BaseLayout title={text.title} description={text.lede} alternates={alternatesFor('contact')}>
@@ -78,12 +76,7 @@ const { company, email, introCall } = siteConfig;
 
         <div class="block ruled">
           <p class="label">{text.introCall}</p>
-          <p class="text">
-            {text.introCallText}{' '}
-            <a class="inline-link" href={introCall}>
-              {text.introCallLink}
-            </a>
-          </p>
+          <p class="text">{text.introCallText}</p>
         </div>
 
         <p class="privacy">

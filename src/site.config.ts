@@ -26,7 +26,4 @@ export const siteConfig = {
     bank: 'ERSTE & STEIERMÄRKISCHE BANK d.d.',
     iban: 'HR3824020061140662890',
   },
-
-  /** Introductory call link on the Contact page (plan §15 open question 7). */
-  introCall: 'facetime:hello@minimalist.hr',
 } as const;
