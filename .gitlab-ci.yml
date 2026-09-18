@@ -18,6 +18,7 @@ variables:
 stages:
   - verify
   - build
+  - audit
   - deploy
 
 default:
@@ -65,12 +66,29 @@ build:
       - dist/
     expire_in: 1 week
 
-# Later (Phase 3): accessibility + Lighthouse checks against the built site.
-# a11y_and_performance:
-#   stage: build
-#   needs: [build]
-#   script:
-#     - pnpm run test:e2e
+# ---------------------------------------------------------------- audit
+
+# Accessibility (axe on every page, both themes, both layouts) and Lighthouse (plan §11).
+# Merge requests only, to save CI minutes; with "Pipelines must succeed" it gates the merge.
+# Deploys only need `build`, so previews do not wait for it.
+audit:
+  stage: audit
+  needs: [build]
+  # Browsers preinstalled. The tag must match @playwright/test in package.json.
+  image: mcr.microsoft.com/playwright:v1.63.0-noble
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  variables:
+    WRANGLER_SEND_METRICS: "false"
+  script:
+    - pnpm run test:a11y
+    - pnpm run test:lighthouse
+  artifacts:
+    when: always
+    paths:
+      - playwright-report/
+      - .lighthouseci/
+    expire_in: 1 week
 
 # ---------------------------------------------------------------- deploy
 

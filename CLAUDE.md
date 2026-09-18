@@ -8,7 +8,7 @@
 
 ## Brand hard constraints (plan §3), no exceptions
 
-- **Colour:** only the neutral tokens (`--paper`, `--raise`, `--ink`, `--ink-2`, `--graphite`, `--rule`, `--stripe-a/b`), dark and light. Never add a colour, accent or gradient. `--graphite` is for labels, metadata and captions only, never body copy.
+- **Colour:** only the neutral tokens (`--paper`, `--raise`, `--ink`, `--ink-2`, `--graphite`, `--rule`, `--stripe-a/b`), dark and light. Never add a colour, accent or gradient. `--graphite` is for labels, metadata and captions only, never body copy. In the light theme it is `#67655E`, darkened from the brand's `#7E7C75` for WCAG AA contrast (approved deviation); don't revert it.
 - **Type:** Archivo only, weights 400 and 500 only. Self-hosted woff2 with latin + latin-ext, `font-display: swap`. Never load Google Fonts. Monospace is for metadata and code only.
 - **Logo:** header and footer use the wordmark `MINIMALIST` plus a closing square in the same colour (`currentColor`). The integrated mark is only for favicon, app icons and OG image. Never both marks on one surface; never tinted, re-tracked, outlined or stretched.
 - **Icons:** inline SVG, 24px box, 1.5px stroke, square caps, `currentColor`.
@@ -41,6 +41,12 @@
 - Before changing `.gitlab-ci.yml`, `wrangler.jsonc`, `.gitignore` or `.nvmrc`, explain the problem first.
 - CLI tools change: when a command or flag from the plan doesn't match, check `--help` or the current docs and say what differs.
 
+## Audits
+
+- `test:a11y` and `test:lighthouse` run in CI on merge requests only (job `audit`); the targets are WCAG 2.2 AA with zero axe violations and Lighthouse 95+/100/100/100 (plan §11.1).
+- The Playwright Docker image tag in `.gitlab-ci.yml` must match the `@playwright/test` version.
+- On Windows, `lhci autorun` fails on a Chrome-launcher cleanup bug (EPERM on its temp profile); it works in CI. Locally, run Lighthouse against a Chromium started with `--remote-debugging-port` instead.
+
 ## Security (CSP)
 
 - The Content Security Policy is configured in `astro.config.mjs` (`security.csp`) and emitted per page; `public/_headers` adds the other security and cache headers.
@@ -65,5 +71,7 @@ pnpm run format          # prettier --write (format:check in CI)
 pnpm run check           # astro check (site types) + tsc for the Worker
 pnpm run build           # static build to dist/
 pnpm run types:worker    # regenerate Worker types after changing wrangler.jsonc
+pnpm run test:a11y       # axe on every sitemap page, both themes and layouts (build first)
+pnpm run test:lighthouse # Lighthouse CI on home, case study, contact (build first)
 pnpm exec wrangler dev   # serve dist/ + the Worker locally (needs .dev.vars, see .dev.vars.example)
 ```
