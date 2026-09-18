@@ -8,6 +8,8 @@
 
 This document is the single source of truth for the build. It is written so it can be handed directly to Claude Code together with the two design files.
 
+> **Status:** launched on 2026-09-18 at **https://minimalist.hr**. Phases 1–4 are done except the content items marked open in section 13. **Section 17 records where the build differs from this plan**, and wins where the two disagree.
+
 ---
 
 ## 0. How to use this document (for Claude Code)
@@ -72,10 +74,10 @@ Use the extracted HTML for exact copy, spacing, sizes, tokens and component stru
 | Hosting | **Cloudflare Workers with static assets** (not Pages). Astro's `dist/` is served as static assets; the contact form is a small Worker script added in Phase 3 | Cloudflare's recommended target for new projects; free static requests, fast EU edge, preview URLs per branch |
 | Repo & CI/CD | **GitLab CI/CD** runs checks and build, then deploys with **Wrangler**. `main` → production; other branches → preview URLs. Cloudflare's own Git integration is **not** used | Deploys only happen when the pipeline passes; everything is defined in the repo |
 | Form spam | **Cloudflare Turnstile** | Invisible, cookieless |
-| Form email | Transactional email API with an EU data region (Brevo or Resend), called from the function | No database; minimal GDPR surface |
+| Form email | **Resend** (sending region eu-west-1), called from the Worker | No database; minimal GDPR surface. Resend stores logs in the US (section 17) |
 | Analytics | **Cloudflare Web Analytics** (cookieless) | No cookie banner needed |
 | Fonts | **Self-hosted Archivo** (variable, woff2), subsets **latin + latin-ext** | Performance, GDPR, Croatian diacritics |
-| Package manager | pnpm (or npm; pick one and stay consistent) | — |
+| Package manager | **pnpm** (version pinned in `package.json`) | — |
 
 ---
 
@@ -231,6 +233,8 @@ minimalist/
 ├─ CLAUDE.md                       # short project rules for Claude Code
 └─ README.md
 ```
+
+*As built:* page views live in `src/views/` (one per page, shared by EN and HR), the Worker in `src/worker/`, the audits in `tests/` and `scripts/lighthouse.mjs`. See section 17.
 
 Page components should be shared between languages. `pages/hr/usluge.astro` renders the same `Services` view as `pages/services.astro` with `locale="hr"`, so there is no duplicated markup.
 
@@ -398,6 +402,8 @@ Radio chips must be real radio inputs (keyboard and screen-reader accessible) st
 
 ### 9.3 `src/worker.ts` (POST `/api/contact`)
 
+*As built:* `src/worker/` (entry `index.ts`); requests other than `/api/contact` go back to the static assets so the 404 pages work. Email goes through a swappable `Mailer` (Resend in production). Secrets: `TURNSTILE_SECRET_KEY`, `RESEND_API_KEY`; `CONTACT_TO`, `CONTACT_FROM` and `MAIL_PROVIDER` are plain vars in `wrangler.jsonc`. Without JavaScript the form shows a note with the email address, because Turnstile needs JavaScript. No auto-reply at launch.
+
 Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built file are served as static assets; `/api/contact` matches none, so it reaches the Worker. The Worker's `fetch` handler returns 404 for any other path.
 
 1. Accept `POST` only; parse form data or JSON.
@@ -418,10 +424,10 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 - Unique `<title>` and meta description per page and language, written in brand voice.
 - Canonical plus `hreflang` alternates on every page.
 - Open Graph and Twitter card tags; default OG image (1200×630, integrated mark on ink). Optional per-case-study OG images.
-- `@astrojs/sitemap` with i18n alternates; `robots.txt` pointing to the sitemap.
+- `@astrojs/sitemap` with i18n alternates; `robots.txt` pointing to the sitemap. *As built: a custom sitemap endpoint (`src/pages/sitemap.xml.ts`), because the HR slugs are translated.*
 - JSON-LD structured data: `Organization` (name, url, logo, email, address) on home; `Article` on insights; `BreadcrumbList` on case studies and insights.
 - Semantic headings: one `h1` per page, logical order.
-- RSS feed for insights (optional, cheap with `@astrojs/rss`).
+- RSS feed for insights (optional, cheap with `@astrojs/rss`). *Deferred until after launch.*
 - Preview deployments must send `X-Robots-Tag: noindex`. The pipeline appends this to `dist/_headers` for previews, and for production until `ALLOW_INDEXING=true` is set at launch.
 
 ---
@@ -495,7 +501,7 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 8. **Test previews:** create branch `ci-test`, change a line, push, open a merge request. Confirm the preview URL loads and sends `X-Robots-Tag: noindex` (`curl -I <url>`).
 
 **Notes**
-- Previews share production's Worker config and secrets. That's fine for a static site; for the contact form, add the workers.dev hostnames to the Turnstile widget.
+- Previews share production's Worker config and secrets. *As built:* Turnstile only accepts hostnames of zones in the account, so workers.dev cannot be added and the form only sends on `minimalist.hr`; previews show the form but cannot send.
 - Preview URLs are public but unlisted and noindexed. To lock them down, put them behind Cloudflare Access (free for small teams).
 - GitLab.com's free plan has a monthly compute-minutes limit. This pipeline takes a couple of minutes per run; check your usage under Settings → Usage quotas.
 
@@ -509,6 +515,8 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 7. Update GitLab variables and `wrangler.jsonc` per the Phase 4 checklist.
 
 ### 12.3 Business email (e.g. `hello@minimalist.hr`)
+
+*As built:* the mailbox is **iCloud+ Custom Email Domain** (`hello@` and `filip.mucnjak@`); iCloud owns the root MX, SPF and `sig1._domainkey` DKIM. Resend authenticates through its own `send.` subdomain and `resend._domainkey`, so SPF was not merged. DMARC is `v=DMARC1; p=none;` without `rua` (no report mailbox). Never onboard the domain to Cloudflare Email Routing: it would replace the iCloud MX records.
 - Choose a provider: Google Workspace, Microsoft 365 or Zoho Mail.
 - In Cloudflare DNS, add the provider's records:
   - **MX** records
@@ -524,54 +532,55 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 ## 13. Build phases and checklists
 
 ### Phase 1: Foundation
-- [ ] Init Astro project (TypeScript strict), Prettier, ESLint (astro plugin)
-- [ ] Add the three `/design` files; run the extraction script (section 0)
-- [ ] Write `CLAUDE.md` with short project rules (brand constraints, no new colours, mobile-first, i18n for every string)
-- [ ] `tokens.css` from design (colours both themes, type scale with clamp, spacing, motion)
-- [ ] Self-hosted Archivo (latin + latin-ext), preload
-- [ ] `BaseLayout` with head, SEO props, no-flash theme script, skip link
-- [ ] Header (desktop nav + mobile sticky header with dropdown menu per section 5.3), Footer, Wordmark, ThemeToggle (knob switch), LangSwitch
-- [ ] i18n config, `ui.ts`, `routes.ts`, helpers
-- [ ] CI/CD live before any feature work (section 12.1): pipeline green on `main`, production workers.dev URL loads, a test branch produces a preview URL
-- [ ] Favicon set and default OG image from the integrated mark
+- [x] Init Astro project (TypeScript strict), Prettier, ESLint (astro plugin)
+- [x] Add the three `/design` files; run the extraction script (section 0)
+- [x] Write `CLAUDE.md` with short project rules (brand constraints, no new colours, mobile-first, i18n for every string)
+- [x] `tokens.css` from design (colours both themes, type scale with clamp, spacing, motion)
+- [x] Self-hosted Archivo (latin + latin-ext), preload
+- [x] `BaseLayout` with head, SEO props, no-flash theme script, skip link
+- [x] Header (desktop nav + mobile sticky header with dropdown menu per section 5.3), Footer, Wordmark, ThemeToggle (knob switch), LangSwitch
+- [x] i18n config, `ui.ts`, `routes.ts`, helpers
+- [x] CI/CD live before any feature work (section 12.1): pipeline green on `main`, production workers.dev URL loads, a test branch produces a preview URL
+- [x] Favicon set and default OG image from the integrated mark
 
 **Done when:** an empty EN and HR page deploy to a preview URL, theme and language switch work, and the header is correct from 320px to 2560px.
 
 ### Phase 2: Components and pages
-- [ ] Shared components (section 4)
-- [ ] `ImageFrame` with striped placeholder + caption
-- [ ] Home
-- [ ] Services, Approach (with pricing + FAQ), Skills, About
-- [ ] Content collections + schemas; migrate work and insights from design
-- [ ] Work list + case study template (including "in progress" state)
-- [ ] Insights list + article layout (respect `showInsights` flag)
-- [ ] Legal page structure, 404
-- [ ] All pages in HR with translated slugs
-- [ ] Motion (reveal/lift/state) + reduced motion
+- [x] Shared components (section 4)
+- [x] `ImageFrame` with striped placeholder + caption
+- [x] Home
+- [x] Services, Approach (with pricing + FAQ), Skills, About *(FAQ moved to Services; Approach uses a timeline)*
+- [x] Content collections + schemas; migrate work and insights from design
+- [x] Work list + case study template (including "in progress" state)
+- [x] Insights list + article layout (respect `showInsights` flag)
+- [x] Legal page structure, 404
+- [x] All pages in HR with translated slugs
+- [x] Motion (reveal/lift/state) + reduced motion
 
 **Done when:** every page matches the mobile design below `md` and the desktop design from `md` up, in both languages and both themes, with no broken layouts at in-between widths (640–960px).
 
 ### Phase 3: Functionality and quality
-- [ ] Contact form UI (no-JS + JS paths)
-- [ ] `src/worker.ts` with Turnstile, validation, email send; `main` added to `wrangler.jsonc`
-- [ ] Local testing with `wrangler dev` and `.dev.vars`; secrets set with `wrangler secret put`
-- [ ] Add accessibility and Lighthouse checks as a pipeline job
-- [ ] SEO: meta, canonical, hreflang, sitemap, robots, JSON-LD, RSS
-- [ ] Security headers, cache headers, noindex on previews
-- [ ] Cloudflare Web Analytics
-- [ ] Accessibility pass (keyboard-only run, screen reader spot check, axe)
-- [ ] Lighthouse mobile ≥ targets on Home, Case study, Contact
+- [x] Contact form UI (no-JS + JS paths)
+- [x] `src/worker.ts` with Turnstile, validation, email send; `main` added to `wrangler.jsonc` *(as `src/worker/`)*
+- [x] Local testing with `wrangler dev` and `.dev.vars`; secrets set with `wrangler secret put` *(set in the Cloudflare dashboard)*
+- [x] Add accessibility and Lighthouse checks as a pipeline job *(job `audit`, merge requests only)*
+- [x] SEO: meta, canonical, hreflang, sitemap, robots, JSON-LD
+- [ ] RSS *(deferred until after launch)*
+- [x] Security headers, cache headers, noindex on previews
+- [x] Cloudflare Web Analytics
+- [x] Accessibility pass (keyboard-only run, screen reader spot check, axe) *(keyboard and reflow checks automated in `tests/keyboard.spec.ts`)*
+- [x] Lighthouse mobile ≥ targets on Home, Case study, Contact *(an insight article stands in until a case study is published)*
 
 ### Phase 4: Content and launch
-- [ ] Replace placeholder copy, metrics, clients and quotes with verified content
-- [ ] Real photography per brand brief (greyscale, 4:5 / 3:2 / 1:1), processed and optimised
-- [ ] Legal: privacy policy and company details reviewed (section 14)
-- [ ] Business email set up; SPF/DKIM/DMARC verified
-- [ ] Cross-device testing (section 5.4 widths and browsers)
-- [ ] Nameservers switched to Cloudflare; custom domain + `www` redirect live
-- [ ] GitLab variables: `PRODUCTION_URL=https://minimalist.hr/`, `ALLOW_INDEXING=true`; set `"workers_dev": false` in `wrangler.jsonc`
-- [ ] Final smoke test on production: all routes EN/HR, form sends, 404 works, sitemap reachable
-- [ ] Submit sitemap to Google Search Console and Bing Webmaster Tools
+- [ ] Replace placeholder copy, metrics, clients and quotes with verified content *(copy verified; launched with one case study in progress, Lift-Mučnjak, and one insight; more after launch)*
+- [ ] Real photography per brand brief (greyscale, 4:5 / 3:2 / 1:1), processed and optimised *(after launch; striped placeholders until then)*
+- [ ] Legal: privacy policy and company details reviewed (section 14) *(text completed to GDPR Art. 13; review by someone qualified still open)*
+- [x] Business email set up; SPF/DKIM/DMARC verified *(iCloud + Resend; a test inquiry passed DKIM and DMARC)*
+- [x] Cross-device testing (section 5.4 widths and browsers) *(full suite in Chromium, Firefox and WebKit; Samsung and Mac Safari by hand; a real iPhone check is still worth doing)*
+- [x] Nameservers switched to Cloudflare; custom domain + `www` redirect live *(custom domains declared in `wrangler.jsonc`; www → apex by Redirect Rule)*
+- [x] GitLab variables: `PRODUCTION_URL=https://minimalist.hr/`, `ALLOW_INDEXING=true`; set `"workers_dev": false` in `wrangler.jsonc`
+- [x] Final smoke test on production: all routes EN/HR, form sends, 404 works, sitemap reachable
+- [x] Submit sitemap to Google Search Console and Bing Webmaster Tools
 
 ---
 
@@ -593,14 +602,14 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 
 ## 15. Open decisions (answer before or during build)
 
-1. **Email API provider:** Brevo or Resend (confirm EU data region).
-2. **Mailbox provider:** Google Workspace, Microsoft 365 or Zoho.
-3. **Contact address** shown on site (e.g. `hello@minimalist.hr`).
-4. **Hero headline:** both designs rotate four taglines (section 3.5). Keep the rotation, or launch with a single static headline?
-5. **Insights at launch:** show with the three articles, or hide until real posts exist?
-6. **Which case studies** are real and approved for publication?
-7. **Studio address and call details:** the mobile design shows "Hamići 13, 10000 Zagreb" and an "Introductory call" block. Confirm these are real before launch.
-8. **Auto-reply** to form senders: yes or no?
+1. **Email API provider:** Brevo or Resend (confirm EU data region). → **Resend**, sending from eu-west-1 (its logs are stored in the US).
+2. **Mailbox provider:** Google Workspace, Microsoft 365 or Zoho. → **iCloud+ Custom Email Domain** for now (no DPA; may move to Zoho later).
+3. **Contact address** shown on site (e.g. `hello@minimalist.hr`). → **`hello@minimalist.hr`**.
+4. **Hero headline:** both designs rotate four taglines (section 3.5). Keep the rotation, or launch with a single static headline? → **Rotation kept.**
+5. **Insights at launch:** show with the three articles, or hide until real posts exist? → **Shown, with one article**; the other two were removed.
+6. **Which case studies** are real and approved for publication? → **Lift-Mučnjak** (company website), shown as "in progress" until its text is written; the three design placeholders were removed.
+7. **Studio address and call details:** the mobile design shows "Hamići 13, 10000 Zagreb" and an "Introductory call" block. Confirm these are real before launch. → Address confirmed; the call block has no link (calls are arranged by email).
+8. **Auto-reply** to form senders: yes or no? → **Not at launch**; later.
 9. **Later:** a git-based CMS (e.g. Keystatic) if non-developers need to edit content. Not needed for launch.
 
 ---
@@ -608,12 +617,48 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 ## 16. Useful commands
 
 ```bash
-pnpm create astro@latest minimalist     # scaffold (minimal template, TypeScript strict)
 pnpm dev                                # local dev
-pnpm build && pnpm preview              # production build check
-pnpm exec wrangler dev                  # run built site (+ Worker script, once added) locally on the Workers runtime
-npx @axe-core/cli http://localhost:4321 # accessibility scan
-npx lighthouse http://localhost:4321 --preset=desktop
+pnpm run lint && pnpm run format:check && pnpm run check && pnpm run build   # before every commit
+pnpm exec wrangler dev                  # built site + Worker on the Workers runtime (needs .dev.vars)
+pnpm run test:a11y                      # axe, keyboard and reflow checks on every page (build first)
+pnpm run test:lighthouse                # Lighthouse CI with retries (build first)
 ```
 
 Verify current Cloudflare and Astro CLI syntax against their docs at setup time. Both evolve quickly.
+
+---
+
+## 17. As built (launch, 2026-09-18)
+
+Where the build differs from the sections above. All of these were agreed during the build.
+
+**Hosting, domain, CI**
+- DNS was already on Cloudflare. Custom domains `minimalist.hr` and `www.minimalist.hr` are declared in `wrangler.jsonc` (`routes`), not added in the dashboard, so a deploy can never drop them. www → apex is a Cloudflare Redirect Rule (301). Always Use HTTPS is on.
+- `workers_dev` is `false`; `preview_urls` is `true`, so branch previews keep their workers.dev URLs.
+- The `audit` job (axe, keyboard and reflow tests, Lighthouse) runs on merge requests only, to save CI minutes. Lighthouse runs through `scripts/lighthouse.mjs`, which retries runs that fail to record (`NO_NAVSTART`, a CI browser flake), with Lighthouse 13 via a pnpm override.
+- Web Analytics uses automatic injection; Cloudflare only injects the beacon for browser requests.
+
+**Contact form and email**
+- The Worker lives in `src/worker/`; the form/Worker contract in `src/lib/inquiry.ts`. Email goes through a `Mailer` interface: `resend` in production, `console` locally. A Cloudflare Email Service implementation existed until launch and was removed (it needs Workers Paid); it is in the git history.
+- Cloudflare Email Sending needs the Workers Paid plan, and Email Routing would take over iCloud's MX records, so production sends through Resend.
+- The Turnstile widget has only `minimalist.hr` (workers.dev cannot be added); locally the test keys are used.
+- Without JavaScript the form shows the email address instead of posting, because Turnstile needs JavaScript.
+
+**Design and content**
+- Light-theme `--graphite` is `#67655E` (brand: `#7E7C75`) to meet WCAG AA contrast.
+- FAQ is on the Services page; Approach uses a timeline. Rules end with the text everywhere except the header's bottom border and the footer's top rule.
+- One case study (Lift-Mučnjak, in progress: card only, no page) and one insight at launch. The home grids keep their card width with fewer cards.
+- The privacy policy covers GDPR Art. 13 and names Cloudflare, Resend and Apple as processors.
+
+**Accessibility (beyond axe)**
+- The sticky header never covers keyboard focus: `scroll-padding-top` for Chromium and Firefox, a small `focusin` scroll fix in `Header.astro` for WebKit.
+- The mobile menu also closes when focus leaves it; the submit button uses `aria-disabled` while sending, so focus is not lost.
+- Tested in Chromium, Firefox and WebKit. Safari skips links on Tab unless Option+Tab or "Press Tab to highlight each item" is used; the link-only keyboard tests skip WebKit for that reason.
+
+**Open after launch**
+- Lift-Mučnjak case study text, results and quote; then set it to `published` and point Lighthouse back at it.
+- More insights; photography; legal review by someone qualified (mention the iCloud mailbox has no DPA).
+- DMARC from `p=none` to `p=quarantine` after a few weeks of passing mail.
+- RSS feed and a contact auto-reply (deferred).
+- HSTS `preload` once every subdomain is certain to stay HTTPS.
+- A quick check on a real iPhone.

@@ -4,6 +4,8 @@ import { defineConfig, devices } from '@playwright/test';
  * Accessibility audit (plan §11.2), run in CI on merge requests (`pnpm run test:a11y`).
  * Serves the built site on the Workers runtime, so headers, 404 handling and the Worker
  * behave as in production. Run `pnpm run build` first.
+ * `test:a11y` (CI) runs the two Chromium projects; `test:a11y:browsers` also runs Firefox
+ * and WebKit (local only; needs `pnpm exec playwright install firefox webkit` once).
  */
 const PORT = 8787;
 
@@ -25,6 +27,15 @@ export default defineConfig({
       name: 'desktop',
       use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } },
     },
+    {
+      name: 'firefox-desktop',
+      use: { ...devices['Desktop Firefox'], viewport: { width: 1440, height: 900 } },
+    },
+    {
+      name: 'webkit-desktop',
+      use: { ...devices['Desktop Safari'], viewport: { width: 1440, height: 900 } },
+    },
+    { name: 'webkit-mobile', use: { ...devices['iPhone 15'] } },
   ],
 
   webServer: {

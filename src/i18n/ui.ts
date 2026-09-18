@@ -8,7 +8,6 @@ import type { Locale } from './config';
  * Croatian key fails `pnpm run check`.
  */
 const en = {
-  'site.name': 'Minimalist',
   'site.description':
     'Minimalist is a software development studio. We design and build software that does exactly what it should. Complex problems. Simple solutions.',
   'site.tagline': 'Less noise. Better software.',
@@ -96,7 +95,6 @@ const en = {
 export type UiKey = keyof typeof en;
 
 const hr: Record<UiKey, string> = {
-  'site.name': 'Minimalist',
   'site.description':
     'Minimalist je studio za razvoj softvera. Osmišljavamo i razvijamo softver koji radi upravo ono što treba. Složeni problemi. Jednostavna rješenja.',
   'site.tagline': 'Manje šuma. Bolji softver.',

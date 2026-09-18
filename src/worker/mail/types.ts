@@ -1,6 +1,6 @@
 /**
  * The seam that keeps the email provider swappable: the rest of the Worker only knows this
- * interface. To change provider, add an implementation next to cloudflare.ts and select it
+ * interface. To change provider, add an implementation next to resend.ts and select it
  * in index.ts; nothing else changes.
  */
 

@@ -45,6 +45,7 @@
 
 - `test:a11y` and `test:lighthouse` run in CI on merge requests only (job `audit`); the targets are WCAG 2.2 AA with zero axe violations and Lighthouse 95+/100/100/100 (plan §11.1).
 - `test:a11y` also runs `tests/keyboard.spec.ts`: skip link, a visible focus that the sticky header never covers (both Tab directions), mobile menu keys, form error focus, and reflow at 320px / 640px. A screen reader pass stays manual.
+- CI runs Chromium only. Before larger UI changes, run `pnpm run test:a11y:browsers` locally (adds Firefox and WebKit). WebKit skips links on Tab, like Safari, so link-only keyboard tests skip it.
 - The Playwright Docker image tag in `.gitlab-ci.yml` must match the `@playwright/test` version.
 - `test:lighthouse` runs `scripts/lighthouse.mjs`, not `lhci autorun`: Lighthouse sometimes fails to record a page load in the CI container (`NO_NAVSTART`), so each run is retried up to three times.
 - On Windows, `lhci collect` fails on a Chrome-launcher cleanup bug (EPERM on its temp profile); it works in CI. Locally, run Lighthouse against a Chromium started with `--remote-debugging-port` instead.
@@ -59,7 +60,7 @@
 
 - `src/worker/` handles `POST /api/contact`; every other request goes back to `env.ASSETS` so the 404 pages keep working. The form/Worker contract lives in `src/lib/inquiry.ts`.
 - Email goes through the `Mailer` interface in `src/worker/mail/`. To change provider, add one implementation and select it by `MAIL_PROVIDER`; nothing else changes. Never log message contents.
-- Production sends through Resend (`MAIL_PROVIDER=resend`, secret `RESEND_API_KEY`, domain `minimalist.hr` verified in the eu-west-1 region). iCloud keeps the inbox and the root MX records; never onboard `minimalist.hr` to Cloudflare Email Routing. The Cloudflare `send_email` binding stays as a fallback (needs Workers Paid).
+- Production sends through Resend (`MAIL_PROVIDER=resend`, secret `RESEND_API_KEY`, domain `minimalist.hr` verified in the eu-west-1 region). iCloud keeps the inbox and the root MX records; never onboard `minimalist.hr` to Cloudflare Email Routing.
 
 ## Secrets
 
@@ -74,7 +75,8 @@ pnpm run format          # prettier --write (format:check in CI)
 pnpm run check           # astro check (site types) + tsc for the Worker
 pnpm run build           # static build to dist/
 pnpm run types:worker    # regenerate Worker types after changing wrangler.jsonc
-pnpm run test:a11y       # axe on every sitemap page, both themes and layouts (build first)
+pnpm run test:a11y       # axe + keyboard + reflow on every sitemap page, Chromium (build first)
+pnpm run test:a11y:browsers # the same in Chromium, Firefox and WebKit (local)
 pnpm run test:lighthouse # Lighthouse CI on home, an article, contact (build first)
 pnpm exec wrangler dev   # serve dist/ + the Worker locally (needs .dev.vars, see .dev.vars.example)
 ```

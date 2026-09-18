@@ -2,7 +2,6 @@ import type { Localized } from '../i18n/localized';
 
 /**
  * Studio figures shown on the home page and About (plan §8).
- * ⚠️ Verify before launch; these come from the design.
  */
 export interface Stat {
   value: string;
