@@ -16,8 +16,9 @@
     "html_handling": "force-trailing-slash"
   },
 
-  // Cloudflare Email Service. Locked to one recipient, so the form can never send
-  // anywhere else. Must match CONTACT_TO and be a verified destination address.
+  // Cloudflare Email Service, kept as a fallback provider (MAIL_PROVIDER "cloudflare").
+  // Sending needs the Workers Paid plan while iCloud handles minimalist.hr's inbox.
+  // Locked to one recipient, so the form can never send anywhere else.
   "send_email": [
     {
       "name": "EMAIL",
@@ -25,13 +26,14 @@
     }
   ],
 
-  // Non-secret settings. Secrets (TURNSTILE_SECRET_KEY) are set with
-  // `wrangler secret put`, and locally in .dev.vars (see .dev.vars.example).
+  // Non-secret settings. Secrets (TURNSTILE_SECRET_KEY, RESEND_API_KEY) are set in the
+  // Cloudflare dashboard or with `wrangler secret put`, and locally in .dev.vars.
   "vars": {
     "CONTACT_TO": "hello@minimalist.hr",
     "CONTACT_FROM": "form@minimalist.hr",
-    // "cloudflare" sends through the EMAIL binding; "console" only logs (local development).
-    "MAIL_PROVIDER": "cloudflare"
+    // "resend" sends through Resend's API; "cloudflare" through the EMAIL binding;
+    // "console" only logs (local development).
+    "MAIL_PROVIDER": "resend"
   },
 
   // workers.dev URL is the production URL until minimalist.hr is connected.
