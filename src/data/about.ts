@@ -1,8 +1,7 @@
 import type { Localized } from '../i18n/localized';
 
 /**
- * About page content (plan §2). The profile values are real details from the design —
- * ⚠️ verify them before launch (plan §15).
+ * About page content (plan §2).
  */
 
 export const principles: Localized<string>[] = [

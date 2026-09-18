@@ -1,6 +1,5 @@
 /**
  * Site-wide facts and feature flags. Change values here, not in components.
- * ⚠️ Verify company details before launch (plan §8, §15).
  */
 export const siteConfig = {
   name: 'Minimalist',
