@@ -32,4 +32,14 @@ export default defineConfig([
       'astro/jsx-a11y/no-redundant-roles': ['error', { ul: ['list'], ol: ['list'] }],
     },
   },
+
+  // CommonJS config files (tools that only read .cjs, e.g. Lighthouse CI).
+  {
+    files: ['**/*.cjs'],
+    languageOptions: {
+      sourceType: 'commonjs',
+      globals: { require: 'readonly', module: 'writable' },
+    },
+    rules: { '@typescript-eslint/no-require-imports': 'off' },
+  },
 ]);
