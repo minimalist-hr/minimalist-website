@@ -1,8 +1,6 @@
 /** Theme settings shared by the inline no-flash script and the theme toggle (plan §6). */
 
-export const themes = ['dark', 'light'] as const;
-
-export type Theme = (typeof themes)[number];
+export type Theme = 'dark' | 'light';
 
 export const defaultTheme: Theme = 'dark';
 
