@@ -43,9 +43,9 @@
     { "pattern": "www.minimalist.hr", "custom_domain": true }
   ],
 
-  // workers.dev URL is the production URL until minimalist.hr is connected.
-  // After launch on the custom domain, set "workers_dev": false.
-  "workers_dev": true,
+  // Production answers only on minimalist.hr. Branch previews keep their workers.dev URLs:
+  // preview_urls is set explicitly because it defaults to the value of workers_dev.
+  "workers_dev": false,
   "preview_urls": true,
 
   "observability": {
