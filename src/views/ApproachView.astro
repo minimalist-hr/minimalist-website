@@ -12,6 +12,7 @@ import { steps } from '../data/steps';
 import type { Locale } from '../i18n/config';
 import { alternatesFor, localizedPath, useTranslations } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { nextSection } from '../lib/navigation';
 
 interface Props {
   locale: Locale;
@@ -69,7 +70,7 @@ const [pricingIntro, pricingNote] = text.pricing;
       <CtaBand
         title={text.cta}
         action={{ href: localizedPath('contact', locale), label: t('cta.startProject') }}
-        secondary={{ href: localizedPath('skills', locale), label: t('nav.skills') }}
+        secondary={nextSection('approach', locale)}
       />
     </div>
   </Section>

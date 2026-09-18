@@ -13,6 +13,7 @@ import type { Locale } from '../i18n/config';
 import { pick } from '../i18n/localized';
 import { alternatesFor, localizedPath, useTranslations } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { nextSection } from '../lib/navigation';
 
 interface Props {
   locale: Locale;
@@ -139,7 +140,7 @@ const details = [
     <CtaBand
       title={text.cta}
       action={{ href: localizedPath('contact', locale), label: t('cta.startProject') }}
-      secondary={{ href: localizedPath('insights', locale), label: t('nav.insights') }}
+      secondary={nextSection('about', locale)}
     />
   </Section>
 </BaseLayout>
