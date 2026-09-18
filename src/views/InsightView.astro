@@ -12,6 +12,7 @@ import MetaPanel from '../components/MetaPanel.astro';
 import type { Locale } from '../i18n/config';
 import { localizedPath, useTranslations, type Alternates } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { nextSection } from '../lib/navigation';
 import type { InsightEntry } from '../lib/content';
 import { formatInsightDate, readingTimeMinutes } from '../lib/format';
 import { siteConfig } from '../site.config';
@@ -66,7 +67,7 @@ if (hasBody) {
       <CtaBand
         title={ctaTitle ?? t('insights.ctaTitle')}
         action={{ href: localizedPath('contact', locale), label: t('cta.startProject') }}
-        secondary={{ href: localizedPath('work', locale), label: t('nav.work') }}
+        secondary={nextSection('insights', locale)}
       />
     </div>
   </article>

@@ -1,0 +1,67 @@
+---
+/**
+ * Numbered block used on Services and Approach: number and heading on one baseline,
+ * a paragraph, a placeholder image, then anything else passed as children.
+ */
+import ImageFrame from './ImageFrame.astro';
+
+interface Props {
+  number: string;
+  title: string;
+  description: string;
+  caption?: string | undefined;
+  /** Hairline above the block (the design rules the rows after the first). */
+  bordered?: boolean;
+}
+
+const { number, title, description, caption, bordered = false } = Astro.props;
+---
+
+<article class="block" data-bordered={bordered}>
+  <div class="heading">
+    <span class="number">{number}</span>
+    <h2>{title}</h2>
+  </div>
+  <p class="description">{description}</p>
+  {caption && <ImageFrame caption={caption} ratio="16/9" />}
+  <slot />
+</article>
+
+<style>
+  .block {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: clamp(40px, 5vw, 72px);
+  }
+
+  .block[data-bordered='true'] {
+    padding-top: clamp(18px, 2.2vw, 26px);
+    border-top: var(--hairline) solid var(--rule);
+  }
+
+  .heading {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+
+  .number {
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    color: var(--graphite);
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+    letter-spacing: var(--tracking-title);
+    line-height: var(--leading-tight);
+  }
+
+  .description {
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--ink-2);
+  }
+</style>

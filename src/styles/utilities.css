@@ -14,6 +14,9 @@
    * Hairline that begins and ends with the text, at every width. A border on the container
    * would run through its padding and touch the window edges on phones, so the rule is drawn
    * as a pseudo-element inset by the same gutters.
+   *
+   * It is a border on a zero-height box, not a 1px filled box: browsers always snap a border
+   * to at least one device pixel, while a 1px box can vanish at fractional zoom levels.
    */
   .rule-top,
   .rule-bottom {
@@ -26,8 +29,8 @@
     position: absolute;
     left: var(--gutter-left);
     right: var(--gutter-right);
-    height: var(--hairline);
-    background: var(--rule);
+    height: 0;
+    border-top: var(--hairline) solid var(--rule);
   }
 
   .rule-top::before {

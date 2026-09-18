@@ -1,0 +1,100 @@
+---
+/**
+ * Vertical timeline of the six steps, in the same language as "How we work" on the home
+ * page: one continuous rule with a square marker per step. Used on the Approach page,
+ * where each step also carries a longer description and an image.
+ */
+import type { Locale } from '../i18n/config';
+import { pick } from '../i18n/localized';
+import type { Step } from '../data/steps';
+import ImageFrame from './ImageFrame.astro';
+
+interface Props {
+  steps: Step[];
+  locale: Locale;
+}
+
+const { steps, locale } = Astro.props;
+---
+
+<ol class="timeline" role="list">
+  {steps.map((step) => (
+    <li class="step">
+      <span class="marker" aria-hidden="true" />
+      <div class="content">
+        <div class="heading">
+          <span class="number">{step.number}</span>
+          <h2>{pick(step.title, locale)}</h2>
+        </div>
+        <p class="detail">{pick(step.detail, locale)}</p>
+        <div class="image-slot">
+          <ImageFrame caption={step.caption} ratio="16/9" />
+        </div>
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .timeline {
+    margin: 0;
+    padding: 0;
+    border-left: var(--hairline) solid var(--rule);
+  }
+
+  .step {
+    position: relative;
+    padding-left: clamp(22px, 3vw, 40px);
+  }
+
+  .step:not(:last-child) {
+    padding-bottom: clamp(40px, 5vw, 72px);
+  }
+
+  .marker {
+    position: absolute;
+    top: 6px;
+    left: -4px;
+    width: 7px;
+    height: 7px;
+    background: var(--ink);
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .heading {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+
+  .number {
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    color: var(--graphite);
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+    letter-spacing: var(--tracking-title);
+    line-height: var(--leading-tight);
+  }
+
+  .detail {
+    max-width: 62ch;
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--ink-2);
+  }
+
+  /* The image never runs the full column on wide screens; it sits with the text. */
+  .image-slot {
+    width: 100%;
+    max-width: 640px;
+  }
+</style>

@@ -42,6 +42,31 @@ function isEnabled(route: NavRoute): boolean {
   return route !== 'insights' || siteConfig.showInsights;
 }
 
+/**
+ * Order the closing CTAs walk through: each page's secondary link goes to the next section
+ * in the navigation, and the last one (Insights) loops back to Work. Contact is left out
+ * because the primary CTA button already goes there.
+ */
+const ctaSequence = [
+  'work',
+  'services',
+  'approach',
+  'skills',
+  'about',
+  'insights',
+] as const satisfies readonly NavRoute[];
+
+export type CtaRoute = (typeof ctaSequence)[number];
+
+/** The link to the section after `route`, skipping disabled sections (e.g. hidden Insights). */
+export function nextSection(route: CtaRoute, locale: Locale): { href: string; label: string } {
+  const enabled = ctaSequence.filter(isEnabled);
+  const index = enabled.indexOf(route);
+  const next = enabled[(index + 1) % enabled.length] ?? 'work';
+  const t = useTranslations(locale);
+  return { href: localizedPath(next, locale), label: t(navLabelKey(next)) };
+}
+
 /** Resolve nav routes into localised links, dropping disabled sections. */
 export function buildNav(routes: readonly NavRoute[], locale: Locale, pathname: string): NavItem[] {
   const t = useTranslations(locale);

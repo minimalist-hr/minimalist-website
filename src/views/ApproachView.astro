@@ -1,0 +1,109 @@
+---
+/**
+ * Approach page, shared by /approach/ and /hr/pristup/:
+ * six steps, how engagements are priced, the questions asked first, closing CTA.
+ */
+import CtaBand from '../components/CtaBand.astro';
+import LabelledRow from '../components/LabelledRow.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import Timeline from '../components/Timeline.astro';
+import { steps } from '../data/steps';
+import type { Locale } from '../i18n/config';
+import { alternatesFor, localizedPath, useTranslations } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { nextSection } from '../lib/navigation';
+
+interface Props {
+  locale: Locale;
+}
+
+const copy = {
+  en: {
+    title: 'Approach — Minimalist',
+    heading: 'Six steps, no surprises.',
+    lede: 'The same sequence on every engagement. You always know what is happening this week and what you will see at the end of it.',
+    pricing: [
+      'Discovery is a fixed fee and stands on its own — you can take the findings elsewhere. Projects are fixed price per phase. Retainers are monthly, cancellable with 30 days notice.',
+      'No hourly billing. Estimating is our job, not yours.',
+    ],
+    cta: 'Know what you need built?',
+  },
+  hr: {
+    title: 'Pristup — Minimalist',
+    heading: 'Šest koraka, bez iznenađenja.',
+    lede: 'Isti slijed na svakom projektu. Uvijek znate što se radi ovaj tjedan i što ćete na kraju vidjeti.',
+    pricing: [
+      'Otkrivanje se naplaćuje fiksno i stoji samostalno — nalaze možete odnijeti kamo želite. Projekti su fiksne cijene po fazi. Angažmani su mjesečni, uz 30 dana otkaznog roka.',
+      'Bez naplate po satu. Procjena je naš posao, ne vaš.',
+    ],
+    cta: 'Znate što treba izgraditi?',
+  },
+} satisfies Record<Locale, Record<string, string | string[]>>;
+
+const { locale } = Astro.props;
+const text = copy[locale];
+const t = useTranslations(locale);
+const [pricingIntro, pricingNote] = text.pricing;
+---
+
+<BaseLayout title={text.title} description={text.lede} alternates={alternatesFor('approach')}>
+  <Section size="header">
+    <PageHeader label={t('nav.approach')} title={text.heading} lede={text.lede} />
+  </Section>
+
+  <Section bordered={false} flushTop>
+    <div class="steps">
+      <Timeline steps={steps} locale={locale} />
+    </div>
+
+    <div class="block">
+      <LabelledRow label={t('approach.pricingLabel')}>
+        <div class="pricing">
+          <p>{pricingIntro}</p>
+          <p class="note">{pricingNote}</p>
+        </div>
+      </LabelledRow>
+    </div>
+
+    <div class="closing">
+      <CtaBand
+        title={text.cta}
+        action={{ href: localizedPath('contact', locale), label: t('cta.startProject') }}
+        secondary={nextSection('approach', locale)}
+      />
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .steps {
+    padding-top: clamp(40px, 5vw, 72px);
+  }
+
+  /* The rule and spacing live here, not on the row component, so they apply reliably. */
+  .block {
+    margin-top: clamp(40px, 5vw, 72px);
+    padding-top: clamp(28px, 3.5vw, 48px);
+    border-top: var(--hairline) solid var(--rule);
+  }
+
+  .pricing {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--ink-2);
+  }
+
+  .note {
+    color: var(--ink);
+  }
+
+  .closing {
+    margin-top: clamp(40px, 5vw, 72px);
+    padding-top: clamp(40px, 5vw, 72px);
+    border-top: var(--hairline) solid var(--rule);
+  }
+</style>

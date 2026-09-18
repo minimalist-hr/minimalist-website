@@ -35,6 +35,12 @@ const en = {
   'cta.startProject': 'Start a project',
   'cta.seeWork': 'See the work',
 
+  'services.solves': 'Solves',
+  'services.receives': 'You receive',
+  'skills.toolsLabel': 'Tools we use',
+  'approach.pricingLabel': 'How engagements are priced',
+  'faq.label': 'Questions we are asked first',
+
   'work.readCaseStudy': 'Read the case study',
   'work.inProgress': '[ case study in progress ]',
   'work.backToWork': 'Work',
@@ -87,6 +93,12 @@ const hr: Record<UiKey, string> = {
 
   'cta.startProject': 'Započnite projekt',
   'cta.seeWork': 'Pogledajte radove',
+
+  'services.solves': 'Rješava',
+  'services.receives': 'Dobivate',
+  'skills.toolsLabel': 'Alati koje koristimo',
+  'approach.pricingLabel': 'Kako se projekti naplaćuju',
+  'faq.label': 'Pitanja koja prva dobivamo',
 
   'work.readCaseStudy': 'Pročitajte studiju',
   'work.inProgress': '[ studija u izradi ]',

@@ -1,0 +1,137 @@
+---
+/**
+ * Skills page, shared by /skills/ and /hr/vjestine/: six areas in plain language,
+ * each with the tools used.
+ */
+import CtaBand from '../components/CtaBand.astro';
+import LabelledRow from '../components/LabelledRow.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import ToolTags from '../components/ToolTags.astro';
+import { skillGroups } from '../data/skills';
+import type { Locale } from '../i18n/config';
+import { pick } from '../i18n/localized';
+import { alternatesFor, localizedPath, useTranslations } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { nextSection } from '../lib/navigation';
+
+interface Props {
+  locale: Locale;
+}
+
+const copy = {
+  en: {
+    title: 'Skills — Minimalist',
+    heading: 'What we build, in plain language.',
+    lede: 'Six things every project needs. The tools are listed too, but the tools are the least interesting part — what matters is what each one does for your business.',
+    cta: 'Not sure which part you need?',
+  },
+  hr: {
+    title: 'Vještine — Minimalist',
+    heading: 'Što gradimo, bez žargona.',
+    lede: 'Šest stvari koje svaki projekt treba. Alate navodimo, ali alati su najmanje zanimljiv dio — važno je što svaki od njih znači za vaše poslovanje.',
+    cta: 'Nisu sigurni koji vam dio treba?',
+  },
+} satisfies Record<Locale, Record<string, string>>;
+
+const { locale } = Astro.props;
+const text = copy[locale];
+const t = useTranslations(locale);
+---
+
+<BaseLayout title={text.title} description={text.lede} alternates={alternatesFor('skills')}>
+  <Section size="header">
+    <PageHeader label={t('nav.skills')} title={text.heading} lede={text.lede} />
+  </Section>
+
+  <Section bordered={false} flushTop>
+    {skillGroups.map((group, index) => (
+      <LabelledRow bordered={index > 0} padded>
+        <div class="heading" slot="side">
+          <span class="number">{String(index + 1).padStart(2, '0')}</span>
+          <h2>{pick(group.label, locale)}</h2>
+        </div>
+        <div class="body">
+          <p class="detail">{pick(group.detail, locale)}</p>
+          <p class="summary">{pick(group.summary, locale)}</p>
+          <div class="tools">
+            <p class="tools-label">{t('skills.toolsLabel')}</p>
+            <ToolTags tools={group.tools} />
+          </div>
+        </div>
+      </LabelledRow>
+    ))}
+
+    <div class="closing">
+      <CtaBand
+        title={text.cta}
+        action={{ href: localizedPath('contact', locale), label: t('cta.startProject') }}
+        secondary={nextSection('skills', locale)}
+      />
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .heading {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .number {
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    color: var(--graphite);
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+    letter-spacing: var(--tracking-title);
+    line-height: var(--leading-tight);
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(16px, 2vw, 22px);
+  }
+
+  .detail {
+    max-width: 62ch;
+    font-size: var(--text-body);
+    line-height: var(--leading-relaxed);
+    color: var(--ink-2);
+  }
+
+  .summary {
+    max-width: 62ch;
+    font-size: var(--text-base);
+    line-height: var(--leading-body);
+    color: var(--ink);
+  }
+
+  .tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 12px clamp(18px, 3vw, 44px);
+  }
+
+  .tools-label {
+    flex: 0 0 140px;
+    padding-top: 8px;
+    font-size: var(--text-label-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--graphite);
+  }
+
+  .closing {
+    margin-top: clamp(40px, 5vw, 72px);
+    padding-top: clamp(40px, 5vw, 72px);
+    border-top: var(--hairline) solid var(--rule);
+  }
+</style>

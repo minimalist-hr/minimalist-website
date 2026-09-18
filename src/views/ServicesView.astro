@@ -1,0 +1,116 @@
+---
+/**
+ * Services page, shared by /services/ and /hr/usluge/.
+ */
+import CtaBand from '../components/CtaBand.astro';
+import DetailPair from '../components/DetailPair.astro';
+import FaqList from '../components/FaqList.astro';
+import LabelledRow from '../components/LabelledRow.astro';
+import NumberedBlock from '../components/NumberedBlock.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import { faq } from '../data/faq';
+import { services } from '../data/services';
+import type { Locale } from '../i18n/config';
+import { pick } from '../i18n/localized';
+import { alternatesFor, localizedPath, useTranslations } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { nextSection } from '../lib/navigation';
+
+interface Props {
+  locale: Locale;
+}
+
+const copy = {
+  en: {
+    title: 'Services — Minimalist',
+    heading: 'Four ways we work.',
+    lede: 'Four services, not a menu of twenty. Each one names the problem it solves and exactly what you receive, so you can tell before we talk whether we are the right studio for it.',
+    cta: 'Not sure which one you need?',
+  },
+  hr: {
+    title: 'Usluge — Minimalist',
+    heading: 'Četiri načina na koja radimo.',
+    lede: 'Četiri usluge, ne jelovnik od dvadeset. Svaka imenuje problem koji rješava i točno ono što dobivate, pa i prije razgovora znate jesmo li pravi studio za to.',
+    cta: 'Nisu sigurni što vam treba?',
+  },
+} satisfies Record<Locale, Record<string, string>>;
+
+const { locale } = Astro.props;
+const text = copy[locale];
+const t = useTranslations(locale);
+---
+
+<BaseLayout title={text.title} description={text.lede} alternates={alternatesFor('services')}>
+  <Section size="header">
+    <PageHeader label={t('nav.services')} title={text.heading} lede={text.lede} />
+  </Section>
+
+  <Section bordered={false} flushTop>
+    <div class="grid">
+      {services.map((service, index) => (
+        <NumberedBlock
+          number={service.number}
+          title={pick(service.title, locale)}
+          description={pick(service.detail, locale)}
+          caption={service.caption}
+          bordered={index > 1}
+        >
+          <div class="details">
+            <DetailPair label={t('services.solves')} text={pick(service.solves, locale)} />
+            <DetailPair label={t('services.receives')} text={pick(service.receives, locale)} />
+          </div>
+        </NumberedBlock>
+      ))}
+    </div>
+
+    <div class="block">
+      <LabelledRow label={t('faq.label')}>
+        <FaqList items={faq} locale={locale} />
+      </LabelledRow>
+    </div>
+
+    <div class="closing">
+      <CtaBand
+        title={text.cta}
+        action={{ href: localizedPath('contact', locale), label: t('cta.startProject') }}
+        secondary={nextSection('services', locale)}
+      />
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(28px, 3.2vw, 52px);
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 4px;
+  }
+
+  /* Spacing and rule live here, not on the row component (scoped CSS does not
+     reach a child component's root element). */
+  .block {
+    margin-top: clamp(40px, 5vw, 72px);
+    padding-top: clamp(28px, 3.5vw, 48px);
+    border-top: var(--hairline) solid var(--rule);
+  }
+
+  .closing {
+    margin-top: clamp(40px, 5vw, 72px);
+    padding-top: clamp(40px, 5vw, 72px);
+    border-top: var(--hairline) solid var(--rule);
+  }
+
+  @media (min-width: 60rem) {
+    .grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 44%), 1fr));
+    }
+  }
+</style>

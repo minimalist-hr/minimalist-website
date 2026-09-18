@@ -13,6 +13,7 @@ import ResultList from '../components/ResultList.astro';
 import type { Locale } from '../i18n/config';
 import { localizedPath, useTranslations, type Alternates } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { nextSection } from '../lib/navigation';
 import type { WorkEntry } from '../lib/content';
 import { siteConfig } from '../site.config';
 
@@ -95,7 +96,7 @@ if (scope) meta.push({ label: t('case.scope'), value: scope });
           <CtaBand
             title={ctaTitle}
             action={{ href: localizedPath('contact', locale), label: t('cta.startProject') }}
-            secondary={{ href: localizedPath('services', locale), label: t('nav.services') }}
+            secondary={nextSection('work', locale)}
           />
         </div>
       )}

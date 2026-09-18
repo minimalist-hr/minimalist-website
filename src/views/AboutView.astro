@@ -1,0 +1,280 @@
+---
+/**
+ * About page, shared by /about/ and /hr/o-studiju/:
+ * manifesto, principles grid, portrait with the studio description and profile details.
+ */
+import CtaBand from '../components/CtaBand.astro';
+import ImageFrame from '../components/ImageFrame.astro';
+import LabelledRow from '../components/LabelledRow.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import { manifesto, principles, profile, studioDescription } from '../data/about';
+import type { Locale } from '../i18n/config';
+import { pick } from '../i18n/localized';
+import { alternatesFor, localizedPath, useTranslations } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { nextSection } from '../lib/navigation';
+
+interface Props {
+  locale: Locale;
+}
+
+const copy = {
+  en: {
+    title: 'About — Minimalist',
+    heading: 'Deliberately small, senior, and focused.',
+    lede: 'One engineer, one project at a time. No account managers between you and the person writing the code, and no growth plan that changes that.',
+    manifestoLabel: 'Manifesto',
+    manifestoClose: 'Software, reduced to what matters.',
+    principlesLabel: 'Principles',
+    principlesClose: 'Simple by design, built to last.',
+    studioLabel: 'How the studio works',
+    cta: 'One project at a time. Yours could be next.',
+    fields: {
+      name: 'Name',
+      role: 'Role',
+      email: 'Email',
+      portfolio: 'Portfolio',
+      experience: 'Experience',
+      languages: 'Languages',
+      workingWith: 'Working with',
+    },
+  },
+  hr: {
+    title: 'O studiju — Minimalist',
+    heading: 'Namjerno malen, iskusan i fokusiran.',
+    lede: 'Jedan inženjer, jedan projekt u isto vrijeme. Nema menadžera između vas i osobe koja piše kod, ni plana rasta koji bi to promijenio.',
+    manifestoLabel: 'Manifest',
+    manifestoClose: 'Softver, sveden na ono što je važno.',
+    principlesLabel: 'Načela',
+    principlesClose: 'Jednostavan po dizajnu, građen da traje.',
+    studioLabel: 'Kako studio radi',
+    cta: 'Jedan projekt u isto vrijeme. Vaš može biti sljedeći.',
+    fields: {
+      name: 'Ime',
+      role: 'Uloga',
+      email: 'E-pošta',
+      portfolio: 'Portfelj',
+      experience: 'Iskustvo',
+      languages: 'Jezici',
+      workingWith: 'Radimo s',
+    },
+  },
+} satisfies Record<Locale, Record<string, string | Record<string, string>>>;
+
+const { locale } = Astro.props;
+const text = copy[locale];
+const t = useTranslations(locale);
+
+const details = [
+  { label: text.fields.name, value: profile.name },
+  {
+    label: text.fields.role,
+    value: `${pick(profile.role, locale)} · ${pick(profile.roleSecondary, locale)}`,
+  },
+  { label: text.fields.email, value: profile.email, href: `mailto:${profile.email}` },
+  {
+    label: text.fields.portfolio,
+    value: profile.portfolio.replace(/^https?:\/\//, '').replace(/\/$/, ''),
+    href: profile.portfolio,
+  },
+  { label: text.fields.experience, value: pick(profile.experience, locale) },
+  { label: text.fields.languages, value: pick(profile.languages, locale) },
+  { label: text.fields.workingWith, value: pick(profile.workingWith, locale) },
+];
+---
+
+<BaseLayout title={text.title} description={text.lede} alternates={alternatesFor('about')}>
+  <Section size="header">
+    <PageHeader label={t('nav.about')} title={text.heading} lede={text.lede} />
+  </Section>
+
+  <Section>
+    <LabelledRow label={text.manifestoLabel} class="manifesto-row">
+      <div class="manifesto">
+        {manifesto.map((paragraph) => (
+          <p>{pick(paragraph, locale)}</p>
+        ))}
+        <p class="manifesto-close">{text.manifestoClose}</p>
+      </div>
+    </LabelledRow>
+  </Section>
+
+  <Section>
+    <p class="section-label">{text.principlesLabel}</p>
+    <ol class="principles" role="list">
+      {principles.map((principle, index) => (
+        <li class="principle">
+          <span class="number">{String(index + 1).padStart(2, '0')}</span>
+          <span class="principle-text">{pick(principle, locale)}</span>
+        </li>
+      ))}
+      <li class="principle">
+        <span class="principle-text principle-close">{text.principlesClose}</span>
+      </li>
+    </ol>
+  </Section>
+
+  <Section>
+    <div class="studio">
+      <ImageFrame caption={profile.portraitCaption} ratio="4/5" />
+      <div class="studio-text">
+        <p class="section-label">{text.studioLabel}</p>
+        {studioDescription.map((paragraph) => (
+          <p class="body-text">{pick(paragraph, locale)}</p>
+        ))}
+
+        <dl class="details">
+          {details.map((detail) => (
+            <div class="detail">
+              <dt>{detail.label}</dt>
+              <dd>{detail.href ? <a href={detail.href}>{detail.value}</a> : detail.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
+  </Section>
+
+  <Section bordered={false}>
+    <CtaBand
+      title={text.cta}
+      action={{ href: localizedPath('contact', locale), label: t('cta.startProject') }}
+      secondary={nextSection('about', locale)}
+    />
+  </Section>
+</BaseLayout>
+
+<style>
+  .section-label {
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--graphite);
+  }
+
+  .manifesto {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    font-size: clamp(16px, 1.6vw, 19px);
+    line-height: var(--leading-relaxed);
+    color: var(--ink-2);
+    text-wrap: pretty;
+  }
+
+  .manifesto-close {
+    font-size: clamp(18px, 2vw, 24px);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-snug);
+    color: var(--ink);
+  }
+
+  /* Hairline grid: 1px gaps over the rule colour, as in the design's grid device. */
+  .principles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+    gap: var(--hairline);
+    margin: clamp(24px, 3vw, 40px) 0 0;
+    padding: 0;
+    background: var(--rule);
+    border-top: var(--hairline) solid var(--rule);
+    border-left: var(--hairline) solid var(--rule);
+  }
+
+  .principle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 14px;
+    min-height: 130px;
+    padding: clamp(18px, 2.2vw, 26px);
+    background: var(--paper);
+  }
+
+  .number {
+    font-size: var(--text-label-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    color: var(--graphite);
+  }
+
+  .principle-text {
+    margin-top: auto;
+    font-size: var(--text-base);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-snug);
+    line-height: var(--leading-snug);
+  }
+
+  /* The closing line is set in graphite, as in the design. */
+  .principle-close {
+    line-height: 1.35;
+    color: var(--graphite);
+  }
+
+  .studio {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(24px, 4vw, 64px);
+    align-items: start;
+  }
+
+  .studio-text {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 50ch;
+  }
+
+  .body-text {
+    font-size: var(--text-body);
+    line-height: var(--leading-relaxed);
+    color: var(--ink-2);
+    text-wrap: pretty;
+  }
+
+  .details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 45%), 1fr));
+    gap: 20px clamp(20px, 2.5vw, 36px);
+    margin: 0;
+    padding-top: 18px;
+    border-top: var(--hairline) solid var(--rule);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--ink-2);
+  }
+
+  dt {
+    margin-bottom: 6px;
+    font-size: var(--text-label-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--graphite);
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  dd a {
+    color: var(--ink);
+    border-bottom: var(--hairline) solid var(--rule);
+    transition: border-color var(--duration-state) linear;
+  }
+
+  @media (hover: hover) {
+    dd a:hover {
+      border-bottom-color: var(--ink);
+    }
+  }
+
+  @media (min-width: 60rem) {
+    .studio {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 38%), 1fr));
+    }
+  }
+</style>

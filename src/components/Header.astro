@@ -138,8 +138,9 @@ const items = buildNav(primaryNav, locale, Astro.url.pathname);
       left: 0;
       right: 0;
       bottom: 11px;
-      height: var(--hairline);
-      background: var(--ink);
+      /* border, not a 1px fill: borders never vanish at fractional zoom */
+      height: 0;
+      border-top: var(--hairline) solid var(--ink);
       transform: scaleX(0);
       transform-origin: left;
       transition: transform var(--duration-reveal) var(--ease);
