@@ -1,0 +1,19 @@
+---
+/**
+ * Writes schema.org data as JSON-LD. `<` is escaped so content can never close the script
+ * element early. JSON-LD is data, not executed script, so the CSP does not need its hash.
+ */
+import type { StructuredData } from '../lib/structured-data';
+
+interface Props {
+  data: StructuredData | StructuredData[];
+}
+
+const { data } = Astro.props;
+const blocks = Array.isArray(data) ? data : [data];
+const serialize = (value: StructuredData) => JSON.stringify(value).replace(/</g, '\\u003c');
+---
+
+{blocks.map((block) => (
+  <script type="application/ld+json" set:html={serialize(block)}></script>
+))}
