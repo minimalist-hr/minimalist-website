@@ -165,6 +165,18 @@ export function enhanceContactForm(form: HTMLFormElement): void {
     status.hidden = false;
   }
 
+  // Typing in a field clears its error; once no field has one, the summary goes too.
+  form.addEventListener('input', (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement)) return;
+    if (target.getAttribute('aria-invalid') !== 'true') return;
+    setFieldError(target.name, null);
+    if (!form.querySelector('[aria-invalid="true"]') && status.textContent === messages.invalid) {
+      status.hidden = true;
+      status.textContent = '';
+    }
+  });
+
   function invalidFields(): string[] {
     return VALIDATED_FIELDS.filter((name) => {
       const control = fieldControl(name);
