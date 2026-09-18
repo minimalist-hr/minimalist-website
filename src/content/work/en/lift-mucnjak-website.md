@@ -28,12 +28,14 @@ sections:
     paragraphs:
       - text: 'A fast static site with a page for each service, a direct path to the service line, and an inquiry form that goes straight to the office. It loads quickly on a phone in a machine room with one bar of signal.'
 stack:
-  - 'Astro'
-  - 'TypeScript'
-  - 'CSS'
-  - 'Cloudflare Workers'
-  - 'Cloudflare Turnstile'
-  - 'Resend'
+  text: 'Static pages with no database and no CMS to maintain, so the site is fast by default and costs almost nothing to run. The inquiry form runs on Cloudflare’s edge: spam is filtered before a message reaches the office.'
+  tools:
+    - 'Astro'
+    - 'TypeScript'
+    - 'CSS'
+    - 'Cloudflare Workers'
+    - 'Cloudflare Turnstile'
+    - 'Resend'
 gallery:
   - caption: 'screenshot / service page'
   - caption: 'screenshot / inquiry form on mobile'

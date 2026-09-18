@@ -50,8 +50,11 @@ const work = defineCollection({
         }),
       )
       .optional(),
-    /** Technologies used, shown as tags after the sections. Product names, not translated. */
-    stack: z.array(z.string()).optional(),
+    /**
+     * Technologies used: a short note on why, and the tools as tags (product names, not
+     * translated). Shown full width below the gallery.
+     */
+    stack: z.object({ text: z.string().optional(), tools: z.array(z.string()) }).optional(),
     gallery: z.array(z.object({ caption: z.string() })).optional(),
     results: z.array(z.object({ value: z.string(), label: z.string() })).optional(),
     quote: z.object({ text: z.string(), name: z.string(), role: z.string() }).optional(),

@@ -28,12 +28,14 @@ sections:
     paragraphs:
       - text: 'Brza statična stranica sa stranicom za svaku uslugu, izravnim putem do servisne linije i obrascem za upit koji stiže ravno u ured. Brzo se učitava i na mobitelu u strojarnici, s jednom crticom signala.'
 stack:
-  - 'Astro'
-  - 'TypeScript'
-  - 'CSS'
-  - 'Cloudflare Workers'
-  - 'Cloudflare Turnstile'
-  - 'Resend'
+  text: 'Statične stranice bez baze podataka i CMS-a koje treba održavati, pa je stranica brza sama po sebi i gotovo ništa ne košta. Obrazac za upit radi na Cloudflareovoj mreži: spam se filtrira prije nego što poruka stigne u ured.'
+  tools:
+    - 'Astro'
+    - 'TypeScript'
+    - 'CSS'
+    - 'Cloudflare Workers'
+    - 'Cloudflare Turnstile'
+    - 'Resend'
 gallery:
   - caption: 'screenshot / service page'
   - caption: 'screenshot / inquiry form on mobile'
