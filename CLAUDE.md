@@ -19,6 +19,8 @@
 ## Responsive (plan §5)
 
 - Mobile-first CSS. **Below `md` (960px) match the mobile design; from `md` up match the desktop design.** 640–960px uses the mobile structure with wider spacing.
+- **Never style a child component's root element with a scoped class passed from the parent** — Astro scoped CSS does not apply there and the rules are silently dropped. Give the component a prop, or wrap it in an element the parent owns.
+- A `border` on `.container` runs through its padding and touches the screen edge on phones. For a rule that ends with the text, use the `.rule-top` / `.rule-bottom` utilities.
 - Mobile values are the floor, desktop values the ceiling: shared fluid `clamp()` tokens, no hard-coded one-off sizes.
 - Must hold from 320px to 2560px with no horizontal page scroll. Tap targets ≥ 44px, form inputs 16px.
 

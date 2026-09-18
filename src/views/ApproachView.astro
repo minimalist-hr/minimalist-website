@@ -4,12 +4,10 @@
  * six steps, how engagements are priced, the questions asked first, closing CTA.
  */
 import CtaBand from '../components/CtaBand.astro';
-import FaqList from '../components/FaqList.astro';
 import LabelledRow from '../components/LabelledRow.astro';
 import PageHeader from '../components/PageHeader.astro';
 import Section from '../components/Section.astro';
 import Timeline from '../components/Timeline.astro';
-import { faq } from '../data/faq';
 import { steps } from '../data/steps';
 import type { Locale } from '../i18n/config';
 import { alternatesFor, localizedPath, useTranslations } from '../i18n/utils';
@@ -64,12 +62,6 @@ const [pricingIntro, pricingNote] = text.pricing;
           <p>{pricingIntro}</p>
           <p class="note">{pricingNote}</p>
         </div>
-      </LabelledRow>
-    </div>
-
-    <div class="block">
-      <LabelledRow label={t('approach.faqLabel')}>
-        <FaqList items={faq} locale={locale} />
       </LabelledRow>
     </div>
 

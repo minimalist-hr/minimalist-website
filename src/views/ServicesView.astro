@@ -4,9 +4,12 @@
  */
 import CtaBand from '../components/CtaBand.astro';
 import DetailPair from '../components/DetailPair.astro';
+import FaqList from '../components/FaqList.astro';
+import LabelledRow from '../components/LabelledRow.astro';
 import NumberedBlock from '../components/NumberedBlock.astro';
 import PageHeader from '../components/PageHeader.astro';
 import Section from '../components/Section.astro';
+import { faq } from '../data/faq';
 import { services } from '../data/services';
 import type { Locale } from '../i18n/config';
 import { pick } from '../i18n/localized';
@@ -60,6 +63,12 @@ const t = useTranslations(locale);
       ))}
     </div>
 
+    <div class="block">
+      <LabelledRow label={t('faq.label')}>
+        <FaqList items={faq} locale={locale} />
+      </LabelledRow>
+    </div>
+
     <div class="closing">
       <CtaBand
         title={text.cta}
@@ -82,6 +91,14 @@ const t = useTranslations(locale);
     flex-direction: column;
     gap: 14px;
     margin-top: 4px;
+  }
+
+  /* Spacing and rule live here, not on the row component (scoped CSS does not
+     reach a child component's root element). */
+  .block {
+    margin-top: clamp(40px, 5vw, 72px);
+    padding-top: clamp(28px, 3.5vw, 48px);
+    border-top: var(--hairline) solid var(--rule);
   }
 
   .closing {

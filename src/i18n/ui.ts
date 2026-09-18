@@ -39,7 +39,7 @@ const en = {
   'services.receives': 'You receive',
   'skills.toolsLabel': 'Tools we use',
   'approach.pricingLabel': 'How engagements are priced',
-  'approach.faqLabel': 'Questions we are asked first',
+  'faq.label': 'Questions we are asked first',
 
   'work.readCaseStudy': 'Read the case study',
   'work.inProgress': '[ case study in progress ]',
@@ -98,7 +98,7 @@ const hr: Record<UiKey, string> = {
   'services.receives': 'Dobivate',
   'skills.toolsLabel': 'Alati koje koristimo',
   'approach.pricingLabel': 'Kako se projekti naplaćuju',
-  'approach.faqLabel': 'Pitanja koja prva dobivamo',
+  'faq.label': 'Pitanja koja prva dobivamo',
 
   'work.readCaseStudy': 'Pročitajte studiju',
   'work.inProgress': '[ studija u izradi ]',
