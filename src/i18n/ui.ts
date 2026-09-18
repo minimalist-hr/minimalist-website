@@ -79,7 +79,18 @@ const en = {
   'form.submit': 'Send inquiry',
   'form.replyTime': 'We reply within one business day.',
   'form.honeypot': 'Leave this field empty',
-  'form.required': 'required',
+  'form.sending': 'Sending…',
+  'form.successTitle': 'Thank you — your inquiry is in.',
+  'form.successText':
+    'You will get a reply from a real person within one business day, with either questions or a proposed call.',
+  'form.errorInvalid': 'Some fields need attention.',
+  'form.errorVerification': 'The spam check did not pass. Please try again.',
+  'form.errorSend': 'The message could not be sent. Please try again, or write to {email}.',
+  'form.errorName': 'Enter your name.',
+  'form.errorEmail': 'Enter a valid email address.',
+  'form.errorBrief': 'Describe what you want to build.',
+  'form.errorTooLong': 'This is too long.',
+  'form.noscript': 'The form needs JavaScript for its spam check. Write to {email} instead.',
 } as const;
 
 export type UiKey = keyof typeof en;
@@ -156,7 +167,19 @@ const hr: Record<UiKey, string> = {
   'form.submit': 'Pošaljite upit',
   'form.replyTime': 'Odgovaramo u jednom radnom danu.',
   'form.honeypot': 'Ostavite ovo polje praznim',
-  'form.required': 'obavezno',
+  'form.sending': 'Šaljemo…',
+  'form.successTitle': 'Hvala — vaš je upit primljen.',
+  'form.successText':
+    'Odgovor od prave osobe dobit ćete u jednom radnom danu, s pitanjima ili predlogom poziva.',
+  'form.errorInvalid': 'Neka polja treba ispraviti.',
+  'form.errorVerification': 'Provjera protiv neželjene pošte nije prošla. Pokušajte ponovno.',
+  'form.errorSend': 'Poruku nije bilo moguće poslati. Pokušajte ponovno ili pišite na {email}.',
+  'form.errorName': 'Upišite ime.',
+  'form.errorEmail': 'Upišite ispravnu e-adresu.',
+  'form.errorBrief': 'Opišite što želite izgraditi.',
+  'form.errorTooLong': 'Predugo.',
+  'form.noscript':
+    'Obrazac treba JavaScript za provjeru protiv neželjene pošte. Pišite na {email}.',
 };
 
 export const ui: Record<Locale, Record<UiKey, string>> = { en, hr };
