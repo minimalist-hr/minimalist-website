@@ -117,7 +117,6 @@ const details = [
 
   <Section>
     <div class="studio">
-      <ImageFrame caption={profile.portraitCaption} ratio="4/5" />
       <div class="studio-text">
         <p class="section-label">{text.studioLabel}</p>
         {studioDescription.map((paragraph) => (
@@ -132,6 +131,10 @@ const details = [
             </div>
           ))}
         </dl>
+      </div>
+      <!-- After the text in source and on mobile; left of it from md up. -->
+      <div class="portrait">
+        <ImageFrame caption={profile.portraitCaption} ratio="4/5" />
       </div>
     </div>
   </Section>
@@ -261,6 +264,13 @@ const details = [
     overflow-wrap: anywhere; /* long URLs wrap in the narrow two-column grid at 320px */
   }
 
+  /* Below md, email and URL values take the full row instead of breaking mid-word. */
+  @media (max-width: 59.99rem) {
+    .detail:has(a) {
+      grid-column: 1 / -1;
+    }
+  }
+
   dd a {
     color: var(--ink);
     border-bottom: var(--hairline) solid var(--rule);
@@ -276,6 +286,10 @@ const details = [
   @media (min-width: 60rem) {
     .studio {
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 38%), 1fr));
+    }
+
+    .portrait {
+      order: -1;
     }
   }
 </style>
