@@ -22,7 +22,7 @@ const t = useTranslations(locale);
 const dateLabel = formatInsightDate(date, locale);
 ---
 
-<article class="card">
+<article class="card" data-draw data-reveal-item>
   <MetaRow items={[dateLabel, category]} />
   <h3>{title}</h3>
   <div class="image-slot">

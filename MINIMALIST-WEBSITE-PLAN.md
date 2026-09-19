@@ -164,15 +164,19 @@ Copy exact values from the extracted design file if they differ from this table.
 | Reveal | 240ms | `cubic-bezier(.2,0,0,1)` | Rules and underlines extend from the left |
 | Lift | 160ms | same | Translate only; no scale, shadow or bounce |
 | State | ≤150ms | linear | Colour changes |
+| Enter | 240ms | `cubic-bezier(.2,0,0,1)` | Content below the fold fades in from 10px below, once, as it scrolls into view *(approved addition, 2026-09-19)* |
+| Page | 240ms | same | Crossfade between pages with cross-document view transitions; header and footer stay put *(approved addition, 2026-09-19)* |
 
 Everything else is instant.
+
+**Where it is used.** Rules and underlines below the fold draw in from the left as they scroll into view (the Approach timeline and home steps also draw downwards); links work like the header nav everywhere: text only at rest, on hover and focus the text brightens to ink and an underline extends from the left, and the current page or language stays underlined (links inside running text keep a visible rule, WCAG 1.4.1). Nothing uses Lift at the moment. Content already on screen when a page loads never waits for motion. Without JavaScript nothing is hidden. Page crossfades only run where the browser supports them (Chromium, Safari).
 
 **Hero rotating headline (both designs).** The h1 cycles through four taglines stacked in one grid cell: "Complex problems. Simple solutions." → "Less noise. Better software." → "Software, reduced to what matters." → "Simple by design, built to last."
 - Each phrase is shown for 4.5s within an 18s loop, fading in from 10px below and out 10px upward, with `cubic-bezier(.2,0,0,1)`.
 - The design also uses small looping cues: a scroll indicator that bobs, and an "Available for hire" signal/ping dot.
 - For screen readers, expose only the first phrase (others `aria-hidden="true"`) so the heading doesn't change underneath them.
 
-**Reduced motion:** respect `prefers-reduced-motion: reduce` by disabling all animations and transitions. The hero then shows only the first phrase, as in both designs.
+**Reduced motion:** respect `prefers-reduced-motion: reduce` by disabling all animations and transitions. Nothing is hidden for a scroll reveal, and pages switch without a crossfade. The hero then shows only the first phrase, as in both designs.
 
 ### 3.6 Voice
 

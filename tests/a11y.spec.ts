@@ -11,6 +11,10 @@ import { expect, test, type Page } from '@playwright/test';
 
 const WCAG_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
 
+// Audit every page in its final state: with reduced motion, nothing below the fold is held
+// back for a scroll reveal (motion.spec.ts covers the reveal itself).
+test.use({ reducedMotion: 'reduce' });
+
 function sitemapPaths(): string[] {
   const xml = readFileSync(new URL('../dist/sitemap.xml', import.meta.url), 'utf8');
   return [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(

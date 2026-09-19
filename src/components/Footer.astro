@@ -26,7 +26,7 @@ const { company, email } = siteConfig;
 const year = new Date().getFullYear();
 ---
 
-<footer class="site-footer">
+<footer class="site-footer" data-draw>
   <div class="grid container">
     <div class="brand">
       <a class="home" href={localizedPath('home', locale)} aria-label={t('a11y.home')}>
@@ -46,7 +46,11 @@ const year = new Date().getFullYear();
         <ul role="list" class="links">
           {column.items.map((item) => (
             <li>
-              <a href={item.href} aria-current={item.current ? 'page' : undefined}>
+              <a
+                class="link-line"
+                href={item.href}
+                aria-current={item.current ? 'page' : undefined}
+              >
                 {item.label}
               </a>
             </li>
@@ -56,7 +60,7 @@ const year = new Date().getFullYear();
     ))}
 
     <div class="contact">
-      <a class="email" href={`mailto:${email}`}>
+      <a class="email link-line" href={`mailto:${email}`}>
         {email}
       </a>
       <address>
@@ -138,8 +142,6 @@ const year = new Date().getFullYear();
   .email {
     align-self: flex-start;
     color: var(--ink);
-    border-bottom: var(--hairline) solid var(--rule);
-    transition: border-color var(--duration-state) linear;
   }
 
   address {
@@ -154,10 +156,6 @@ const year = new Date().getFullYear();
   @media (hover: hover) {
     .links a:hover {
       color: var(--ink);
-    }
-
-    .email:hover {
-      border-bottom-color: var(--ink);
     }
   }
 

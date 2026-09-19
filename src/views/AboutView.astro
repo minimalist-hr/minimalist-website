@@ -123,11 +123,19 @@ const details = [
           <p class="body-text">{pick(paragraph, locale)}</p>
         ))}
 
-        <dl class="details">
+        <dl class="details" data-draw>
           {details.map((detail) => (
             <div class="detail">
               <dt>{detail.label}</dt>
-              <dd>{detail.href ? <a href={detail.href}>{detail.value}</a> : detail.value}</dd>
+              <dd>
+                {detail.href ? (
+                  <a class="link-line" href={detail.href}>
+                    {detail.value}
+                  </a>
+                ) : (
+                  detail.value
+                )}
+              </dd>
             </div>
           ))}
         </dl>
@@ -270,14 +278,6 @@ const details = [
 
   dd a {
     color: var(--ink);
-    border-bottom: var(--hairline) solid var(--rule);
-    transition: border-color var(--duration-state) linear;
-  }
-
-  @media (hover: hover) {
-    dd a:hover {
-      border-bottom-color: var(--ink);
-    }
   }
 
   @media (min-width: 60rem) {

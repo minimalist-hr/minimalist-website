@@ -14,7 +14,7 @@ interface Props {
 const { stat, locale } = Astro.props;
 ---
 
-<div class="stat">
+<div class="stat" data-draw data-reveal-item>
   <span class="value">{stat.value}</span>
   <span class="label">{pick(stat.label, locale)}</span>
 </div>

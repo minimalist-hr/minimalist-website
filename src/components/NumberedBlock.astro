@@ -17,7 +17,7 @@ interface Props {
 const { number, title, description, caption, bordered = false } = Astro.props;
 ---
 
-<article class="block" data-bordered={bordered}>
+<article class="block" data-bordered={bordered} data-draw data-reveal-item>
   <div class="heading">
     <span class="number">{number}</span>
     <h2>{title}</h2>

@@ -64,13 +64,13 @@ const t = useTranslations(locale);
       ))}
     </div>
 
-    <div class="block">
+    <div class="block" data-draw>
       <LabelledRow label={t('faq.label')}>
         <FaqList items={faq} locale={locale} />
       </LabelledRow>
     </div>
 
-    <div class="closing">
+    <div class="closing" data-draw>
       <CtaBand
         title={text.cta}
         action={{ href: localizedPath('contact', locale), label: t('cta.startProject') }}

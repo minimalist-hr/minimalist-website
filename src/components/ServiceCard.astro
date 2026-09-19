@@ -16,7 +16,7 @@ interface Props {
 const { service, locale } = Astro.props;
 ---
 
-<article class="service">
+<article class="service" data-draw data-reveal-item>
   <span class="number">{service.number}</span>
   <h3>{pick(service.title, locale)}</h3>
   <p>{pick(service.description, locale)}</p>

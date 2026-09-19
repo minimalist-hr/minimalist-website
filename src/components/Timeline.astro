@@ -7,6 +7,8 @@
  * alternate sides, each side starting half a step lower, so the columns interlock. Both
  * sides align to the rule. Each square sits on the rule, and a hairline runs from it to
  * underline the step's heading.
+ * Motion: the rule draws down as the page scrolls (scroll-driven, where supported), and
+ * each underline extends from its square as the step enters (src/scripts/reveal.ts).
  */
 import type { Locale } from '../i18n/config';
 import { pick } from '../i18n/localized';
@@ -23,7 +25,7 @@ const { steps, locale } = Astro.props;
 
 <ol class="timeline" role="list">
   {steps.map((step, index) => (
-    <li class="step" style={`--row: ${index + 1}`}>
+    <li class="step" style={`--row: ${index + 1}`} data-reveal-item>
       <div class="content">
         <div class="heading">
           <span class="marker" aria-hidden="true" />
@@ -41,9 +43,22 @@ const { steps, locale } = Astro.props;
 
 <style>
   .timeline {
+    position: relative;
     margin: 0;
-    padding: 0;
+    padding: 0 0 0 var(--hairline);
+    view-timeline: --timeline block;
+    /* The rule's end follows the point where steps enter (the reveal's -8% root margin). */
+    view-timeline-inset: 0 8%;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
     border-left: var(--hairline) solid var(--rule);
+    transform-origin: top;
   }
 
   .step {
@@ -91,6 +106,39 @@ const { steps, locale } = Astro.props;
     left: calc(-1 * var(--reach));
     right: 0;
     border-bottom: var(--hairline) solid var(--rule);
+    transform-origin: left;
+  }
+
+  /* Reveal: the underline extends from the square, just after the step starts to enter. */
+  .step[data-reveal] .heading::after {
+    transition: transform var(--duration-reveal) var(--ease) calc(var(--reveal-delay, 0ms) + 120ms);
+  }
+
+  .step[data-reveal='pending'] .heading::after {
+    transform: scaleX(0);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      :global([data-js]) .timeline::before {
+        /* Longhands: the minifier would fold a timeline into the shorthand, which Chrome rejects. */
+        animation-name: draw-down;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --timeline;
+        animation-range: entry-crossing 0% entry-crossing 100%;
+      }
+    }
+  }
+
+  @keyframes draw-down {
+    from {
+      transform: scaleY(0);
+    }
+
+    to {
+      transform: scaleY(1);
+    }
   }
 
   .number {
@@ -128,21 +176,15 @@ const { steps, locale } = Astro.props;
     .timeline {
       --gap: clamp(28px, 3.5vw, 56px);
 
-      position: relative;
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       column-gap: calc(2 * var(--gap));
       row-gap: clamp(20px, 2.5vw, 36px);
-      border-left: 0;
+      padding: 0;
     }
 
     .timeline::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
       left: 50%;
-      border-left: var(--hairline) solid var(--rule);
     }
 
     .step,
@@ -170,6 +212,7 @@ const { steps, locale } = Astro.props;
     .step:nth-child(odd) .heading::after {
       left: 0;
       right: calc(-1 * var(--reach));
+      transform-origin: right;
     }
 
     .step:nth-child(even) .marker {

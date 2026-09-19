@@ -13,7 +13,7 @@
 - **Logo:** header and footer use the wordmark `MINIMALIST` plus a closing square in the same colour (`currentColor`). The integrated mark is only for favicon, app icons and OG image. Never both marks on one surface; never tinted, re-tracked, outlined or stretched.
 - **Icons:** inline SVG, 24px box, 1.5px stroke, square caps, `currentColor`.
 - **Images:** greyscale, 4:5 / 3:2 / 1:1, no rounded corners, no shadows, treatment applied to the files (not CSS filters). Until real photos exist, use the striped placeholder with its caption.
-- **Motion:** Reveal 240ms, Lift 160ms (translate only), State ≤150ms linear; easing `cubic-bezier(.2,0,0,1)`. Everything else is instant. `prefers-reduced-motion: reduce` disables all animation.
+- **Motion:** Reveal 240ms, Lift 160ms (translate only), State ≤150ms linear; plus two approved additions: Enter (content fades up 10px once as it scrolls into view) and Page (240ms crossfade between pages); easing `cubic-bezier(.2,0,0,1)`. Everything else is instant. Content on screen at load is never hidden, and nothing is hidden without JavaScript. `prefers-reduced-motion: reduce` disables all animation.
 - **Voice:** quiet, short, factual. No "passionate", "cutting-edge", "innovative", "solutions-driven". This also applies to meta descriptions, alt text, form messages and 404 copy.
 
 ## Responsive (plan §5)
@@ -45,6 +45,7 @@
 
 - `test:a11y` and `test:lighthouse` run in CI on merge requests only (job `audit`); the targets are WCAG 2.2 AA with zero axe violations and Lighthouse 95+/100/100/100 (plan §11.1).
 - `test:a11y` also runs `tests/keyboard.spec.ts`: skip link, a visible focus that the sticky header never covers (both Tab directions), mobile menu keys, form error focus, and reflow at 320px / 640px. A screen reader pass stays manual.
+- `test:a11y` also runs `tests/motion.spec.ts` (the scroll reveal). axe audits with reduced motion, so it sees every page in its final state.
 - CI runs Chromium only. Before larger UI changes, run `pnpm run test:a11y:browsers` locally (adds Firefox and WebKit). WebKit skips links on Tab, like Safari, so link-only keyboard tests skip it.
 - The Playwright Docker image tag in `.gitlab-ci.yml` must match the `@playwright/test` version.
 - `test:lighthouse` runs `scripts/lighthouse.mjs`, not `lhci autorun`: Lighthouse sometimes fails to record a page load in the CI container (`NO_NAVSTART`), so each run is retried up to three times.

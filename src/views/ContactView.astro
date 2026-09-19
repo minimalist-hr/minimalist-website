@@ -60,12 +60,12 @@ const { company, email } = siteConfig;
       <aside class="aside">
         <div class="block">
           <p class="label">{text.writeDirectly}</p>
-          <a class="email" href={`mailto:${email}`}>
+          <a class="email link-line" href={`mailto:${email}`}>
             {email}
           </a>
         </div>
 
-        <div class="block ruled">
+        <div class="block ruled" data-draw>
           <p class="label">{text.studio}</p>
           <address>
             {company.street}
@@ -74,7 +74,7 @@ const { company, email } = siteConfig;
           </address>
         </div>
 
-        <div class="block ruled">
+        <div class="block ruled" data-draw>
           <p class="label">{text.introCall}</p>
           <p class="text">{text.introCallText}</p>
         </div>
@@ -128,8 +128,6 @@ const { company, email } = siteConfig;
     font-size: var(--text-xl);
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-title);
-    border-bottom: var(--hairline) solid var(--rule);
-    transition: border-color var(--duration-state) linear;
   }
 
   address,
@@ -154,7 +152,6 @@ const { company, email } = siteConfig;
   }
 
   @media (hover: hover) {
-    .email:hover,
     .inline-link:hover {
       border-bottom-color: var(--ink);
     }
