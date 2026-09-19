@@ -646,7 +646,7 @@ Where the build differs from the sections above. All of these were agreed during
 
 **Design and content**
 - Light-theme `--graphite` is `#67655E` (brand: `#7E7C75`) to meet WCAG AA contrast.
-- FAQ is on the Services page; Approach uses a timeline. Rules end with the text everywhere except the header's bottom border and the footer's top rule.
+- FAQ is on the Services page. Approach uses a timeline: the rule down the left on mobile; from md up down the middle, with the steps alternating sides and each side starting half a step lower and aligned to the rule (left-hand steps are right-aligned); a hairline runs from each square to underline its heading, on mobile too. All step images are the same size. Rules end with the text everywhere except the header's bottom border and the footer's top rule.
 - One case study (Lift-Mučnjak) and one insight. The case study text is a placeholder written from what is known about the client: no invented figures or quote. Case studies have an optional `stack` (a short note and the tools as tags), shown full width under "Tech stack" below the gallery; the Lift-Mučnjak stack is invented for now. The home grids keep their card width with fewer cards.
 - On mobile, the About portrait comes after the studio text and details (desktop keeps it on the left). The footer tagline is "Complex problems. Simple solutions." / "Složeni problemi. Jednostavna rješenja.", one whole sentence per line. About principles set their text directly under the number.
 - A contact field's error clears as soon as its value is valid (email uses the same pattern as the Worker, from `src/lib/inquiry.ts`); the error summary goes once no field has one.

@@ -3,6 +3,10 @@
  * Vertical timeline of the six steps, in the same language as "How we work" on the home
  * page: one continuous rule with a square marker per step. Used on the Approach page,
  * where each step also carries a longer description and an image.
+ * Mobile: the rule runs down the left. From md up it runs down the middle and the steps
+ * alternate sides, each side starting half a step lower, so the columns interlock. Both
+ * sides align to the rule. Each square sits on the rule, and a hairline runs from it to
+ * underline the step's heading.
  */
 import type { Locale } from '../i18n/config';
 import { pick } from '../i18n/localized';
@@ -18,11 +22,11 @@ const { steps, locale } = Astro.props;
 ---
 
 <ol class="timeline" role="list">
-  {steps.map((step) => (
-    <li class="step">
-      <span class="marker" aria-hidden="true" />
+  {steps.map((step, index) => (
+    <li class="step" style={`--row: ${index + 1}`}>
       <div class="content">
         <div class="heading">
+          <span class="marker" aria-hidden="true" />
           <span class="number">{step.number}</span>
           <h2>{pick(step.title, locale)}</h2>
         </div>
@@ -43,18 +47,22 @@ const { steps, locale } = Astro.props;
   }
 
   .step {
-    position: relative;
-    padding-left: clamp(22px, 3vw, 40px);
+    /* Distance from the rule to the content. */
+    --reach: clamp(22px, 3vw, 40px);
+
+    padding-left: var(--reach);
   }
 
   .step:not(:last-child) {
     padding-bottom: clamp(40px, 5vw, 72px);
   }
 
+  /* The square sits on the rule, level with the heading's underline. */
   .marker {
+    z-index: 1;
     position: absolute;
-    top: 6px;
-    left: -4px;
+    bottom: -3px;
+    left: calc(-1 * var(--reach) - 4px);
     width: 7px;
     height: 7px;
     background: var(--ink);
@@ -67,9 +75,22 @@ const { steps, locale } = Astro.props;
   }
 
   .heading {
+    position: relative;
     display: flex;
+    align-self: flex-start;
     align-items: baseline;
     gap: 14px;
+    padding-bottom: 10px;
+  }
+
+  /* The underline runs from the rule to the end of the heading. */
+  .heading::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: calc(-1 * var(--reach));
+    right: 0;
+    border-bottom: var(--hairline) solid var(--rule);
   }
 
   .number {
@@ -96,5 +117,79 @@ const { steps, locale } = Astro.props;
   .image-slot {
     width: 100%;
     max-width: 640px;
+  }
+
+  /*
+   * Desktop (md and up): the rule down the middle, steps alternating sides. Each step spans
+   * two grid rows and starts one row after the previous one, so a right-hand step begins
+   * halfway down the left-hand step before it. Source order stays 1–6.
+   */
+  @media (min-width: 60rem) {
+    .timeline {
+      --gap: clamp(28px, 3.5vw, 56px);
+
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: calc(2 * var(--gap));
+      row-gap: clamp(20px, 2.5vw, 36px);
+      border-left: 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      border-left: var(--hairline) solid var(--rule);
+    }
+
+    .step,
+    .step:not(:last-child) {
+      --reach: var(--gap);
+
+      grid-row: var(--row) / span 2;
+      padding: 0;
+    }
+
+    .step:nth-child(odd) {
+      grid-column: 1;
+    }
+
+    .step:nth-child(even) {
+      grid-column: 2;
+    }
+
+    /* Left-hand steps reach the middle rule from their right edge. */
+    .step:nth-child(odd) .marker {
+      left: auto;
+      right: calc(-1 * var(--reach) - 4px);
+    }
+
+    .step:nth-child(odd) .heading::after {
+      left: 0;
+      right: calc(-1 * var(--reach));
+    }
+
+    .step:nth-child(even) .marker {
+      left: calc(-1 * var(--reach) - 3px);
+    }
+
+    /* Left-hand steps align to the rule, so each heading ends beside its square. */
+    .step:nth-child(odd) .content {
+      align-items: flex-end;
+      text-align: right;
+    }
+
+    .step:nth-child(odd) .heading {
+      align-self: flex-end;
+      justify-content: flex-end;
+    }
+
+    /* Every image takes the full column, so all six are the same size. */
+    .image-slot {
+      max-width: none;
+    }
   }
 </style>
