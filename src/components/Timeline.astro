@@ -4,7 +4,8 @@
  * page: one continuous rule with a square marker per step. Used on the Approach page,
  * where each step also carries a longer description and an image.
  * Mobile: the rule runs down the left. From md up it runs down the middle and the steps
- * alternate sides, each side starting half a step lower, so the columns interlock.
+ * alternate sides, each side starting half a step lower, so the columns interlock. Both
+ * sides align to the rule.
  */
 import type { Locale } from '../i18n/config';
 import { pick } from '../i18n/localized';
@@ -148,6 +149,16 @@ const { steps, locale } = Astro.props;
 
     .step:nth-child(even) .marker {
       left: calc(-1 * var(--gap) - 3px);
+    }
+
+    /* Left-hand steps align to the rule, so each heading ends beside its square. */
+    .step:nth-child(odd) .content {
+      align-items: flex-end;
+      text-align: right;
+    }
+
+    .step:nth-child(odd) .heading {
+      justify-content: flex-end;
     }
 
     /* Every image takes the full column, so all six are the same size. */
