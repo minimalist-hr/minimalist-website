@@ -2,6 +2,7 @@
 /**
  * The six steps. Mobile design: vertical rule with a square marker per step.
  * Desktop design (md and up): six columns under one horizontal rule.
+ * Motion: the rule draws in (down on mobile, from the left on desktop) as the list enters.
  */
 import type { Locale } from '../i18n/config';
 import { pick } from '../i18n/localized';
@@ -15,7 +16,7 @@ interface Props {
 const { steps, locale } = Astro.props;
 ---
 
-<ol class="steps" role="list">
+<ol class="steps" role="list" data-draw>
   {steps.map((step) => (
     <li class="step" data-reveal-item>
       <span class="marker" aria-hidden="true" />
@@ -31,6 +32,7 @@ const { steps, locale } = Astro.props;
     margin: 0;
     padding: 0;
     border-left: var(--hairline) solid var(--rule);
+    --draw-direction: to bottom;
   }
 
   .step {
@@ -81,6 +83,7 @@ const { steps, locale } = Astro.props;
       column-gap: clamp(12px, 1.8vw, 28px);
       border-left: 0;
       border-top: var(--hairline) solid var(--rule);
+      --draw-direction: to right;
     }
 
     .step {

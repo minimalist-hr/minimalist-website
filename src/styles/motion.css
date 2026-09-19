@@ -7,7 +7,8 @@
  *   so a card's hover lift (transform) never competes with it.
  * - [data-rule]   Reveal: a rule draws in from the left. `.rule-top` / `.rule-bottom` draw
  *   their pseudo-element; a `[data-draw]` border is painted through a border-image whose
- *   length is the animatable --rule-draw.
+ *   length is the animatable --rule-draw. It draws to the right unless the element sets
+ *   --draw-direction (e.g. `to bottom` for a vertical rule).
  */
 
 @property --rule-draw {
@@ -40,7 +41,12 @@
 }
 
 :root [data-draw][data-rule] {
-  border-image: linear-gradient(to right, var(--rule) var(--rule-draw), transparent 0) 1;
+  border-image: linear-gradient(
+      var(--draw-direction, to right),
+      var(--rule) var(--rule-draw),
+      transparent 0
+    )
+    1;
 }
 
 :root [data-draw][data-rule='pending'] {
