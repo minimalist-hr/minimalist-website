@@ -24,8 +24,14 @@ const { title, sector, year, summary, coverCaption, status } = entry.data;
 const t = useTranslations(locale);
 ---
 
-<article class="row" data-flipped={flipped} data-bordered={bordered} data-draw data-reveal-item>
-  <div class="image-slot">
+<article
+  class="row lift"
+  data-flipped={flipped}
+  data-bordered={bordered}
+  data-draw
+  data-reveal-item
+>
+  <div class="image-slot lift-target">
     <ImageFrame caption={coverCaption} ratio="16/10" />
   </div>
   <div class="body">

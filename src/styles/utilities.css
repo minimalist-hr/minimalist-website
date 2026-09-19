@@ -41,6 +41,25 @@
     bottom: 0;
   }
 
+  /*
+   * Lift (plan §3.5): on a card with a link, the .lift-target (its image) moves up on hover
+   * and while the link has keyboard focus. Translate only. Cards without a link stay still,
+   * so nothing looks clickable that is not.
+   */
+  .lift-target {
+    transition: transform var(--duration-lift) var(--ease);
+  }
+
+  .lift:has(a:focus-visible) .lift-target {
+    transform: translateY(var(--lift));
+  }
+
+  @media (hover: hover) {
+    .lift:has(a):hover .lift-target {
+      transform: translateY(var(--lift));
+    }
+  }
+
   /* Uppercase label style (brand: 500, +14%, 10–11px). Graphite is allowed here. */
   .label {
     font-size: var(--text-label);

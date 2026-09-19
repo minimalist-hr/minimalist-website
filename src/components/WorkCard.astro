@@ -21,8 +21,10 @@ const { title, sector, year, cardMetric, summary, coverCaption, status } = entry
 const t = useTranslations(locale);
 ---
 
-<article class="card" data-reveal-item>
-  <ImageFrame caption={coverCaption} ratio="4/3" />
+<article class="card lift" data-reveal-item>
+  <div class="lift-target">
+    <ImageFrame caption={coverCaption} ratio="4/3" />
+  </div>
   <div class="body">
     <MetaRow items={[sector, year]} />
     <h3>{title}</h3>

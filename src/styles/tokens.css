@@ -112,6 +112,7 @@
   --ease: cubic-bezier(0.2, 0, 0, 1);
   --duration-state: 140ms; /* colour changes, linear */
   --duration-lift: 160ms; /* translate only */
+  --lift: -6px; /* how far a lifted element moves up */
   --duration-switch: 220ms; /* theme toggle knob */
   --duration-reveal: 240ms; /* rules and underlines extend from the left */
   --duration-menu: 260ms; /* menu icon bars */
