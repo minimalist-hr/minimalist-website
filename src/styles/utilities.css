@@ -60,6 +60,39 @@
     }
   }
 
+  /*
+   * Reveal (plan §3.5) for link underlines: an ink line extends from the left on hover and
+   * keyboard focus, over the link's grey rule if it has one. Put .link-line on the link, or
+   * on a span inside it. Single-line links only: the line would not follow wrapped text.
+   */
+  .link-line {
+    position: relative;
+  }
+
+  .link-line::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(-1 * var(--hairline));
+    height: 0;
+    border-top: var(--hairline) solid var(--ink);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--duration-reveal) var(--ease);
+    pointer-events: none;
+  }
+
+  :is(a.link-line:focus-visible, a:focus-visible > .link-line)::after {
+    transform: scaleX(1);
+  }
+
+  @media (hover: hover) {
+    :is(a.link-line:hover, a:hover > .link-line)::after {
+      transform: scaleX(1);
+    }
+  }
+
   /* Uppercase label style (brand: 500, +14%, 10–11px). Graphite is allowed here. */
   .label {
     font-size: var(--text-label);

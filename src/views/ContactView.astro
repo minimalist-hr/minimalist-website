@@ -60,7 +60,7 @@ const { company, email } = siteConfig;
       <aside class="aside">
         <div class="block">
           <p class="label">{text.writeDirectly}</p>
-          <a class="email" href={`mailto:${email}`}>
+          <a class="email link-line" href={`mailto:${email}`}>
             {email}
           </a>
         </div>
@@ -129,7 +129,6 @@ const { company, email } = siteConfig;
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-title);
     border-bottom: var(--hairline) solid var(--rule);
-    transition: border-color var(--duration-state) linear;
   }
 
   address,
@@ -154,7 +153,6 @@ const { company, email } = siteConfig;
   }
 
   @media (hover: hover) {
-    .email:hover,
     .inline-link:hover {
       border-bottom-color: var(--ink);
     }
