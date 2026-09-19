@@ -32,6 +32,7 @@ export function createResendMailer(apiKey: string): Mailer {
           to: [mail.to],
           subject: mail.subject,
           text: mail.text,
+          ...(mail.html ? { html: mail.html } : {}),
           ...(mail.replyTo ? { reply_to: mail.replyTo } : {}),
         }),
       });

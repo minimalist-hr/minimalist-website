@@ -9,7 +9,8 @@ export function createConsoleMailer(): Mailer {
     async send(mail) {
       console.log(
         `[mail:console] would send to ${mail.to} from ${mail.from.email} ` +
-          `(${mail.subject.length} char subject, ${mail.text.length} char body)`,
+          `(${mail.subject.length} char subject, ${mail.text.length} char body, ` +
+          `${mail.html?.length ?? 0} char HTML)`,
       );
     },
   };
