@@ -406,7 +406,7 @@ Radio chips must be real radio inputs (keyboard and screen-reader accessible) st
 
 ### 9.3 `src/worker.ts` (POST `/api/contact`)
 
-*As built:* `src/worker/` (entry `index.ts`); requests other than `/api/contact` go back to the static assets so the 404 pages work. Email goes through a swappable `Mailer` (Resend in production). Secrets: `TURNSTILE_SECRET_KEY`, `RESEND_API_KEY`; `CONTACT_TO`, `CONTACT_FROM` and `MAIL_PROVIDER` are plain vars in `wrangler.jsonc`. Without JavaScript the form shows a note with the email address, because Turnstile needs JavaScript. No auto-reply at launch.
+*As built:* `src/worker/` (entry `index.ts`); requests other than `/api/contact` go back to the static assets so the 404 pages work. Email goes through a swappable `Mailer` (Resend in production). Secrets: `TURNSTILE_SECRET_KEY`, `RESEND_API_KEY`; `CONTACT_TO`, `CONTACT_FROM` and `MAIL_PROVIDER` are plain vars in `wrangler.jsonc`. Without JavaScript the form shows a note with the email address, because Turnstile needs JavaScript. No auto-reply at launch. *Since 2026-09-19:* both emails have an HTML version in the brand style (shared shell `src/worker/mail/layout.ts`, light by default, dark in Apple Mail) plus plain text. After the notification is delivered, the sender gets an auto-reply in their language (`src/worker/autoreply.ts`, copy in `src/i18n/ui.ts`). It repeats nothing from the form, not even the name, so a false submission can only send that fixed text; it carries `Auto-Submitted: auto-replied`, replies go to hello@, and a failed auto-reply is only logged.
 
 Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built file are served as static assets; `/api/contact` matches none, so it reaches the Worker. The Worker's `fetch` handler returns 404 for any other path.
 
@@ -613,7 +613,7 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 5. **Insights at launch:** show with the three articles, or hide until real posts exist? → **Shown, with one article**; the other two were removed.
 6. **Which case studies** are real and approved for publication? → **Lift-Mučnjak** (company website), published with placeholder text and no figures or quote; the three design placeholders were removed.
 7. **Studio address and call details:** the mobile design shows "Hamići 13, 10000 Zagreb" and an "Introductory call" block. Confirm these are real before launch. → Address confirmed; the call block has no link (calls are arranged by email).
-8. **Auto-reply** to form senders: yes or no? → **Not at launch**; later.
+8. **Auto-reply** to form senders: yes or no? → **Not at launch**; added 2026-09-19 through Resend (free plan: 3,000 emails a month, 100 a day).
 9. **Later:** a git-based CMS (e.g. Keystatic) if non-developers need to edit content. Not needed for launch.
 
 ---
@@ -665,6 +665,6 @@ Where the build differs from the sections above. All of these were agreed during
 - Lift-Mučnjak: replace the placeholder text and the invented tech stack with the real ones; add results and a quote if the client agrees.
 - More insights; photography; legal review by someone qualified (mention the iCloud mailbox has no DPA).
 - DMARC from `p=none` to `p=quarantine` after a few weeks of passing mail.
-- RSS feed and a contact auto-reply (deferred).
+- RSS feed (deferred).
 - HSTS `preload` once every subdomain is certain to stay HTTPS.
 - A quick check on a real iPhone.

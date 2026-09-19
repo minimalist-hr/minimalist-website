@@ -1,9 +1,10 @@
 import { isLocale, type Locale } from '../i18n/config';
 import { localizedPath } from '../i18n/utils';
 import { honeypotField, type InquiryResponse } from '../lib/inquiry';
+import { composeAutoReply } from './autoreply';
 import { composeInquiryMail } from './compose';
 import type { WorkerEnv } from './env';
-import { createMailer } from './mail';
+import { createMailer, type Mailer } from './mail';
 import { verifyTurnstile } from './turnstile';
 import { parseInquiry } from './validation';
 
@@ -71,19 +72,37 @@ export async function handleContact(request: Request, env: WorkerEnv): Promise<R
     return reply({ ok: false, error: 'verification' }, 403);
   }
 
+  let mailer: Mailer;
   try {
-    const mailer = createMailer(env);
+    mailer = createMailer(env);
     await mailer.send(
       composeInquiryMail(parsed.inquiry, { to: env.CONTACT_TO, from: env.CONTACT_FROM }),
     );
   } catch (error) {
     // Log the reason only, never the inquiry itself.
-    const code = error instanceof Error && 'code' in error ? String(error.code) : 'unknown';
-    console.error(`[contact] send failed: ${code}`);
+    console.error(`[contact] send failed: ${errorCode(error)}`);
     return reply({ ok: false, error: 'send' }, 502);
   }
 
+  // The inquiry has arrived, so a failed confirmation is only logged: the sender still
+  // sees success, and the studio answers them anyway.
+  try {
+    await mailer.send(
+      composeAutoReply(parsed.inquiry.locale, {
+        to: parsed.inquiry.email,
+        from: env.CONTACT_FROM,
+        replyTo: env.CONTACT_TO,
+      }),
+    );
+  } catch (error) {
+    console.error(`[contact] auto-reply failed: ${errorCode(error)}`);
+  }
+
   return reply({ ok: true }, 200);
+}
+
+function errorCode(error: unknown): string {
+  return error instanceof Error && 'code' in error ? String(error.code) : 'unknown';
 }
 
 /** No-JavaScript path: back to the contact page with the outcome in the query string. */
