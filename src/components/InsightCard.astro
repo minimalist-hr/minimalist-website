@@ -22,10 +22,10 @@ const t = useTranslations(locale);
 const dateLabel = formatInsightDate(date, locale);
 ---
 
-<article class="card lift" data-draw data-reveal-item>
+<article class="card" data-draw data-reveal-item>
   <MetaRow items={[dateLabel, category]} />
   <h3>{title}</h3>
-  <div class="image-slot lift-target">
+  <div class="image-slot">
     <ImageFrame caption={coverCaption} ratio="16/10" />
   </div>
   <CtaLink href={insightPath(entry, locale)}>{t('insights.readInsight')}</CtaLink>
