@@ -42,7 +42,11 @@ const copy = {
     lede: 'We design and build software that does exactly what it should, performs without friction, and stands the test of time.',
     scroll: 'Scroll',
     work: 'Selected work',
+    workLede:
+      'Few projects, on purpose. Each one documented the same way: what was wrong, what we removed, what we built, what changed.',
     services: 'What we do',
+    servicesLede:
+      'Four services, not a menu of twenty. Each one names the problem it solves and exactly what you receive.',
     approach: 'How we work',
     approachLede:
       'The same six steps on every engagement, in the same order. One week of discovery, then nothing starts until scope and price are signed.',
@@ -53,6 +57,7 @@ const copy = {
     aboutStatement:
       'A studio built to stay small on purpose. Nothing is delegated down, nothing is padded out.',
     insights: 'Latest thinking',
+    insightsLede: 'Published when there is something worth saying. Roughly once a month.',
     cta: 'Tell us what you are trying to build.',
   },
   hr: {
@@ -68,7 +73,11 @@ const copy = {
     lede: 'Osmišljavamo i razvijamo softver koji radi upravo ono što treba, bez trenja, i traje.',
     scroll: 'Pomaknite',
     work: 'Odabrani radovi',
+    workLede:
+      'Malo projekata, namjerno. Svaki je dokumentiran jednako: što nije radilo, što smo uklonili, što smo izgradili, što se promijenilo.',
     services: 'Čime se bavimo',
+    servicesLede:
+      'Četiri usluge, ne jelovnik od dvadeset. Svaka imenuje problem koji rješava i točno ono što dobivate.',
     approach: 'Kako radimo',
     approachLede:
       'Istih šest koraka na svakom projektu, u istom redoslijedu. Tjedan otkrivanja, a zatim ništa ne počinje dok obuhvat i cijena nisu potpisani.',
@@ -79,6 +88,7 @@ const copy = {
     aboutStatement:
       'Studio namjerno građen da ostane malen. Ništa se ne delegira niže, ništa se ne napuhava.',
     insights: 'Najnovije',
+    insightsLede: 'Objavljujemo kada imamo što reći. Približno jednom mjesečno.',
     cta: 'Recite nam što želite izgraditi.',
   },
 } satisfies Record<Locale, Record<string, string | string[]>>;
@@ -119,6 +129,7 @@ const paths = {
 
   <Section>
     <SectionHeader title={text.work} link={{ href: paths.work, label: t('nav.work') }} />
+    <p class="lede">{text.workLede}</p>
     <div class="grid grid-work">
       {featuredWork.map((entry) => (
         <WorkCard entry={entry} locale={locale} />
@@ -131,6 +142,7 @@ const paths = {
       title={text.services}
       link={{ href: paths.services, label: t('nav.services') }}
     />
+    <p class="lede">{text.servicesLede}</p>
     <div class="grid grid-services">
       {services.map((service) => (
         <ServiceCard service={service} locale={locale} />
@@ -173,6 +185,7 @@ const paths = {
         title={text.insights}
         link={{ href: paths.insights, label: t('nav.insights') }}
       />
+      <p class="lede">{text.insightsLede}</p>
       <div class="grid grid-insights">
         {insights.map((entry) => (
           <InsightCard entry={entry} locale={locale} />

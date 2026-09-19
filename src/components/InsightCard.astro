@@ -16,7 +16,7 @@ interface Props {
 }
 
 const { entry, locale } = Astro.props;
-const { title, category, coverCaption, date } = entry.data;
+const { title, category, excerpt, coverCaption, date } = entry.data;
 const t = useTranslations(locale);
 
 const dateLabel = formatInsightDate(date, locale);
@@ -25,6 +25,7 @@ const dateLabel = formatInsightDate(date, locale);
 <article class="card" data-draw data-reveal-item>
   <MetaRow items={[dateLabel, category]} />
   <h3>{title}</h3>
+  <p class="excerpt">{excerpt}</p>
   <div class="image-slot">
     <ImageFrame caption={coverCaption} ratio="16/10" />
   </div>
@@ -42,15 +43,19 @@ const dateLabel = formatInsightDate(date, locale);
   }
 
   h3 {
-    /* min-height keeps images aligned across cards with one- or two-line titles */
-    min-height: 2.5em;
     font-size: var(--text-base);
     letter-spacing: var(--tracking-snug);
     line-height: var(--leading-snug);
   }
 
+  .excerpt {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--ink-2);
+  }
+
   /* margin-top:auto keeps the image (and the link under it) level across cards
-     whether the title runs to one line or two. */
+     whatever the length of the title and excerpt. */
   .image-slot {
     width: 100%;
     margin-top: auto;
