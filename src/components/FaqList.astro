@@ -17,7 +17,7 @@ const { items, locale } = Astro.props;
 
 <dl class="faq">
   {items.map((item, index) => (
-    <div class="item" data-bordered={index > 1}>
+    <div class="item" data-bordered={index > 1} data-draw data-reveal-item>
       <dt>{pick(item.question, locale)}</dt>
       <dd>{pick(item.answer, locale)}</dd>
     </div>

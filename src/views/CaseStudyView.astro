@@ -77,7 +77,7 @@ if (scope) meta.push({ label: t('case.scope'), value: scope });
       {sections.length > 0 && (
         <div class="sections">
           {sections.map((section) => (
-            <section class="block">
+            <section class="block" data-draw>
               <h2>{section.label}</h2>
               {section.paragraphs.map((paragraph) => (
                 <p class:list={['text', paragraph.lead && 'text-lead']}>{paragraph.text}</p>
@@ -96,7 +96,7 @@ if (scope) meta.push({ label: t('case.scope'), value: scope });
       )}
 
       {stack && (
-        <section class="block">
+        <section class="block" data-draw>
           <h2>{t('case.stack')}</h2>
           {stack.text && <p class="text">{stack.text}</p>}
           <ToolTags tools={stack.tools} />
@@ -108,7 +108,7 @@ if (scope) meta.push({ label: t('case.scope'), value: scope });
       {quote && <Quote text={quote.text} name={quote.name} role={quote.role} />}
 
       {ctaTitle && (
-        <div class="closing">
+        <div class="closing" data-draw>
           <CtaBand
             title={ctaTitle}
             action={{ href: localizedPath('contact', locale), label: t('cta.startProject') }}

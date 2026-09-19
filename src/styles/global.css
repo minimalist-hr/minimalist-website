@@ -1,6 +1,7 @@
 /*
  * Global stylesheet entry, imported once by BaseLayout.
  * Layer order: reset < base < utilities. Unlayered Astro component styles win over all of them.
+ * motion.css is unlayered too: its reveal states must override component styles.
  */
 @layer reset, base, utilities;
 
@@ -8,3 +9,4 @@
 @import './fonts.css';
 @import './base.css';
 @import './utilities.css';
+@import './motion.css';

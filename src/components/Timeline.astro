@@ -23,7 +23,7 @@ const { steps, locale } = Astro.props;
 
 <ol class="timeline" role="list">
   {steps.map((step, index) => (
-    <li class="step" style={`--row: ${index + 1}`}>
+    <li class="step" style={`--row: ${index + 1}`} data-reveal-item>
       <div class="content">
         <div class="heading">
           <span class="marker" aria-hidden="true" />

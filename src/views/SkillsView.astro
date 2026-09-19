@@ -62,7 +62,7 @@ const t = useTranslations(locale);
       </LabelledRow>
     ))}
 
-    <div class="closing">
+    <div class="closing" data-draw>
       <CtaBand
         title={text.cta}
         action={{ href: localizedPath('contact', locale), label: t('cta.startProject') }}

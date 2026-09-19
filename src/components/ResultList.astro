@@ -10,7 +10,7 @@ interface Props {
 const { label, results } = Astro.props;
 ---
 
-<div class="results">
+<div class="results" data-draw>
   <p class="section-label">{label}</p>
   <dl class="grid">
     {results.map((result) => (

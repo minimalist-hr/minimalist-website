@@ -12,7 +12,7 @@ interface Props {
 const { items, variant = 'row', class: className } = Astro.props;
 ---
 
-<dl class:list={['meta', className]} data-variant={variant}>
+<dl class:list={['meta', className]} data-variant={variant} data-draw>
   {items.map((item) => (
     <div class="item">
       <dt>{item.label}</dt>

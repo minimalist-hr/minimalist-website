@@ -1,0 +1,64 @@
+/*
+ * Scroll reveal states (plan §3.5), set by src/scripts/reveal.ts only on elements that start
+ * below the fold, and removed once they have entered. Unlayered, so the states override
+ * component styles; `:root` raises them above a component's own single-class rules.
+ *
+ * - [data-reveal] Enter: content fades in from 10px below. `translate`, not `transform`,
+ *   so a card's hover lift (transform) never competes with it.
+ * - [data-rule]   Reveal: a rule draws in from the left. `.rule-top` / `.rule-bottom` draw
+ *   their pseudo-element; a `[data-draw]` border is painted through a border-image whose
+ *   length is the animatable --rule-draw.
+ */
+
+@property --rule-draw {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 100%;
+}
+
+:root :is([data-reveal], [data-rule]) {
+  transition:
+    opacity var(--duration-reveal) var(--ease) var(--reveal-delay, 0ms),
+    translate var(--duration-reveal) var(--ease) var(--reveal-delay, 0ms),
+    --rule-draw var(--duration-reveal) var(--ease) var(--reveal-delay, 0ms);
+}
+
+:root [data-reveal='pending'] {
+  opacity: 0;
+  translate: 0 10px;
+}
+
+:root .rule-top[data-rule]::before,
+:root .rule-bottom[data-rule]::after {
+  transform-origin: left;
+  transition: transform var(--duration-reveal) var(--ease) var(--reveal-delay, 0ms);
+}
+
+:root .rule-top[data-rule='pending']::before,
+:root .rule-bottom[data-rule='pending']::after {
+  transform: scaleX(0);
+}
+
+:root [data-draw][data-rule] {
+  border-image: linear-gradient(to right, var(--rule) var(--rule-draw), transparent 0) 1;
+}
+
+:root [data-draw][data-rule='pending'] {
+  --rule-draw: 0%;
+}
+
+@media print {
+  :root [data-reveal] {
+    opacity: 1;
+    translate: none;
+  }
+
+  :root .rule-top[data-rule]::before,
+  :root .rule-bottom[data-rule]::after {
+    transform: none;
+  }
+
+  :root [data-draw][data-rule] {
+    --rule-draw: 100%;
+  }
+}

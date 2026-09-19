@@ -21,7 +21,7 @@ const { title, category, excerpt, coverCaption, date } = entry.data;
 const t = useTranslations(locale);
 ---
 
-<article class="row">
+<article class="row" data-draw data-reveal-item>
   <div class="image-slot">
     <ImageFrame caption={coverCaption} ratio="4/3" />
   </div>

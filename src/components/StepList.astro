@@ -17,7 +17,7 @@ const { steps, locale } = Astro.props;
 
 <ol class="steps" role="list">
   {steps.map((step) => (
-    <li class="step">
+    <li class="step" data-reveal-item>
       <span class="marker" aria-hidden="true" />
       <span class="number">{step.number}</span>
       <h3>{pick(step.title, locale)}</h3>

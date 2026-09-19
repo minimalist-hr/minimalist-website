@@ -15,7 +15,7 @@ interface Props {
 const { group, locale } = Astro.props;
 ---
 
-<article class="group">
+<article class="group" data-draw data-reveal-item>
   <h3 class="label">{pick(group.label, locale)}</h3>
   <p>{pick(group.description, locale)}</p>
   <ToolTags tools={group.tools} />
