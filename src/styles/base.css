@@ -117,7 +117,9 @@
     *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
+      /* none, not a near-zero duration: with transition-property's default `all`, that would
+         give every element a transition, and WebKit can then report colours mid-way. */
+      transition: none !important;
       scroll-behavior: auto !important;
     }
   }
