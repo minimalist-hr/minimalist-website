@@ -3,6 +3,8 @@
  * Vertical timeline of the six steps, in the same language as "How we work" on the home
  * page: one continuous rule with a square marker per step. Used on the Approach page,
  * where each step also carries a longer description and an image.
+ * Mobile: the rule runs down the left. From md up it runs down the middle and the steps
+ * alternate sides, each side starting half a step lower, so the columns interlock.
  */
 import type { Locale } from '../i18n/config';
 import { pick } from '../i18n/localized';
@@ -18,8 +20,8 @@ const { steps, locale } = Astro.props;
 ---
 
 <ol class="timeline" role="list">
-  {steps.map((step) => (
-    <li class="step">
+  {steps.map((step, index) => (
+    <li class="step" style={`--row: ${index + 1}`}>
       <span class="marker" aria-hidden="true" />
       <div class="content">
         <div class="heading">
@@ -99,50 +101,58 @@ const { steps, locale } = Astro.props;
   }
 
   /*
-   * Desktop (md and up): two columns, and the rule snakes through the steps.
-   * Row 1 runs left to right (1, 2), drops down the right edge, row 2 runs right to left
-   * (3 on the right, 4 on the left), drops down the left edge, row 3 runs left to right.
-   * Source order stays 1–6, which is also the order along the line.
+   * Desktop (md and up): the rule down the middle, steps alternating sides. Each step spans
+   * two grid rows and starts one row after the previous one, so a right-hand step begins
+   * halfway down the left-hand step before it. Source order stays 1–6.
    */
   @media (min-width: 60rem) {
     .timeline {
-      --pad: clamp(24px, 3vw, 40px);
+      --gap: clamp(28px, 3.5vw, 56px);
 
+      position: relative;
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      grid-auto-flow: row dense; /* lets step 4 fill the left cell of row 2 */
+      column-gap: calc(2 * var(--gap));
+      row-gap: clamp(20px, 2.5vw, 36px);
       border-left: 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      border-left: var(--hairline) solid var(--rule);
     }
 
     .step,
     .step:not(:last-child) {
-      padding: var(--pad) var(--pad) clamp(40px, 5vw, 72px);
-      border-top: var(--hairline) solid var(--rule);
+      grid-row: var(--row) / span 2;
+      padding: 0;
     }
 
-    .step:nth-child(4n + 1),
-    .step:nth-child(4n + 4) {
+    .step:nth-child(odd) {
       grid-column: 1;
     }
 
-    .step:nth-child(4n + 2),
-    .step:nth-child(4n + 3) {
+    .step:nth-child(even) {
       grid-column: 2;
     }
 
-    /* The drops between rows: right edge after step 2, left edge after step 4. */
-    .step:nth-child(4n + 2):not(:last-child) {
-      border-right: var(--hairline) solid var(--rule);
+    /* The square sits on the middle rule, level with the step's heading. */
+    .step:nth-child(odd) .marker {
+      left: auto;
+      right: calc(-1 * var(--gap) - 4px);
     }
 
-    .step:nth-child(4n + 4):not(:last-child) {
-      border-left: var(--hairline) solid var(--rule);
+    .step:nth-child(even) .marker {
+      left: calc(-1 * var(--gap) - 3px);
     }
 
-    /* The square sits on the line, above the step's number. */
-    .marker {
-      top: -4px;
-      left: var(--pad);
+    /* Every image takes the full column, so all six are the same size. */
+    .image-slot {
+      max-width: none;
     }
   }
 </style>
