@@ -169,7 +169,7 @@ Copy exact values from the extracted design file if they differ from this table.
 
 Everything else is instant.
 
-**Where it is used.** Rules and underlines below the fold draw in from the left as they scroll into view (the Approach timeline and home steps also draw downwards); link underlines extend from the left on hover; cards lift 6px on hover and keyboard focus. Content already on screen when a page loads never waits for motion. Without JavaScript nothing is hidden. Page crossfades only run where the browser supports them (Chromium, Safari).
+**Where it is used.** Rules and underlines below the fold draw in from the left as they scroll into view (the Approach timeline and home steps also draw downwards); links work like the header nav everywhere: text only at rest, on hover and focus the text brightens to ink and an underline extends from the left, and the current page or language stays underlined (links inside running text keep a visible rule, WCAG 1.4.1). Nothing uses Lift at the moment. Content already on screen when a page loads never waits for motion. Without JavaScript nothing is hidden. Page crossfades only run where the browser supports them (Chromium, Safari).
 
 **Hero rotating headline (both designs).** The h1 cycles through four taglines stacked in one grid cell: "Complex problems. Simple solutions." → "Less noise. Better software." → "Software, reduced to what matters." → "Simple by design, built to last."
 - Each phrase is shown for 4.5s within an 18s loop, fading in from 10px below and out 10px upward, with `cubic-bezier(.2,0,0,1)`.

@@ -1,7 +1,7 @@
 ---
 /**
- * Uppercase label link with an arrow that nudges 5px on hover (design); its underline
- * extends from the left in ink (.link-line).
+ * Uppercase label link with an arrow that nudges 5px on hover (design). Like the nav, it
+ * has no underline at rest; on hover one extends from the left in ink (.link-line).
  * `variant="plain"` drops the rule and the arrow, for links that sit beside a button.
  */
 interface Props {
@@ -44,7 +44,6 @@ const { href, variant = 'rule', class: className } = Astro.props;
 
   .cta[data-variant='rule'] .text {
     padding-bottom: 3px;
-    border-bottom: var(--hairline) solid var(--rule);
   }
 
   .arrow {

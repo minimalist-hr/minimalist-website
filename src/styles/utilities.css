@@ -42,28 +42,11 @@
   }
 
   /*
-   * Lift (plan §3.5): on a card with a link, the .lift-target (its image) moves up on hover
-   * and while the link has keyboard focus. Translate only. Cards without a link stay still,
-   * so nothing looks clickable that is not.
-   */
-  .lift-target {
-    transition: transform var(--duration-lift) var(--ease);
-  }
-
-  .lift:has(a:focus-visible) .lift-target {
-    transform: translateY(var(--lift));
-  }
-
-  @media (hover: hover) {
-    .lift:has(a):hover .lift-target {
-      transform: translateY(var(--lift));
-    }
-  }
-
-  /*
-   * Reveal (plan §3.5) for link underlines: an ink line extends from the left on hover and
-   * keyboard focus, over the link's grey rule if it has one. Put .link-line on the link, or
-   * on a span inside it. Single-line links only: the line would not follow wrapped text.
+   * Links, the same as the header nav (plan §3.5 Reveal): no underline at rest; on hover and
+   * keyboard focus an ink line extends from the left; the current page or language keeps
+   * it. The link's own styles brighten the text to ink. Put .link-line on the link, or on a
+   * span inside it. Single-line links only: the line would not follow wrapped text, so links
+   * inside running text keep a visible rule instead (WCAG 1.4.1).
    */
   .link-line {
     position: relative;
@@ -83,7 +66,12 @@
     pointer-events: none;
   }
 
-  :is(a.link-line:focus-visible, a:focus-visible > .link-line)::after {
+  :is(
+    a.link-line:focus-visible,
+    a:focus-visible > .link-line,
+    a.link-line[aria-current],
+    a[aria-current] > .link-line
+  )::after {
     transform: scaleX(1);
   }
 

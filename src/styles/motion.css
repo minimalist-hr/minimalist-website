@@ -4,7 +4,7 @@
  * component styles; `:root` raises them above a component's own single-class rules.
  *
  * - [data-reveal] Enter: content fades in from 10px below. `translate`, not `transform`,
- *   so a card's hover lift (transform) never competes with it.
+ *   so it never competes with an element's own transforms.
  * - [data-rule]   Reveal: a rule draws in from the left. `.rule-top` / `.rule-bottom` draw
  *   their pseudo-element; a `[data-draw]` border is painted through a border-image whose
  *   length is the animatable --rule-draw. It draws to the right unless the element sets
