@@ -91,6 +91,17 @@ const en = {
   'form.errorBrief': 'Describe what you want to build.',
   'form.errorTooLong': 'This is too long.',
   'form.noscript': 'The form needs JavaScript for its spam check. Write to {email} instead.',
+
+  // Auto-reply to the sender (src/worker/autoreply.ts). Repeats nothing from the form.
+  'email.replySubject': 'Your inquiry is in — Minimalist',
+  'email.replyLabel': 'Inquiry received',
+  'email.replyTitle': 'Thank you — your inquiry is in.',
+  'email.replyText':
+    'You will get a reply from a real person within one business day, with either questions or a proposed call.',
+  'email.replyNext': 'Nothing to do until then. If something changes, reply to this email.',
+  'email.replyLink': 'How an engagement runs',
+  'email.replyFooter':
+    'You receive this because this address was entered in the contact form on minimalist.hr. If that was not you, ignore this email; nothing else will be sent.',
 } as const;
 
 export type UiKey = keyof typeof en;
@@ -180,6 +191,17 @@ const hr: Record<UiKey, string> = {
   'form.errorTooLong': 'Predugo.',
   'form.noscript':
     'Obrazac treba JavaScript za provjeru protiv neželjene pošte. Pišite na {email}.',
+
+  'email.replySubject': 'Vaš je upit primljen — Minimalist',
+  'email.replyLabel': 'Upit primljen',
+  'email.replyTitle': 'Hvala — vaš je upit primljen.',
+  'email.replyText':
+    'Odgovor od prave osobe dobit ćete u jednom radnom danu, s pitanjima ili predlogom poziva.',
+  'email.replyNext':
+    'Do tada ne trebate ništa činiti. Ako se nešto promijeni, odgovorite na ovaj e-mail.',
+  'email.replyLink': 'Kako teče suradnja',
+  'email.replyFooter':
+    'Ovu poruku primate jer je ova adresa upisana u obrazac za kontakt na minimalist.hr. Ako to niste bili vi, zanemarite je; ništa vam više nećemo slati.',
 };
 
 export const ui: Record<Locale, Record<UiKey, string>> = { en, hr };

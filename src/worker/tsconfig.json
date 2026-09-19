@@ -13,5 +13,5 @@
     "noEmit": true,
     "skipLibCheck": true
   },
-  "include": ["./**/*.ts", "../lib/inquiry.ts", "../i18n/*.ts"]
+  "include": ["./**/*.ts", "../lib/inquiry.ts", "../i18n/*.ts", "../site.config.ts"]
 }

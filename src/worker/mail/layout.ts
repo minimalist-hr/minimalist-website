@@ -8,6 +8,8 @@
  * where the client allows web fonts, with a neutral system fallback.
  */
 
+import { siteConfig } from '../../site.config';
+
 /** The brand tokens (src/styles/tokens.css), repeated here because emails cannot use CSS variables reliably. */
 export const light = {
   paper: '#f5f4f1',
@@ -28,7 +30,7 @@ const dark = {
 } as const;
 
 const FONT = "Archivo, 'Helvetica Neue', Helvetica, Arial, sans-serif";
-const SITE = 'https://minimalist.hr';
+const SITE = siteConfig.url;
 
 /** Escapes text for HTML. Every value that came from the form goes through this. */
 export function escapeHtml(value: string): string {
