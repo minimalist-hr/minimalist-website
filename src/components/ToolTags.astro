@@ -30,5 +30,13 @@ const { tools } = Astro.props;
     font-size: var(--text-sm);
     line-height: var(--leading-none);
     box-shadow: inset 0 0 0 var(--hairline) var(--rule);
+    transition: box-shadow var(--duration-state) linear;
+  }
+
+  /* Highlight on hover, like the chips in the contact form. */
+  @media (hover: hover) {
+    .tool:hover {
+      box-shadow: inset 0 0 0 var(--hairline) var(--ink);
+    }
   }
 </style>
