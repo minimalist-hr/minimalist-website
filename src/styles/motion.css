@@ -68,3 +68,19 @@
     --rule-draw: 100%;
   }
 }
+
+/*
+ * Page (plan §3.5): a 240ms crossfade between pages, using cross-document view transitions.
+ * Browsers without support switch pages instantly, as before. Reduced motion never opts in.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--duration-reveal);
+  animation-timing-function: var(--ease);
+}
