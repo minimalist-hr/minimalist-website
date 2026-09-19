@@ -45,6 +45,7 @@
 
 - `test:a11y` and `test:lighthouse` run in CI on merge requests only (job `audit`); the targets are WCAG 2.2 AA with zero axe violations and Lighthouse 95+/100/100/100 (plan §11.1).
 - `test:a11y` also runs `tests/keyboard.spec.ts`: skip link, a visible focus that the sticky header never covers (both Tab directions), mobile menu keys, form error focus, and reflow at 320px / 640px. A screen reader pass stays manual.
+- `test:a11y` also runs `tests/motion.spec.ts` (the scroll reveal). axe audits with reduced motion, so it sees every page in its final state.
 - CI runs Chromium only. Before larger UI changes, run `pnpm run test:a11y:browsers` locally (adds Firefox and WebKit). WebKit skips links on Tab, like Safari, so link-only keyboard tests skip it.
 - The Playwright Docker image tag in `.gitlab-ci.yml` must match the `@playwright/test` version.
 - `test:lighthouse` runs `scripts/lighthouse.mjs`, not `lhci autorun`: Lighthouse sometimes fails to record a page load in the CI container (`NO_NAVSTART`), so each run is retried up to three times.
