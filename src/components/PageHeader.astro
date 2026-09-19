@@ -42,8 +42,11 @@ const { label, title, lede, compact = false } = Astro.props;
     line-height: 1.05;
   }
 
+  /* balance, not only pretty: Chromium's pretty still leaves two short words alone on
+     the last line ("of it."); a short lede reads better with even lines. */
   .lede {
     max-width: 48ch;
+    text-wrap: balance;
     margin-top: clamp(20px, 2.5vw, 32px);
     font-size: var(--text-body);
     line-height: var(--leading-body);

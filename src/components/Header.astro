@@ -55,6 +55,8 @@ const items = buildNav(primaryNav, locale, Astro.url.pathname);
   // covers Chromium and Firefox; WebKit does not scroll to a focused element that is still
   // partly visible, even when the header covers it. The check waits a frame: browsers run
   // focusin before their own scroll to the element, so measuring earlier races it.
+  // Keyboard focus only: a click lands on something already in view, and clicking empty
+  // space focuses <main> (tabindex="-1"), whose top is far above the header by then.
   const header = document.querySelector<HTMLElement>('.site-header');
   const gap = 16;
 
@@ -64,7 +66,7 @@ const items = buildNav(primaryNav, locale, Astro.url.pathname);
     if (getComputedStyle(header).position !== 'sticky') return;
     if (getComputedStyle(target).position === 'fixed') return; // e.g. the skip link
     requestAnimationFrame(() => {
-      if (document.activeElement !== target) return;
+      if (document.activeElement !== target || !target.matches(':focus-visible')) return;
       const overlap = header.getBoundingClientRect().bottom - target.getBoundingClientRect().top;
       if (overlap > 0) window.scrollBy({ top: -(overlap + gap), behavior: 'instant' });
     });

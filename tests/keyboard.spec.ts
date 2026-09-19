@@ -177,6 +177,22 @@ test.describe('theme switch', () => {
 });
 
 test.describe('contact form', () => {
+  // Clicking empty space focuses <main> (tabindex=-1); the header's focus fix must not
+  // then scroll to main's top.
+  test('clicking outside a field keeps the scroll position', async ({ page }) => {
+    await page.goto('/contact/');
+    const field = page.locator('textarea').first();
+    await field.scrollIntoViewIfNeeded();
+    await page.evaluate(() => window.scrollBy(0, 200));
+    await field.click();
+    const box = await field.boundingBox();
+    const before = await page.evaluate(() => window.scrollY);
+    const width = page.viewportSize()?.width ?? 0;
+    await page.mouse.click(width - 4, (box?.y ?? 0) + 10);
+    await page.waitForTimeout(200); // two frames and more: the fix runs a frame later
+    expect(await page.evaluate(() => window.scrollY)).toBe(before);
+  });
+
   test('an empty submit focuses the first invalid field and shows the errors', async ({ page }) => {
     await page.goto('/contact/');
     const submit = page.locator('form button[type="submit"]');
