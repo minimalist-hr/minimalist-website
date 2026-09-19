@@ -13,6 +13,7 @@ import { PUBLIC_TURNSTILE_SITE_KEY } from 'astro:env/client';
 import type { Locale } from '../i18n/config';
 import { useTranslations } from '../i18n/utils';
 import {
+  budgetAmounts,
   budgetValues,
   contactEndpoint,
   fieldLimits,
@@ -42,10 +43,7 @@ const timelineOptions = timelineValues.map((value) => ({
 
 /** Amounts are not translated; only the "not sure" option is. */
 const budgetLabels: Record<Budget, string> = {
-  lt15: '< €15,000',
-  '15-40': '€15,000 – €40,000',
-  '40-100': '€40,000 – €100,000',
-  gt100: '€100,000 +',
+  ...budgetAmounts,
   unsure: t('form.budget.unsure'),
 };
 const budgetOptions = budgetValues.map((value) => ({ value, label: budgetLabels[value] }));
@@ -90,7 +88,7 @@ const messages = {
         label={t('form.name')}
         required
         autocomplete="name"
-        placeholder="Ana Horvat"
+        placeholder={t('form.placeholder.name')}
         maxlength={fieldLimits.name}
       />
       <TextField
@@ -99,21 +97,21 @@ const messages = {
         type="email"
         required
         autocomplete="email"
-        placeholder="ana@company.com"
+        placeholder={t('form.placeholder.email')}
         maxlength={fieldLimits.email}
       />
       <TextField
         name="company"
         label={t('form.company')}
         autocomplete="organization"
-        placeholder="Company d.o.o."
+        placeholder={t('form.placeholder.company')}
         maxlength={fieldLimits.company}
       />
       <TextField
         name="role"
         label={t('form.role')}
         autocomplete="organization-title"
-        placeholder="CTO"
+        placeholder={t('form.placeholder.role')}
         maxlength={fieldLimits.role}
       />
     </div>

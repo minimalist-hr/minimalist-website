@@ -1,4 +1,4 @@
-import type { Budget, Timeline } from '../lib/inquiry';
+import { budgetAmounts, type Budget, type Timeline } from '../lib/inquiry';
 import type { OutgoingMail } from './mail';
 import { escapeHtml, light, renderLayout, styles } from './mail/layout';
 import type { Inquiry } from './validation';
@@ -11,13 +11,7 @@ const timelineLabels: Record<Timeline, string> = {
   exploring: 'Still exploring',
 };
 
-const budgetLabels: Record<Budget, string> = {
-  lt15: '< €15,000',
-  '15-40': '€15,000 – €40,000',
-  '40-100': '€40,000 – €100,000',
-  gt100: '€100,000 +',
-  unsure: 'Not sure yet',
-};
+const budgetLabels: Record<Budget, string> = { ...budgetAmounts, unsure: 'Not sure yet' };
 
 const languageLabels: Record<Inquiry['locale'], string> = {
   en: 'English',
