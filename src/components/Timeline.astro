@@ -5,7 +5,8 @@
  * where each step also carries a longer description and an image.
  * Mobile: the rule runs down the left. From md up it runs down the middle and the steps
  * alternate sides, each side starting half a step lower, so the columns interlock. Both
- * sides align to the rule.
+ * sides align to the rule. Each square sits on the rule, and a hairline runs from it to
+ * underline the step's heading.
  */
 import type { Locale } from '../i18n/config';
 import { pick } from '../i18n/localized';
@@ -23,9 +24,9 @@ const { steps, locale } = Astro.props;
 <ol class="timeline" role="list">
   {steps.map((step, index) => (
     <li class="step" style={`--row: ${index + 1}`}>
-      <span class="marker" aria-hidden="true" />
       <div class="content">
         <div class="heading">
+          <span class="marker" aria-hidden="true" />
           <span class="number">{step.number}</span>
           <h2>{pick(step.title, locale)}</h2>
         </div>
@@ -46,18 +47,22 @@ const { steps, locale } = Astro.props;
   }
 
   .step {
-    position: relative;
-    padding-left: clamp(22px, 3vw, 40px);
+    /* Distance from the rule to the content. */
+    --reach: clamp(22px, 3vw, 40px);
+
+    padding-left: var(--reach);
   }
 
   .step:not(:last-child) {
     padding-bottom: clamp(40px, 5vw, 72px);
   }
 
+  /* The square sits on the rule, level with the heading's underline. */
   .marker {
+    z-index: 1;
     position: absolute;
-    top: 6px;
-    left: -4px;
+    bottom: -3px;
+    left: calc(-1 * var(--reach) - 4px);
     width: 7px;
     height: 7px;
     background: var(--ink);
@@ -70,9 +75,22 @@ const { steps, locale } = Astro.props;
   }
 
   .heading {
+    position: relative;
     display: flex;
+    align-self: flex-start;
     align-items: baseline;
     gap: 14px;
+    padding-bottom: 10px;
+  }
+
+  /* The underline runs from the rule to the end of the heading. */
+  .heading::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: calc(-1 * var(--reach));
+    right: 0;
+    border-bottom: var(--hairline) solid var(--rule);
   }
 
   .number {
@@ -129,6 +147,8 @@ const { steps, locale } = Astro.props;
 
     .step,
     .step:not(:last-child) {
+      --reach: var(--gap);
+
       grid-row: var(--row) / span 2;
       padding: 0;
     }
@@ -141,14 +161,19 @@ const { steps, locale } = Astro.props;
       grid-column: 2;
     }
 
-    /* The square sits on the middle rule, level with the step's heading. */
+    /* Left-hand steps reach the middle rule from their right edge. */
     .step:nth-child(odd) .marker {
       left: auto;
-      right: calc(-1 * var(--gap) - 4px);
+      right: calc(-1 * var(--reach) - 4px);
+    }
+
+    .step:nth-child(odd) .heading::after {
+      left: 0;
+      right: calc(-1 * var(--reach));
     }
 
     .step:nth-child(even) .marker {
-      left: calc(-1 * var(--gap) - 3px);
+      left: calc(-1 * var(--reach) - 3px);
     }
 
     /* Left-hand steps align to the rule, so each heading ends beside its square. */
@@ -158,6 +183,7 @@ const { steps, locale } = Astro.props;
     }
 
     .step:nth-child(odd) .heading {
+      align-self: flex-end;
       justify-content: flex-end;
     }
 
