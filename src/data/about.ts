@@ -44,7 +44,7 @@ export const profile = {
   role: { en: 'Founder', hr: 'Osnivač' },
   roleSecondary: { en: 'Principal engineer', hr: 'Glavni inženjer' },
   email: 'filip.mucnjak@minimalist.hr',
-  portfolio: 'https://mucnjakf.github.io/Portfolio/',
+  portfolio: 'https://mucnjakf.dev/',
   experience: { en: '5+ years, 30+ products', hr: '5+ godina, 30+ proizvoda' },
   languages: { en: 'Croatian, English', hr: 'Hrvatski, engleski' },
   workingWith: { en: 'Clients across the EU and US', hr: 'Klijentima u EU i SAD-u' },
