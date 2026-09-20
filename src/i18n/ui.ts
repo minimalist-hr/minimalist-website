@@ -30,6 +30,7 @@ const en = {
   'a11y.lightMode': 'Light mode',
   'a11y.openMenu': 'Menu',
   'a11y.closeMenu': 'Close menu',
+  'a11y.newTab': 'opens in a new tab',
 
   'cta.startProject': 'Start a project',
   'cta.seeWork': 'See the work',
@@ -133,6 +134,7 @@ const hr: Record<UiKey, string> = {
   'a11y.lightMode': 'Svijetla tema',
   'a11y.openMenu': 'Izbornik',
   'a11y.closeMenu': 'Zatvori izbornik',
+  'a11y.newTab': 'otvara se u novoj kartici',
 
   'cta.startProject': 'Započnite projekt',
   'cta.seeWork': 'Pogledajte radove',

@@ -77,6 +77,7 @@ const details = [
     label: text.fields.portfolio,
     value: profile.portfolio.replace(/^https?:\/\//, '').replace(/\/$/, ''),
     href: profile.portfolio,
+    external: true,
   },
   { label: text.fields.experience, value: pick(profile.experience, locale) },
   { label: text.fields.languages, value: pick(profile.languages, locale) },
@@ -129,8 +130,16 @@ const details = [
               <dt>{detail.label}</dt>
               <dd>
                 {detail.href ? (
-                  <a class="link-line" href={detail.href}>
+                  <a
+                    class="link-line"
+                    href={detail.href}
+                    target={'external' in detail ? '_blank' : undefined}
+                    rel={'external' in detail ? 'noopener' : undefined}
+                  >
                     {detail.value}
+                    {'external' in detail && (
+                      <span class="visually-hidden">{` (${t('a11y.newTab')})`}</span>
+                    )}
                   </a>
                 ) : (
                   detail.value
