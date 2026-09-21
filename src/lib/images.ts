@@ -56,6 +56,10 @@ const alt = {
     en: 'A stack of printed documentation.',
     hr: 'Hrpa ispisane dokumentacije.',
   },
+  'portrait-filip': {
+    en: 'Filip Mučnjak, founder of Minimalist.',
+    hr: 'Filip Mučnjak, osnivač Minimalista.',
+  },
   'insight-diagram': {
     en: 'A system diagram drawn on a whiteboard.',
     hr: 'Dijagram sustava nacrtan na bijeloj ploči.',

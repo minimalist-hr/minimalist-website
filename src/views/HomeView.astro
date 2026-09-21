@@ -124,7 +124,7 @@ const paths = {
     scroll={text.scroll}
   />
 
-  <Section>
+  <Section tight>
     <SectionHeader title={text.work} link={{ href: paths.work, label: t('nav.work') }} />
     <p class="lede">{text.workLede}</p>
     <div class="grid grid-work">
@@ -134,7 +134,7 @@ const paths = {
     </div>
   </Section>
 
-  <Section>
+  <Section tight>
     <SectionHeader
       title={text.services}
       link={{ href: paths.services, label: t('nav.services') }}
@@ -147,7 +147,7 @@ const paths = {
     </div>
   </Section>
 
-  <Section>
+  <Section tight>
     <SectionHeader
       title={text.approach}
       link={{ href: paths.approach, label: t('nav.approach') }}
@@ -156,7 +156,7 @@ const paths = {
     <StepList steps={steps} locale={locale} />
   </Section>
 
-  <Section>
+  <Section tight>
     <SectionHeader title={text.skills} link={{ href: paths.skills, label: t('nav.skills') }} />
     <p class="lede lede-wide">{text.skillsLede}</p>
     <div class="grid grid-skills">
@@ -166,7 +166,7 @@ const paths = {
     </div>
   </Section>
 
-  <Section>
+  <Section tight>
     <SectionHeader title={text.about} link={{ href: paths.about, label: t('nav.about') }} />
     <p class="statement">{text.aboutStatement}</p>
     <div class="grid grid-stats">
@@ -177,7 +177,7 @@ const paths = {
   </Section>
 
   {insights.length > 0 && (
-    <Section>
+    <Section tight>
       <SectionHeader
         title={text.insights}
         link={{ href: paths.insights, label: t('nav.insights') }}

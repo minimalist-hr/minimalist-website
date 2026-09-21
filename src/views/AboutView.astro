@@ -151,7 +151,13 @@ const details = [
       </div>
       <!-- After the text in source and on mobile; left of it from md up. -->
       <div class="portrait">
-        <ImageFrame caption={profile.portraitCaption} ratio="4/5" />
+        <ImageFrame
+          caption={profile.portraitCaption}
+          image={profile.portrait}
+          locale={locale}
+          ratio="4/5"
+          sizes="(min-width: 60rem) 34vw, 92vw"
+        />
       </div>
     </div>
   </Section>

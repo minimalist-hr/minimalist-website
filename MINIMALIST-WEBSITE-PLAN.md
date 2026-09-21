@@ -156,7 +156,7 @@ Copy exact values from the extracted design file if they differ from this table.
 - **Photography:** greyscale only, flat light, crops 4:5 / 3:2 / 1:1, no rounded corners, no shadows. Apply treatment to the image files (contrast 0.92, brightness 1.04), not via CSS filters.
 - **Type on image:** darken the image to 42% brightness; paper-coloured type at full opacity; no scrims or gradients; minimum 4.5:1 contrast.
 - **Until real photos exist,** use the striped placeholder with its caption (e.g. `product shot / core banking console`), exactly as in the design.
-- **The photographs in place** (services, the six steps, the insight cover) are free-licence stock, greyscaled and treated in the files and kept in `src/assets/images/`; `src/lib/images.ts` keys each one to its EN and HR alt text. `ImageFrame` takes that key and falls back to the placeholder without it, so the two are interchangeable per slot. Still on placeholders: the Lift-Mučnjak screenshots and the About portrait, both of which have to be real.
+- **The photographs in place** (services, the six steps, the insight cover) are free-licence stock, greyscaled and treated in the files and kept in `src/assets/images/`; `src/lib/images.ts` keys each one to its EN and HR alt text. `ImageFrame` takes that key and falls back to the placeholder without it, so the two are interchangeable per slot. The About portrait is Filip's own photograph, cropped to 4:5 and treated the same way. Still on placeholders: the Lift-Mučnjak screenshots, which have to be real.
 
 ### 3.5 Motion
 
@@ -578,7 +578,7 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 
 ### Phase 4: Content and launch
 - [ ] Replace placeholder copy, metrics, clients and quotes with verified content *(copy verified; one case study, Lift-Mučnjak, with placeholder text and tech stack, and one insight; real text and more content after launch)*
-- [ ] Real photography per brand brief (greyscale, 4:5 / 3:2 / 1:1), processed and optimised *(stock photographs in place for services, steps and the insight cover; the Lift-Mučnjak screenshots and the About portrait are still placeholders)*
+- [ ] Real photography per brand brief (greyscale, 4:5 / 3:2 / 1:1), processed and optimised *(stock photographs for services, steps and the insight cover; the real portrait on About; the Lift-Mučnjak screenshots are still placeholders)*
 - [ ] Legal: privacy policy and company details reviewed (section 14) *(text completed to GDPR Art. 13; review by someone qualified still open)*
 - [x] Business email set up; SPF/DKIM/DMARC verified *(iCloud + Resend; a test inquiry passed DKIM and DMARC)*
 - [x] Cross-device testing (section 5.4 widths and browsers) *(full suite in Chromium, Firefox and WebKit; Samsung and Mac Safari by hand; a real iPhone check is still worth doing)*
@@ -664,7 +664,7 @@ Where the build differs from the sections above. All of these were agreed during
 
 **Open after launch**
 - Lift-Mučnjak: replace the placeholder text and the invented tech stack with the real ones; add results and a quote if the client agrees.
-- More insights; the Lift-Mučnjak screenshots and a real portrait to replace their placeholders; legal review by someone qualified (mention the iCloud mailbox has no DPA).
+- More insights; the Lift-Mučnjak screenshots to replace their placeholders; legal review by someone qualified (mention the iCloud mailbox has no DPA).
 - DMARC from `p=none` to `p=quarantine` after a few weeks of passing mail.
 - RSS feed (deferred).
 - HSTS `preload` once every subdomain is certain to stay HTTPS.

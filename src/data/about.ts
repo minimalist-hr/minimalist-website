@@ -48,5 +48,7 @@ export const profile = {
   experience: { en: '5+ years, 30+ products', hr: '5+ godina, 30+ proizvoda' },
   languages: { en: 'Croatian, English', hr: 'Hrvatski, engleski' },
   workingWith: { en: 'Clients across the EU and US', hr: 'Klijentima u EU i SAD-u' },
+  portrait: 'portrait-filip',
+  /** Placeholder caption, shown only while `portrait` has no file. */
   portraitCaption: 'portrait / 4:5 / greyscale, flat light',
 } as const;
