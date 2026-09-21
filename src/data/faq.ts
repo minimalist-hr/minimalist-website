@@ -17,8 +17,8 @@ export const faq: FaqItem[] = [
   {
     question: { en: 'How soon can you start?', hr: 'Kada možete početi?' },
     answer: {
-      en: 'Usually two to four weeks out. One project runs at a time, so the start date you are given is a real one.',
-      hr: 'Obično za dva do četiri tjedna. U isto vrijeme traje samo jedan projekt, pa je datum početka koji dobijete stvaran.',
+      en: 'Usually two to four weeks out. We commit only to a start date we can keep, so the one you are given is real.',
+      hr: 'Obično za dva do četiri tjedna. Obvezujemo se samo na datum početka koji možemo održati, pa je onaj koji dobijete stvaran.',
     },
   },
   {

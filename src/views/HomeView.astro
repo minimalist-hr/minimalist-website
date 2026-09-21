@@ -31,7 +31,6 @@ interface Props {
 const copy = {
   en: {
     title: 'Minimalist — Complex problems. Simple solutions.',
-    available: 'Available for hire',
     studio: 'Software development studio',
     phrases: [
       'Complex problems. Simple solutions.',
@@ -43,7 +42,7 @@ const copy = {
     scroll: 'Scroll',
     work: 'Selected work',
     workLede:
-      'Few projects, on purpose. Each one documented the same way: what was wrong, what we removed, what we built, what changed.',
+      'Selected projects, each documented the same way: what was wrong, what we removed, what we built, what changed.',
     services: 'What we do',
     servicesLede:
       'Four services, not a menu of twenty. Each one names the problem it solves and exactly what you receive.',
@@ -52,17 +51,16 @@ const copy = {
       'The same six steps on every engagement, in the same order. One week of discovery, then nothing starts until scope and price are signed.',
     skills: 'What we build with',
     skillsLede:
-      'Boring, proven tools — six areas, described in plain language. Chosen so the next engineer, ours or yours, can read the system and keep working.',
+      'Proven, well-understood tools — six areas, described in plain language. Chosen so the next engineer, ours or yours, can read the system and keep working.',
     about: 'How the studio works',
     aboutStatement:
       'A studio built to stay small on purpose. Nothing is delegated down, nothing is padded out.',
     insights: 'Latest thinking',
-    insightsLede: 'Published when there is something worth saying. Roughly once a month.',
+    insightsLede: 'Notes on the decisions behind the work, and what they changed.',
     cta: 'Tell us what you are trying to build.',
   },
   hr: {
     title: 'Minimalist — Složeni problemi. Jednostavna rješenja.',
-    available: 'Dostupni za rad',
     studio: 'Studio za razvoj softvera',
     phrases: [
       'Složeni problemi. Jednostavna rješenja.',
@@ -74,7 +72,7 @@ const copy = {
     scroll: 'Pomaknite',
     work: 'Odabrani radovi',
     workLede:
-      'Malo projekata, namjerno. Svaki je dokumentiran jednako: što nije radilo, što smo uklonili, što smo izgradili, što se promijenilo.',
+      'Odabrani projekti, svaki dokumentiran jednako: što nije radilo, što smo uklonili, što smo izgradili, što se promijenilo.',
     services: 'Čime se bavimo',
     servicesLede:
       'Četiri usluge, ne jelovnik od dvadeset. Svaka imenuje problem koji rješava i točno ono što dobivate.',
@@ -83,12 +81,12 @@ const copy = {
       'Istih šest koraka na svakom projektu, u istom redoslijedu. Tjedan otkrivanja, a zatim ništa ne počinje dok obuhvat i cijena nisu potpisani.',
     skills: 'Čime gradimo',
     skillsLede:
-      'Dosadni, provjereni alati — šest područja, opisanih bez žargona. Odabrani tako da sljedeći inženjer, naš ili vaš, može pročitati sustav i nastaviti raditi.',
+      'Provjereni, dobro poznati alati — šest područja, opisanih bez žargona. Odabrani tako da sljedeći inženjer, naš ili vaš, može pročitati sustav i nastaviti raditi.',
     about: 'Kako studio radi',
     aboutStatement:
       'Studio namjerno građen da ostane malen. Ništa se ne delegira niže, ništa se ne napuhava.',
     insights: 'Najnovije',
-    insightsLede: 'Objavljujemo kada imamo što reći. Približno jednom mjesečno.',
+    insightsLede: 'Bilješke o odlukama iza rada i o tome što su promijenile.',
     cta: 'Recite nam što želite izgraditi.',
   },
 } satisfies Record<Locale, Record<string, string | string[]>>;
@@ -118,7 +116,6 @@ const paths = {
   structuredData={organizationSchema()}
 >
   <Hero
-    available={text.available}
     label={text.studio}
     phrases={text.phrases}
     lede={text.lede}
@@ -211,7 +208,7 @@ const paths = {
 
   .lede,
   .statement {
-    max-width: 52ch;
+    max-width: 60ch;
     margin-bottom: clamp(28px, 3.4vw, 44px);
     font-size: var(--text-base);
     line-height: var(--leading-relaxed);
@@ -219,7 +216,7 @@ const paths = {
   }
 
   .lede-wide {
-    max-width: 56ch;
+    max-width: 66ch;
   }
 
   .statement {
@@ -229,7 +226,7 @@ const paths = {
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-snug);
     line-height: 1.4;
-    color: var(--ink);
+    color: var(--ink-2);
   }
 
   .grid-work {

@@ -122,7 +122,6 @@ if (hasBody) {
 
   /* Markdown output: styled here because the content comes from <Content /> */
   .prose :global(p) {
-    max-width: var(--measure-body);
     text-wrap: pretty;
   }
 
@@ -142,7 +141,6 @@ if (hasBody) {
   }
 
   .prose :global(blockquote) {
-    max-width: var(--measure-body);
     margin: 6px 0;
     padding-left: 20px;
     border-left: var(--hairline) solid var(--rule);
@@ -165,7 +163,6 @@ if (hasBody) {
 
   .prose :global(ul),
   .prose :global(ol) {
-    max-width: var(--measure-body);
     margin: 0;
     padding-left: 20px;
   }

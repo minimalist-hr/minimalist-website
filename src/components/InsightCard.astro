@@ -29,7 +29,10 @@ const dateLabel = formatInsightDate(date, locale);
   <div class="image-slot">
     <ImageFrame caption={coverCaption} ratio="16/10" />
   </div>
-  <CtaLink href={insightPath(entry, locale)}>{t('insights.readInsight')}</CtaLink>
+  {/* wrapper, not a class on <CtaLink>: scoped CSS would not reach its root element */}
+  <div class="action">
+    <CtaLink href={insightPath(entry, locale)}>{t('insights.readInsight')}</CtaLink>
+  </div>
 </article>
 
 <style>
@@ -60,5 +63,9 @@ const dateLabel = formatInsightDate(date, locale);
     width: 100%;
     margin-top: auto;
     padding-top: 2px;
+  }
+
+  .action {
+    margin-top: clamp(6px, 1vw, 12px);
   }
 </style>

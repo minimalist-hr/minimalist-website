@@ -22,8 +22,6 @@ sections:
   - label: 'What we removed'
     paragraphs:
       - text: 'Anything a visitor has to decode. No catalogue of lift models, no stock photos of glass elevators, no news section someone has to keep alive. Each service got one page, in plain language.'
-      - text: 'Fewer pages, each with one job.'
-        lead: true
   - label: 'What we built'
     paragraphs:
       - text: 'A fast static site with a page for each service, a direct path to the service line, and an inquiry form that goes straight to the office. It loads quickly on a phone in a machine room with one bar of signal.'

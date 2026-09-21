@@ -64,8 +64,8 @@ export const skillGroups: SkillGroup[] = [
   {
     label: { en: 'Keeping it running', hr: 'Da sve radi bez prekida' },
     description: {
-      en: 'Hosting, deployment and monitoring, so releases stay boring.',
-      hr: 'Hosting, objava i nadzor, da izdanja ostanu dosadna.',
+      en: 'Hosting, deployment and monitoring, so releases stay uneventful.',
+      hr: 'Hosting, objava i nadzor, da izdanja prolaze bez iznenađenja.',
     },
     detail: {
       en: 'Hosting, updates and monitoring, so a new version goes live without downtime and problems are noticed before your customers call.',
