@@ -5,9 +5,9 @@ import type { Localized } from '../i18n/localized';
 /**
  * The photographs used across the site (plan §3.4).
  *
- * The files in `src/assets/images/` are already greyscale and carry the brand's treatment
- * (contrast 0.92, brightness 1.04); nothing is filtered in CSS. Astro crops each one to the
- * ratio the slot asks for and emits the responsive sizes.
+ * The files in `src/assets/images/` are full colour and untreated, which is a deliberate
+ * departure from the brand's greyscale rule (plan §3.4). Nothing is filtered in CSS either
+ * way. Astro crops each one to the ratio the slot asks for and emits the responsive sizes.
  *
  * Alt text lives here rather than beside the copy, so one image has one description in both
  * languages wherever it appears. Slots that still have no photograph keep the striped
