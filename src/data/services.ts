@@ -1,3 +1,4 @@
+import type { ImageKey } from '../lib/images';
 import type { Localized } from '../i18n/localized';
 
 /**
@@ -15,7 +16,9 @@ export interface Service {
   solves: Localized<string>;
   /** What the client ends up with. */
   receives: Localized<string>;
-  /** Placeholder caption until real photography exists (plan §3.4). */
+  /** Photograph for the service, keyed into the image registry. */
+  image: ImageKey;
+  /** Placeholder caption, shown only while `image` has no file. */
   caption: string;
 }
 
@@ -39,6 +42,7 @@ export const services: Service[] = [
       en: 'A shipped product, the source, the infrastructure, and documentation your own team can pick up.',
       hr: 'Objavljen proizvod, izvorni kod, infrastrukturu i dokumentaciju koju vaš tim može preuzeti.',
     },
+    image: 'service-product',
     caption: 'photo / design session, wall of screens',
   },
   {
@@ -60,6 +64,7 @@ export const services: Service[] = [
       en: 'One system, integrated with what you already run, with the manual steps removed.',
       hr: 'Jedan sustav, integriran s postojećim, bez ručnih koraka.',
     },
+    image: 'service-custom',
     caption: 'screens / one internal system replacing eleven',
   },
   {
@@ -81,6 +86,7 @@ export const services: Service[] = [
       en: 'A migration plan, a parallel run, a switchover without downtime, and a smaller system afterwards.',
       hr: 'Plan migracije, paralelni rad, prijelaz bez zastoja i manji sustav nakon toga.',
     },
+    image: 'service-modernization',
     caption: 'photo / old system beside its replacement',
   },
   {
@@ -102,6 +108,7 @@ export const services: Service[] = [
       en: 'A written assessment, a recommended path, the cost of each option, and no obligation to hire us for it.',
       hr: 'Pisanu procjenu, preporučeni put, trošak svake opcije i nikakvu obvezu da nas angažirate.',
     },
+    image: 'service-strategy',
     caption: 'photo / architecture decision on a whiteboard',
   },
 ];

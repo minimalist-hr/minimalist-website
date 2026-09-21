@@ -26,7 +26,7 @@ interface Props {
 
 const { entry, locale, alternates } = Astro.props;
 const t = useTranslations(locale);
-const { title, excerpt, category, coverCaption, date, author, ctaTitle } = entry.data;
+const { title, excerpt, category, coverImage, coverCaption, date, author, ctaTitle } = entry.data;
 const { Content } = await render(entry);
 
 /** Articles still to be written have no body; the excerpt stands in for it. */
@@ -64,7 +64,14 @@ if (hasBody) {
     </header>
 
     <div class="container hero-image">
-      <ImageFrame caption={coverCaption} ratio="21/8" />
+      <ImageFrame
+        caption={coverCaption}
+        image={coverImage}
+        locale={locale}
+        ratio="21/8"
+        sizes="(min-width: 90rem) 1280px, 94vw"
+        priority
+      />
     </div>
 
     <div class="container body">

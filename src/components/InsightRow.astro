@@ -17,13 +17,19 @@ interface Props {
 }
 
 const { entry, locale } = Astro.props;
-const { title, category, excerpt, coverCaption, date } = entry.data;
+const { title, category, excerpt, coverImage, coverCaption, date } = entry.data;
 const t = useTranslations(locale);
 ---
 
 <article class="row" data-draw data-reveal-item>
   <div class="image-slot">
-    <ImageFrame caption={coverCaption} ratio="4/3" />
+    <ImageFrame
+      caption={coverCaption}
+      image={coverImage}
+      locale={locale}
+      ratio="4/3"
+      sizes="(min-width: 60rem) 190px, 40vw"
+    />
   </div>
   <div class="content">
     <MetaRow class="date" items={[formatInsightDate(date, locale), category]} />

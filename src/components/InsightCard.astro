@@ -1,6 +1,6 @@
 ---
 /**
- * Insight card: date and category, title, placeholder image, link to the article.
+ * Insight card: date and category, title, image, link to the article.
  */
 import type { Locale } from '../i18n/config';
 import { useTranslations } from '../i18n/utils';
@@ -16,7 +16,7 @@ interface Props {
 }
 
 const { entry, locale } = Astro.props;
-const { title, category, excerpt, coverCaption, date } = entry.data;
+const { title, category, excerpt, coverImage, coverCaption, date } = entry.data;
 const t = useTranslations(locale);
 
 const dateLabel = formatInsightDate(date, locale);
@@ -27,7 +27,13 @@ const dateLabel = formatInsightDate(date, locale);
   <h3>{title}</h3>
   <p class="excerpt">{excerpt}</p>
   <div class="image-slot">
-    <ImageFrame caption={coverCaption} ratio="16/10" />
+    <ImageFrame
+      caption={coverCaption}
+      image={coverImage}
+      locale={locale}
+      ratio="16/10"
+      sizes="(min-width: 60rem) 28vw, (min-width: 40rem) 46vw, 92vw"
+    />
   </div>
   {/* wrapper, not a class on <CtaLink>: scoped CSS would not reach its root element */}
   <div class="action">

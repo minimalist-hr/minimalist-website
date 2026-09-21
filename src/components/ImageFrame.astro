@@ -1,22 +1,72 @@
 ---
 /**
- * Image slot. Until real photography exists, renders the striped placeholder with its
- * caption exactly as in the design (plan §3.4). Real images replace the placeholder later,
- * keeping the same reserved aspect ratio so nothing shifts.
+ * Image slot. With an `image` key it renders the photograph, cropped to the reserved
+ * ratio; without one it renders the striped placeholder with its caption exactly as in
+ * the design (plan §3.4). Both reserve the same aspect ratio, so swapping a placeholder
+ * for a photograph shifts nothing.
+ *
+ * The files are greyscale and treated already (see src/lib/images.ts); no CSS filters.
  */
+import { Image } from 'astro:assets';
+
+import type { Locale } from '../i18n/config';
+import { pick } from '../i18n/localized';
+import { studioImage } from '../lib/images';
+
 interface Props {
   /** Placeholder caption, e.g. "product shot / core banking console". */
   caption: string;
   /** Reserved ratio, e.g. "4/3" or "16/10". */
   ratio?: string;
+  /** Key into the image registry. Without it the placeholder is shown. */
+  image?: string | undefined;
+  /** Needed with `image`, to pick the alt text. */
+  locale?: Locale | undefined;
+  /** Slot width across breakpoints, for the srcset. */
+  sizes?: string;
+  /** The one image above the fold on a page can load eagerly. */
+  priority?: boolean;
   class?: string;
 }
 
-const { caption, ratio = '4/3', class: className } = Astro.props;
+const {
+  caption,
+  ratio = '4/3',
+  image,
+  locale,
+  sizes = '(min-width: 60rem) 33vw, 100vw',
+  priority = false,
+  class: className,
+} = Astro.props;
+
+const photo = locale ? studioImage(image) : undefined;
+
+/** Crop box for the slot's ratio; Astro generates the smaller widths from it. */
+const [w = 1, h = 1] = ratio.split('/').map((part) => Number(part.trim()));
+const width = 1600;
+const height = Math.round((width * h) / w);
 ---
 
-<div class:list={['frame', className]} style={`--frame-ratio: ${ratio}`}>
-  <span class="caption">{caption}</span>
+<div
+  class:list={['frame', className]}
+  data-image={photo !== undefined}
+  style={`--frame-ratio: ${ratio}`}
+>
+  {photo && locale ? (
+    <Image
+      src={photo.src}
+      alt={pick(photo.alt, locale)}
+      width={width}
+      height={height}
+      widths={[480, 800, 1200, 1600]}
+      sizes={sizes}
+      fit="cover"
+      loading={priority ? 'eager' : 'lazy'}
+      decoding="async"
+    />
+  ) : (
+    <span class="caption">{caption}</span>
+  )}
 </div>
 
 <style>
@@ -28,6 +78,20 @@ const { caption, ratio = '4/3', class: className } = Astro.props;
     aspect-ratio: var(--frame-ratio);
     padding: 14px;
     background: repeating-linear-gradient(90deg, var(--stripe-a) 0 5px, var(--stripe-b) 5px 10px);
+  }
+
+  .frame[data-image='true'] {
+    padding: 0;
+    background: none;
+  }
+
+  /* :global, because <Image>'s root is a child component's element: a scoped class
+     passed to it would be dropped. */
+  .frame[data-image='true'] > :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .caption {

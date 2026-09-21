@@ -54,6 +54,8 @@ const t = useTranslations(locale);
           title={pick(service.title, locale)}
           description={pick(service.detail, locale)}
           caption={service.caption}
+          image={service.image}
+          locale={locale}
           bordered={index > 1}
         >
           <div class="details">

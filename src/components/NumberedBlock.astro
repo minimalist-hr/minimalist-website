@@ -1,8 +1,9 @@
 ---
 /**
  * Numbered block used on Services and Approach: number and heading on one baseline,
- * a paragraph, a placeholder image, then anything else passed as children.
+ * a paragraph, an image, then anything else passed as children.
  */
+import type { Locale } from '../i18n/config';
 import ImageFrame from './ImageFrame.astro';
 
 interface Props {
@@ -10,11 +11,14 @@ interface Props {
   title: string;
   description: string;
   caption?: string | undefined;
+  /** Key into the image registry; without it the caption's placeholder is shown. */
+  image?: string | undefined;
+  locale?: Locale | undefined;
   /** Hairline above the block (the design rules the rows after the first). */
   bordered?: boolean;
 }
 
-const { number, title, description, caption, bordered = false } = Astro.props;
+const { number, title, description, caption, image, locale, bordered = false } = Astro.props;
 ---
 
 <article class="block" data-bordered={bordered} data-draw data-reveal-item>
@@ -23,7 +27,15 @@ const { number, title, description, caption, bordered = false } = Astro.props;
     <h2>{title}</h2>
   </div>
   <p class="description">{description}</p>
-  {caption && <ImageFrame caption={caption} ratio="16/9" />}
+  {caption && (
+    <ImageFrame
+      caption={caption}
+      image={image}
+      locale={locale}
+      ratio="16/9"
+      sizes="(min-width: 60rem) 46vw, 92vw"
+    />
+  )}
   <slot />
 </article>
 

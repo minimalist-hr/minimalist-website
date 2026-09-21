@@ -34,7 +34,13 @@ const { steps, locale } = Astro.props;
         </div>
         <p class="detail">{pick(step.detail, locale)}</p>
         <div class="image-slot">
-          <ImageFrame caption={step.caption} ratio="16/9" />
+          <ImageFrame
+            caption={step.caption}
+            image={step.image}
+            locale={locale}
+            ratio="16/9"
+            sizes="(min-width: 60rem) 42vw, 92vw"
+          />
         </div>
       </div>
     </li>

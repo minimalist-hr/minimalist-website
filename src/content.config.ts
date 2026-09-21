@@ -72,6 +72,9 @@ const insights = defineCollection({
     date: z.coerce.date(),
     category: z.string(),
     excerpt: z.string(),
+    /** Key into the image registry (src/lib/images.ts). */
+    coverImage: z.string().optional(),
+    /** Placeholder caption, shown while the entry has no `coverImage`. */
     coverCaption: z.string(),
     draft: z.boolean().default(false),
     /** Defaults to siteConfig.author. */
