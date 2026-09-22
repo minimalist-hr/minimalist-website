@@ -64,6 +64,10 @@ const alt = {
     en: 'A system diagram drawn on a whiteboard.',
     hr: 'Dijagram sustava nacrtan na bijeloj ploči.',
   },
+  'insight-wireframes': {
+    en: 'Someone drawing page layouts on a tablet at a desk.',
+    hr: 'Netko crta rasporede stranica na tabletu za stolom.',
+  },
 } satisfies Record<string, Localized<string>>;
 
 export type ImageKey = keyof typeof alt;

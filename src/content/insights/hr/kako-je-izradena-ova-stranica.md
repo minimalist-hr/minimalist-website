@@ -5,6 +5,7 @@ translationKey: site-build
 date: 2026-09-22
 category: 'Praksa'
 excerpt: 'Alati, ograničenja i odluke iza ove stranice, uključujući one koje su nas nešto koštale.'
+coverImage: 'insight-wireframes'
 coverCaption: 'dijagram / stranice, rute i odakle svaka dolazi'
 draft: false
 ctaTitle: 'Želite stranicu izrađenu na isti način?'

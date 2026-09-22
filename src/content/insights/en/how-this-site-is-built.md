@@ -5,6 +5,7 @@ translationKey: site-build
 date: 2026-09-22
 category: 'Practice'
 excerpt: 'The stack, the constraints and the decisions behind this site, including the ones that cost us something.'
+coverImage: 'insight-wireframes'
 coverCaption: 'diagram / pages, routes and where each one comes from'
 draft: false
 ctaTitle: 'Want a site built the same way?'
