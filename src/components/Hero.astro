@@ -40,8 +40,8 @@ const { label, phrases, lede, action, secondary, scroll } = Astro.props;
 const [first, ...rest] = phrases;
 ---
 
-<section class="hero">
-  <div class="hero-inner container rule-bottom">
+<section class="hero" data-field-hero>
+  <div class="hero-inner container">
     <p class="studio-label">{label}</p>
 
     <h1>
@@ -86,7 +86,16 @@ const [first, ...rest] = phrases;
 </section>
 
 <style>
-  /* The rule (.rule-bottom) runs to the width of the text, like the sections below. */
+  /*
+   * The hero's closing rule runs the full width of the window, not the width of the text like
+   * the sections below it: it is the boundary between the hero and the rest of the page, drawn
+   * under the scroll cue. The background field (BackgroundField.astro) reads this section's
+   * [data-field-hero] to know how far its full-strength stretch reaches.
+   */
+  .hero {
+    border-bottom: var(--hairline) solid var(--rule);
+  }
+
   .hero-inner {
     display: flex;
     flex-direction: column;

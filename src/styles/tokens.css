@@ -23,6 +23,10 @@
   --stripe-a: #1b1b19;
   --stripe-b: #131312;
 
+  /* Background field (src/scripts/background-field.ts): hairlines in the label grey. */
+  --field-line: var(--graphite);
+  --field-alpha-scale: 1;
+
   color-scheme: dark;
 }
 
@@ -38,6 +42,10 @@
   --rule: #dcdad3;
   --stripe-a: #e9e7e1;
   --stripe-b: #f2f0ea;
+
+  /* The same grey reads much heavier on paper than on ink, so the lines are held back. */
+  --field-line: var(--graphite);
+  --field-alpha-scale: 0.5;
 
   color-scheme: light;
 }
