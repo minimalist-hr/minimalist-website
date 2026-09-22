@@ -20,7 +20,7 @@ const TAB_PAGES = [
   '/',
   '/work/',
   '/work/lift-mucnjak-website/',
-  '/insights/deleting-code-is-a-feature/',
+  '/insights/how-this-site-is-built/',
   '/services/',
   '/contact/',
   '/insights/',
