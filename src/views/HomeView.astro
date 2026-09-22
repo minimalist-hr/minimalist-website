@@ -32,11 +32,12 @@ const copy = {
   en: {
     title: 'Minimalist — Complex problems. Simple solutions.',
     studio: 'Software development studio',
+    // Split into the lines the mobile hero sets by hand; joined again from md up.
     phrases: [
-      'Complex problems. Simple solutions.',
-      'Less noise. Better software.',
-      'Software, reduced to what matters.',
-      'Simple by design, built to last.',
+      ['Complex', 'problems.', 'Simple solutions.'],
+      ['Less noise.', 'Better', 'software.'],
+      ['Software,', 'reduced to what', 'matters.'],
+      ['Simple', 'by design,', 'built to last.'],
     ],
     lede: 'We design and build software that does exactly what it should, performs without friction, and stands the test of time.',
     scroll: 'Scroll',
@@ -63,10 +64,10 @@ const copy = {
     title: 'Minimalist — Složeni problemi. Jednostavna rješenja.',
     studio: 'Studio za razvoj softvera',
     phrases: [
-      'Složeni problemi. Jednostavna rješenja.',
-      'Manje šuma. Bolji softver.',
-      'Softver, sveden na ono što je važno.',
-      'Jednostavan po dizajnu, građen da traje.',
+      ['Složeni problemi.', 'Jednostavna', 'rješenja.'],
+      ['Manje šuma.', 'Bolji', 'softver.'],
+      ['Softver,', 'sveden na ono', 'što je važno.'],
+      ['Jednostavan', 'po dizajnu,', 'građen da traje.'],
     ],
     lede: 'Osmišljavamo i razvijamo softver koji radi upravo ono što treba, bez trenja, i traje.',
     scroll: 'Pomaknite',
@@ -89,7 +90,7 @@ const copy = {
     insightsLede: 'Bilješke o odlukama iza rada i o tome što su promijenile.',
     cta: 'Recite nam što želite izgraditi.',
   },
-} satisfies Record<Locale, Record<string, string | string[]>>;
+} satisfies Record<Locale, Record<string, string | string[][]>>;
 
 const { locale } = Astro.props;
 const text = copy[locale];

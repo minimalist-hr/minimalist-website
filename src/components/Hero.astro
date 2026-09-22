@@ -5,13 +5,20 @@
  * The headline cycles four phrases on an 18s loop, 4.5s each (plan §3.5). Only the first
  * phrase is exposed to screen readers, so the heading does not change underneath them;
  * with reduced motion the first phrase is simply shown.
+ *
+ * Each phrase arrives as its lines rather than as one string. The phrases sit stacked in
+ * one grid cell, so the heading is as tall as the longest of them; left to wrap on their
+ * own, a phone shows some at three lines and some at two, and the short ones leave a hole
+ * under the heading. Below md the lines are set by hand so every phrase is three deep.
+ * From md up they run back together as one wrapping line.
  */
 import Button from './Button.astro';
 import CtaLink from './CtaLink.astro';
 
 interface Props {
   label: string;
-  phrases: string[];
+  /** One entry per phrase, split into the lines the mobile design sets by hand. */
+  phrases: string[][];
   lede: string;
   action: { href: string; label: string };
   secondary: { href: string; label: string };
@@ -27,10 +34,22 @@ const [first, ...rest] = phrases;
     <p class="studio-label">{label}</p>
 
     <h1>
-      <span class="phrase">{first}</span>
+      <span class="phrase">
+        {first?.map((line, index) => (
+          <>
+            {index > 0 && ' '}
+            <span class="line">{line}</span>
+          </>
+        ))}
+      </span>
       {rest.map((phrase, index) => (
         <span class="phrase" aria-hidden="true" style={`--delay: ${(index + 1) * 4.5}s`}>
-          {phrase}
+          {phrase.map((line, lineIndex) => (
+            <>
+              {lineIndex > 0 && ' '}
+              <span class="line">{line}</span>
+            </>
+          ))}
         </span>
       ))}
     </h1>
@@ -76,6 +95,11 @@ const [first, ...rest] = phrases;
     letter-spacing: -0.05em;
     line-height: 0.96;
     text-wrap: initial;
+  }
+
+  /* Hand-set lines below md; one wrapping line from md up (see the note at the top). */
+  .line {
+    display: block;
   }
 
   .phrase {
@@ -184,6 +208,10 @@ const [first, ...rest] = phrases;
       letter-spacing: var(--tracking-display);
       line-height: var(--leading-display);
       text-wrap: balance;
+    }
+
+    .line {
+      display: inline;
     }
 
     .lede {
