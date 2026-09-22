@@ -40,7 +40,7 @@ export const MAX_DEPTH_MOBILE_OFFSET = 1;
  * How eagerly a cell splits near a point of interest: it splits while
  * `cell size × detail > distance to the point`. Higher = denser, and further out.
  */
-export const POINTER_DETAIL_HERO = 1;
+export const POINTER_DETAIL_HERO = 0.85;
 export const POINTER_DETAIL_AMBIENT = 0.45;
 /** The drifting points that keep the partition alive, and varied, with no pointer. */
 export const DRIFT_DETAIL = 0.35;
@@ -51,19 +51,30 @@ export const DRIFT_COUNT = 3;
 export const MAX_CELL_FRACTION = 1.1;
 
 /** Line alpha over the hero and away from it, before the theme's own scale. */
-export const LINE_ALPHA_HERO = 0.55;
-export const LINE_ALPHA_AMBIENT = 0.2;
+export const LINE_ALPHA_HERO = 0.36;
+export const LINE_ALPHA_AMBIENT = 0.085;
 /** Alpha of the largest cells relative to the smallest; deeper cells read stronger. */
 export const DEPTH_ALPHA_FLOOR = 0.7;
 
 /** How quickly intensity eases towards its target while scrolling (per frame, 0-1). */
 export const INTENSITY_EASE = 0.05;
 
-/** Reveal duration: how long a cell takes to open, or to collapse again (plan §3.5). */
+/**
+ * How long a cell takes to open (the Reveal duration, plan §3.5) and how long it takes to
+ * collapse again. A cell also fades with its size rather than arriving at full strength, which
+ * is what keeps a burst of small cells from snapping into place. Leaving is slower than
+ * arriving, so passing the pointer over an area does not flicker.
+ */
 export const SPLIT_DURATION_MS = 240;
+export const COLLAPSE_DURATION_MS = 420;
+/**
+ * Steps the fade is quantised into. Cells are stroked in one path per depth and step, so this
+ * is the number of draw calls per depth, not a per-cell cost.
+ */
+export const FADE_STEPS = 6;
 
 /** How fast the pointer's point of interest follows the cursor (per frame, 0-1). */
-export const POINTER_EASE = 0.12;
+export const POINTER_EASE = 0.07;
 /** Idle time after which the pointer's point leaves the cursor and drifts on its own. */
 export const POINTER_IDLE_MS = 2600;
 
@@ -169,8 +180,9 @@ export function initBackgroundField({ canvas, hero }: Options): void {
   let lastPointerAt = -Infinity;
 
   const cells = new Map<number, Cell>();
-  /** One path per depth, so cells can be stroked in depth order without per-cell state. */
+  /** One path per depth and fade step (see FADE_STEPS), with a flag for the ones in use. */
   let paths: Path2D[] = [];
+  const used: boolean[] = [];
 
   let lineColor = '#8a8880';
   let alphaScale = 1;
@@ -357,12 +369,13 @@ export function initBackgroundField({ canvas, hero }: Options): void {
       }
     }
 
-    const step = delta / SPLIT_DURATION_MS;
+    const opening = delta / SPLIT_DURATION_MS;
+    const collapsing = delta / COLLAPSE_DURATION_MS;
     for (const [key, cell] of cells) {
       if (cell.seen === frameId) {
-        cell.life = Math.min(cell.life + step, 1);
+        cell.life = Math.min(cell.life + opening, 1);
       } else {
-        cell.life -= step;
+        cell.life -= collapsing;
         if (cell.life <= 0) cells.delete(key);
       }
     }
@@ -379,13 +392,22 @@ export function initBackgroundField({ canvas, hero }: Options): void {
     ctx.clearRect(0, 0, width, height);
     ctx.strokeStyle = lineColor;
 
-    if (paths.length !== maxDepth + 1) paths = [];
-    for (let depth = 0; depth <= maxDepth; depth += 1) paths[depth] = new Path2D();
+    // One path per depth and fade step: a cell's alpha follows its life, but the strokes stay
+    // batched, so the frame costs a few dozen draw calls however many cells are in flight.
+    const groups = (maxDepth + 1) * FADE_STEPS;
+    if (paths.length !== groups) paths = [];
+    for (let group = 0; group < groups; group += 1) paths[group] = new Path2D();
+    used.length = groups;
+    used.fill(false);
 
     for (const cell of cells.values()) {
-      const { x, y, w, h, depth, life } = cell;
-      const path = paths[Math.min(depth, maxDepth)];
+      const { x, y, w, h, life } = cell;
+      const depth = Math.min(cell.depth, maxDepth);
+      const step = Math.min(Math.max(Math.ceil(life * FADE_STEPS) - 1, 0), FADE_STEPS - 1);
+      const group = depth * FADE_STEPS + step;
+      const path = paths[group];
       if (!path) continue;
+      used[group] = true;
 
       // Opening and collapsing are a grow from the cell's own centre.
       const scale = easeOut(life);
@@ -399,12 +421,16 @@ export function initBackgroundField({ canvas, hero }: Options): void {
     const alpha =
       (LINE_ALPHA_AMBIENT + (LINE_ALPHA_HERO - LINE_ALPHA_AMBIENT) * intensity) * alphaScale;
     for (let depth = 0; depth <= maxDepth; depth += 1) {
-      const path = paths[depth];
-      if (!path) continue;
       // Deeper cells are smaller and denser, so they carry the emphasis.
       const share = maxDepth === 0 ? 1 : depth / maxDepth;
-      ctx.globalAlpha = Math.min(alpha * (DEPTH_ALPHA_FLOOR + (1 - DEPTH_ALPHA_FLOOR) * share), 1);
-      ctx.stroke(path);
+      const depthAlpha = alpha * (DEPTH_ALPHA_FLOOR + (1 - DEPTH_ALPHA_FLOOR) * share);
+      for (let step = 0; step < FADE_STEPS; step += 1) {
+        const group = depth * FADE_STEPS + step;
+        const path = paths[group];
+        if (!path || !used[group]) continue;
+        ctx.globalAlpha = Math.min(depthAlpha * ((step + 1) / FADE_STEPS), 1);
+        ctx.stroke(path);
+      }
     }
     ctx.globalAlpha = 1;
   }
@@ -448,7 +474,7 @@ export function initBackgroundField({ canvas, hero }: Options): void {
     pointerFocus.x = targetX;
     pointerFocus.y = targetY;
     // A long step settles every cell at full size, with nothing mid-animation.
-    draw(update(SPLIT_DURATION_MS));
+    draw(update(SPLIT_DURATION_MS * 2));
   }
 
   readTheme();
