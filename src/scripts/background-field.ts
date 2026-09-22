@@ -50,14 +50,27 @@ export const DRIFT_COUNT = 3;
  * Keep it loose: a tight value splits every far cell to the same depth, which reads as a grid. */
 export const MAX_CELL_FRACTION = 1.1;
 
-/** Line alpha over the hero and away from it, before the theme's own scale. */
-export const LINE_ALPHA_HERO = 0.36;
-export const LINE_ALPHA_AMBIENT = 0.085;
+/**
+ * Line alpha over the hero and away from it, before the theme's own scale. The two are drawn
+ * in the same frame, divided at the hero's closing rule, so the boundary is a visible edge
+ * rather than something that only happens over a screenful of scrolling.
+ */
+export const LINE_ALPHA_HERO = 0.28;
+export const LINE_ALPHA_AMBIENT = 0.05;
 /** Alpha of the largest cells relative to the smallest; deeper cells read stronger. */
 export const DEPTH_ALPHA_FLOOR = 0.7;
 
 /** How quickly intensity eases towards its target while scrolling (per frame, 0-1). */
-export const INTENSITY_EASE = 0.05;
+export const INTENSITY_EASE = 0.08;
+
+/**
+ * Where the hero hands over to the quiet level, as the share of the hero still on screen.
+ * The hero look holds while at least HERO_HOLD of it is in view and is gone by HERO_RELEASE,
+ * so the change happens across the hero's closing rule rather than spread over a whole screen
+ * of scrolling.
+ */
+export const HERO_HOLD = 0.72;
+export const HERO_RELEASE = 0.3;
 
 /**
  * How long a cell takes to open (the Reveal duration, plan §3.5) and how long it takes to
@@ -108,6 +121,12 @@ const CULL_MARGIN_PX = 260;
 const RESIZE_HEIGHT_THRESHOLD = 120;
 
 /* ---- Helpers ------------------------------------------------------------------------ */
+
+/** Smooth 0-1 ramp between two edges, flat outside them. */
+function smoothstep(edge0: number, edge1: number, value: number): number {
+  const t = Math.min(Math.max((value - edge0) / (edge1 - edge0), 0), 1);
+  return t * t * (3 - 2 * t);
+}
 
 /** Reveal easing, cubic-bezier(.2,0,0,1) closely enough for a 240ms grow. */
 function easeOut(t: number): number {
@@ -168,7 +187,8 @@ export function initBackgroundField({ canvas, hero }: Options): void {
   let frameId = 0;
   let onScreen = true;
 
-  /** 0 = the quiet level used below the hero and on every other page, 1 = the hero. */
+  /** 0 = the quiet level used below the hero and on every other page, 1 = the hero. Drives how
+   * deep the tree goes and how far the pointer reaches; the line alpha is split by region. */
   let intensity = hero ? 1 : 0;
 
   /** The points the partition refines around: the pointer's, then the drifting ones. */
@@ -221,11 +241,15 @@ export function initBackgroundField({ canvas, hero }: Options): void {
     measureHero();
   }
 
-  /** How much of the hero is still on screen: 1 at the top of the page, 0 once it is gone. */
+  /**
+   * 1 while the hero holds the screen, 0 once it has handed over. The share of the hero still
+   * in view runs through a ramp rather than straight into the intensity, so the hero and the
+   * rest of the page read as two states with a short crossing between them.
+   */
   function targetIntensity(): number {
     if (!hero) return 0;
     const remaining = (heroBottom - window.scrollY) / height;
-    return Math.min(Math.max(remaining, 0), 1);
+    return smoothstep(HERO_RELEASE, HERO_HOLD, remaining);
   }
 
   /** Moves the points of interest: the first follows the pointer, the rest drift. */
@@ -418,8 +442,21 @@ export function initBackgroundField({ canvas, hero }: Options): void {
       path.rect(left, top, snap(x + w - insetX) - left, snap(y + h - insetY) - top);
     }
 
-    const alpha =
-      (LINE_ALPHA_AMBIENT + (LINE_ALPHA_HERO - LINE_ALPHA_AMBIENT) * intensity) * alphaScale;
+    // The hero's closing rule is the threshold: everything above it is drawn at the hero's
+    // strength, everything below it at the quiet one, in the same frame. Once the hero has
+    // scrolled away the split sits at the top of the window and the whole page is quiet.
+    const split = hero ? Math.min(Math.max(heroBottom - window.scrollY, 0), height) : 0;
+    if (split > 0) strokeGroups(maxDepth, LINE_ALPHA_HERO * alphaScale, 0, split);
+    if (split < height) strokeGroups(maxDepth, LINE_ALPHA_AMBIENT * alphaScale, split, height);
+    ctx.globalAlpha = 1;
+  }
+
+  /** Strokes every group between two heights of the window, at one alpha. */
+  function strokeGroups(maxDepth: number, alpha: number, top: number, bottom: number): void {
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, top, width, bottom - top);
+    ctx.clip();
     for (let depth = 0; depth <= maxDepth; depth += 1) {
       // Deeper cells are smaller and denser, so they carry the emphasis.
       const share = maxDepth === 0 ? 1 : depth / maxDepth;
@@ -432,7 +469,7 @@ export function initBackgroundField({ canvas, hero }: Options): void {
         ctx.stroke(path);
       }
     }
-    ctx.globalAlpha = 1;
+    ctx.restore();
   }
 
   function tick(now: number): void {
