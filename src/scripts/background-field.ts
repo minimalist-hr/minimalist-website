@@ -55,7 +55,7 @@ export const MAX_CELL_FRACTION = 1.1;
  * in the same frame, divided at the hero's closing rule, so the boundary is a visible edge
  * rather than something that only happens over a screenful of scrolling.
  */
-export const LINE_ALPHA_HERO = 0.28;
+export const LINE_ALPHA_HERO = 0.18;
 export const LINE_ALPHA_AMBIENT = 0.05;
 /** Alpha of the largest cells relative to the smallest; deeper cells read stronger. */
 export const DEPTH_ALPHA_FLOOR = 0.7;
