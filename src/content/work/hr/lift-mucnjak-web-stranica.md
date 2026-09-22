@@ -22,8 +22,6 @@ sections:
   - label: 'Što smo uklonili'
     paragraphs:
       - text: 'Sve što posjetitelj mora odgonetavati. Bez kataloga modela dizala, bez stock fotografija staklenih dizala, bez rubrike novosti koju netko mora održavati. Svaka usluga dobila je jednu stranicu, jasnim jezikom.'
-      - text: 'Manje stranica, svaka s jednim zadatkom.'
-        lead: true
   - label: 'Što smo izgradili'
     paragraphs:
       - text: 'Brza statična stranica sa stranicom za svaku uslugu, izravnim putem do servisne linije i obrascem za upit koji stiže ravno u ured. Brzo se učitava i na mobitelu u strojarnici, s jednom crticom signala.'

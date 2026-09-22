@@ -27,11 +27,14 @@ const t = useTranslations(locale);
     <MetaRow items={[sector, year]} />
     <h3>{title}</h3>
     <p class="metric">{cardMetric ?? summary}</p>
-    {status === 'published' ? (
-      <CtaLink href={workPath(entry, locale)}>{t('work.readCaseStudy')}</CtaLink>
-    ) : (
-      <p class="in-progress">{t('work.inProgress')}</p>
-    )}
+    {/* wrapper, not a class on <CtaLink>: scoped CSS would not reach its root element */}
+    <div class="action">
+      {status === 'published' ? (
+        <CtaLink href={workPath(entry, locale)}>{t('work.readCaseStudy')}</CtaLink>
+      ) : (
+        <p class="in-progress">{t('work.inProgress')}</p>
+      )}
+    </div>
   </div>
 </article>
 
@@ -61,8 +64,11 @@ const t = useTranslations(locale);
     color: var(--ink-2);
   }
 
+  .action {
+    margin-top: clamp(10px, 1.4vw, 18px);
+  }
+
   .in-progress {
-    margin-top: 4px;
     font-size: var(--text-label);
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-label);

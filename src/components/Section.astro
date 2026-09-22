@@ -13,14 +13,32 @@ interface Props {
   size?: 'default' | 'lead' | 'header';
   /** Drops the top padding, for a section that follows a page header. */
   flushTop?: boolean;
+  /**
+   * Pulls the rule up closer to the content. The home page stacks six of these, and the
+   * full gap on both sides of every rule leaves the sections floating apart.
+   */
+  tight?: boolean;
   class?: string;
   id?: string;
 }
 
-const { bordered = true, size = 'default', flushTop = false, class: className, id } = Astro.props;
+const {
+  bordered = true,
+  size = 'default',
+  flushTop = false,
+  tight = false,
+  class: className,
+  id,
+} = Astro.props;
 ---
 
-<section class:list={['section', className]} data-size={size} data-flush-top={flushTop} id={id}>
+<section
+  class:list={['section', className]}
+  data-size={size}
+  data-flush-top={flushTop}
+  data-tight={tight}
+  id={id}
+>
   <div class:list={['container', bordered && 'rule-bottom']}>
     <slot />
   </div>
@@ -52,5 +70,9 @@ const { bordered = true, size = 'default', flushTop = false, class: className, i
   /* Page header: the design keeps a tighter gap between the lede and its rule. */
   .section[data-size='header'] .container {
     padding-bottom: clamp(32px, 4vw, 56px);
+  }
+
+  .section[data-tight='true'] .container {
+    padding-bottom: clamp(30px, 4vw, 60px);
   }
 </style>

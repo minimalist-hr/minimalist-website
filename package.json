@@ -20,7 +20,8 @@
     "test:lighthouse": "node scripts/lighthouse.mjs"
   },
   "dependencies": {
-    "astro": "^7.3.3"
+    "astro": "^7.3.3",
+    "sharp": "0.35.4"
   },
   "allowScripts": {
     "esbuild": true

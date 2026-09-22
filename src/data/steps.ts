@@ -1,3 +1,4 @@
+import type { ImageKey } from '../lib/images';
 import type { Localized } from '../i18n/localized';
 
 /** The six engagement steps, same order on every project (plan §2, Approach). */
@@ -8,7 +9,9 @@ export interface Step {
   description: Localized<string>;
   /** Longer description, used on the Approach page. */
   detail: Localized<string>;
-  /** Placeholder caption until real photography exists (plan §3.4). */
+  /** Photograph for the step, keyed into the image registry. */
+  image: ImageKey;
+  /** Placeholder caption, shown only while `image` has no file. */
   caption: string;
 }
 
@@ -24,6 +27,7 @@ export const steps: Step[] = [
       en: 'One week. We read the code, talk to the people who use the system, and write down what is actually true. No proposal before this.',
       hr: 'Jedan tjedan. Čitamo kod, razgovaramo s ljudima koji koriste sustav i zapisujemo što je stvarno točno. Nema ponude prije toga.',
     },
+    image: 'step-discovery',
     caption: 'photo / notes from a discovery week',
   },
   {
@@ -37,6 +41,7 @@ export const steps: Step[] = [
       en: 'Scope, sequence, fixed price and a list of what we are deliberately not building. Signed before anything starts.',
       hr: 'Obuhvat, slijed, fiksna cijena i popis onoga što namjerno ne gradimo. Potpisano prije početka.',
     },
+    image: 'step-definition',
     caption: 'document / signed scope and fixed price',
   },
   {
@@ -50,6 +55,7 @@ export const steps: Step[] = [
       en: 'Interface and architecture decided together, because one determines the other. You see real screens, not mood boards.',
       hr: 'Sučelje i arhitektura odlučuju se zajedno, jer jedno određuje drugo. Vidite prave ekrane, ne mood boardove.',
     },
+    image: 'step-design',
     caption: 'screens / real interface, first pass',
   },
   {
@@ -63,6 +69,7 @@ export const steps: Step[] = [
       en: 'Weekly releases to a staging environment you can open at any time. One update every Friday, in writing, in plain language.',
       hr: 'Tjedna izdanja na okruženju koje možete otvoriti kad želite. Jedan pisani izvještaj svakog petka, bez žargona.',
     },
+    image: 'step-build',
     caption: 'screens / weekly staging release',
   },
   {
@@ -76,6 +83,7 @@ export const steps: Step[] = [
       en: 'Parallel run, migration, switchover. Monitoring and alerting in place before the first real user arrives.',
       hr: 'Paralelni rad, migracija, prijelaz. Nadzor i upozorenja postavljeni prije prvog pravog korisnika.',
     },
+    image: 'step-launch',
     caption: 'photo / switchover under monitoring',
   },
   {
@@ -89,6 +97,7 @@ export const steps: Step[] = [
       en: 'A monthly retainer if you want us close, a clean handover if you don’t. Either way the system is yours and documented.',
       hr: 'Mjesečni angažman ako nas želite blizu ili čista predaja ako ne. U svakom slučaju sustav je vaš i dokumentiran.',
     },
+    image: 'step-support',
     caption: 'photo / handover documentation',
   },
 ];

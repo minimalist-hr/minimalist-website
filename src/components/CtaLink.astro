@@ -46,8 +46,15 @@ const { href, variant = 'rule', class: className } = Astro.props;
     padding-bottom: 3px;
   }
 
+  /* The arrow is centred on the label, not on the label's box: the rule variant adds
+     3px under the text, so the arrow gets the same 3px under it to cancel the offset. */
   .arrow {
+    line-height: var(--leading-none);
     transition: transform var(--duration-reveal) var(--ease);
+  }
+
+  .cta[data-variant='rule'] .arrow {
+    margin-bottom: 3px;
   }
 
   @media (hover: hover) {

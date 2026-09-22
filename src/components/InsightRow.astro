@@ -1,6 +1,6 @@
 ---
 /**
- * Insights list row: small image, date/category and title, then excerpt and link.
+ * Insights list row: small image beside the date/category, title, excerpt and link.
  * Wraps to a single column on narrow screens (design).
  */
 import type { Locale } from '../i18n/config';
@@ -17,21 +17,28 @@ interface Props {
 }
 
 const { entry, locale } = Astro.props;
-const { title, category, excerpt, coverCaption, date } = entry.data;
+const { title, category, excerpt, coverImage, coverCaption, date } = entry.data;
 const t = useTranslations(locale);
 ---
 
 <article class="row" data-draw data-reveal-item>
   <div class="image-slot">
-    <ImageFrame caption={coverCaption} ratio="4/3" />
+    <ImageFrame
+      caption={coverCaption}
+      image={coverImage}
+      locale={locale}
+      ratio="4/3"
+      sizes="(min-width: 60rem) 190px, 40vw"
+    />
   </div>
-  <div class="heading">
+  <div class="content">
     <MetaRow class="date" items={[formatInsightDate(date, locale), category]} />
     <h2>{title}</h2>
-  </div>
-  <div class="detail">
-    <p>{excerpt}</p>
-    <CtaLink href={insightPath(entry, locale)}>{t('insights.readInsight')}</CtaLink>
+    <p class="excerpt">{excerpt}</p>
+    {/* wrapper, not a class on <CtaLink>: scoped CSS would not reach its root element */}
+    <div class="action">
+      <CtaLink href={insightPath(entry, locale)}>{t('insights.readInsight')}</CtaLink>
+    </div>
   </div>
 </article>
 
@@ -50,10 +57,11 @@ const t = useTranslations(locale);
     flex: 0 0 clamp(140px, 16vw, 190px);
   }
 
-  .heading {
+  .content {
     display: flex;
-    flex: 1 1 340px;
+    flex: 1 1 420px;
     flex-direction: column;
+    align-items: flex-start;
     gap: 12px;
   }
 
@@ -68,14 +76,14 @@ const t = useTranslations(locale);
     line-height: var(--leading-tight);
   }
 
-  .detail {
-    display: flex;
-    flex: 1 1 320px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
+  .excerpt {
+    max-width: 78ch;
     font-size: var(--text-md);
     line-height: var(--leading-body);
     color: var(--ink-2);
+  }
+
+  .action {
+    margin-top: clamp(4px, 0.8vw, 10px);
   }
 </style>

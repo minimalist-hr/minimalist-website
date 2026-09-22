@@ -4,7 +4,7 @@
  * Section copy comes from the design; work and insights come from content collections.
  */
 import CtaBand from '../components/CtaBand.astro';
-import Hero from '../components/Hero.astro';
+import Hero, { type Phrase } from '../components/Hero.astro';
 import InsightCard from '../components/InsightCard.astro';
 import Section from '../components/Section.astro';
 import SectionHeader from '../components/SectionHeader.astro';
@@ -31,19 +31,19 @@ interface Props {
 const copy = {
   en: {
     title: 'Minimalist — Complex problems. Simple solutions.',
-    available: 'Available for hire',
     studio: 'Software development studio',
+    // Split into the lines the mobile hero sets by hand; joined again from md up.
     phrases: [
-      'Complex problems. Simple solutions.',
-      'Less noise. Better software.',
-      'Software, reduced to what matters.',
-      'Simple by design, built to last.',
+      { lines: ['Complex', 'problems.', 'Simple solutions.'] },
+      { lines: ['Less noise.', 'Better', 'software.'] },
+      { lines: ['Software,', 'reduced to what', 'matters.'] },
+      { lines: ['Simple', 'by design,', 'built to last.'] },
     ],
     lede: 'We design and build software that does exactly what it should, performs without friction, and stands the test of time.',
     scroll: 'Scroll',
     work: 'Selected work',
     workLede:
-      'Few projects, on purpose. Each one documented the same way: what was wrong, what we removed, what we built, what changed.',
+      'Selected projects, each documented the same way: what was wrong, what we removed, what we built, what changed.',
     services: 'What we do',
     servicesLede:
       'Four services, not a menu of twenty. Each one names the problem it solves and exactly what you receive.',
@@ -52,29 +52,29 @@ const copy = {
       'The same six steps on every engagement, in the same order. One week of discovery, then nothing starts until scope and price are signed.',
     skills: 'What we build with',
     skillsLede:
-      'Boring, proven tools — six areas, described in plain language. Chosen so the next engineer, ours or yours, can read the system and keep working.',
+      'Proven, well-understood tools — six areas, described in plain language. Chosen so the next engineer, ours or yours, can read the system and keep working.',
     about: 'How the studio works',
     aboutStatement:
       'A studio built to stay small on purpose. Nothing is delegated down, nothing is padded out.',
     insights: 'Latest thinking',
-    insightsLede: 'Published when there is something worth saying. Roughly once a month.',
+    insightsLede: 'Notes on the decisions behind the work, and what they changed.',
     cta: 'Tell us what you are trying to build.',
   },
   hr: {
     title: 'Minimalist — Složeni problemi. Jednostavna rješenja.',
-    available: 'Dostupni za rad',
     studio: 'Studio za razvoj softvera',
     phrases: [
-      'Složeni problemi. Jednostavna rješenja.',
-      'Manje šuma. Bolji softver.',
-      'Softver, sveden na ono što je važno.',
-      'Jednostavan po dizajnu, građen da traje.',
+      { lines: ['Složeni problemi.', 'Jednostavna', 'rješenja.'] },
+      // The only phrase short enough to fit one line from md up; break it to match.
+      { lines: ['Manje šuma.', 'Bolji', 'softver.'], breakBefore: 1 },
+      { lines: ['Softver,', 'sveden na ono', 'što je važno.'] },
+      { lines: ['Jednostavan', 'po dizajnu,', 'građen da traje.'] },
     ],
     lede: 'Osmišljavamo i razvijamo softver koji radi upravo ono što treba, bez trenja, i traje.',
     scroll: 'Pomaknite',
     work: 'Odabrani radovi',
     workLede:
-      'Malo projekata, namjerno. Svaki je dokumentiran jednako: što nije radilo, što smo uklonili, što smo izgradili, što se promijenilo.',
+      'Odabrani projekti, svaki dokumentiran jednako: što nije radilo, što smo uklonili, što smo izgradili, što se promijenilo.',
     services: 'Čime se bavimo',
     servicesLede:
       'Četiri usluge, ne jelovnik od dvadeset. Svaka imenuje problem koji rješava i točno ono što dobivate.',
@@ -83,15 +83,15 @@ const copy = {
       'Istih šest koraka na svakom projektu, u istom redoslijedu. Tjedan otkrivanja, a zatim ništa ne počinje dok obuhvat i cijena nisu potpisani.',
     skills: 'Čime gradimo',
     skillsLede:
-      'Dosadni, provjereni alati — šest područja, opisanih bez žargona. Odabrani tako da sljedeći inženjer, naš ili vaš, može pročitati sustav i nastaviti raditi.',
+      'Provjereni, dobro poznati alati — šest područja, opisanih bez žargona. Odabrani tako da sljedeći inženjer, naš ili vaš, može pročitati sustav i nastaviti raditi.',
     about: 'Kako studio radi',
     aboutStatement:
       'Studio namjerno građen da ostane malen. Ništa se ne delegira niže, ništa se ne napuhava.',
     insights: 'Najnovije',
-    insightsLede: 'Objavljujemo kada imamo što reći. Približno jednom mjesečno.',
+    insightsLede: 'Bilješke o odlukama iza rada i o tome što su promijenile.',
     cta: 'Recite nam što želite izgraditi.',
   },
-} satisfies Record<Locale, Record<string, string | string[]>>;
+} satisfies Record<Locale, Record<string, string | Phrase[]>>;
 
 const { locale } = Astro.props;
 const text = copy[locale];
@@ -118,7 +118,6 @@ const paths = {
   structuredData={organizationSchema()}
 >
   <Hero
-    available={text.available}
     label={text.studio}
     phrases={text.phrases}
     lede={text.lede}
@@ -127,7 +126,7 @@ const paths = {
     scroll={text.scroll}
   />
 
-  <Section>
+  <Section tight>
     <SectionHeader title={text.work} link={{ href: paths.work, label: t('nav.work') }} />
     <p class="lede">{text.workLede}</p>
     <div class="grid grid-work">
@@ -137,7 +136,7 @@ const paths = {
     </div>
   </Section>
 
-  <Section>
+  <Section tight>
     <SectionHeader
       title={text.services}
       link={{ href: paths.services, label: t('nav.services') }}
@@ -150,7 +149,7 @@ const paths = {
     </div>
   </Section>
 
-  <Section>
+  <Section tight>
     <SectionHeader
       title={text.approach}
       link={{ href: paths.approach, label: t('nav.approach') }}
@@ -159,7 +158,7 @@ const paths = {
     <StepList steps={steps} locale={locale} />
   </Section>
 
-  <Section>
+  <Section tight>
     <SectionHeader title={text.skills} link={{ href: paths.skills, label: t('nav.skills') }} />
     <p class="lede lede-wide">{text.skillsLede}</p>
     <div class="grid grid-skills">
@@ -169,7 +168,7 @@ const paths = {
     </div>
   </Section>
 
-  <Section>
+  <Section tight>
     <SectionHeader title={text.about} link={{ href: paths.about, label: t('nav.about') }} />
     <p class="statement">{text.aboutStatement}</p>
     <div class="grid grid-stats">
@@ -180,7 +179,7 @@ const paths = {
   </Section>
 
   {insights.length > 0 && (
-    <Section>
+    <Section tight>
       <SectionHeader
         title={text.insights}
         link={{ href: paths.insights, label: t('nav.insights') }}
@@ -211,7 +210,7 @@ const paths = {
 
   .lede,
   .statement {
-    max-width: 52ch;
+    max-width: 60ch;
     margin-bottom: clamp(28px, 3.4vw, 44px);
     font-size: var(--text-base);
     line-height: var(--leading-relaxed);
@@ -219,7 +218,7 @@ const paths = {
   }
 
   .lede-wide {
-    max-width: 56ch;
+    max-width: 66ch;
   }
 
   .statement {
@@ -229,7 +228,7 @@ const paths = {
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-snug);
     line-height: 1.4;
-    color: var(--ink);
+    color: var(--ink-2);
   }
 
   .grid-work {

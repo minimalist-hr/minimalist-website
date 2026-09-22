@@ -5,6 +5,7 @@ translationKey: deleting-code
 date: 2026-08-18
 category: 'Arhitektura'
 excerpt: 'Zašto prva četiri tjedna modernizacije trebaju dati manji, a ne veći sustav.'
+coverImage: 'insight-diagram'
 coverCaption: 'diagram / modules removed in week four'
 draft: false
 ctaTitle: 'Imate sustav kojem treba manje njega samog?'

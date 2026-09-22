@@ -42,11 +42,11 @@ const { label, title, lede, compact = false } = Astro.props;
     line-height: 1.05;
   }
 
-  /* balance, not only pretty: Chromium's pretty still leaves two short words alone on
-     the last line ("of it."); a short lede reads better with even lines. */
+  /* pretty, not balance: balance evens the lines out and so keeps a short lede far
+     inside its measure, which is the opposite of what the wide column is for. */
   .lede {
-    max-width: 48ch;
-    text-wrap: balance;
+    max-width: 64ch;
+    text-wrap: pretty;
     margin-top: clamp(20px, 2.5vw, 32px);
     font-size: var(--text-body);
     line-height: var(--leading-body);
@@ -54,7 +54,7 @@ const { label, title, lede, compact = false } = Astro.props;
   }
 
   [data-compact='true'] .lede {
-    max-width: 60ch;
+    max-width: 76ch;
     margin-top: 20px;
     line-height: var(--leading-relaxed);
   }

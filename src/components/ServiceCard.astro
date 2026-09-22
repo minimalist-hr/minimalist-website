@@ -1,7 +1,7 @@
 ---
 /**
- * One service: number, title, one line, and a placeholder image pinned to the bottom
- * so cards in a row align.
+ * One service: number, title, one line, and an image pinned to the bottom so cards in a
+ * row align.
  */
 import type { Locale } from '../i18n/config';
 import { pick } from '../i18n/localized';
@@ -21,7 +21,13 @@ const { service, locale } = Astro.props;
   <h3>{pick(service.title, locale)}</h3>
   <p>{pick(service.description, locale)}</p>
   <div class="image-slot">
-    <ImageFrame caption={service.caption} ratio="16/10" />
+    <ImageFrame
+      caption={service.caption}
+      image={service.image}
+      locale={locale}
+      ratio="16/10"
+      sizes="(min-width: 60rem) 23vw, (min-width: 40rem) 46vw, 92vw"
+    />
   </div>
 </article>
 

@@ -206,6 +206,12 @@ const t = useTranslations(locale);
     padding-bottom: 3px;
   }
 
+  /* Same treatment as the desktop nav: ink, not graphite, plus the rule. The rule alone
+     is graphite on graphite and does not read as the current page. */
+  a[aria-current='page'] {
+    color: var(--ink);
+  }
+
   a[aria-current='page'] span {
     box-shadow: 0 var(--hairline) 0 0 var(--ink);
   }

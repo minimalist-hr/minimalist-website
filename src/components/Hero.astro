@@ -1,45 +1,70 @@
 ---
 /**
- * Home hero: availability signal, studio label, rotating headline, lede, actions, scroll cue.
+ * Home hero: studio label, rotating headline, lede, actions, scroll cue.
  *
  * The headline cycles four phrases on an 18s loop, 4.5s each (plan §3.5). Only the first
  * phrase is exposed to screen readers, so the heading does not change underneath them;
  * with reduced motion the first phrase is simply shown.
+ *
+ * Each phrase arrives as its lines rather than as one string. The phrases sit stacked in
+ * one grid cell, so the heading is as tall as the longest of them; left to wrap on their
+ * own, a phone shows some at three lines and some at two, and the short ones leave a hole
+ * under the heading. Below md the lines are set by hand so every phrase is three deep.
+ * From md up they run back together and wrap on their own, which lands on two lines for
+ * every phrase but one: the Croatian "Manje šuma. Bolji softver." fits on a single line
+ * and leaves the same hole. `breakBefore` forces that one's second line.
  */
 import Button from './Button.astro';
 import CtaLink from './CtaLink.astro';
 
+/** A headline phrase, split into the lines the mobile design sets by hand. */
+export interface Phrase {
+  lines: string[];
+  /**
+   * Index of the line that starts a new line from md up. Left unset, the phrase wraps on
+   * its own, which is what the other phrases want.
+   */
+  breakBefore?: number;
+}
+
 interface Props {
-  available: string;
   label: string;
-  phrases: string[];
+  phrases: Phrase[];
   lede: string;
   action: { href: string; label: string };
   secondary: { href: string; label: string };
   scroll: string;
 }
 
-const { available, label, phrases, lede, action, secondary, scroll } = Astro.props;
+const { label, phrases, lede, action, secondary, scroll } = Astro.props;
 const [first, ...rest] = phrases;
 ---
 
 <section class="hero">
   <div class="hero-inner container rule-bottom">
-    <p class="available">
-      <span class="signal" aria-hidden="true">
-        <span class="signal-dot"></span>
-        <span class="signal-ping"></span>
-      </span>
-      {available}
-    </p>
-
     <p class="studio-label">{label}</p>
 
     <h1>
-      <span class="phrase">{first}</span>
+      <span class="phrase">
+        {first?.lines.map((line, index) => (
+          <>
+            {index > 0 && ' '}
+            <span class="line" data-break={index === first.breakBefore ? '' : undefined}>
+              {line}
+            </span>
+          </>
+        ))}
+      </span>
       {rest.map((phrase, index) => (
         <span class="phrase" aria-hidden="true" style={`--delay: ${(index + 1) * 4.5}s`}>
-          {phrase}
+          {phrase.lines.map((line, lineIndex) => (
+            <>
+              {lineIndex > 0 && ' '}
+              <span class="line" data-break={lineIndex === phrase.breakBefore ? '' : undefined}>
+                {line}
+              </span>
+            </>
+          ))}
         </span>
       ))}
     </h1>
@@ -69,60 +94,6 @@ const [first, ...rest] = phrases;
     padding-block: 44px 56px;
   }
 
-  .available {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 48px;
-    font-size: var(--text-lead);
-    font-weight: var(--weight-medium);
-    letter-spacing: var(--tracking-snug);
-  }
-
-  .signal {
-    position: relative;
-    flex: none;
-    width: 9px;
-    height: 9px;
-  }
-
-  .signal-dot {
-    position: absolute;
-    inset: 0;
-    background: var(--ink);
-    animation: signal 1.8s steps(1, end) infinite;
-  }
-
-  .signal-ping {
-    position: absolute;
-    inset: -6px;
-    box-shadow: 0 0 0 var(--hairline) var(--ink);
-    animation: ping 1.8s var(--ease) infinite;
-  }
-
-  @keyframes signal {
-    0%,
-    70% {
-      opacity: 1;
-    }
-    71%,
-    100% {
-      opacity: 0.25;
-    }
-  }
-
-  @keyframes ping {
-    0% {
-      opacity: 0.7;
-      transform: scale(0.45);
-    }
-    70%,
-    100% {
-      opacity: 0;
-      transform: scale(1);
-    }
-  }
-
   .studio-label {
     margin-bottom: 40px;
     font-size: var(--text-label);
@@ -139,6 +110,11 @@ const [first, ...rest] = phrases;
     letter-spacing: -0.05em;
     line-height: 0.96;
     text-wrap: initial;
+  }
+
+  /* Hand-set lines below md; one wrapping line from md up (see the note at the top). */
+  .line {
+    display: block;
   }
 
   .phrase {
@@ -177,7 +153,7 @@ const [first, ...rest] = phrases;
   }
 
   .lede {
-    max-width: 42ch;
+    max-width: 52ch;
     margin-top: 40px;
     font-size: var(--text-lead);
     line-height: var(--leading-body);
@@ -230,10 +206,6 @@ const [first, ...rest] = phrases;
       padding-block: clamp(56px, 10vw, 150px) clamp(28px, 4vw, 44px);
     }
 
-    .available {
-      margin-bottom: clamp(20px, 3vw, 32px);
-    }
-
     .studio-label {
       margin-bottom: clamp(24px, 4vw, 44px);
     }
@@ -253,8 +225,19 @@ const [first, ...rest] = phrases;
       text-wrap: balance;
     }
 
+    .line {
+      display: inline;
+    }
+
+    /* A newline rather than display:block: the lines after it must still run together
+       on the second line, which a block would break apart. */
+    .line[data-break]::before {
+      content: '\A';
+      white-space: pre;
+    }
+
     .lede {
-      max-width: 46ch;
+      max-width: 58ch;
     }
 
     /* arrow first, on one line, aligned left */

@@ -30,12 +30,12 @@ export const manifesto: Localized<string>[] = [
 
 export const studioDescription: Localized<string>[] = [
   {
-    en: 'Minimalist is one senior engineer, by design. The person who scopes your project is the person who designs it, writes it, and stands behind it afterwards. No account layer, no handoffs, no diluted accountability.',
-    hr: 'Minimalist je namjerno jedan iskusan inženjer. Osoba koja definira vaš projekt ista je koja ga dizajnira, piše i za njega odgovara i nakon predaje. Bez posrednika, bez predavanja posla, bez razvodnjene odgovornosti.',
+    en: 'Minimalist is a small senior studio, by design. The people who scope your project are the ones who design it, write it, and stand behind it afterwards. No account layer, no handoffs, no diluted accountability.',
+    hr: 'Minimalist je namjerno malen studio iskusnih inženjera. Oni koji definiraju vaš projekt isti su koji ga dizajniraju, pišu i za njega odgovaraju i nakon predaje. Bez posrednika, bez predavanja posla, bez razvodnjene odgovornosti.',
   },
   {
-    en: 'Five-plus years building software and more than thirty products shipped, most of it in regulated and legacy-heavy environments. Design, architecture, code, migration and support are all done by the same person — nothing is subcontracted and nothing is handed off.',
-    hr: 'Više od pet godina razvoja softvera i više od trideset objavljenih proizvoda, većinom u reguliranim okruženjima i uz zastarjele sustave. Dizajn, arhitektura, kod, migracija i podrška — sve radi ista osoba. Ništa se ne prepušta podizvođačima i ništa se ne predaje dalje.',
+    en: 'Five-plus years building software and more than thirty products shipped, most of it in regulated and legacy-heavy environments. Design, architecture, code, migration and support all stay in the same hands — nothing is subcontracted and nothing is handed off.',
+    hr: 'Više od pet godina razvoja softvera i više od trideset objavljenih proizvoda, većinom u reguliranim okruženjima i uz zastarjele sustave. Dizajn, arhitektura, kod, migracija i podrška ostaju u istim rukama. Ništa se ne prepušta podizvođačima i ništa se ne predaje dalje.',
   },
 ];
 
@@ -48,5 +48,7 @@ export const profile = {
   experience: { en: '5+ years, 30+ products', hr: '5+ godina, 30+ proizvoda' },
   languages: { en: 'Croatian, English', hr: 'Hrvatski, engleski' },
   workingWith: { en: 'Clients across the EU and US', hr: 'Klijentima u EU i SAD-u' },
+  portrait: 'portrait-filip',
+  /** Placeholder caption, shown only while `portrait` has no file. */
   portraitCaption: 'portrait / 4:5 / greyscale, flat light',
 } as const;
