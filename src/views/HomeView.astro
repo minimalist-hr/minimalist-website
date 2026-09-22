@@ -4,7 +4,7 @@
  * Section copy comes from the design; work and insights come from content collections.
  */
 import CtaBand from '../components/CtaBand.astro';
-import Hero from '../components/Hero.astro';
+import Hero, { type Phrase } from '../components/Hero.astro';
 import InsightCard from '../components/InsightCard.astro';
 import Section from '../components/Section.astro';
 import SectionHeader from '../components/SectionHeader.astro';
@@ -34,10 +34,10 @@ const copy = {
     studio: 'Software development studio',
     // Split into the lines the mobile hero sets by hand; joined again from md up.
     phrases: [
-      ['Complex', 'problems.', 'Simple solutions.'],
-      ['Less noise.', 'Better', 'software.'],
-      ['Software,', 'reduced to what', 'matters.'],
-      ['Simple', 'by design,', 'built to last.'],
+      { lines: ['Complex', 'problems.', 'Simple solutions.'] },
+      { lines: ['Less noise.', 'Better', 'software.'] },
+      { lines: ['Software,', 'reduced to what', 'matters.'] },
+      { lines: ['Simple', 'by design,', 'built to last.'] },
     ],
     lede: 'We design and build software that does exactly what it should, performs without friction, and stands the test of time.',
     scroll: 'Scroll',
@@ -64,10 +64,11 @@ const copy = {
     title: 'Minimalist — Složeni problemi. Jednostavna rješenja.',
     studio: 'Studio za razvoj softvera',
     phrases: [
-      ['Složeni problemi.', 'Jednostavna', 'rješenja.'],
-      ['Manje šuma.', 'Bolji', 'softver.'],
-      ['Softver,', 'sveden na ono', 'što je važno.'],
-      ['Jednostavan', 'po dizajnu,', 'građen da traje.'],
+      { lines: ['Složeni problemi.', 'Jednostavna', 'rješenja.'] },
+      // The only phrase short enough to fit one line from md up; break it to match.
+      { lines: ['Manje šuma.', 'Bolji', 'softver.'], breakBefore: 1 },
+      { lines: ['Softver,', 'sveden na ono', 'što je važno.'] },
+      { lines: ['Jednostavan', 'po dizajnu,', 'građen da traje.'] },
     ],
     lede: 'Osmišljavamo i razvijamo softver koji radi upravo ono što treba, bez trenja, i traje.',
     scroll: 'Pomaknite',
@@ -90,7 +91,7 @@ const copy = {
     insightsLede: 'Bilješke o odlukama iza rada i o tome što su promijenile.',
     cta: 'Recite nam što želite izgraditi.',
   },
-} satisfies Record<Locale, Record<string, string | string[][]>>;
+} satisfies Record<Locale, Record<string, string | Phrase[]>>;
 
 const { locale } = Astro.props;
 const text = copy[locale];

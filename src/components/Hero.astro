@@ -10,15 +10,26 @@
  * one grid cell, so the heading is as tall as the longest of them; left to wrap on their
  * own, a phone shows some at three lines and some at two, and the short ones leave a hole
  * under the heading. Below md the lines are set by hand so every phrase is three deep.
- * From md up they run back together as one wrapping line.
+ * From md up they run back together and wrap on their own, which lands on two lines for
+ * every phrase but one: the Croatian "Manje šuma. Bolji softver." fits on a single line
+ * and leaves the same hole. `breakBefore` forces that one's second line.
  */
 import Button from './Button.astro';
 import CtaLink from './CtaLink.astro';
 
+/** A headline phrase, split into the lines the mobile design sets by hand. */
+export interface Phrase {
+  lines: string[];
+  /**
+   * Index of the line that starts a new line from md up. Left unset, the phrase wraps on
+   * its own, which is what the other phrases want.
+   */
+  breakBefore?: number;
+}
+
 interface Props {
   label: string;
-  /** One entry per phrase, split into the lines the mobile design sets by hand. */
-  phrases: string[][];
+  phrases: Phrase[];
   lede: string;
   action: { href: string; label: string };
   secondary: { href: string; label: string };
@@ -35,19 +46,23 @@ const [first, ...rest] = phrases;
 
     <h1>
       <span class="phrase">
-        {first?.map((line, index) => (
+        {first?.lines.map((line, index) => (
           <>
             {index > 0 && ' '}
-            <span class="line">{line}</span>
+            <span class="line" data-break={index === first.breakBefore ? '' : undefined}>
+              {line}
+            </span>
           </>
         ))}
       </span>
       {rest.map((phrase, index) => (
         <span class="phrase" aria-hidden="true" style={`--delay: ${(index + 1) * 4.5}s`}>
-          {phrase.map((line, lineIndex) => (
+          {phrase.lines.map((line, lineIndex) => (
             <>
               {lineIndex > 0 && ' '}
-              <span class="line">{line}</span>
+              <span class="line" data-break={lineIndex === phrase.breakBefore ? '' : undefined}>
+                {line}
+              </span>
             </>
           ))}
         </span>
@@ -212,6 +227,13 @@ const [first, ...rest] = phrases;
 
     .line {
       display: inline;
+    }
+
+    /* A newline rather than display:block: the lines after it must still run together
+       on the second line, which a block would break apart. */
+    .line[data-break]::before {
+      content: '\A';
+      white-space: pre;
     }
 
     .lede {
