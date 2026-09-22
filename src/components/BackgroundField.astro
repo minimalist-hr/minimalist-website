@@ -1,0 +1,51 @@
+---
+/**
+ * The site's background field: one fixed, decorative canvas behind every page.
+ *
+ * Rendered once by BaseLayout, so every page gets the same effect. It runs at full strength
+ * while a hero (`[data-field-hero]`) is on screen and drops to the quiet ambient level below
+ * it and on pages without one. The engine, and the constants that tune it, live in
+ * src/scripts/background-field.ts.
+ *
+ * Purely decorative: aria-hidden, pointer-events: none, behind all content, and absent
+ * without JavaScript.
+ */
+---
+
+<canvas class="field" data-background-field aria-hidden="true"></canvas>
+
+<script>
+  import { initBackgroundField } from '../scripts/background-field';
+
+  const canvas = document.querySelector<HTMLCanvasElement>('[data-background-field]');
+  if (canvas) {
+    initBackgroundField({
+      canvas,
+      hero: document.querySelector<HTMLElement>('[data-field-hero]'),
+    });
+  }
+</script>
+
+<style>
+  /*
+   * Fixed behind the content: z-index -1 puts it under everything in the body but still over
+   * the page background (which is painted on the root). The header and footer keep their own
+   * paper background, so the field runs behind the page, not through the chrome.
+   */
+  .field {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  @media print {
+    .field {
+      display: none;
+    }
+  }
+</style>

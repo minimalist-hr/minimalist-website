@@ -168,8 +168,11 @@ Copy exact values from the extracted design file if they differ from this table.
 | State | ≤150ms | linear | Colour changes |
 | Enter | 240ms | `cubic-bezier(.2,0,0,1)` | Content below the fold fades in from 10px below, once, as it scrolls into view *(approved addition, 2026-09-19)* |
 | Page | 240ms | same | Crossfade between pages with cross-document view transitions; header and footer stay put *(approved addition, 2026-09-19)* |
+| Field | continuous | — | The background field: a decorative canvas behind every page, at full strength over the hero and quiet elsewhere *(approved addition, 2026-09-22)* |
 
 Everything else is instant.
+
+**Background field (approved addition, 2026-09-22).** One fixed canvas sits behind the content on every page (`src/components/BackgroundField.astro`, engine in `src/scripts/background-field.ts`). It strokes the contour lines of a slowly drifting scalar field as hairlines, in `--graphite` at low alpha, so it stays inside the neutral palette and repeats the hairline vocabulary of the rules. The pointer raises a soft hill in the field and the contours crowd around it; touch drags do the same, and with no pointer the hill drifts on its own. It runs at full strength while the hero is on screen and drops to roughly a third of that below the hero and on every other page. It is decorative only: `aria-hidden`, `pointer-events: none`, behind all content, absent without JavaScript. The loop stops when the tab is hidden or the canvas is off screen, the device pixel ratio is capped, and reduced motion leaves a single still frame.
 
 **Where it is used.** Rules and underlines below the fold draw in from the left as they scroll into view (the Approach timeline and home steps also draw downwards); links work like the header nav everywhere: text only at rest, on hover and focus the text brightens to ink and an underline extends from the left, and the current page or language stays underlined (links inside running text keep a visible rule, WCAG 1.4.1). Nothing uses Lift at the moment. Content already on screen when a page loads never waits for motion. Without JavaScript nothing is hidden. Page crossfades only run where the browser supports them (Chromium, Safari).
 
