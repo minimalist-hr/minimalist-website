@@ -2,10 +2,10 @@
 /**
  * The site's background field: one fixed, decorative canvas behind every page.
  *
- * Rendered once by BaseLayout, so every page gets the same effect. It runs at full strength
- * while a hero (`[data-field-hero]`) is on screen and drops to the quiet ambient level below
- * it and on pages without one. The engine, and the constants that tune it, live in
- * src/scripts/background-field.ts.
+ * An adaptive quadtree, drawn as it refines around the pointer. Rendered once by BaseLayout, so
+ * every page gets the same effect. It runs deep and bright while a hero (`[data-field-hero]`) is
+ * on screen and drops to a shallow, faint partition below it and on pages without one. The
+ * algorithm, and the constants that tune it, live in src/scripts/background-field.ts.
  *
  * Purely decorative: aria-hidden, pointer-events: none, behind all content, and absent
  * without JavaScript.

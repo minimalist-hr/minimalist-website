@@ -1,95 +1,128 @@
 /**
- * Background field (plan §3.5, approved addition 2026-09-22): a slow topography of hairlines.
+ * Background field (plan §3.5, approved addition 2026-09-22): an adaptive quadtree, drawn.
  *
- * The page sits on one drifting scalar field. Every frame the field is sampled on a coarse
- * lattice and its contour lines (marching squares) are stroked as hairlines, so what shows on
- * screen is a set of open curves that breathe and re-form — the same hairline vocabulary as the
- * rules between sections, in motion. The pointer adds a soft hill to the field, so contours
- * crowd into rings around the cursor and settle again once it moves on. Touch drags move the
- * same hill; with no pointer at all it drifts on its own.
+ * The visualisation is the algorithm itself. The plane is tiled with root cells; a cell splits
+ * into four while it is still large compared with its distance to a point of interest, and stops
+ * when it is small enough or has hit the depth limit. The points of interest are the pointer and
+ * two slowly drifting ones, so the partition is fine where the cursor is and coarse away from it,
+ * and it keeps working when nobody is moving anything. Every line is axis-aligned and every cell
+ * is a rectangle of the same proportion, which is the brand's geometry rather than an overlay on
+ * top of it.
  *
- * One canvas serves the whole site. Its intensity follows how much of the hero is still on
- * screen: full strength over the hero, and a much quieter version (fewer lines, lower contrast)
- * everywhere else, so the effect never competes with the text. Pages without a hero run at the
- * quiet level throughout.
+ * Each cell fades in by growing from its own centre and leaves by collapsing back into it, over
+ * the Reveal duration (240ms), so a split reads as four rectangles opening inside the one they
+ * replaced. The lattice also drifts a few pixels a second, so the structure never sits still.
  *
- * Canvas 2D rather than WebGL: a frame is a few thousand one-pixel line segments, not per-pixel
- * shading, so the work is the field maths (~4k samples) and one batched stroke. Canvas 2D gives
- * crisp hairlines and honest alpha with no shader compile and no context-loss handling; WebGL
- * would only pay off if the effect shaded every pixel.
+ * One canvas serves the whole site. The hero runs deeper, brighter and more responsive to the
+ * pointer; below the hero, and on pages without one, the same partition runs shallow and faint so
+ * it never competes with the text.
  *
- * Reduced motion draws a single still frame and stops. The canvas is decorative throughout
+ * Canvas 2D rather than WebGL: a frame is a few hundred stroked rectangles over a tree of the same
+ * order, so the work is trivial for a CPU and pixel-exact hairlines matter more than shading power.
+ * WebGL would add a shader pipeline and context-loss handling to draw the same lines less crisply.
+ *
+ * Reduced motion draws a single settled frame and stops. The canvas is decorative throughout
  * (aria-hidden, pointer-events: none), so nothing is lost when it is absent.
  */
 
 /* ---- Tuning ------------------------------------------------------------------------- */
 
-/** Lattice spacing in CSS pixels. Smaller = smoother curves and more work per frame. */
-export const CELL_SIZE_PX = 22;
-export const CELL_SIZE_PX_MOBILE = 34;
+/** Root cell size, in viewports. Everything below is this divided by powers of two. */
+export const ROOT_SCALE = 2;
 
-/** Number of contour levels across the field's range. More = denser topography. */
-export const CONTOUR_COUNT = 13;
-export const CONTOUR_COUNT_MOBILE = 8;
+/** Depth limit, which sets the smallest cell: root size / 2^depth. */
+export const MAX_DEPTH_HERO = 6;
+export const MAX_DEPTH_AMBIENT = 4;
+/** Depth taken off on phones, so the smallest cells stay readable and the tree stays small. */
+export const MAX_DEPTH_MOBILE_OFFSET = 1;
 
-/** Field range the contours are spread over. */
-export const CONTOUR_RANGE = 1.05;
+/**
+ * How eagerly a cell splits near a point of interest: it splits while
+ * `cell size × detail > distance to the point`. Higher = denser, and further out.
+ */
+export const POINTER_DETAIL_HERO = 1;
+export const POINTER_DETAIL_AMBIENT = 0.45;
+/** The drifting points that keep the partition alive, and varied, with no pointer. */
+export const DRIFT_DETAIL = 0.35;
+export const DRIFT_COUNT = 3;
 
-/** Multiplier on how fast the field evolves. 1 = one full breath in roughly 40 seconds. */
-export const DRIFT_SPEED = 1;
+/** No cell is larger than this share of the viewport, so the partition never empties out.
+ * Keep it loose: a tight value splits every far cell to the same depth, which reads as a grid. */
+export const MAX_CELL_FRACTION = 1.1;
 
-/** Line intensity over the hero, and everywhere else. 0-1; scales both alpha and relief. */
-export const HERO_INTENSITY = 1;
-export const AMBIENT_INTENSITY = 0.34;
+/** Line alpha over the hero and away from it, before the theme's own scale. */
+export const LINE_ALPHA_HERO = 0.55;
+export const LINE_ALPHA_AMBIENT = 0.2;
+/** Alpha of the largest cells relative to the smallest; deeper cells read stronger. */
+export const DEPTH_ALPHA_FLOOR = 0.7;
+
 /** How quickly intensity eases towards its target while scrolling (per frame, 0-1). */
 export const INTENSITY_EASE = 0.05;
 
-/** Line alpha at full intensity, before the theme's own scale. */
-export const LINE_ALPHA = 0.5;
+/** Reveal duration: how long a cell takes to open, or to collapse again (plan §3.5). */
+export const SPLIT_DURATION_MS = 240;
 
-/** Pointer hill: reach in CSS pixels, height in field units, and how fast it follows. */
-export const POINTER_RADIUS_PX = 280;
-export const POINTER_RADIUS_PX_MOBILE = 200;
-export const POINTER_STRENGTH = 1.3;
-export const POINTER_EASE = 0.075;
-/** Share of POINTER_STRENGTH kept away from the hero. */
-export const POINTER_AMBIENT_SCALE = 0.55;
-/** Idle time after which the hill leaves the last pointer position and drifts on its own. */
+/** How fast the pointer's point of interest follows the cursor (per frame, 0-1). */
+export const POINTER_EASE = 0.12;
+/** Idle time after which the pointer's point leaves the cursor and drifts on its own. */
 export const POINTER_IDLE_MS = 2600;
-/** Speed and inset of the autonomous drift path (inset as a fraction of the viewport). */
-export const DRIFT_PATH_SPEED = 0.055;
-export const DRIFT_PATH_INSET = 0.28;
+
+/** Lattice drift, in CSS pixels per second, and the speed of the drifting points. */
+export const LATTICE_DRIFT_PX_PER_SEC = 7;
+export const DRIFT_SPEED = 0.05;
+/** How far the drifting points stay inside the viewport, as a fraction of it. */
+export const DRIFT_INSET = 0.22;
 
 /** Device pixel ratio ceiling: past this the extra pixels cost more than they show. */
 export const MAX_DPR = 1.75;
 
-/** Below this width the mobile lattice, contour count and pointer reach are used. */
+/**
+ * The viewport the detail values above are calibrated for, as the shorter side in CSS pixels.
+ * The split test compares a cell with its distance to a point, which is scale-free, so on a
+ * small screen every cell would sit inside every point's reach and refine to one even depth —
+ * a grid. Detail is scaled by the viewport against this reference, and clamped, to hold the
+ * same look from a phone to a wide display.
+ */
+export const DETAIL_REFERENCE_PX = 900;
+export const DETAIL_SCALE_MIN = 0.5;
+export const DETAIL_SCALE_MAX = 1.15;
+
+/** Below this width the mobile depth limit applies. */
 export const MOBILE_MAX_WIDTH = 640;
+
+/** How far outside the viewport cells are still built, so they open off screen. */
+const CULL_MARGIN_PX = 260;
 
 /** Height change ignored before the canvas is re-sized (mobile browser chrome). */
 const RESIZE_HEIGHT_THRESHOLD = 120;
 
-/* ---- Field -------------------------------------------------------------------------- */
+/* ---- Helpers ------------------------------------------------------------------------ */
 
-/**
- * The field: four plane waves at different angles, scales and rates, summed to roughly
- * [-1, 1]. Cheap enough to evaluate per lattice point per frame, and slow enough that it
- * never visibly repeats within a page view.
- */
-function baseField(x: number, y: number, t: number): number {
-  return (
-    (Math.sin(x * 0.0041 + t * 0.13) +
-      Math.sin(y * 0.0053 - t * 0.09) +
-      Math.sin((x * 0.72 + y * 0.69) * 0.0037 + t * 0.17) +
-      Math.sin((y * 0.72 - x * 0.69) * 0.0062 - t * 0.07)) *
-    0.25
-  );
+/** Reveal easing, cubic-bezier(.2,0,0,1) closely enough for a 240ms grow. */
+function easeOut(t: number): number {
+  const inverse = 1 - t;
+  return 1 - inverse * inverse * inverse;
 }
 
-/** Position of `level` between two corner values, as a fraction of the edge. */
-function crossing(a: number, b: number, level: number): number {
-  const span = b - a;
-  return span === 0 ? 0.5 : (level - a) / span;
+/** A point the partition refines around. */
+interface Focus {
+  x: number;
+  y: number;
+  /** How eagerly cells near this point split; see POINTER_DETAIL_HERO. */
+  detail: number;
+}
+
+/** A cell of the partition, kept between frames so it can open and collapse. */
+interface Cell {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  depth: number;
+  /** 0 → 1 while the cell exists, back to 0 once the algorithm drops it. */
+  life: number;
+  /** Frame this cell was last produced in. */
+  seen: number;
 }
 
 /* ---- Engine ------------------------------------------------------------------------- */
@@ -109,12 +142,11 @@ export function initBackgroundField({ canvas, hero }: Options): void {
 
   let width = 0;
   let height = 0;
-  let cell = CELL_SIZE_PX;
-  let cols = 0;
-  let rows = 0;
-  let levels: number[] = [];
-  let values = new Float32Array(0);
-  let pointerRadius = POINTER_RADIUS_PX;
+  let dpr = 1;
+  let rootW = 0;
+  let rootH = 0;
+  let maxDepthHero = MAX_DEPTH_HERO;
+  let maxDepthAmbient = MAX_DEPTH_AMBIENT;
 
   /** Where the hero ends, in document pixels; 0 when the page has no hero. */
   let heroBottom = 0;
@@ -122,14 +154,23 @@ export function initBackgroundField({ canvas, hero }: Options): void {
   let elapsed = 0;
   let lastFrame = 0;
   let frame = 0;
+  let frameId = 0;
   let onScreen = true;
 
-  let intensity = hero ? HERO_INTENSITY : AMBIENT_INTENSITY;
-  let pointerX = 0;
-  let pointerY = 0;
+  /** 0 = the quiet level used below the hero and on every other page, 1 = the hero. */
+  let intensity = hero ? 1 : 0;
+
+  /** The points the partition refines around: the pointer's, then the drifting ones. */
+  const pointerFocus: Focus = { x: 0, y: 0, detail: 0 };
+  const driftFoci: Focus[] = Array.from({ length: DRIFT_COUNT }, () => ({ x: 0, y: 0, detail: 0 }));
+  const foci: Focus[] = [pointerFocus, ...driftFoci];
   let targetX = 0;
   let targetY = 0;
   let lastPointerAt = -Infinity;
+
+  const cells = new Map<number, Cell>();
+  /** One path per depth, so cells can be stroked in depth order without per-cell state. */
+  let paths: Path2D[] = [];
 
   let lineColor = '#8a8880';
   let alphaScale = 1;
@@ -149,173 +190,228 @@ export function initBackgroundField({ canvas, hero }: Options): void {
   function resize(): void {
     width = window.innerWidth;
     height = window.innerHeight;
-    const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
-    const mobile = width <= MOBILE_MAX_WIDTH;
+    dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
 
-    cell = mobile ? CELL_SIZE_PX_MOBILE : CELL_SIZE_PX;
-    pointerRadius = mobile ? POINTER_RADIUS_PX_MOBILE : POINTER_RADIUS_PX;
-    cols = Math.ceil(width / cell);
-    rows = Math.ceil(height / cell);
-    values = new Float32Array((cols + 1) * (rows + 1));
+    const offset = width <= MOBILE_MAX_WIDTH ? MAX_DEPTH_MOBILE_OFFSET : 0;
+    maxDepthHero = MAX_DEPTH_HERO - offset;
+    maxDepthAmbient = MAX_DEPTH_AMBIENT - offset;
 
-    const count = mobile ? CONTOUR_COUNT_MOBILE : CONTOUR_COUNT;
-    levels = Array.from(
-      { length: count },
-      (_, index) => -CONTOUR_RANGE + ((index + 0.5) * (2 * CONTOUR_RANGE)) / count,
-    );
+    rootW = width * ROOT_SCALE;
+    rootH = height * ROOT_SCALE;
 
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.lineWidth = 1;
-    ctx.lineCap = 'square';
     ctx.lineJoin = 'miter';
 
+    cells.clear();
     measureHero();
   }
 
-  /** Intensity for the current scroll position: hero strength while the hero is on screen. */
+  /** How much of the hero is still on screen: 1 at the top of the page, 0 once it is gone. */
   function targetIntensity(): number {
-    if (!hero) return AMBIENT_INTENSITY;
+    if (!hero) return 0;
     const remaining = (heroBottom - window.scrollY) / height;
-    const share = Math.min(Math.max(remaining, 0), 1);
-    return AMBIENT_INTENSITY + (HERO_INTENSITY - AMBIENT_INTENSITY) * share;
+    return Math.min(Math.max(remaining, 0), 1);
   }
 
-  /** Moves the hill: towards the pointer while it is active, on a slow path otherwise. */
-  function movePointer(delta: number): void {
+  /** Moves the points of interest: the first follows the pointer, the rest drift. */
+  function moveFoci(delta: number): void {
+    const scale = Math.min(
+      Math.max(Math.min(width, height) / DETAIL_REFERENCE_PX, DETAIL_SCALE_MIN),
+      DETAIL_SCALE_MAX,
+    );
+    const pointerDetail =
+      (POINTER_DETAIL_AMBIENT + (POINTER_DETAIL_HERO - POINTER_DETAIL_AMBIENT) * intensity) * scale;
+    const swing = 0.5 - DRIFT_INSET;
+    const phase = elapsed * 0.001 * DRIFT_SPEED;
+
+    // With no pointer for a while, its point joins the drift rather than parking in a corner.
     if (elapsed - lastPointerAt > POINTER_IDLE_MS) {
-      const phase = elapsed * 0.001 * DRIFT_PATH_SPEED;
-      const swing = 0.5 - DRIFT_PATH_INSET;
-      targetX = width * (0.5 + swing * Math.sin(phase * 2.1));
-      targetY = height * (0.5 + swing * Math.sin(phase * 1.3 + 1.1));
+      targetX = width * (0.5 + swing * Math.sin(phase * 2.3));
+      targetY = height * (0.5 + swing * Math.sin(phase * 1.7 + 0.6));
     }
-    // Frame-rate independent easing, so a slow frame does not jump the hill forward.
+
+    // Frame-rate independent easing, so a slow frame does not jump the point forward.
     const ease = 1 - Math.pow(1 - POINTER_EASE, delta / 16.67);
-    pointerX += (targetX - pointerX) * ease;
-    pointerY += (targetY - pointerY) * ease;
+    pointerFocus.x += (targetX - pointerFocus.x) * ease;
+    pointerFocus.y += (targetY - pointerFocus.y) * ease;
+    pointerFocus.detail = pointerDetail;
+
+    driftFoci.forEach((focus, order) => {
+      const index = order + 1;
+      const turn = phase * (0.8 + index * 0.35) + index * 2.1;
+      focus.x = width * (0.5 + swing * Math.sin(turn));
+      focus.y = height * (0.5 + swing * Math.cos(turn * 1.4 + index));
+      focus.detail = DRIFT_DETAIL * (0.4 + 0.6 * intensity) * scale;
+    });
   }
 
-  function draw(): void {
-    const t = elapsed * 0.001 * DRIFT_SPEED;
-    const span = HERO_INTENSITY - AMBIENT_INTENSITY || 1;
-    const heroShare = Math.min(Math.max((intensity - AMBIENT_INTENSITY) / span, 0), 1);
-    const peak =
-      POINTER_STRENGTH * (POINTER_AMBIENT_SCALE + (1 - POINTER_AMBIENT_SCALE) * heroShare);
-    const falloff = -1 / (2 * pointerRadius * pointerRadius);
-    const reach = pointerRadius * 3;
+  /** Global cell identity, so a cell keeps its life as the lattice drifts under it. */
+  function keyOf(depth: number, ix: number, iy: number): number {
+    return depth * 4398046511104 + (iy + 1048576) * 2097152 + (ix + 1048576);
+  }
 
-    // Sample the lattice, hill included.
-    for (let row = 0; row <= rows; row += 1) {
-      const y = row * cell;
-      const dy = y - pointerY;
-      const withinY = Math.abs(dy) < reach;
-      const offset = row * (cols + 1);
-      for (let col = 0; col <= cols; col += 1) {
-        const x = col * cell;
-        let value = baseField(x, y, t) * intensity;
-        if (withinY) {
-          const dx = x - pointerX;
-          if (Math.abs(dx) < reach) value += peak * Math.exp((dx * dx + dy * dy) * falloff);
-        }
-        values[offset + col] = value;
+  /** The algorithm: split while the cell is large next to its distance to a point. */
+  function shouldSplit(x: number, y: number, w: number, h: number, maxCell: number): boolean {
+    const size = w > h ? w : h;
+    if (size > maxCell) return true;
+    const cx = x + w * 0.5;
+    const cy = y + h * 0.5;
+    for (const focus of foci) {
+      const dx = cx - focus.x;
+      const dy = cy - focus.y;
+      // +1 keeps the cell under the cursor from dividing by zero.
+      if (size * focus.detail > Math.sqrt(dx * dx + dy * dy) + 1) return true;
+    }
+    return false;
+  }
+
+  function refine(
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    depth: number,
+    ix: number,
+    iy: number,
+    maxDepth: number,
+    maxCell: number,
+  ): void {
+    // Cells well outside the viewport are never built; the margin lets the rest open off screen.
+    if (
+      x - CULL_MARGIN_PX > width ||
+      x + w + CULL_MARGIN_PX < 0 ||
+      y - CULL_MARGIN_PX > height ||
+      y + h + CULL_MARGIN_PX < 0
+    ) {
+      return;
+    }
+
+    if (depth < maxDepth && shouldSplit(x, y, w, h, maxCell)) {
+      const halfW = w * 0.5;
+      const halfH = h * 0.5;
+      const nextDepth = depth + 1;
+      const nextX = ix * 2;
+      const nextY = iy * 2;
+      refine(x, y, halfW, halfH, nextDepth, nextX, nextY, maxDepth, maxCell);
+      refine(x + halfW, y, halfW, halfH, nextDepth, nextX + 1, nextY, maxDepth, maxCell);
+      refine(x, y + halfH, halfW, halfH, nextDepth, nextX, nextY + 1, maxDepth, maxCell);
+      refine(
+        x + halfW,
+        y + halfH,
+        halfW,
+        halfH,
+        nextDepth,
+        nextX + 1,
+        nextY + 1,
+        maxDepth,
+        maxCell,
+      );
+      return;
+    }
+
+    const key = keyOf(depth, ix, iy);
+    const existing = cells.get(key);
+    if (existing) {
+      existing.x = x;
+      existing.y = y;
+      existing.w = w;
+      existing.h = h;
+      existing.seen = frameId;
+    } else {
+      cells.set(key, { x, y, w, h, depth, life: 0, seen: frameId });
+    }
+  }
+
+  /** Rebuilds the partition for this frame and ages every cell in or out of it. */
+  function update(delta: number): number {
+    frameId += 1;
+
+    const maxDepth = Math.round(maxDepthAmbient + (maxDepthHero - maxDepthAmbient) * intensity);
+    const maxCell = Math.min(width, height) * MAX_CELL_FRACTION;
+
+    // The lattice drifts, so the partition is never pinned to the middle of the window.
+    const travel = elapsed * 0.001 * LATTICE_DRIFT_PX_PER_SEC;
+    const originX = width * 0.5 - rootW * 0.5 + travel * 0.6;
+    const originY = height * 0.5 - rootH * 0.5 + travel * 0.35;
+    const firstX = Math.floor((0 - CULL_MARGIN_PX - originX) / rootW);
+    const lastX = Math.floor((width + CULL_MARGIN_PX - originX) / rootW);
+    const firstY = Math.floor((0 - CULL_MARGIN_PX - originY) / rootH);
+    const lastY = Math.floor((height + CULL_MARGIN_PX - originY) / rootH);
+
+    for (let tileY = firstY; tileY <= lastY; tileY += 1) {
+      for (let tileX = firstX; tileX <= lastX; tileX += 1) {
+        refine(
+          originX + tileX * rootW,
+          originY + tileY * rootH,
+          rootW,
+          rootH,
+          0,
+          tileX,
+          tileY,
+          maxDepth,
+          maxCell,
+        );
       }
     }
 
+    const step = delta / SPLIT_DURATION_MS;
+    for (const [key, cell] of cells) {
+      if (cell.seen === frameId) {
+        cell.life = Math.min(cell.life + step, 1);
+      } else {
+        cell.life -= step;
+        if (cell.life <= 0) cells.delete(key);
+      }
+    }
+
+    return maxDepth;
+  }
+
+  /** Pixel grid alignment, so every hairline lands on one device pixel. */
+  function snap(value: number): number {
+    return Math.round(value * dpr - 0.5) / dpr + 0.5 / dpr;
+  }
+
+  function draw(maxDepth: number): void {
     ctx.clearRect(0, 0, width, height);
     ctx.strokeStyle = lineColor;
-    ctx.globalAlpha = Math.min(LINE_ALPHA * intensity * alphaScale, 1);
-    ctx.beginPath();
 
-    // Marching squares: every level of every cell goes into one batched path.
-    for (let row = 0; row < rows; row += 1) {
-      const top = row * (cols + 1);
-      const bottom = top + cols + 1;
-      const y0 = row * cell;
-      const y1 = y0 + cell;
-      for (let col = 0; col < cols; col += 1) {
-        const tl = values[top + col] as number;
-        const tr = values[top + col + 1] as number;
-        const br = values[bottom + col + 1] as number;
-        const bl = values[bottom + col] as number;
+    if (paths.length !== maxDepth + 1) paths = [];
+    for (let depth = 0; depth <= maxDepth; depth += 1) paths[depth] = new Path2D();
 
-        const min = Math.min(tl, tr, br, bl);
-        const max = Math.max(tl, tr, br, bl);
-        const x0 = col * cell;
-        const x1 = x0 + cell;
+    for (const cell of cells.values()) {
+      const { x, y, w, h, depth, life } = cell;
+      const path = paths[Math.min(depth, maxDepth)];
+      if (!path) continue;
 
-        for (const level of levels) {
-          if (level < min || level > max) continue;
-
-          const code =
-            (tl > level ? 8 : 0) |
-            (tr > level ? 4 : 0) |
-            (br > level ? 2 : 0) |
-            (bl > level ? 1 : 0);
-          if (code === 0 || code === 15) continue;
-
-          // Where the level crosses each edge of the cell.
-          const topX = x0 + crossing(tl, tr, level) * cell;
-          const rightY = y0 + crossing(tr, br, level) * cell;
-          const bottomX = x0 + crossing(bl, br, level) * cell;
-          const leftY = y0 + crossing(tl, bl, level) * cell;
-
-          switch (code) {
-            case 1:
-            case 14:
-              ctx.moveTo(x0, leftY);
-              ctx.lineTo(bottomX, y1);
-              break;
-            case 2:
-            case 13:
-              ctx.moveTo(bottomX, y1);
-              ctx.lineTo(x1, rightY);
-              break;
-            case 3:
-            case 12:
-              ctx.moveTo(x0, leftY);
-              ctx.lineTo(x1, rightY);
-              break;
-            case 4:
-            case 11:
-              ctx.moveTo(topX, y0);
-              ctx.lineTo(x1, rightY);
-              break;
-            case 6:
-            case 9:
-              ctx.moveTo(topX, y0);
-              ctx.lineTo(bottomX, y1);
-              break;
-            case 7:
-            case 8:
-              ctx.moveTo(x0, leftY);
-              ctx.lineTo(topX, y0);
-              break;
-            // Saddles: both pairs of edges are joined.
-            case 5:
-              ctx.moveTo(x0, leftY);
-              ctx.lineTo(topX, y0);
-              ctx.moveTo(bottomX, y1);
-              ctx.lineTo(x1, rightY);
-              break;
-            case 10:
-              ctx.moveTo(topX, y0);
-              ctx.lineTo(x1, rightY);
-              ctx.moveTo(x0, leftY);
-              ctx.lineTo(bottomX, y1);
-              break;
-          }
-        }
-      }
+      // Opening and collapsing are a grow from the cell's own centre.
+      const scale = easeOut(life);
+      const insetX = w * (1 - scale) * 0.5;
+      const insetY = h * (1 - scale) * 0.5;
+      const left = snap(x + insetX);
+      const top = snap(y + insetY);
+      path.rect(left, top, snap(x + w - insetX) - left, snap(y + h - insetY) - top);
     }
 
-    ctx.stroke();
+    const alpha =
+      (LINE_ALPHA_AMBIENT + (LINE_ALPHA_HERO - LINE_ALPHA_AMBIENT) * intensity) * alphaScale;
+    for (let depth = 0; depth <= maxDepth; depth += 1) {
+      const path = paths[depth];
+      if (!path) continue;
+      // Deeper cells are smaller and denser, so they carry the emphasis.
+      const share = maxDepth === 0 ? 1 : depth / maxDepth;
+      ctx.globalAlpha = Math.min(alpha * (DEPTH_ALPHA_FLOOR + (1 - DEPTH_ALPHA_FLOOR) * share), 1);
+      ctx.stroke(path);
+    }
     ctx.globalAlpha = 1;
   }
 
   function tick(now: number): void {
     frame = requestAnimationFrame(tick);
-    // A long gap (a paused tab, a slow frame) is clamped, so the field never jumps forward.
+    // A long gap (a paused tab, a slow frame) is clamped, so nothing jumps on the way back.
     const delta = Math.min(lastFrame ? now - lastFrame : 16.67, 64);
     lastFrame = now;
     elapsed += delta;
@@ -323,8 +419,8 @@ export function initBackgroundField({ canvas, hero }: Options): void {
     const ease = 1 - Math.pow(1 - INTENSITY_EASE, delta / 16.67);
     intensity += (targetIntensity() - intensity) * ease;
 
-    movePointer(delta);
-    draw();
+    moveFoci(delta);
+    draw(update(delta));
   }
 
   function start(): void {
@@ -345,14 +441,14 @@ export function initBackgroundField({ canvas, hero }: Options): void {
     else stop();
   }
 
-  /** A single still frame: the first paint, and everything under reduced motion. */
+  /** A single settled frame: the first paint, and everything under reduced motion. */
   function drawStill(): void {
     intensity = targetIntensity();
-    targetX = width * 0.5;
-    targetY = height * 0.45;
-    pointerX = targetX;
-    pointerY = targetY;
-    draw();
+    moveFoci(16.67);
+    pointerFocus.x = targetX;
+    pointerFocus.y = targetY;
+    // A long step settles every cell at full size, with nothing mid-animation.
+    draw(update(SPLIT_DURATION_MS));
   }
 
   readTheme();
@@ -380,7 +476,7 @@ export function initBackgroundField({ canvas, hero }: Options): void {
   // The hero's height changes with the font load and with orientation.
   if (hero && 'ResizeObserver' in window) new ResizeObserver(measureHero).observe(hero);
 
-  // pointermove covers mouse, pen and touch drags; with neither, the hill drifts on its own.
+  // pointermove covers mouse, pen and touch drags; with neither, the points drift on their own.
   window.addEventListener(
     'pointermove',
     (event) => {
