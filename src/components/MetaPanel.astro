@@ -2,9 +2,18 @@
 /**
  * Label/value metadata. `row` is the case study header; `stack` is the article sidebar.
  * Items without a value are left out by the caller (client names need written permission).
+ * An item with `href` links out: new tab, with the hidden hint read after the value.
  */
+export interface MetaItem {
+  label: string;
+  value: string | number;
+  href?: string;
+  /** "opens in a new tab", in the page's language. Needed with `href`. */
+  newTabHint?: string;
+}
+
 interface Props {
-  items: { label: string; value: string | number }[];
+  items: MetaItem[];
   variant?: 'row' | 'stack';
   class?: string;
 }
@@ -16,7 +25,19 @@ const { items, variant = 'row', class: className } = Astro.props;
   {items.map((item) => (
     <div class="item">
       <dt>{item.label}</dt>
-      <dd>{item.value}</dd>
+      <dd>
+        {item.href ? (
+          <a class="external" href={item.href} target="_blank" rel="noopener">
+            <span class="link-line">{item.value}</span>
+            <span class="arrow" aria-hidden="true">
+              →
+            </span>
+            {item.newTabHint && <span class="visually-hidden">{` (${item.newTabHint})`}</span>}
+          </a>
+        ) : (
+          item.value
+        )}
+      </dd>
     </div>
   ))}
 </dl>
@@ -61,5 +82,39 @@ const { items, variant = 'row', class: className } = Astro.props;
     margin: 0;
     letter-spacing: var(--tracking-meta);
     color: var(--ink);
+  }
+
+  /* A domain reads better in lower case than the uppercase meta values around it. */
+  .external {
+    position: relative;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    text-transform: none;
+    color: var(--ink);
+  }
+
+  /* Tap target: 44px tall without changing the row's height. */
+  .external::before {
+    content: '';
+    position: absolute;
+    inset: -14px -8px;
+  }
+
+  .external .link-line {
+    padding-bottom: 2px;
+  }
+
+  /* The text arrow turned to point out of the page; it lifts toward the corner on hover. */
+  .arrow {
+    display: inline-block;
+    transform: rotate(-45deg);
+    transition: transform var(--duration-lift) var(--ease);
+  }
+
+  @media (hover: hover) {
+    .external:hover .arrow {
+      transform: translate(2px, -2px) rotate(-45deg);
+    }
   }
 </style>

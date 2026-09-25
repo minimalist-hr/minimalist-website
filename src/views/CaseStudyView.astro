@@ -4,7 +4,7 @@
  * Structure follows the design: back link, title, meta, hero image, labelled sections,
  * gallery, tech stack, results, quote, closing CTA.
  */
-import MetaPanel from '../components/MetaPanel.astro';
+import MetaPanel, { type MetaItem } from '../components/MetaPanel.astro';
 import CtaBand from '../components/CtaBand.astro';
 import CtaLink from '../components/CtaLink.astro';
 import ImageFrame from '../components/ImageFrame.astro';
@@ -35,6 +35,7 @@ const {
   year,
   engagement,
   scope,
+  website,
   heroImage,
   heroCaption,
   sections = [],
@@ -46,11 +47,19 @@ const {
 } = entry.data;
 
 /** Client and scope are optional; only show what the entry provides. */
-const meta: { label: string; value: string }[] = [];
+const meta: MetaItem[] = [];
 if (client) meta.push({ label: t('case.client'), value: client });
 meta.push({ label: t('case.sector'), value: sector });
 meta.push({ label: t('case.engagement'), value: engagement ?? String(year) });
 if (scope) meta.push({ label: t('case.scope'), value: scope });
+if (website) {
+  meta.push({
+    label: t('case.website'),
+    value: new URL(website).hostname.replace(/^www\./, ''),
+    href: website,
+    newTabHint: t('a11y.newTab'),
+  });
+}
 ---
 
 <BaseLayout
