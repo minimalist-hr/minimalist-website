@@ -25,6 +25,8 @@ const work = defineCollection({
     client: z.string().optional(),
     engagement: z.string().optional(),
     scope: z.string().optional(),
+    /** The live project, linked from the case study header. */
+    website: z.url().optional(),
     /** One line on the Work list card. */
     summary: z.string(),
     /** Result line on the home card, e.g. "p95 latency 340ms → 48ms". */
