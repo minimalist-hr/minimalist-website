@@ -4,7 +4,7 @@
  * Structure follows the design: back link, title, meta, hero image, labelled sections,
  * gallery, tech stack, results, quote, closing CTA.
  */
-import MetaPanel from '../components/MetaPanel.astro';
+import MetaPanel, { type MetaItem } from '../components/MetaPanel.astro';
 import CtaBand from '../components/CtaBand.astro';
 import CtaLink from '../components/CtaLink.astro';
 import ImageFrame from '../components/ImageFrame.astro';
@@ -35,6 +35,8 @@ const {
   year,
   engagement,
   scope,
+  website,
+  heroImage,
   heroCaption,
   sections = [],
   stack,
@@ -45,11 +47,19 @@ const {
 } = entry.data;
 
 /** Client and scope are optional; only show what the entry provides. */
-const meta: { label: string; value: string }[] = [];
+const meta: MetaItem[] = [];
 if (client) meta.push({ label: t('case.client'), value: client });
 meta.push({ label: t('case.sector'), value: sector });
 meta.push({ label: t('case.engagement'), value: engagement ?? String(year) });
 if (scope) meta.push({ label: t('case.scope'), value: scope });
+if (website) {
+  meta.push({
+    label: t('case.website'),
+    value: new URL(website).hostname.replace(/^www\./, ''),
+    href: website,
+    newTabHint: t('a11y.newTab'),
+  });
+}
 ---
 
 <BaseLayout
@@ -67,9 +77,16 @@ if (scope) meta.push({ label: t('case.scope'), value: scope });
       <MetaPanel items={meta} />
     </header>
 
-    {heroCaption && (
+    {(heroImage || heroCaption) && (
       <div class="container hero-image">
-        <ImageFrame caption={heroCaption} ratio="16/9" />
+        <ImageFrame
+          caption={heroCaption ?? ''}
+          image={heroImage}
+          locale={locale}
+          ratio="16/9"
+          sizes="100vw"
+          priority
+        />
       </div>
     )}
 
@@ -89,8 +106,15 @@ if (scope) meta.push({ label: t('case.scope'), value: scope });
 
       {gallery.length > 0 && (
         <div class="gallery">
-          {gallery.map((image) => (
-            <ImageFrame caption={image.caption} ratio="4/3" />
+          {/* Screenshots are 4:5; the placeholders keep the design's 4:3. */}
+          {gallery.map((item) => (
+            <ImageFrame
+              caption={item.caption}
+              image={item.image}
+              locale={locale}
+              ratio={item.image ? '4/5' : '4/3'}
+              sizes="(min-width: 60rem) 50vw, 100vw"
+            />
           ))}
         </div>
       )}

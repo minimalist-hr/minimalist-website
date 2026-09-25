@@ -1,41 +1,50 @@
 ---
-title: 'Web stranica za tvrtku za dizala'
+title: 'Tvrtka za dizala koju je lako pronaći i brzo nazvati'
 locale: hr
 translationKey: lift-mucnjak
-sector: 'Dizala'
+sector: 'Održavanje dizala'
 year: 2026
-client: 'Lift-Mučnjak'
-scope: 'Web stranica'
-summary: 'Servis, održavanje, modernizacija i ugradnja dizala, jasno objašnjeni na jednoj stranici.'
+client: 'Lift-Mučnjak d.o.o.'
+scope: 'Nova izrada'
+website: https://lift-mucnjak.hr/
+summary: 'Nova izrada za tvrtku za dizala: prave stranice koje tražilice mogu pročitati, hitna linija na svakoj stranici i dva obrasca koja stižu pravoj osobi.'
 status: published
 featured: true
 order: 1
+coverImage: 'work-lift-mucnjak-cover'
 coverCaption: 'screenshot / lift-mučnjak home page'
+heroImage: 'work-lift-mucnjak-hero'
 heroCaption: 'hero screenshot / 16:9 / greyscale'
 sections:
   - label: 'Kontekst'
     paragraphs:
-      - text: 'Lift-Mučnjak servisira, održava i modernizira dizala u stambenim i poslovnim zgradama diljem Hrvatske, a projektira i ugrađuje i nova. Njihovi su klijenti upravitelji zgrada, vlasnici i investitori.'
+      - text: 'Lift-Mučnjak od 2002. brine da dizala u hrvatskim zgradama rade: održavanje, popravci, modernizacija i ugradnja novih, uz ekipu dežurnu 0–24. Njihovi su klijenti upravitelji zgrada i predstavnici suvlasnika, ljudi koji ne razgledavaju stranice. Traže broj telefona, provjere je li tvrtka stvarna, pa zatraže ponudu ili prijave dizalo koje je stalo, ponekad s nekim zaglavljenim unutra. Svaki je posjet kratak i ima svrhu.'
   - label: 'Problem'
     paragraphs:
-      - text: 'Četiri usluge, svaka s drugim čitateljem: upravitelj zgrade čije je dizalo stalo, vlasnik koji planira modernizaciju, investitor koji traži novu ugradnju. Stranica je svakoga od njih trebala brzo dovesti do pravog odgovora i do broja telefona.'
+      - text: 'Stara stranica ništa od toga nije radila dobro. Bila je to jedna stranica koja je sadržaj učitavala JavaScriptom, a izbornik su činili gumbi umjesto poveznica, pa su tražilice vidjele jednu stranicu i ništa više. Dvije inačice domene natjecale su se jedna s drugom. Tekst se udaljio od posla i navodio četiri županije za tvrtku koja radi u cijeloj Hrvatskoj. A broj hitne linije 0–24, jedino što je važno u hitnom slučaju, nije imao svoje mjesto.'
   - label: 'Što smo uklonili'
     paragraphs:
-      - text: 'Sve što posjetitelj mora odgonetavati. Bez kataloga modela dizala, bez stock fotografija staklenih dizala, bez rubrike novosti koju netko mora održavati. Svaka usluga dobila je jednu stranicu, jasnim jezikom.'
+      - text: 'JavaScript između posjetitelja i sadržaja, lažnu navigaciju i drugu domenu. Svaku tvrdnju iza koje klijent nije mogao stati: svaka brojka i obećanje na novoj stranici najprije su provjereni s njima. Praćenje, analitiku i obavijesti o kolačićima, jer tvrtka koja popravlja dizala nema razloga ikoga pratiti po internetu. Zahtjeve prema trećim stranama pri učitavanju: fontovi se poslužuju sa same stranice, a provjera spama čeka da netko počne ispunjavati obrazac.'
   - label: 'Što smo izgradili'
     paragraphs:
-      - text: 'Brza statična stranica sa stranicom za svaku uslugu, izravnim putem do servisne linije i obrascem za upit koji stiže ravno u ured. Brzo se učitava i na mobitelu u strojarnici, s jednom crticom signala.'
+      - text: 'Brza statična stranica na kojoj je svaka podstranica pravi HTML, poslužen s hostinga koji je klijent već imao. Hitna linija stoji na vrhu svake stranice, jedan dodir do poziva. Dva obrasca rade dva posla: upit za ponudu stiže u ured, a prijava kvara ide ravno dežurnom tehničaru. Dok skrolate, dizalo s naslovne ilustracije spušta se s vama i otvara vrata gdje god stanete. Pravne stranice opisuju točno ono što stranica radi, ni više ni manje.'
 stack:
-  text: 'Statične stranice bez baze podataka i CMS-a koje treba održavati, pa je stranica brza sama po sebi i gotovo ništa ne košta. Obrazac za upit radi na Cloudflareovoj mreži: spam se filtrira prije nego što poruka stigne u ured.'
+  text: 'Statično sučelje, mala PHP skripta za dva obrasca i pipeline koji ih oboje drži poštenima. Bez baze podataka, bez CMS-a, ništa što treba krpati u utorak navečer. Radi na dijeljenom hostingu koji je klijent već imao.'
   tools:
-    - 'Astro'
+    - 'React'
     - 'TypeScript'
-    - 'CSS'
-    - 'Cloudflare Workers'
-    - 'Cloudflare Turnstile'
+    - 'Vite'
+    - 'Tailwind CSS'
+    - 'shadcn/ui'
+    - 'PHP 8.1'
     - 'Resend'
+    - 'Cloudflare Turnstile'
+    - 'Vitest'
+    - 'cPanel'
 gallery:
-  - caption: 'screenshot / service page'
-  - caption: 'screenshot / inquiry form on mobile'
+  - caption: 'screenshot / quote request and fault report'
+    image: work-lift-mucnjak-forms
+  - caption: 'screenshot / how we work and contact on mobile'
+    image: work-lift-mucnjak-mobile
 ctaTitle: 'Trebate web stranicu koja dobro radi jedan posao?'
 ---
