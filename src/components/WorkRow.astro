@@ -20,13 +20,19 @@ interface Props {
 }
 
 const { entry, locale, flipped = false, bordered = true } = Astro.props;
-const { title, sector, year, summary, coverCaption, status } = entry.data;
+const { title, sector, year, summary, coverImage, coverCaption, status } = entry.data;
 const t = useTranslations(locale);
 ---
 
 <article class="row" data-flipped={flipped} data-bordered={bordered} data-draw data-reveal-item>
   <div class="image-slot">
-    <ImageFrame caption={coverCaption} ratio="16/10" />
+    <ImageFrame
+      caption={coverCaption}
+      image={coverImage}
+      locale={locale}
+      ratio="16/10"
+      sizes="(min-width: 60rem) 50vw, 100vw"
+    />
   </div>
   <div class="body">
     <MetaRow items={[sector, year]} />

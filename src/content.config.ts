@@ -34,8 +34,13 @@ const work = defineCollection({
     /** Appears in "Selected work" on the home page. */
     featured: z.boolean().default(false),
     order: z.number().int(),
+    /** Key into the image registry (src/lib/images.ts), for the home card and Work list. */
+    coverImage: z.string().optional(),
+    /** Placeholder caption, shown while the entry has no `coverImage`. */
     coverCaption: z.string(),
-    /** Case study page: 16:9 hero image caption. */
+    /** Case study page: 16:9 hero image, a registry key. */
+    heroImage: z.string().optional(),
+    /** Placeholder caption for the hero, shown while there is no `heroImage`. */
     heroCaption: z.string().optional(),
     /**
      * Case study body as labelled blocks, in the design's order:
@@ -55,7 +60,8 @@ const work = defineCollection({
      * translated). Shown full width below the gallery.
      */
     stack: z.object({ text: z.string().optional(), tools: z.array(z.string()) }).optional(),
-    gallery: z.array(z.object({ caption: z.string() })).optional(),
+    /** `image` is a registry key; without it the placeholder shows `caption`. */
+    gallery: z.array(z.object({ caption: z.string(), image: z.string().optional() })).optional(),
     results: z.array(z.object({ value: z.string(), label: z.string() })).optional(),
     quote: z.object({ text: z.string(), name: z.string(), role: z.string() }).optional(),
     /** Closing question on the case study page. */

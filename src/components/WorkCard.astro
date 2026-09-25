@@ -17,12 +17,12 @@ interface Props {
 }
 
 const { entry, locale } = Astro.props;
-const { title, sector, year, cardMetric, summary, coverCaption, status } = entry.data;
+const { title, sector, year, cardMetric, summary, coverImage, coverCaption, status } = entry.data;
 const t = useTranslations(locale);
 ---
 
 <article class="card" data-reveal-item>
-  <ImageFrame caption={coverCaption} ratio="4/3" />
+  <ImageFrame caption={coverCaption} image={coverImage} locale={locale} ratio="4/3" />
   <div class="body">
     <MetaRow items={[sector, year]} />
     <h3>{title}</h3>
