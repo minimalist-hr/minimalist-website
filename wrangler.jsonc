@@ -32,7 +32,7 @@
     { "pattern": "www.minimalist.hr", "custom_domain": true }
   ],
 
-  // Production answers only on minimalist.hr. Branch previews keep their workers.dev URLs:
+  // Production answers only on minimalist.hr. The staging preview keeps its workers.dev URL:
   // preview_urls is set explicitly because it defaults to the value of workers_dev.
   "workers_dev": false,
   "preview_urls": true,

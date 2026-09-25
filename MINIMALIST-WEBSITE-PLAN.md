@@ -71,8 +71,8 @@ Use the extracted HTML for exact copy, spacing, sizes, tokens and component stru
 | Styling | **Plain CSS** with custom properties plus Astro scoped styles. No Tailwind, no UI kit | The brand is 4 colours and 1 typeface; tokens map 1:1 to CSS variables |
 | Content | **Astro Content Collections** (Markdown/MDX + typed schema) for case studies and insights | Adding content = adding a file |
 | JavaScript | Vanilla TS in small `<script>` islands only: theme toggle, language switch, mobile menu, form, reveal motion | No framework runtime shipped to the browser |
-| Hosting | **Cloudflare Workers with static assets** (not Pages). Astro's `dist/` is served as static assets; the contact form is a small Worker script added in Phase 3 | Cloudflare's recommended target for new projects; free static requests, fast EU edge, preview URLs per branch |
-| Repo & CI/CD | **GitLab CI/CD** runs checks and build, then deploys with **Wrangler**. `main` → production; other branches → preview URLs. Cloudflare's own Git integration is **not** used | Deploys only happen when the pipeline passes; everything is defined in the repo |
+| Hosting | **Cloudflare Workers with static assets** (not Pages). Astro's `dist/` is served as static assets; the contact form is a small Worker script added in Phase 3 | Cloudflare's recommended target for new projects; free static requests, fast EU edge, preview URLs |
+| Repo & CI/CD | **GitLab CI/CD** runs checks and build, then deploys with **Wrangler**. Feature branches → `staging` → `main`; `main` is production, `staging` has one preview URL. Cloudflare's own Git integration is **not** used | Deploys only happen when the pipeline passes; everything is defined in the repo |
 | Form spam | **Cloudflare Turnstile** | Invisible, cookieless |
 | Form email | **Resend** (sending region eu-west-1), called from the Worker | No database; minimal GDPR surface. Resend stores logs in the US (section 17) |
 | Analytics | **Cloudflare Web Analytics** (cookieless) | No cookie banner needed |
@@ -437,7 +437,7 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 - JSON-LD structured data: `Organization` (name, url, logo, email, address) on home; `Article` on insights; `BreadcrumbList` on case studies and insights.
 - Semantic headings: one `h1` per page, logical order.
 - RSS feed for insights (optional, cheap with `@astrojs/rss`). *Deferred until after launch.*
-- Preview deployments must send `X-Robots-Tag: noindex`. The pipeline appends this to `dist/_headers` for previews, and for production until `ALLOW_INDEXING=true` is set at launch.
+- Preview deployments must send `X-Robots-Tag: noindex`. The pipeline appends this to `dist/_headers` for the staging preview, and for production until `ALLOW_INDEXING=true` is set at launch.
 
 ---
 
@@ -472,10 +472,14 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 ### 12.1 CI/CD pipeline (set up first, before feature work)
 
 **How it works**
-- **Every push** runs `check` (types via `astro check`), then `build` (Astro → `dist/`).
-- **Branch other than `main`:** `deploy_preview` uploads a new Worker **version** without touching production, using a stable branch alias:
-  `https://<branch-slug>-minimalist-website.<subdomain>.workers.dev`. The URL appears in GitLab under Deployments → Environments and on the merge request.
-- **`main`:** `deploy_production` runs `wrangler deploy`. Production deploys never overlap (`resource_group`).
+*As built (2026-09-25), to save compute minutes:* branches flow feature → `staging` → `main`, and pipelines run only on merge requests, `staging` and `main`.
+- **Merge request into `staging`:** job `build` runs lint, format check, `astro check`, then the build (one job, one install).
+- **`staging`** (after a merge): `build` (no repeat checks), then `deploy_staging` uploads a new Worker **version** under the fixed alias `staging` without touching production:
+  `https://staging-minimalist-website.<subdomain>.workers.dev`. The URL appears in GitLab under Deployments → Environments.
+- **Merge request `staging` → `main`:** the checks and build, plus `audit`. Open it when you are ready to release: while it is open, each merge into `staging` also reruns it.
+- **`main`:** `build` (no repeat checks; the release merge request ran them), then `deploy_production` runs `wrangler deploy`. Production deploys never overlap (`resource_group`).
+- Plain branch pushes start no pipeline. Hotfixes can go straight into `main` by merge request; merge `main` back into `staging` afterwards.
+- Don't squash `staging` → `main` merges, or the branches drift apart.
 - A failed check or build means nothing deploys.
 - Rollback: Cloudflare dashboard → Worker → Deployments → roll back to a previous version, or revert the commit and let the pipeline redeploy.
 
@@ -489,7 +493,7 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 
    | Key | Value | Flags |
    |---|---|---|
-   | `CLOUDFLARE_API_TOKEN` | token from step 2 | Masked and hidden. **Not** protected, so preview branches can deploy |
+   | `CLOUDFLARE_API_TOKEN` | token from step 2 | Masked and hidden. **Not** protected, so the `staging` pipeline can upload the preview (protecting it is possible once `staging` is protected) |
    | `CLOUDFLARE_ACCOUNT_ID` | your account ID | Masked |
    | `CF_WORKERS_SUBDOMAIN` | your workers.dev subdomain (just the name) | — |
    | `PRODUCTION_URL` | `https://minimalist-website.<subdomain>.workers.dev/` for now; `https://minimalist.hr/` at launch | — |
@@ -510,8 +514,8 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 8. **Test previews:** create branch `ci-test`, change a line, push, open a merge request. Confirm the preview URL loads and sends `X-Robots-Tag: noindex` (`curl -I <url>`).
 
 **Notes**
-- Previews share production's Worker config and secrets. *As built:* Turnstile only accepts hostnames of zones in the account, so workers.dev cannot be added and the form only sends on `minimalist.hr`; previews show the form but cannot send.
-- Preview URLs are public but unlisted and noindexed. To lock them down, put them behind Cloudflare Access (free for small teams).
+- The staging preview shares production's Worker config and secrets. *As built:* Turnstile only accepts hostnames of zones in the account, so workers.dev cannot be added and the form only sends on `minimalist.hr`; the staging preview shows the form but cannot send.
+- The staging URL is public but unlisted and noindexed. To lock them down, put them behind Cloudflare Access (free for small teams).
 - GitLab.com's free plan has a monthly compute-minutes limit. This pipeline takes a couple of minutes per run; check your usage under Settings → Usage quotas.
 
 ### 12.2 Domain and custom domain (at launch)
@@ -572,7 +576,7 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 - [x] Contact form UI (no-JS + JS paths)
 - [x] `src/worker.ts` with Turnstile, validation, email send; `main` added to `wrangler.jsonc` *(as `src/worker/`)*
 - [x] Local testing with `wrangler dev` and `.dev.vars`; secrets set with `wrangler secret put` *(set in the Cloudflare dashboard)*
-- [x] Add accessibility and Lighthouse checks as a pipeline job *(job `audit`, merge requests only)*
+- [x] Add accessibility and Lighthouse checks as a pipeline job *(job `audit`, `staging` → `main` merge requests only)*
 - [x] SEO: meta, canonical, hreflang, sitemap, robots, JSON-LD
 - [ ] RSS *(deferred until after launch)*
 - [x] Security headers, cache headers, noindex on previews
@@ -643,8 +647,8 @@ Where the build differs from the sections above. All of these were agreed during
 
 **Hosting, domain, CI**
 - DNS was already on Cloudflare. Custom domains `minimalist.hr` and `www.minimalist.hr` are declared in `wrangler.jsonc` (`routes`), not added in the dashboard, so a deploy can never drop them. www → apex is a Cloudflare Redirect Rule (301). Always Use HTTPS is on.
-- `workers_dev` is `false`; `preview_urls` is `true`, so branch previews keep their workers.dev URLs.
-- The `audit` job (axe, keyboard and reflow tests, Lighthouse) runs on merge requests only, to save CI minutes. Lighthouse runs through `scripts/lighthouse.mjs`, which retries runs that fail to record (`NO_NAVSTART`, a CI browser flake), with Lighthouse 13 via a pnpm override.
+- `workers_dev` is `false`; `preview_urls` is `true`, so the staging preview keeps its workers.dev URL. (Per-branch previews were dropped on 2026-09-25 for a single staging preview.)
+- The `audit` job (axe, keyboard and reflow tests, Lighthouse) runs on `staging` → `main` merge requests only, to save CI minutes. Lighthouse runs through `scripts/lighthouse.mjs`, which retries runs that fail to record (`NO_NAVSTART`, a CI browser flake), with Lighthouse 13 via a pnpm override.
 - Web Analytics uses automatic injection; Cloudflare only injects the beacon for browser requests.
 
 **Contact form and email**

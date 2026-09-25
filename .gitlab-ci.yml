@@ -1,22 +1,20 @@
 # Minimalist website — GitLab CI/CD
-# main            -> checks, build, deploy to production (Cloudflare Workers)
-# any other branch -> checks, build, upload a preview version with a branch URL
-# Deploys only happen when checks and build pass.
+# Branch flow: feature -> staging -> main. Pipelines run only where they are needed:
+# MR into staging  -> checks + build
+# push to staging  -> build + upload the staging preview (the MR already ran the checks)
+# MR staging->main -> checks + build + audit
+# push to main     -> build + deploy to production (the release MR already ran the checks)
+# Plain branch pushes start no pipeline.
 
 workflow:
   rules:
-    # Run MR pipelines for branches with an open merge request...
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    # ...and skip the duplicate branch pipeline for those branches.
-    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
-      when: never
-    - if: $CI_COMMIT_BRANCH
+    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "staging"
 
 variables:
   WORKER_NAME: "minimalist-website"   # must match "name" in wrangler.jsonc
 
 stages:
-  - verify
   - build
   - audit
   - deploy
@@ -36,10 +34,11 @@ default:
     - pnpm config set store-dir .pnpm-store
     - pnpm install --frozen-lockfile
 
-# ---------------------------------------------------------------- verify
+# ---------------------------------------------------------------- build
 
-check:
-  stage: verify
+# Checks and build in one job, so the install runs once.
+build:
+  stage: build
   cache:
     key:
       files:
@@ -48,18 +47,12 @@ check:
       - .pnpm-store
     policy: pull-push   # this job refreshes the dependency cache
   script:
-    - pnpm run lint
-    - pnpm run format:check
-    - pnpm run check
-    # Add as the project grows:
-    # - pnpm run test
-
-# ---------------------------------------------------------------- build
-
-build:
-  stage: build
-  needs: [check]
-  script:
+    - |
+      if [ "$CI_PIPELINE_SOURCE" = "merge_request_event" ]; then
+        pnpm run lint
+        pnpm run format:check
+        pnpm run check
+      fi
     - pnpm run build
   artifacts:
     paths:
@@ -69,15 +62,14 @@ build:
 # ---------------------------------------------------------------- audit
 
 # Accessibility (axe on every page, both themes, both layouts) and Lighthouse (plan §11).
-# Merge requests only, to save CI minutes; with "Pipelines must succeed" it gates the merge.
-# Deploys only need `build`, so previews do not wait for it.
+# Merge requests into main only, once per release; with "Pipelines must succeed" it gates the merge.
 audit:
   stage: audit
   needs: [build]
   # Browsers preinstalled. The tag must match @playwright/test in package.json.
   image: mcr.microsoft.com/playwright:v1.63.0-noble
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"
   variables:
     WRANGLER_SEND_METRICS: "false"
   script:
@@ -92,29 +84,25 @@ audit:
 
 # ---------------------------------------------------------------- deploy
 
-deploy_preview:
+# One staging preview, refreshed by every merge into staging.
+# Uploads a Worker version under the alias "staging" without touching production.
+deploy_staging:
   stage: deploy
   needs: [build]
   interruptible: false
+  resource_group: staging
   rules:
-    - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_BRANCH == "staging"
   script:
-    # Branch slug -> valid preview alias: lowercase, a-z0-9-, starts with a letter, short enough for a hostname label.
-    - ALIAS="$(printf '%s' "$CI_COMMIT_REF_SLUG" | cut -c1-40 | sed -E 's/-+$//')"
-    - case "$ALIAS" in [a-z]*) ;; *) ALIAS="b-$ALIAS" ;; esac
-    # Previews must never be indexed.
+    # The preview must never be indexed.
     # Block scalar (|): an unquoted ": " in a plain YAML list item is parsed as a mapping.
     - |
       printf '\n/*\n  X-Robots-Tag: noindex\n' >> dist/_headers
     - MSG="$(printf '%s %s' "$CI_COMMIT_SHORT_SHA" "$CI_COMMIT_TITLE" | cut -c1-90)"
-    - pnpm exec wrangler versions upload --preview-alias "$ALIAS" --message "$MSG"
-    - echo "DEPLOY_URL=https://$ALIAS-$WORKER_NAME.$CF_WORKERS_SUBDOMAIN.workers.dev" >> deploy.env
-  artifacts:
-    reports:
-      dotenv: deploy.env
+    - pnpm exec wrangler versions upload --preview-alias staging --message "$MSG"
   environment:
-    name: preview/$CI_COMMIT_REF_SLUG
-    url: $DEPLOY_URL
+    name: staging
+    url: https://staging-$WORKER_NAME.$CF_WORKERS_SUBDOMAIN.workers.dev
 
 deploy_production:
   stage: deploy
@@ -122,7 +110,7 @@ deploy_production:
   interruptible: false
   resource_group: production   # never two production deploys at once
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_BRANCH == "main"
   script:
     # Keep search engines out until launch. Set ALLOW_INDEXING=true in GitLab when the site goes live.
     - |
