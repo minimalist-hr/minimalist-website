@@ -3,8 +3,9 @@
 The studio website at [minimalist.hr](https://minimalist.hr), in English and Croatian.
 
 Astro (static) with plain CSS, served by a Cloudflare Worker with static assets. The Worker
-also handles the contact form (Turnstile, then email through Resend). GitLab CI checks, builds
-and deploys every push: `main` to production, other branches to preview URLs.
+also handles the contact form (Turnstile, then email through Resend). Changes flow feature branch → `staging` →
+`main`. GitLab CI checks and builds merge requests, refreshes one staging preview URL from the
+`staging` → `main` merge request, and deploys `main` to production.
 
 - `MINIMALIST-WEBSITE-PLAN.md`: the build plan; section 17 records how the launched site
   differs from it.

@@ -37,13 +37,13 @@
 ## Workflow
 
 - Work in small steps. After each step run `pnpm run lint && pnpm run format:check && pnpm run check && pnpm run build`, then commit with a clear message. One logical change per commit.
-- `main` is protected (no direct pushes) and deploys to production. Work on a branch; a pushed branch deploys a preview URL, then the user opens a merge request. Don't push unless asked.
+- `main` is production, `staging` collects finished work; both are protected (no direct pushes). Work on a branch off `staging`; the user opens a merge request into `staging`. Releases are a `staging` → `main` merge request, which refreshes the one staging preview URL; merging it deploys. Hotfixes may target `main`, then `main` is merged back into `staging`. Plain branch pushes run no pipeline. Don't push unless asked.
 - Before changing `.gitlab-ci.yml`, `wrangler.jsonc`, `.gitignore` or `.nvmrc`, explain the problem first.
 - CLI tools change: when a command or flag from the plan doesn't match, check `--help` or the current docs and say what differs.
 
 ## Audits
 
-- `test:a11y` and `test:lighthouse` run in CI on merge requests only (job `audit`); the targets are WCAG 2.2 AA with zero axe violations and Lighthouse 95+/100/100/100 (plan §11.1).
+- `test:a11y` and `test:lighthouse` run in CI on `staging` → `main` merge requests only (job `audit`); the targets are WCAG 2.2 AA with zero axe violations and Lighthouse 95+/100/100/100 (plan §11.1).
 - `test:a11y` also runs `tests/keyboard.spec.ts`: skip link, a visible focus that the sticky header never covers (both Tab directions), mobile menu keys, form error focus, and reflow at 320px / 640px. A screen reader pass stays manual.
 - `test:a11y` also runs `tests/motion.spec.ts` (the scroll reveal). axe audits with reduced motion, so it sees every page in its final state.
 - CI runs Chromium only. Before larger UI changes, run `pnpm run test:a11y:browsers` locally (adds Firefox and WebKit). WebKit skips links on Tab, like Safari, so link-only keyboard tests skip it.
