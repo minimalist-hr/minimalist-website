@@ -223,6 +223,9 @@ test.describe('contact form', () => {
     await page.fill('[name="email"]', 'ana@example.com');
     await expect(page.locator('#email-error')).toBeHidden();
     await page.fill('[name="brief"]', 'A short brief.');
+    await expect(summary).toBeVisible(); // the privacy policy is not accepted yet
+    await page.check('[name="consent"]');
+    await expect(page.locator('#consent-error')).toBeHidden();
     await expect(page.locator('form [aria-invalid="true"]')).toHaveCount(0);
     await expect(summary).toBeHidden();
   });
@@ -250,6 +253,7 @@ test.describe('contact form', () => {
     await page.fill('[name="name"]', 'Test');
     await page.fill('[name="email"]', 'test@example.com');
     await page.fill('[name="brief"]', 'A short brief.');
+    await page.check('[name="consent"]');
     const submit = page.locator('form button[type="submit"]');
     await submit.focus();
     await page.keyboard.press('Enter');

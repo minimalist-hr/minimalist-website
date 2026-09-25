@@ -82,6 +82,9 @@ const en = {
   'form.placeholder.role': 'Manager',
   'form.brief': 'What do you want to build?',
   'form.briefHint': 'The problem, who it affects, and what happens if it stays unsolved.',
+  /** {link} renders as a link to the privacy policy, labelled `form.consentLink`. */
+  'form.consent': 'I accept the {link} and agree that my details are used to answer this inquiry.',
+  'form.consentLink': 'privacy policy',
   'form.submit': 'Send inquiry',
   'form.replyTime': 'We reply within one business day.',
   'form.honeypot': 'Leave this field empty',
@@ -96,6 +99,7 @@ const en = {
   'form.errorEmail': 'Enter a valid email address.',
   'form.errorBrief': 'Describe what you want to build.',
   'form.errorTooLong': 'This is too long.',
+  'form.errorConsent': 'Accept the privacy policy to send the inquiry.',
   'form.noscript': 'The form needs JavaScript for its spam check. Write to {email} instead.',
 
   // Auto-reply to the sender (src/worker/autoreply.ts). Repeats nothing from the form.
@@ -187,6 +191,8 @@ const hr: Record<UiKey, string> = {
   'form.placeholder.role': 'Upravitelj',
   'form.brief': 'Što želite izgraditi?',
   'form.briefHint': 'Problem, koga pogađa i što se događa ako ostane neriješen.',
+  'form.consent': 'Prihvaćam {link} i pristajem da se moji podaci koriste za odgovor na ovaj upit.',
+  'form.consentLink': 'politiku privatnosti',
   'form.submit': 'Pošaljite upit',
   'form.replyTime': 'Odgovaramo u jednom radnom danu.',
   'form.honeypot': 'Ostavite ovo polje praznim',
@@ -201,6 +207,7 @@ const hr: Record<UiKey, string> = {
   'form.errorEmail': 'Upišite ispravnu e-adresu.',
   'form.errorBrief': 'Opišite što želite izgraditi.',
   'form.errorTooLong': 'Predugo.',
+  'form.errorConsent': 'Prihvatite politiku privatnosti kako biste poslali upit.',
   'form.noscript':
     'Obrazac treba JavaScript za provjeru protiv neželjene pošte. Pišite na {email}.',
 

@@ -397,7 +397,7 @@ Taken from `minimalist-website-mobile-design.html`:
 | Timeline | `timeline` | radio chips: `asap`, `1-3m`, `3-6m`, `exploring` | recommended |
 | Budget | `budget` | radio chips: `lt15`, `15-40`, `40-100`, `gt100`, `unsure` | recommended |
 | Brief | `brief` | textarea | yes |
-| Consent | — | Short privacy note with link to Legal (not a checkbox, unless legal review requires one) | — |
+| Consent | `consent` | checkbox (value `yes`) with a link to the privacy policy; the Worker rejects a submit without it | yes |
 | Honeypot | `website` | hidden text input; submission rejected if filled | — |
 | Turnstile | `cf-turnstile-response` | widget token | yes |
 
