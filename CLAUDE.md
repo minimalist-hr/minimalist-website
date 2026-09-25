@@ -37,7 +37,7 @@
 ## Workflow
 
 - Work in small steps. After each step run `pnpm run lint && pnpm run format:check && pnpm run check && pnpm run build`, then commit with a clear message. One logical change per commit.
-- `main` is production, `staging` collects finished work; both are protected (no direct pushes). Work on a branch off `staging`; the user opens a merge request into `staging`. Releases are a `staging` → `main` merge request, which refreshes the one staging preview URL; merging it deploys. Hotfixes may target `main`, then `main` is merged back into `staging`. Plain branch pushes run no pipeline. Don't push unless asked.
+- `main` is production, `staging` collects finished work; both are protected (no direct pushes). Work on a branch off `staging`; the user opens a merge request into `staging`. Merging into `staging` deploys the one staging preview URL. Releases are a `staging` → `main` merge request; merging it deploys production. Hotfixes may target `main`, then `main` is merged back into `staging`. Plain branch pushes run no pipeline. Don't push unless asked.
 - Before changing `.gitlab-ci.yml`, `wrangler.jsonc`, `.gitignore` or `.nvmrc`, explain the problem first.
 - CLI tools change: when a command or flag from the plan doesn't match, check `--help` or the current docs and say what differs.
 

@@ -1,14 +1,15 @@
 # Minimalist website — GitLab CI/CD
 # Branch flow: feature -> staging -> main. Pipelines run only where they are needed:
 # MR into staging  -> checks + build
-# MR staging->main -> checks + build + audit, and uploads the staging preview URL
+# push to staging  -> build + upload the staging preview (the MR already ran the checks)
+# MR staging->main -> checks + build + audit
 # push to main     -> build + deploy to production (the release MR already ran the checks)
-# Plain branch pushes and merges into staging start no pipeline.
+# Plain branch pushes start no pipeline.
 
 workflow:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "staging"
 
 variables:
   WORKER_NAME: "minimalist-website"   # must match "name" in wrangler.jsonc
@@ -83,7 +84,7 @@ audit:
 
 # ---------------------------------------------------------------- deploy
 
-# One staging preview, refreshed by the staging -> main merge request.
+# One staging preview, refreshed by every merge into staging.
 # Uploads a Worker version under the alias "staging" without touching production.
 deploy_staging:
   stage: deploy
@@ -91,7 +92,7 @@ deploy_staging:
   interruptible: false
   resource_group: staging
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == "staging" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"
+    - if: $CI_COMMIT_BRANCH == "staging"
   script:
     # The preview must never be indexed.
     # Block scalar (|): an unquoted ": " in a plain YAML list item is parsed as a mapping.

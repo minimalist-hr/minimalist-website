@@ -472,12 +472,13 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 ### 12.1 CI/CD pipeline (set up first, before feature work)
 
 **How it works**
-*As built (2026-09-25), to save compute minutes:* branches flow feature → `staging` → `main`, and pipelines run only on merge requests and on `main`.
+*As built (2026-09-25), to save compute minutes:* branches flow feature → `staging` → `main`, and pipelines run only on merge requests, `staging` and `main`.
 - **Merge request into `staging`:** job `build` runs lint, format check, `astro check`, then the build (one job, one install).
-- **Merge request `staging` → `main`:** the same, plus `audit`, plus `deploy_staging`, which uploads a new Worker **version** under the fixed alias `staging` without touching production:
-  `https://staging-minimalist-website.<subdomain>.workers.dev`. The URL appears in GitLab under Deployments → Environments and on the merge request.
+- **`staging`** (after a merge): `build` (no repeat checks), then `deploy_staging` uploads a new Worker **version** under the fixed alias `staging` without touching production:
+  `https://staging-minimalist-website.<subdomain>.workers.dev`. The URL appears in GitLab under Deployments → Environments.
+- **Merge request `staging` → `main`:** the checks and build, plus `audit`. Open it when you are ready to release: while it is open, each merge into `staging` also reruns it.
 - **`main`:** `build` (no repeat checks; the release merge request ran them), then `deploy_production` runs `wrangler deploy`. Production deploys never overlap (`resource_group`).
-- Plain branch pushes and merges into `staging` start no pipeline. Hotfixes can go straight into `main` by merge request; merge `main` back into `staging` afterwards.
+- Plain branch pushes start no pipeline. Hotfixes can go straight into `main` by merge request; merge `main` back into `staging` afterwards.
 - Don't squash `staging` → `main` merges, or the branches drift apart.
 - A failed check or build means nothing deploys.
 - Rollback: Cloudflare dashboard → Worker → Deployments → roll back to a previous version, or revert the commit and let the pipeline redeploy.
@@ -492,7 +493,7 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 
    | Key | Value | Flags |
    |---|---|---|
-   | `CLOUDFLARE_API_TOKEN` | token from step 2 | Masked and hidden. **Not** protected, so merge request pipelines can upload the staging preview |
+   | `CLOUDFLARE_API_TOKEN` | token from step 2 | Masked and hidden. **Not** protected, so the `staging` pipeline can upload the preview (protecting it is possible once `staging` is protected) |
    | `CLOUDFLARE_ACCOUNT_ID` | your account ID | Masked |
    | `CF_WORKERS_SUBDOMAIN` | your workers.dev subdomain (just the name) | — |
    | `PRODUCTION_URL` | `https://minimalist-website.<subdomain>.workers.dev/` for now; `https://minimalist.hr/` at launch | — |
