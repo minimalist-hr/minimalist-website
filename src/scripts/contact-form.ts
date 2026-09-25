@@ -33,7 +33,7 @@ const TURNSTILE_SRC =
   'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad';
 
 /** Validated on the client before sending; the Worker checks them again. */
-const VALIDATED_FIELDS = ['name', 'email', 'company', 'role', 'brief'] as const;
+const VALIDATED_FIELDS = ['name', 'email', 'company', 'role', 'brief', 'consent'] as const;
 
 /** How long a submit waits for Turnstile to issue a token before sending anyway. */
 const TOKEN_TIMEOUT_MS = 10_000;

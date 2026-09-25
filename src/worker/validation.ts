@@ -56,6 +56,8 @@ export function parseInquiry(form: FormData): ParseResult {
   if (company.length > fieldLimits.company) fields.push('company');
   if (role.length > fieldLimits.role) fields.push('role');
   if (!brief || brief.length > fieldLimits.brief) fields.push('brief');
+  // The privacy policy must be accepted (the form's required checkbox).
+  if (text(form, 'consent') !== 'yes') fields.push('consent');
 
   if (fields.length > 0) return { ok: false, fields };
 
