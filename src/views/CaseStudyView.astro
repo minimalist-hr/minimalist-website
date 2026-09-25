@@ -35,6 +35,7 @@ const {
   year,
   engagement,
   scope,
+  heroImage,
   heroCaption,
   sections = [],
   stack,
@@ -67,9 +68,16 @@ if (scope) meta.push({ label: t('case.scope'), value: scope });
       <MetaPanel items={meta} />
     </header>
 
-    {heroCaption && (
+    {(heroImage || heroCaption) && (
       <div class="container hero-image">
-        <ImageFrame caption={heroCaption} ratio="16/9" />
+        <ImageFrame
+          caption={heroCaption ?? ''}
+          image={heroImage}
+          locale={locale}
+          ratio="16/9"
+          sizes="100vw"
+          priority
+        />
       </div>
     )}
 
@@ -89,8 +97,15 @@ if (scope) meta.push({ label: t('case.scope'), value: scope });
 
       {gallery.length > 0 && (
         <div class="gallery">
-          {gallery.map((image) => (
-            <ImageFrame caption={image.caption} ratio="4/3" />
+          {/* Screenshots are 4:5; the placeholders keep the design's 4:3. */}
+          {gallery.map((item) => (
+            <ImageFrame
+              caption={item.caption}
+              image={item.image}
+              locale={locale}
+              ratio={item.image ? '4/5' : '4/3'}
+              sizes="(min-width: 60rem) 50vw, 100vw"
+            />
           ))}
         </div>
       )}
