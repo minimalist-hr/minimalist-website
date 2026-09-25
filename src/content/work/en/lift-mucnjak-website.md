@@ -46,5 +46,12 @@ gallery:
     image: work-lift-mucnjak-forms
   - caption: 'screenshot / how we work and contact on mobile'
     image: work-lift-mucnjak-mobile
+results:
+  - value: '6'
+    label: 'Pages search engines can read, up from one'
+  - value: '0'
+    label: 'Cookies or third-party requests on page load'
+  - value: '100'
+    label: 'Lighthouse accessibility, best practices and SEO'
 ctaTitle: 'Need a website that does one job well?'
 ---
