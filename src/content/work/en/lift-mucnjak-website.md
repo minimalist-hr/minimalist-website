@@ -53,5 +53,9 @@ results:
     label: 'Cookies or third-party requests on page load'
   - value: '100'
     label: 'Lighthouse accessibility, best practices and SEO'
+quote:
+  text: '“We needed people to find us and reach us fast, especially in an emergency. Now they do.”'
+  name: 'Tihomir Mučnjak'
+  role: 'Director, Lift-Mučnjak d.o.o.'
 ctaTitle: 'Need a website that does one job well?'
 ---

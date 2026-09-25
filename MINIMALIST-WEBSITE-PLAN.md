@@ -585,7 +585,7 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 - [x] Lighthouse mobile ≥ targets on Home, Case study, Contact
 
 ### Phase 4: Content and launch
-- [x] Replace placeholder copy, metrics, clients and quotes with verified content *(one case study, Lift-Mučnjak, with its real text, stack, screenshots and measured results, published with the client's written permission; one insight)*
+- [x] Replace placeholder copy, metrics, clients and quotes with verified content *(one case study, Lift-Mučnjak, with its real text, stack, screenshots and measured results and a client-approved quote, published with the client's written permission; one insight)*
 - [x] Real photography per brand brief (full colour by approved deviation, 4:5 / 3:2 / 1:1), processed and optimised *(stock photographs for services, steps and the insight cover; the real portrait on About; real Lift-Mučnjak screenshots)*
 - [x] Legal: privacy policy and company details reviewed (section 14) *(text completed to GDPR Art. 13 and accepted as final by the owner on 2026-09-26, without an outside review; the form asks for consent with a required checkbox)*
 - [x] Business email set up; SPF/DKIM/DMARC verified *(iCloud + Resend; a test inquiry passed DKIM and DMARC)*
@@ -620,7 +620,7 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 3. **Contact address** shown on site (e.g. `hello@minimalist.hr`). → **`hello@minimalist.hr`**.
 4. **Hero headline:** both designs rotate four taglines (section 3.5). Keep the rotation, or launch with a single static headline? → **Rotation kept.**
 5. **Insights at launch:** show with the three articles, or hide until real posts exist? → **Shown, with one article**; the other two were removed.
-6. **Which case studies** are real and approved for publication? → **Lift-Mučnjak** (company website), with written permission, its real text and measured results; no quote yet. The three design placeholders were removed.
+6. **Which case studies** are real and approved for publication? → **Lift-Mučnjak** (company website), with written permission, its real text and measured results, and a quote from its director, Tihomir Mučnjak, approved by the client. The three design placeholders were removed.
 7. **Studio address and call details:** the mobile design shows "Hamići 13, 10000 Zagreb" and an "Introductory call" block. Confirm these are real before launch. → Address confirmed; the call block has no link (calls are arranged by email).
 8. **Auto-reply** to form senders: yes or no? → **Not at launch**; added 2026-09-19 through Resend (free plan: 3,000 emails a month, 100 a day).
 9. **Later:** a git-based CMS (e.g. Keystatic) if non-developers need to edit content. → **Not needed.**
@@ -665,7 +665,7 @@ Where the build differs from the sections above. All of these were agreed during
 **Design and content**
 - Light-theme `--graphite` is `#67655E` (brand: `#7E7C75`) to meet WCAG AA contrast.
 - FAQ is on the Services page. Approach uses a timeline: the rule down the left on mobile; from md up down the middle, with the steps alternating sides and each side starting half a step lower and aligned to the rule (left-hand steps are right-aligned); a hairline runs from each square to underline its heading, on mobile too. All step images are the same size. Rules end with the text everywhere except the header's bottom border and the footer's top rule.
-- One case study (Lift-Mučnjak) and one insight. The case study is the client's real project: its text, stack, screenshots, a link to the live site from its header, and three results measured on the live site on 2026-09-26 (pages in the sitemap, no cookies or third-party requests on load, Lighthouse 100 for accessibility, best practices and SEO). No quote until the client approves one. Case studies have an optional `stack` (a short note and the tools as tags), shown full width under "Tech stack" below the gallery. The home grids keep their card width with fewer cards.
+- One case study (Lift-Mučnjak) and one insight. The case study is the client's real project: its text, stack, screenshots, a link to the live site from its header, and three results measured on the live site on 2026-09-26 (pages in the sitemap, no cookies or third-party requests on load, Lighthouse 100 for accessibility, best practices and SEO). A quote from the director, Tihomir Mučnjak, approved by the client (the English is the approved wording; the Croatian is its translation). Case studies have an optional `stack` (a short note and the tools as tags), shown full width under "Tech stack" below the gallery. The home grids keep their card width with fewer cards.
 - On mobile, the About portrait comes after the studio text and details (desktop keeps it on the left). The footer tagline is "Complex problems. Simple solutions." / "Složeni problemi. Jednostavna rješenja.", one whole sentence per line. About principles set their text directly under the number.
 - A contact field's error clears as soon as its value is valid (email uses the same pattern as the Worker, from `src/lib/inquiry.ts`); the error summary goes once no field has one.
 - The privacy policy covers GDPR Art. 13 and names Cloudflare, Resend and Apple as processors.
@@ -677,4 +677,4 @@ Where the build differs from the sections above. All of these were agreed during
 
 **After launch**
 - Everything that was open at launch is settled (see §15.6–13): the Lift-Mučnjak case study is real, the legal texts are final, the iPhone check passed, and RSS, a CMS, HSTS `preload` and a stricter DMARC are not needed for now.
-- Content grows as it comes: more case studies and insights when they exist, and a Lift-Mučnjak quote if the client approves one.
+- Content grows as it comes: more case studies and insights when they exist (clients named and quoted only with their approval).

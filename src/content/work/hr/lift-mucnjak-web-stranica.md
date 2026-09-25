@@ -53,5 +53,9 @@ results:
     label: 'Kolačića ili zahtjeva prema trećim stranama pri učitavanju'
   - value: '100'
     label: 'Lighthouse: pristupačnost, najbolje prakse i SEO'
+quote:
+  text: '„Trebalo nam je da nas ljudi pronađu i brzo dobiju, pogotovo u hitnim slučajevima. Sada je tako.”'
+  name: 'Tihomir Mučnjak'
+  role: 'Direktor, Lift-Mučnjak d.o.o.'
 ctaTitle: 'Trebate web stranicu koja dobro radi jedan posao?'
 ---
