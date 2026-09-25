@@ -155,9 +155,9 @@ Copy exact values from the extracted design file if they differ from this table.
 - **Icons:** 24px box, 1.5px stroke, square caps, no rounding except true circles. Inline SVG using `currentColor`.
 - **Photography:** ~~greyscale only~~ full colour (approved deviation, see below), flat light, crops 4:5 / 3:2 / 1:1, no rounded corners, no shadows. Any treatment goes into the image files, not via CSS filters.
 - **Type on image:** darken the image to 42% brightness; paper-coloured type at full opacity; no scrims or gradients; minimum 4.5:1 contrast.
-- **Until real photos exist,** use the striped placeholder with its caption (e.g. `product shot / core banking console`), exactly as in the design.
+- **A slot without an image** shows the striped placeholder with its caption (e.g. `product shot / core banking console`), exactly as in the design.
 - **Approved deviation: photographs run in full colour, not greyscale.** Filip's call, 2026-09-22; the rest of §3.4 still holds (ratios, no rounded corners, no shadows, no CSS filters). Don't revert it.
-- **The photographs in place** (services, the six steps, the insight cover) are free-licence stock kept in `src/assets/images/`; `src/lib/images.ts` keys each one to its EN and HR alt text. `ImageFrame` takes that key and falls back to the placeholder without it, so the two are interchangeable per slot. The About portrait is Filip's own photograph, cropped to 4:5. Still on placeholders: the Lift-Mučnjak screenshots, which have to be real.
+- **The photographs in place** (services, the six steps, the insight cover) are free-licence stock kept in `src/assets/images/`; `src/lib/images.ts` keys each one to its EN and HR alt text. `ImageFrame` takes that key and falls back to the placeholder without it, so the two are interchangeable per slot. The About portrait is Filip's own photograph, cropped to 4:5. The Lift-Mučnjak case study uses real screenshots of the live site (PNG, so text stays sharp). No slot on the site shows a placeholder now.
 
 ### 3.5 Motion
 
@@ -380,7 +380,7 @@ Taken from `minimalist-website-mobile-design.html`:
 - **Work:** Core banking (Fintech 2026, full case study), Eleven tools replaced by one (Logistics 2025), Nine clicks became two (Healthcare 2025), A monolith, unbundled (Energy 2024).
 - **Insights:** Deleting code is a feature (2026/08), The two decisions a user actually makes (2026/06), Fixed price is a design constraint (2026/04).
 
-> ⚠️ **Before launch, verify all client names, metrics, quotes and stats** (Northbank d.d., Ivan Kovač, p95 340ms → 48ms, −62%, 5+ years, 30+ products). If they are design placeholders, replace them with real ones. The site's own FAQ promises client names appear only with written permission.
+> ✅ **Verified.** The design's clients, metrics and quote (Northbank d.d., Ivan Kovač, p95 340ms → 48ms, −62%) were placeholders and were removed; the studio stats (5+ years, 30+ products) are confirmed. The one published client, Lift-Mučnjak, gave written permission to be named, as the site's FAQ promises. Case study results are measured, never estimated, and a quote appears only once the client has approved its wording.
 
 ---
 
@@ -436,7 +436,7 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 - `@astrojs/sitemap` with i18n alternates; `robots.txt` pointing to the sitemap. *As built: a custom sitemap endpoint (`src/pages/sitemap.xml.ts`), because the HR slugs are translated.*
 - JSON-LD structured data: `Organization` (name, url, logo, email, address) on home; `Article` on insights; `BreadcrumbList` on case studies and insights.
 - Semantic headings: one `h1` per page, logical order.
-- RSS feed for insights (optional, cheap with `@astrojs/rss`). *Deferred until after launch.*
+- RSS feed for insights (optional, cheap with `@astrojs/rss`). *Not built; not needed for now (tracked in the owner's work items).*
 - Preview deployments must send `X-Robots-Tag: noindex`. The pipeline appends this to `dist/_headers` for the staging preview, and for production until `ALLOW_INDEXING=true` is set at launch.
 
 ---
@@ -462,7 +462,7 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 
 ### 11.3 Security headers (`public/_headers`)
 - `Content-Security-Policy`: self, plus `challenges.cloudflare.com` (Turnstile) and the Cloudflare analytics beacon.
-- `Strict-Transport-Security: max-age=31536000; includeSubDomains` (add `preload` after confirming all subdomains are HTTPS).
+- `Strict-Transport-Security: max-age=31536000; includeSubDomains` (no `preload`: it would lock every subdomain to HTTPS for good, and that is not certain; decided 2026-09-26).
 - `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy` locking unused features, `X-Frame-Options: DENY`.
 
 ---
@@ -578,18 +578,18 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 - [x] Local testing with `wrangler dev` and `.dev.vars`; secrets set with `wrangler secret put` *(set in the Cloudflare dashboard)*
 - [x] Add accessibility and Lighthouse checks as a pipeline job *(job `audit`, `staging` → `main` merge requests only)*
 - [x] SEO: meta, canonical, hreflang, sitemap, robots, JSON-LD
-- [ ] RSS *(deferred until after launch)*
+- [x] RSS *(not needed for now; tracked in the owner's work items)*
 - [x] Security headers, cache headers, noindex on previews
 - [x] Cloudflare Web Analytics
 - [x] Accessibility pass (keyboard-only run, screen reader spot check, axe) *(keyboard and reflow checks automated in `tests/keyboard.spec.ts`)*
 - [x] Lighthouse mobile ≥ targets on Home, Case study, Contact
 
 ### Phase 4: Content and launch
-- [ ] Replace placeholder copy, metrics, clients and quotes with verified content *(copy verified; one case study, Lift-Mučnjak, with placeholder text and tech stack, and one insight; real text and more content after launch)*
-- [ ] Real photography per brand brief (greyscale, 4:5 / 3:2 / 1:1), processed and optimised *(stock photographs for services, steps and the insight cover; the real portrait on About; the Lift-Mučnjak screenshots are still placeholders)*
-- [ ] Legal: privacy policy and company details reviewed (section 14) *(text completed to GDPR Art. 13; review by someone qualified still open)*
+- [x] Replace placeholder copy, metrics, clients and quotes with verified content *(one case study, Lift-Mučnjak, with its real text, stack, screenshots and measured results, published with the client's written permission; one insight)*
+- [x] Real photography per brand brief (full colour by approved deviation, 4:5 / 3:2 / 1:1), processed and optimised *(stock photographs for services, steps and the insight cover; the real portrait on About; real Lift-Mučnjak screenshots)*
+- [x] Legal: privacy policy and company details reviewed (section 14) *(text completed to GDPR Art. 13 and accepted as final by the owner on 2026-09-26, without an outside review; the form asks for consent with a required checkbox)*
 - [x] Business email set up; SPF/DKIM/DMARC verified *(iCloud + Resend; a test inquiry passed DKIM and DMARC)*
-- [x] Cross-device testing (section 5.4 widths and browsers) *(full suite in Chromium, Firefox and WebKit; Samsung and Mac Safari by hand; a real iPhone check is still worth doing)*
+- [x] Cross-device testing (section 5.4 widths and browsers) *(full suite in Chromium, Firefox and WebKit; Samsung, Mac Safari and a real iPhone by hand)*
 - [x] Nameservers switched to Cloudflare; custom domain + `www` redirect live *(custom domains declared in `wrangler.jsonc`; www → apex by Redirect Rule)*
 - [x] GitLab variables: `PRODUCTION_URL=https://minimalist.hr/`, `ALLOW_INDEXING=true`; set `"workers_dev": false` in `wrangler.jsonc`
 - [x] Final smoke test on production: all routes EN/HR, form sends, 404 works, sitemap reachable
@@ -599,7 +599,7 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 
 ## 14. Legal and compliance (Croatia / EU)
 
-*Not legal advice. Have the final texts checked by someone qualified.*
+*Not legal advice. The owner accepted the texts as final on 2026-09-26 without an outside review; revisit them if the site starts collecting anything new.*
 
 - **Privacy policy** (EN + HR) covering:
   - what the contact form collects and why
@@ -620,10 +620,14 @@ Add `"main": "./src/worker.ts"` to `wrangler.jsonc`. Requests that match a built
 3. **Contact address** shown on site (e.g. `hello@minimalist.hr`). → **`hello@minimalist.hr`**.
 4. **Hero headline:** both designs rotate four taglines (section 3.5). Keep the rotation, or launch with a single static headline? → **Rotation kept.**
 5. **Insights at launch:** show with the three articles, or hide until real posts exist? → **Shown, with one article**; the other two were removed.
-6. **Which case studies** are real and approved for publication? → **Lift-Mučnjak** (company website), published with placeholder text and no figures or quote; the three design placeholders were removed.
+6. **Which case studies** are real and approved for publication? → **Lift-Mučnjak** (company website), with written permission, its real text and measured results; no quote yet. The three design placeholders were removed.
 7. **Studio address and call details:** the mobile design shows "Hamići 13, 10000 Zagreb" and an "Introductory call" block. Confirm these are real before launch. → Address confirmed; the call block has no link (calls are arranged by email).
 8. **Auto-reply** to form senders: yes or no? → **Not at launch**; added 2026-09-19 through Resend (free plan: 3,000 emails a month, 100 a day).
-9. **Later:** a git-based CMS (e.g. Keystatic) if non-developers need to edit content. Not needed for launch.
+9. **Later:** a git-based CMS (e.g. Keystatic) if non-developers need to edit content. → **Not needed.**
+10. **Legal review** by someone qualified? → **No.** The owner accepted the texts as final (2026-09-26); the form now requires consent with a checkbox.
+11. **DMARC:** move from `p=none` to `p=quarantine`? → **Optional, not required.** `p=none` is valid and mail is delivered either way; `quarantine` only stops others from sending mail that pretends to be from `minimalist.hr`. Both senders (iCloud and Resend) pass DKIM, so tightening it is safe whenever the owner wants.
+12. **HSTS `preload`?** → **No**, not while it is uncertain that every subdomain stays HTTPS.
+13. **RSS feed?** → **Not needed for now** (tracked in the owner's work items).
 
 ---
 
@@ -656,11 +660,12 @@ Where the build differs from the sections above. All of these were agreed during
 - Cloudflare Email Sending needs the Workers Paid plan, and Email Routing would take over iCloud's MX records, so production sends through Resend.
 - The Turnstile widget has only `minimalist.hr` (workers.dev cannot be added); locally the test keys are used.
 - Without JavaScript the form shows the email address instead of posting, because Turnstile needs JavaScript.
+- A required consent checkbox (`consent`) sits under the brief and links to the privacy policy; the Worker rejects a submit without it, and the studio's email notes it (added 2026-09-26).
 
 **Design and content**
 - Light-theme `--graphite` is `#67655E` (brand: `#7E7C75`) to meet WCAG AA contrast.
 - FAQ is on the Services page. Approach uses a timeline: the rule down the left on mobile; from md up down the middle, with the steps alternating sides and each side starting half a step lower and aligned to the rule (left-hand steps are right-aligned); a hairline runs from each square to underline its heading, on mobile too. All step images are the same size. Rules end with the text everywhere except the header's bottom border and the footer's top rule.
-- One case study (Lift-Mučnjak) and one insight. The case study text is a placeholder written from what is known about the client: no invented figures or quote. Case studies have an optional `stack` (a short note and the tools as tags), shown full width under "Tech stack" below the gallery; the Lift-Mučnjak stack is invented for now. The home grids keep their card width with fewer cards.
+- One case study (Lift-Mučnjak) and one insight. The case study is the client's real project: its text, stack, screenshots, a link to the live site from its header, and three results measured on the live site on 2026-09-26 (pages in the sitemap, no cookies or third-party requests on load, Lighthouse 100 for accessibility, best practices and SEO). No quote until the client approves one. Case studies have an optional `stack` (a short note and the tools as tags), shown full width under "Tech stack" below the gallery. The home grids keep their card width with fewer cards.
 - On mobile, the About portrait comes after the studio text and details (desktop keeps it on the left). The footer tagline is "Complex problems. Simple solutions." / "Složeni problemi. Jednostavna rješenja.", one whole sentence per line. About principles set their text directly under the number.
 - A contact field's error clears as soon as its value is valid (email uses the same pattern as the Worker, from `src/lib/inquiry.ts`); the error summary goes once no field has one.
 - The privacy policy covers GDPR Art. 13 and names Cloudflare, Resend and Apple as processors.
@@ -670,10 +675,6 @@ Where the build differs from the sections above. All of these were agreed during
 - The mobile menu also closes when focus leaves it; the submit button uses `aria-disabled` while sending, so focus is not lost.
 - Tested in Chromium, Firefox and WebKit. Safari skips links on Tab unless Option+Tab or "Press Tab to highlight each item" is used; the link-only keyboard tests skip WebKit for that reason.
 
-**Open after launch**
-- Lift-Mučnjak: replace the placeholder text and the invented tech stack with the real ones; add results and a quote if the client agrees.
-- More insights; the Lift-Mučnjak screenshots to replace their placeholders; legal review by someone qualified (mention the iCloud mailbox has no DPA).
-- DMARC from `p=none` to `p=quarantine` after a few weeks of passing mail.
-- RSS feed (deferred).
-- HSTS `preload` once every subdomain is certain to stay HTTPS.
-- A quick check on a real iPhone.
+**After launch**
+- Everything that was open at launch is settled (see §15.6–13): the Lift-Mučnjak case study is real, the legal texts are final, the iPhone check passed, and RSS, a CMS, HSTS `preload` and a stricter DMARC are not needed for now.
+- Content grows as it comes: more case studies and insights when they exist, and a Lift-Mučnjak quote if the client approves one.

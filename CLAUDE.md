@@ -12,7 +12,7 @@
 - **Type:** Archivo only, weights 400 and 500 only. Self-hosted woff2 with latin + latin-ext, `font-display: swap`. Never load Google Fonts. Monospace is for metadata and code only.
 - **Logo:** header and footer use the wordmark `MINIMALIST` plus a closing square in the same colour (`currentColor`). The integrated mark is only for favicon, app icons and OG image. Never both marks on one surface; never tinted, re-tracked, outlined or stretched.
 - **Icons:** inline SVG, 24px box, 1.5px stroke, square caps, `currentColor`.
-- **Images:** greyscale, 4:5 / 3:2 / 1:1, no rounded corners, no shadows, treatment applied to the files (not CSS filters). Until real photos exist, use the striped placeholder with its caption.
+- **Images:** full colour (approved deviation from the brand's greyscale, 2026-09-22; don't revert it), 4:5 / 3:2 / 1:1, no rounded corners, no shadows, any treatment applied to the files (not CSS filters). A slot without an image shows the striped placeholder with its caption.
 - **Motion:** Reveal 240ms, Lift 160ms (translate only), State ≤150ms linear; plus two approved additions: Enter (content fades up 10px once as it scrolls into view) and Page (240ms crossfade between pages); easing `cubic-bezier(.2,0,0,1)`. Everything else is instant. Content on screen at load is never hidden, and nothing is hidden without JavaScript. `prefers-reduced-motion: reduce` disables all animation.
 - **Voice:** quiet, short, factual. No "passionate", "cutting-edge", "innovative", "solutions-driven". This also applies to meta descriptions, alt text, form messages and 404 copy.
 
