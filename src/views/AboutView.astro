@@ -151,13 +151,15 @@ const details = [
       </div>
       <!-- After the text in source and on mobile; left of it from md up. -->
       <div class="portrait">
-        <ImageFrame
-          caption={profile.portraitCaption}
-          image={profile.portrait}
-          locale={locale}
-          ratio="4/5"
-          sizes="(min-width: 60rem) 34vw, 92vw"
-        />
+        <div class="portrait-box">
+          <ImageFrame
+            caption={profile.portraitCaption}
+            image={profile.portrait}
+            locale={locale}
+            ratio="4/5"
+            sizes="(min-width: 60rem) 30vw, 92vw"
+          />
+        </div>
       </div>
     </div>
   </Section>
@@ -298,10 +300,21 @@ const details = [
   @media (min-width: 60rem) {
     .studio {
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 38%), 1fr));
+      align-items: stretch;
     }
 
+    /* The portrait is as tall as the text beside it, from its label to the last detail.
+       contain: size keeps it from adding height to the row, so the row takes the text's
+       height; the box then fills that height and takes its width from the 4:5 ratio. */
     .portrait {
       order: -1;
+      contain: size;
+    }
+
+    .portrait-box {
+      height: 100%;
+      max-width: 100%;
+      aspect-ratio: 4 / 5;
     }
   }
 </style>
