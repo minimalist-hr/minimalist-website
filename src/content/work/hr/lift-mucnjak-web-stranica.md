@@ -46,5 +46,16 @@ gallery:
     image: work-lift-mucnjak-forms
   - caption: 'screenshot / how we work and contact on mobile'
     image: work-lift-mucnjak-mobile
+results:
+  - value: '6'
+    label: 'Stranica koje tražilice mogu pročitati, prije jedna'
+  - value: '0'
+    label: 'Kolačića ili zahtjeva prema trećim stranama pri učitavanju'
+  - value: '100'
+    label: 'Lighthouse: pristupačnost, najbolje prakse i SEO'
+quote:
+  text: '„Trebalo nam je da nas ljudi pronađu i brzo dobiju, pogotovo u hitnim slučajevima. Sada je tako.”'
+  name: 'Tihomir Mučnjak'
+  role: 'Direktor, Lift-Mučnjak d.o.o.'
 ctaTitle: 'Trebate web stranicu koja dobro radi jedan posao?'
 ---

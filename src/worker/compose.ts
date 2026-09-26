@@ -44,7 +44,8 @@ export function composeInquiryMail(
   const language = languageLabels[inquiry.locale];
   const subject = `Inquiry: ${who}`;
   const footer =
-    `Sent from the contact form on minimalist.hr, ${sentAt(now)} (Zagreb). ` +
+    `Sent from the contact form on minimalist.hr, ${sentAt(now)} (Zagreb), ` +
+    'with the privacy policy accepted. ' +
     `Replying to this email goes straight to ${inquiry.name}.`;
 
   const text = [

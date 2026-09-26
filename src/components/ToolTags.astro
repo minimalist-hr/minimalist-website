@@ -29,6 +29,8 @@ const { tools } = Astro.props;
     padding: 8px 14px;
     font-size: var(--text-sm);
     line-height: var(--leading-none);
+    /* Opaque, so the background field does not run through the tag. */
+    background: var(--paper);
     box-shadow: inset 0 0 0 var(--hairline) var(--rule);
     transition: box-shadow var(--duration-state) linear;
   }
