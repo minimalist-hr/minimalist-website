@@ -3,21 +3,30 @@
  * Uppercase label link with an arrow that nudges 5px on hover (design). Like the nav, it
  * has no underline at rest; on hover one extends from the left in ink (.link-line).
  * `variant="plain"` drops the rule and the arrow, for links that sit beside a button.
+ * `back` puts a left arrow before the label, nudging left on hover (back to a list).
+ *
+ * The link has the paper background, so the background field does not run through it.
  */
 interface Props {
   href: string;
   variant?: 'rule' | 'plain';
+  back?: boolean;
   class?: string;
 }
 
-const { href, variant = 'rule', class: className } = Astro.props;
+const { href, variant = 'rule', back = false, class: className } = Astro.props;
 ---
 
-<a class:list={['cta', className]} data-variant={variant} href={href}>
+<a class:list={['cta', className]} data-variant={variant} data-back={back || undefined} href={href}>
+  {variant === 'rule' && back && (
+    <span class="arrow" aria-hidden="true">
+      ←
+    </span>
+  )}
   <span class:list={['text', variant === 'rule' && 'link-line']}>
     <slot />
   </span>
-  {variant === 'rule' && (
+  {variant === 'rule' && !back && (
     <span class="arrow" aria-hidden="true">
       →
     </span>
@@ -39,7 +48,16 @@ const { href, variant = 'rule', class: className } = Astro.props;
     line-height: var(--leading-snug);
     text-transform: uppercase;
     color: var(--graphite);
+    background: var(--paper);
     transition: color var(--duration-state) linear;
+  }
+
+  /* Beside a button: as tall as the button, with the paper box running 16px past the text
+     on each side (the negative margin keeps the text where it was). */
+  .cta[data-variant='plain'] {
+    min-height: var(--tap-target);
+    padding-inline: 16px;
+    margin-inline: -16px;
   }
 
   .cta[data-variant='rule'] .text {
@@ -64,6 +82,10 @@ const { href, variant = 'rule', class: className } = Astro.props;
 
     .cta:hover .arrow {
       transform: translateX(5px);
+    }
+
+    .cta[data-back]:hover .arrow {
+      transform: translateX(-5px);
     }
   }
 </style>
