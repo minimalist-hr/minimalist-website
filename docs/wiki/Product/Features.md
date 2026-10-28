@@ -73,7 +73,9 @@ Details: [Motion](/How-It-Works/Motion).
 ## Background field
 
 A decorative canvas behind every page. It draws a grid of rectangles that refines around the
-pointer and two slowly drifting points: strong over the home hero, faint everywhere else.
+pointer and two slowly drifting points: strong over the home hero, quieter everywhere else.
+Outside the hero it never runs behind content: blocks are plain, and the field shows in the
+gaps between them.
 Hidden from assistive technology, absent without JavaScript, paused when off screen.
 
 Details: [Background field](/How-It-Works/Background-Field).

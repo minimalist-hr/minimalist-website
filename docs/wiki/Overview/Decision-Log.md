@@ -23,16 +23,17 @@ change a decision, add a row with the date and the reason, and update the pages 
 
 ## Approved deviations from the brand or design
 
-| Date       | Deviation                                                                      | Reason                                                                                            |
-| :--------- | :----------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------ |
-| 2026-09    | Light-theme `--graphite` is `#67655E`, not the brand's `#7E7C75`               | The brand value is 3.80:1 on paper, short of WCAG AA for small labels. The new value is 5.30:1.   |
-| 2026-09-19 | Motion: **Enter** (content fades up once) and **Page** (240ms crossfade) added | Owner's call; both stay within the brand easing and durations.                                    |
-| 2026-09-19 | Card lift removed                                                              | Nothing uses Lift now.                                                                            |
-| 2026-09-22 | Photographs in full colour, not greyscale                                      | Owner's call. Ratios, no rounded corners, no shadows and no CSS filters still apply.              |
-| 2026-09-22 | **Field**: decorative background canvas on every page                          | Owner's call. Axis-aligned graphite hairlines, so it stays inside the palette and geometry.       |
-| Build      | FAQ moved from Approach to Services                                            | Approach became a timeline; the FAQ fits the "what you get" page.                                 |
-| Build      | Approach uses an alternating timeline                                          | Agreed during the build; see [Pages and content → Approach](/Product/Pages-and-Content#approach). |
-| Build      | About portrait follows the studio text on mobile                               | Desktop keeps it on the left.                                                                     |
+| Date       | Deviation                                                                      | Reason                                                                                                        |
+| :--------- | :----------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------ |
+| 2026-09    | Light-theme `--graphite` is `#67655E`, not the brand's `#7E7C75`               | The brand value is 3.80:1 on paper, short of WCAG AA for small labels. The new value is 5.30:1.               |
+| 2026-09-19 | Motion: **Enter** (content fades up once) and **Page** (240ms crossfade) added | Owner's call; both stay within the brand easing and durations.                                                |
+| 2026-09-19 | Card lift removed                                                              | Nothing uses Lift now.                                                                                        |
+| 2026-09-22 | Photographs in full colour, not greyscale                                      | Owner's call. Ratios, no rounded corners, no shadows and no CSS filters still apply.                          |
+| 2026-09-22 | **Field**: decorative background canvas on every page                          | Owner's call. Axis-aligned graphite hairlines, so it stays inside the palette and geometry.                   |
+| 2026-10-28 | Field kept out of content: blocks are opaque, the field shows between them     | Owner's call: it clashed with text and rules. Ambient alpha 0.05 → 0.11, since it no longer sits behind text. |
+| Build      | FAQ moved from Approach to Services                                            | Approach became a timeline; the FAQ fits the "what you get" page.                                             |
+| Build      | Approach uses an alternating timeline                                          | Agreed during the build; see [Pages and content → Approach](/Product/Pages-and-Content#approach).             |
+| Build      | About portrait follows the studio text on mobile                               | Desktop keeps it on the left.                                                                                 |
 
 ## Settled questions
 

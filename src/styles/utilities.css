@@ -11,6 +11,14 @@
   }
 
   /*
+   * Content blocks are opaque (wiki: Background field): the field shows in the space between
+   * them and beside the column, never behind text or rules. The hero keeps the field behind it.
+   */
+  main .container:not([data-field-hero] .container) {
+    background-color: var(--paper);
+  }
+
+  /*
    * Hairline that begins and ends with the text, at every width. A border on the container
    * would run through its padding and touch the window edges on phones, so the rule is drawn
    * as a pseudo-element inset by the same gutters.

@@ -37,6 +37,7 @@ const {
   data-size={size}
   data-flush-top={flushTop}
   data-tight={tight}
+  data-bordered={bordered}
   id={id}
 >
   <div class:list={['container', bordered && 'rule-bottom']}>
@@ -48,31 +49,40 @@ const {
   /* Vertical rhythm lives on the section; the rule sits on the container so it runs to the
      width of the content, as in the design. Only the footer's rule spans the whole window. */
   .section {
+    --section-end: clamp(48px, 7vw, 104px);
     padding-top: clamp(48px, 7vw, 104px);
   }
 
   .section[data-size='lead'] {
+    --section-end: clamp(56px, 8vw, 120px);
     padding-top: clamp(56px, 8vw, 120px);
+  }
+
+  /* Page header: the design keeps a tighter gap between the lede and its rule. */
+  .section[data-size='header'] {
+    --section-end: clamp(32px, 4vw, 56px);
+  }
+
+  .section[data-tight='true'] {
+    --section-end: clamp(30px, 4vw, 60px);
   }
 
   .section[data-flush-top='true'] {
     padding-top: 0;
   }
 
+  /* The space above the rule belongs to the block, so the opaque container covers it. */
   .container {
-    padding-bottom: clamp(48px, 7vw, 104px);
+    padding-bottom: var(--section-end);
   }
 
-  .section[data-size='lead'] .container {
-    padding-bottom: clamp(56px, 8vw, 120px);
+  /* With no rule, the space under the content is a gap, and the background field shows in it
+     (wiki: Background field). */
+  .section[data-bordered='false'] {
+    padding-bottom: var(--section-end);
   }
 
-  /* Page header: the design keeps a tighter gap between the lede and its rule. */
-  .section[data-size='header'] .container {
-    padding-bottom: clamp(32px, 4vw, 56px);
-  }
-
-  .section[data-tight='true'] .container {
-    padding-bottom: clamp(30px, 4vw, 60px);
+  .section[data-bordered='false'] .container {
+    padding-bottom: 0;
   }
 </style>

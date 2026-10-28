@@ -25,7 +25,10 @@ so moving the pointer across an area doesn't flicker. The whole lattice drifts a
 | :--------------------------------- | :------------ | :--------------------------------- |
 | Max depth                          | 6             | 4                                  |
 | Pointer reach (`POINTER_DETAIL_*`) | 0.85          | 0.45                               |
-| Line alpha (`LINE_ALPHA_*`)        | 0.18          | 0.05                               |
+| Line alpha (`LINE_ALPHA_*`)        | 0.18          | 0.11                               |
+
+Away from the hero the field shows only between content blocks (see Placement), so its alpha
+can sit closer to the hero's than a level drawn behind text could.
 
 The home hero is marked with `[data-field-hero]`. Its closing rule is the threshold: lines above
 it are drawn at hero strength and lines below it much fainter **in the same frame**, so the
@@ -51,6 +54,22 @@ Behind all content but above the page background. The header, footer, form field
 and tags keep their own `--paper` background, so the field runs behind the page, not through
 the chrome or the controls. Hidden in print.
 
+**Content blocks are opaque** (2026-10-28). Every `.container` inside `<main>` has the `--paper`
+background (`utilities.css`), except inside the hero (`[data-field-hero]`), which keeps the
+field behind it. A block is plain from its first line down to and including its rule; the
+field shows in the gaps between blocks and, on screens wider than the 1240px column, beside it.
+On phones the column is the full width, so the gaps are full-width bands.
+
+That only works if the space between blocks lies **outside** the containers:
+
+- `Section` puts its top space on the section. The space above a rule stays in the container;
+  with `bordered={false}` the space under the content moves to the section too.
+- Case study, insight and 404 use margins, not padding, for the space above, after the
+  insight's head rule and below the article.
+
+A new page or block keeps this by using `Section`, or by putting the space around its
+`.container` in margins or on a wrapper element.
+
 ## Safeguards
 
 - `aria-hidden="true"`, `pointer-events: none`, no content.
@@ -75,7 +94,7 @@ you're most likely to touch:
 | `MAX_DEPTH_HERO` / `MAX_DEPTH_AMBIENT`       | 6 / 4       | Smallest cell size                                                 |
 | `POINTER_DETAIL_HERO` / `_AMBIENT`           | 0.85 / 0.45 | How dense and how far the pointer's effect reaches                 |
 | `DRIFT_DETAIL`, `DRIFT_COUNT`                | 0.35, 3     | Liveliness without a pointer                                       |
-| `LINE_ALPHA_HERO` / `_AMBIENT`               | 0.18 / 0.05 | Line strength                                                      |
+| `LINE_ALPHA_HERO` / `_AMBIENT`               | 0.18 / 0.11 | Line strength                                                      |
 | `HERO_HOLD` / `HERO_RELEASE`                 | 0.72 / 0.3  | Where the hero hands over                                          |
 | `SPLIT_DURATION_MS` / `COLLAPSE_DURATION_MS` | 240 / 420   | Open and close speed                                               |
 | `MAX_CELL_FRACTION`                          | 1.1         | Largest cell relative to the viewport; too tight looks like a grid |

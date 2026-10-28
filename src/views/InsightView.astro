@@ -90,8 +90,11 @@ if (hasBody) {
 </BaseLayout>
 
 <style>
+  /* Space above the article, after the head's rule and below the article is margin, outside
+     the opaque containers, so the background field shows there (wiki: Background field). */
   .head {
-    padding-block: clamp(40px, 6vw, 88px) clamp(32px, 4vw, 56px);
+    margin-top: clamp(40px, 6vw, 88px);
+    padding-bottom: clamp(32px, 4vw, 56px);
   }
 
   h1 {
@@ -103,7 +106,7 @@ if (hasBody) {
   }
 
   .hero-image {
-    padding-top: clamp(28px, 4vw, 56px);
+    margin-top: clamp(28px, 4vw, 56px);
   }
 
   .body {
@@ -180,6 +183,6 @@ if (hasBody) {
 
   .closing {
     padding-top: clamp(28px, 3.5vw, 48px);
-    padding-bottom: clamp(56px, 8vw, 120px);
+    margin-bottom: clamp(56px, 8vw, 120px);
   }
 </style>
