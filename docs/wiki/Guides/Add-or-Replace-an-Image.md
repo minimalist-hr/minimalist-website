@@ -34,6 +34,50 @@ its alt text in `src/lib/images.ts`. Done; every slot using that key picks it up
    - data modules: `image` in `services.ts` or `steps.ts` (typed `ImageKey`, so typos fail);
    - in a view: `<ImageFrame image="<key>" locale={locale} caption="…" ratio="4/3" />`.
 
+## Light-theme versions
+
+A mockup on its own dark background stays dark when the site switches to light. Give it a light
+version: the same picture on a light background, saved next to it as
+`src/assets/images/<key>-light.png` (or `.jpg`). Same size and framing, so nothing shifts. Nothing
+else to register: `src/lib/images.ts` finds the file and `ImageFrame` shows the one that matches
+the theme. The alt text is shared.
+
+- Background: a warm light grey a little darker than the light `--paper`, so light screens inside
+  the devices stand off it; soft shadows under the devices.
+- The Lift-Mučnjak light versions were derived from the dark ones: the background was traced up
+  to the devices' 1px rim and redrawn, the devices left untouched. Exports from the mockup's
+  source file work just as well.
+- Photographs don't need one.
+
+How it loads is in [Theme](/How-It-Works/Theme#images).
+
+## Notes on screenshots
+
+Case study screenshots can carry notes: a box around a feature and a leader line to a short
+label (see [Design system → Images](/Product/Design-System#images)). They're defined next to the
+alt text, in `notes` in `src/lib/images.ts`, and shown where the view uses `AnnotatedImage`
+instead of `ImageFrame` (the case study hero and gallery).
+
+```ts
+'work-lift-mucnjak-forms': [
+  {
+    box: [11.6, 49.1, 27.3, 36.5], // left, top, width, height
+    path: [[38.9, 80], [52, 80]], // from the box edge to where the label starts
+    text: { en: 'Fault report, straight to the technician on call', hr: '…' },
+  },
+],
+```
+
+- All numbers are percent of the image. Measure them on the file; they hold because the slot's
+  ratio is the file's (16:9 hero, 4:5 gallery), so nothing is cropped.
+- `path` starts on the box edge (the square sits there) and every segment is horizontal or
+  vertical. The label continues the last segment's direction: to the right, left, below or above.
+- Labels sit in the screenshot's empty background, never over the picture. A label wraps before
+  the image edge; when something else is in its way, `width` caps it (percent of the image).
+- Two or three notes per image, a few words each, in the brand voice; both languages (a missing
+  `hr` fails the build). Check both languages at 960px and 1440px: Croatian runs longer.
+- The same positions serve the light-theme version, which has the same framing.
+
 ## How `ImageFrame` behaves
 
 | Prop       | Default                          | Notes                                                           |

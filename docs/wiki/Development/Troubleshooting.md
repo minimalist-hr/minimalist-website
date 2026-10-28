@@ -1,5 +1,12 @@
 # Troubleshooting
 
+## Dev server
+
+| Symptom                                                   | Cause                                                               | Fix                                                                                                |
+| :-------------------------------------------------------- | :------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------- |
+| `pnpm dev`: "Another astro dev server is already running" | One is running already, maybe in the background (`.astro/dev.json`) | Use it, or `pnpm astro dev stop` and start again                                                   |
+| `pnpm dev` returns at once and prints JSON                | Astro detected an AI agent and started the server in the background | Expected; `pnpm astro dev logs` / `stop`. Run it in your own terminal to keep it in the foreground |
+
 ## Build and type checks
 
 | Symptom                                                            | Cause                                                 | Fix                                                                                            |

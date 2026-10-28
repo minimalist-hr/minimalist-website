@@ -93,6 +93,14 @@ Inline SVG, 24px box, 1.5px stroke, square caps, `currentColor`. No rounding exc
   is the owner's own photograph (4:5); case study images are real screenshots (PNG).
 - **Type on an image** (not used today): darken the image to 42% brightness in the file and set
   paper-coloured type at full opacity. No scrims or gradients; at least 4.5:1 contrast.
+- **Notes on screenshots** (2026-10-28, case study only): a hairline box around a feature, the
+  brand's square on its edge and an axis-aligned leader line out to a short uppercase label.
+  Boxes and squares are `--ink` with a `--paper` edge, so they read on light and dark screens;
+  lines are `--graphite`; labels are `--ink-2` label type. Labels sit only on the mockup's own
+  plain background, which matches the page in both themes, never over the picture, so the
+  type-on-image rule above doesn't apply. Below md the lines go, the squares carry numbers and
+  the labels run as a numbered list under the image. Component: `AnnotatedImage`; how to add
+  them: [Add or replace an image](/Guides/Add-or-Replace-an-Image#notes-on-screenshots).
 - A slot without an image shows the striped placeholder with its caption, e.g.
   `product shot / core banking console`.
 
@@ -128,6 +136,7 @@ nothing is hidden without JavaScript, and reduced motion disables all animation.
 | `CtaBand`                                                                 | Closing line, primary button and next-section link                                         |
 | `Section`, `SectionHeader`, `PageHeader`                                  | Page rhythm, section titles with an optional link, page titles                             |
 | `ImageFrame`                                                              | Image cropped to a ratio, or the striped placeholder                                       |
+| `AnnotatedImage`                                                          | `ImageFrame` plus the image's notes (case study screenshots)                               |
 | `WorkCard`, `WorkRow`                                                     | Case study on the home page / Work list                                                    |
 | `InsightCard`, `InsightRow`                                               | Insight on the home page / Insights list                                                   |
 | `ServiceCard`, `NumberedBlock`, `DetailPair`                              | Services and steps                                                                         |

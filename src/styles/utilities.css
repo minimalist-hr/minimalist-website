@@ -11,6 +11,25 @@
   }
 
   /*
+   * The content column is opaque (wiki: Background field): below the hero, everything in <main>
+   * sits on paper and the field shows only beside it. The hero keeps the field behind it. Once
+   * the window is wider than the column, hairlines close its sides, meeting the hero's closing
+   * rule and the footer's top rule. Narrower, the column fills the window and the sides stay
+   * open, so no line sits on the screen edge.
+   */
+  main > :not([data-field-hero]) {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    background-color: var(--paper);
+  }
+
+  @media (min-width: 78rem) {
+    main > :not([data-field-hero]) {
+      border-inline: var(--hairline) solid var(--rule);
+    }
+  }
+
+  /*
    * Hairline that begins and ends with the text, at every width. A border on the container
    * would run through its padding and touch the window edges on phones, so the rule is drawn
    * as a pseudo-element inset by the same gutters.

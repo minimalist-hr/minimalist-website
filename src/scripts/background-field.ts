@@ -14,8 +14,9 @@
  * replaced. The lattice also drifts a few pixels a second, so the structure never sits still.
  *
  * One canvas serves the whole site. The hero runs deeper, brighter and more responsive to the
- * pointer; below the hero, and on pages without one, the same partition runs shallow and faint so
- * it never competes with the text.
+ * pointer; below the hero, and on pages without one, the same partition runs shallower and
+ * fainter. There it shows only beside the content column, which is opaque (utilities.css), so
+ * it never runs behind text.
  *
  * Canvas 2D rather than WebGL: a frame is a few hundred stroked rectangles over a tree of the same
  * order, so the work is trivial for a CPU and pixel-exact hairlines matter more than shading power.
@@ -53,10 +54,12 @@ export const MAX_CELL_FRACTION = 1.1;
 /**
  * Line alpha over the hero and away from it, before the theme's own scale. The two are drawn
  * in the same frame, divided at the hero's closing rule, so the boundary is a visible edge
- * rather than something that only happens over a screenful of scrolling.
+ * rather than something that only happens over a screenful of scrolling. The content column is
+ * opaque, so away from the hero the field only shows beside it and runs at the hero's strength;
+ * only the depth and the pointer's reach still drop below the hero.
  */
 export const LINE_ALPHA_HERO = 0.18;
-export const LINE_ALPHA_AMBIENT = 0.05;
+export const LINE_ALPHA_AMBIENT = 0.18;
 /** Alpha of the largest cells relative to the smallest; deeper cells read stronger. */
 export const DEPTH_ALPHA_FLOOR = 0.7;
 

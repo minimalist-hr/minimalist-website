@@ -31,7 +31,8 @@ before it.
 ### Home
 
 1. **Hero:** studio label, rotating headline (four phrases), lede, "Start a project" and
-   "See the work", scroll cue. The background field runs at full strength here.
+   "See the work", scroll cue. The background field runs at full strength here; the label,
+   headline, lede and scroll cue sit on blurred patches of it.
 2. **Selected work:** cards for featured case studies, with link to Work.
 3. **What we do:** the four services, one line each, with images.
 4. **How we work:** the six steps on one rule.
@@ -45,8 +46,8 @@ before it.
 - **Work list:** page header, then one row per case study, image beside text, alternating
   sides from 960px up. In-progress entries show "[ case study in progress ]" instead of a link.
 - **Case study:** back link, title, metadata row (client, sector, engagement or year, scope,
-  website), 16:9 hero image, labelled sections (Context / The problem / What we removed /
-  What we built), gallery, tech stack (note + tool tags), results, client quote, CTA band.
+  website), 16:9 hero image with notes, labelled sections (Context / The problem / What we removed /
+  What we built), gallery (with notes), tech stack (note + tool tags), results, client quote, CTA band.
   Every block is optional apart from the title and metadata; only what the entry provides renders.
 
 ### Services

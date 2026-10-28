@@ -73,7 +73,8 @@
 ## Commands
 
 ```
-pnpm dev                 # local dev server
+pnpm dev                 # local dev server (from an agent it runs in the background; one per project)
+pnpm astro dev stop      # stop it; `status` and `logs` also exist
 pnpm run lint            # eslint (TS, Astro, a11y rules)
 pnpm run format          # prettier --write (format:check in CI)
 pnpm run check           # astro check (site types) + tsc for the Worker
