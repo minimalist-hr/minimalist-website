@@ -11,7 +11,9 @@ each key with English and Croatian alt text in `src/lib/images.ts`. See
 [Add or replace an image](/Guides/Add-or-Replace-an-Image). Typical keys:
 `work-<client>-cover`, `work-<client>-hero`, `work-<client>-<detail>`. Mockups on a dark background
 also need a light-theme version, `<key>-light.png` (see
-[Light-theme versions](/Guides/Add-or-Replace-an-Image#light-theme-versions)).
+[Light-theme versions](/Guides/Add-or-Replace-an-Image#light-theme-versions)). The hero and gallery
+screenshots can carry a few notes on their empty background (see
+[Notes on screenshots](/Guides/Add-or-Replace-an-Image#notes-on-screenshots)).
 
 ## 2. Write the English file
 

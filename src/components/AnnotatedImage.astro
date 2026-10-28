@@ -1,0 +1,221 @@
+---
+/**
+ * An image slot with notes (wiki: Design system): for the case study's screenshots, whose empty
+ * background would otherwise be just that. Each note is a hairline box around a feature, a
+ * small square on its edge and a leader line out into the background, ending in a label. The
+ * notes live with the image in src/lib/images.ts; an image without notes renders as a plain
+ * ImageFrame.
+ *
+ * From md up the labels sit on the image. Below md they would be too small there, so the lines
+ * go, the squares carry numbers, and the same labels run as a numbered list under the image. It
+ * is one list either way, so assistive technology reads the notes once, after the image.
+ *
+ * Colours are theme tokens, so the notes follow the theme with the image (wiki: Theme).
+ */
+import type { ComponentProps } from 'astro/types';
+
+import { pick } from '../i18n/localized';
+import { studioImage, type ImageNote } from '../lib/images';
+import ImageFrame from './ImageFrame.astro';
+
+type Props = ComponentProps<typeof ImageFrame>;
+
+const props = Astro.props;
+const { image, locale, ratio = '4/3' } = props;
+const notes = (locale && studioImage(image)?.notes) || [];
+
+/** Where a label sits: it continues the direction of the line's last segment. */
+function side(path: ImageNote['path']): 'right' | 'left' | 'down' | 'up' {
+  const [x1 = 0, y1 = 0] = path.at(-2) ?? [];
+  const [x2 = 0, y2 = 0] = path.at(-1) ?? [];
+  if (x2 !== x1) return x2 > x1 ? 'right' : 'left';
+  return y2 > y1 ? 'down' : 'up';
+}
+
+const number = (index: number) => String(index + 1).padStart(2, '0');
+---
+
+{notes.length > 0 && locale ? (
+  <div class="annotated" style={`--notes-ratio: ${ratio}`}>
+    <ImageFrame {...props} />
+    <div class="overlay" aria-hidden="true">
+      <svg class="lines" viewBox="0 0 100 100" preserveAspectRatio="none">
+        {notes.map((note) => (
+          <polyline points={note.path.map(([x, y]) => `${x},${y}`).join(' ')} />
+        ))}
+      </svg>
+      {notes.map((note, index) => {
+        const [x, y, w, h] = note.box;
+        const [mx, my] = note.path[0] ?? [x, y];
+        return (
+          <>
+            <span class="box" style={`left: ${x}%; top: ${y}%; width: ${w}%; height: ${h}%`} />
+            <span class="marker" style={`left: ${mx}%; top: ${my}%`}>
+              {number(index)}
+            </span>
+          </>
+        );
+      })}
+    </div>
+    <ol class="notes">
+      {notes.map((note, index) => {
+        const [x, y] = note.path.at(-1) ?? [0, 0];
+        return (
+          <li
+            class="note"
+            data-side={side(note.path)}
+            style={`--x: ${x}%; --y: ${y}%${note.width ? `; --room: ${note.width}%` : ''}`}
+          >
+            <span class="number" aria-hidden="true">
+              {number(index)}
+            </span>
+            <span>{pick(note.text, locale)}</span>
+          </li>
+        );
+      })}
+    </ol>
+  </div>
+) : (
+  <ImageFrame {...props} />
+)}
+
+<style>
+  .annotated {
+    position: relative;
+  }
+
+  /* The overlay matches the image exactly, so the notes' percentages are the image's. */
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    aspect-ratio: var(--notes-ratio);
+    pointer-events: none;
+  }
+
+  /* Ink with a paper edge, so a box and a square read on a light screen and a dark one alike. */
+  .box {
+    position: absolute;
+    border: var(--hairline) solid var(--ink);
+    outline: var(--hairline) solid var(--paper);
+  }
+
+  .marker {
+    position: absolute;
+    display: grid;
+    width: 20px;
+    height: 20px;
+    place-items: center;
+    translate: -50% -50%;
+    outline: var(--hairline) solid var(--paper);
+    background: var(--ink);
+    font-size: var(--text-label-sm);
+    font-weight: var(--weight-medium);
+    font-variant-numeric: tabular-nums;
+    color: var(--paper);
+  }
+
+  .lines {
+    display: none;
+  }
+
+  .notes {
+    display: grid;
+    gap: 10px;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .note {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    line-height: 1.5;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+
+  .number {
+    flex: none;
+    font-variant-numeric: tabular-nums;
+    color: var(--graphite);
+  }
+
+  /* ---- Desktop design (md and up): the labels move onto the image ---- */
+  @media (min-width: 60rem) {
+    .lines {
+      display: block;
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .lines polyline {
+      fill: none;
+      stroke: var(--graphite);
+      stroke-width: var(--hairline);
+      vector-effect: non-scaling-stroke;
+    }
+
+    /* Just the brand's closing square at the start of each line. */
+    .marker {
+      width: 7px;
+      height: 7px;
+      font-size: 0;
+    }
+
+    .notes {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      aspect-ratio: var(--notes-ratio);
+      margin: 0;
+      pointer-events: none;
+    }
+
+    /* A label wraps before it would leave the image or reach its note's --room. */
+    .note {
+      --gap: 10px;
+      position: absolute;
+      width: max-content;
+      max-width: min(30ch, var(--room, 100%), calc(100% - var(--x) - var(--gap)));
+      line-height: 1.4;
+    }
+
+    .number {
+      display: none;
+    }
+
+    .note[data-side='right'] {
+      top: var(--y);
+      left: calc(var(--x) + var(--gap));
+      translate: 0 -50%;
+    }
+
+    .note[data-side='left'] {
+      top: var(--y);
+      right: calc(100% - var(--x) + var(--gap));
+      max-width: min(30ch, var(--room, 100%), calc(var(--x) - var(--gap)));
+      translate: 0 -50%;
+      text-align: right;
+    }
+
+    .note[data-side='down'] {
+      top: calc(var(--y) + 8px);
+      left: var(--x);
+    }
+
+    .note[data-side='up'] {
+      bottom: calc(100% - var(--y) + 8px);
+      left: var(--x);
+    }
+  }
+</style>
