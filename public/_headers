@@ -1,4 +1,4 @@
-# Response headers for files served from dist/ (Cloudflare static assets; plan §11.3).
+# Response headers for files served from dist/ (Cloudflare static assets; wiki: Security).
 #
 # The Content-Security-Policy with script and style hashes is a <meta> tag on each page
 # (astro.config.mjs). A <meta> tag cannot set frame-ancestors, so that one directive is sent

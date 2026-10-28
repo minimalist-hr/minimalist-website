@@ -4,7 +4,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 
 /**
- * WCAG 2.2 AA checks with axe on every page, in both themes and both layouts (plan §11.2).
+ * WCAG 2.2 AA checks with axe on every page, in both themes and both layouts (wiki: Accessibility).
  * The page list comes from the built sitemap, so new pages are covered automatically;
  * the two 404 pages are added because they are not in the sitemap.
  */

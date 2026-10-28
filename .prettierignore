@@ -3,7 +3,6 @@ dist/
 .wrangler/
 design/
 pnpm-lock.yaml
-MINIMALIST-WEBSITE-PLAN.md
 
 # Hand-maintained deployment config; keep its formatting as written.
 .gitlab-ci.yml

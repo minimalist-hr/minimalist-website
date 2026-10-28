@@ -1,5 +1,5 @@
 /**
- * Background field (plan §3.5, approved addition 2026-09-22): an adaptive quadtree, drawn.
+ * Background field (wiki: Motion, approved addition 2026-09-22): an adaptive quadtree, drawn.
  *
  * The visualisation is the algorithm itself. The plane is tiled with root cells; a cell splits
  * into four while it is still large compared with its distance to a point of interest, and stops
@@ -73,7 +73,7 @@ export const HERO_HOLD = 0.72;
 export const HERO_RELEASE = 0.3;
 
 /**
- * How long a cell takes to open (the Reveal duration, plan §3.5) and how long it takes to
+ * How long a cell takes to open (the Reveal duration, wiki: Motion) and how long it takes to
  * collapse again. A cell also fades with its size rather than arriving at full strength, which
  * is what keeps a burst of small cells from snapping into place. Leaving is slower than
  * arriving, so passing the pointer over an area does not flicker.

@@ -1,7 +1,7 @@
 /**
- * The inquiry form's contract (plan §9.1), shared by the form (src/components/ContactForm.astro)
- * and the Worker that receives it (src/worker/). Keep this file free of browser, Astro and
- * Workers APIs so both sides can import it.
+ * The inquiry form's contract (wiki: Contact form), shared by the form
+ * (src/components/ContactForm.astro) and the Worker that receives it (src/worker/). Keep this
+ * file free of browser, Astro and Workers APIs so both sides can import it.
  */
 
 export const timelineValues = ['asap', '1-3m', '3-6m', 'exploring'] as const;

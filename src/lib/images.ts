@@ -3,10 +3,10 @@ import type { ImageMetadata } from 'astro';
 import type { Localized } from '../i18n/localized';
 
 /**
- * The photographs used across the site (plan §3.4).
+ * The photographs used across the site (wiki: Design system).
  *
  * The files in `src/assets/images/` are full colour and untreated, which is a deliberate
- * departure from the brand's greyscale rule (plan §3.4). Nothing is filtered in CSS either
+ * departure from the brand's greyscale rule (wiki: Design system). Nothing is filtered in CSS either
  * way. Astro crops each one to the ratio the slot asks for and emits the responsive sizes.
  *
  * Alt text lives here rather than beside the copy, so one image has one description in both

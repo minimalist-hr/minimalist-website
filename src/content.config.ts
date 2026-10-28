@@ -6,7 +6,7 @@ import { defineCollection } from 'astro:content';
 import { locales } from './i18n/config';
 
 /**
- * Content collections (plan §8). Each entry exists once per language in its own folder,
+ * Content collections (wiki: Data model). Each entry exists once per language in its own folder,
  * `work/en/<slug>.md` and `work/hr/<slug>.md`, where the file name is that language's URL slug.
  * Entries are paired across languages by `translationKey`.
  */
@@ -21,7 +21,7 @@ const work = defineCollection({
     translationKey: z.string(),
     sector: z.string(),
     year: z.number().int(),
-    /** Shown only with the client's written permission (plan §8). */
+    /** Shown only with the client's written permission (wiki: Data model). */
     client: z.string().optional(),
     engagement: z.string().optional(),
     scope: z.string().optional(),
@@ -46,7 +46,7 @@ const work = defineCollection({
     heroCaption: z.string().optional(),
     /**
      * Case study body as labelled blocks, in the design's order:
-     * Context / The problem / What we removed / What we built (plan §8).
+     * Context / The problem / What we removed / What we built (wiki: Data model).
      * `lead: true` sets a paragraph in ink rather than secondary text.
      */
     sections: z

@@ -1,5 +1,5 @@
 /*
- * Scroll reveal states (plan §3.5), set by src/scripts/reveal.ts only on elements that start
+ * Scroll reveal states (wiki: Motion), set by src/scripts/reveal.ts only on elements that start
  * below the fold, and removed once they have entered. Unlayered, so the states override
  * component styles; `:root` raises them above a component's own single-class rules.
  *
@@ -70,7 +70,7 @@
 }
 
 /*
- * Page (plan §3.5): a 240ms crossfade between pages, using cross-document view transitions.
+ * Page (wiki: Motion): a 240ms crossfade between pages, using cross-document view transitions.
  * Browsers without support switch pages instantly, as before. Reduced motion never opts in.
  */
 @media (prefers-reduced-motion: no-preference) {

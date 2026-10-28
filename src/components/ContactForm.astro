@@ -1,6 +1,6 @@
 ---
 /**
- * Project inquiry form (plan §9). Field names, limits and allowed values come from
+ * Project inquiry form (wiki: Contact form). Field names, limits and allowed values come from
  * src/lib/inquiry.ts, the same contract the Worker validates against.
  *
  * With JavaScript (the script below): inline bilingual validation, Turnstile, a fetch submit
@@ -146,7 +146,7 @@ const messages = {
       </label>
     </div>
 
-    <!-- Turnstile renders here only when it needs an interaction (plan §9). -->
+    <!-- Turnstile renders here only when it needs an interaction (wiki: Contact form). -->
     <div data-turnstile data-sitekey={PUBLIC_TURNSTILE_SITE_KEY} data-language={locale}></div>
 
     <p class="notice" data-form-error role="alert" hidden></p>
@@ -259,7 +259,7 @@ const messages = {
     color: var(--ink-2);
   }
 
-  /* Name/email and company/role sit in pairs from sm up (plan §5.2). */
+  /* Name/email and company/role sit in pairs from sm up (wiki: Responsive layout). */
   @media (min-width: 40rem) {
     .pairs {
       grid-template-columns: repeat(2, minmax(0, 1fr));

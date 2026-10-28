@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Accessibility audit (plan §11.2), run in CI on merge requests (`pnpm run test:a11y`).
+ * Accessibility audit (wiki: Accessibility), run in CI on merge requests (`pnpm run test:a11y`).
  * Serves the built site on the Workers runtime, so headers, 404 handling and the Worker
  * behave as in production. Run `pnpm run build` first.
  * `test:a11y` (CI) runs the two Chromium projects; `test:a11y:browsers` also runs Firefox
