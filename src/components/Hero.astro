@@ -85,6 +85,26 @@ const [first, ...rest] = phrases;
   </div>
 </section>
 
+<script>
+  // Fits the headline's blurred patch to its widest phrase (see the styles). The phrases share
+  // one grid cell, so the widest one sets the patch for all of them.
+  const heading = document.querySelector<HTMLElement>('.hero h1');
+  if (heading) {
+    const fit = (): void => {
+      const left = heading.getBoundingClientRect().left;
+      let right = left;
+      heading.querySelectorAll('.phrase').forEach((phrase) => {
+        const range = document.createRange();
+        range.selectNodeContents(phrase);
+        for (const rect of range.getClientRects()) right = Math.max(right, rect.right);
+      });
+      heading.style.setProperty('--phrase-width', `${Math.ceil(right - left)}px`);
+    };
+    new ResizeObserver(fit).observe(heading);
+    void document.fonts.ready.then(fit);
+  }
+</script>
+
 <style>
   /*
    * The hero's closing rule runs the full width of the window, not the width of the text like
@@ -122,12 +142,21 @@ const [first, ...rest] = phrases;
   h1::before,
   .lede::before,
   .scroll::before {
+    --blur-reach: clamp(16px, 2vw, 28px);
     content: '';
     position: absolute;
-    inset: -12px clamp(-28px, -2vw, -16px);
+    inset: -12px calc(-1 * var(--blur-reach));
     z-index: -1;
     pointer-events: none;
     backdrop-filter: blur(8px);
+    /* Lets a trace of the sharp lines through, so the patch reads as frosted, not solid. */
+    opacity: 0.7;
+  }
+
+  /* The headline's box is as wide as its max-width; the script below measures the widest
+     phrase, so the patch ends with the text instead. */
+  h1::before {
+    right: calc(100% - var(--phrase-width, 100%) - var(--blur-reach));
   }
 
   .studio-label {

@@ -71,11 +71,13 @@ A new page gets this as long as its blocks are direct children of `<main>` (any 
 exception, as the hero has.
 
 **Blur behind the hero text** (2026-10-28). The studio label, the headline, the lede and the
-scroll cue each sit on a patch of the field blurred by 8px (`backdrop-filter`), reaching 12px
+scroll cue each sit on a patch of the field blurred by 8px (`backdrop-filter`) at 70% opacity,
+so a trace of the sharp lines shows through. Each patch reaches 12px
 above and below the text box and 16–28px to the sides. It's a `::before` at `z-index: -1` in
 `Hero.astro`, so the layout doesn't move. The vertical reach stays under half the smallest gap
-between the elements, so no two patches overlap and blur twice. The headline's patch is as wide
-as its box, which fits the longest phrase. The scroll cue animates its text and arrow rather
+between the elements, so no two patches overlap and blur twice. The headline's box is as wide as its
+max-width, well past the text, so a small script in `Hero.astro` measures the widest of the
+four phrases (`--phrase-width`, again on resize and font load) and the patch ends there. The scroll cue animates its text and arrow rather
 than itself, so its patch stays still. Browsers without `backdrop-filter` show the field
 unblurred.
 
