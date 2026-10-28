@@ -46,8 +46,27 @@ position is pure CSS from `<html data-theme>`. On click the script:
 - **Turnstile** renders with `theme: 'light'` or `'dark'` from `data-theme` at load.
 - **Background field** reads `--field-line` and `--field-alpha-scale` (0.5 in light, because
   the same grey reads heavier on paper).
+- **Images** with a light-theme version (`<key>-light.png`, see below) switch with it.
 - **Emails** don't follow the site theme: they're light by default and switch to dark in clients
   that honour `prefers-color-scheme` (Apple Mail, iCloud).
+
+## Images
+
+An image registered with a light-theme version renders twice in its `ImageFrame`: the dark
+version (`data-theme-image="dark"`) and the light one (`data-theme-image="light"`). CSS hides
+the one that doesn't match `<html data-theme>`, so toggling swaps them at once; without
+JavaScript the dark one shows.
+
+- The dark version keeps the slot's loading (`priority` → eager). The light version is always
+  `loading="lazy"`, and a hidden lazy image is never fetched, so the dark theme never downloads
+  it.
+- In the light theme the light version loads as soon as it shows, and a lazy dark version is
+  never fetched. The one exception is a `priority` slot (the case study hero): its dark version
+  still downloads, because it loads eagerly for the default theme, so a light-theme visitor
+  downloads that one image twice.
+- After a toggle the newly shown version loads then; the frame is briefly empty on a slow
+  connection.
+- The hidden `<img>` is `display: none`, so assistive technology meets one image with one alt.
 
 ## Colours outside CSS
 

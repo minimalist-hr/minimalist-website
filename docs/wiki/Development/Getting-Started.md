@@ -22,9 +22,16 @@ pnpm install
 pnpm dev
 ```
 
-Open http://localhost:4321. English is at `/`, Croatian at `/hr/`. Edits reload instantly.
+Open http://localhost:4321. English is at `/`, Croatian at `/hr/`. Edits reload instantly;
+a change to `astro.config.mjs` restarts the server by itself.
 
 `pnpm dev` doesn't run the Worker, so the contact form can't send there. For that, see below.
+
+Only one dev server runs per project: Astro records it in `.astro/dev.json`, and a second
+`pnpm dev` stops with "Another astro dev server is already running". `pnpm astro dev status`
+shows the running one and `pnpm astro dev stop` stops it. Started by an AI agent (or with
+`--background`), the server runs in the background instead of the terminal; `pnpm astro dev
+logs` shows its output.
 
 ## Run the production setup locally
 
@@ -80,6 +87,9 @@ Read next: [Workflow](/Development/Workflow), [Coding conventions](/Development/
 
 ```bash
 pnpm dev                      # dev server, http://localhost:4321
+pnpm astro dev status         # is a dev server running, and where
+pnpm astro dev stop           # stop it (also a background one)
+pnpm astro dev logs           # output of a background dev server
 pnpm run build                # static build to dist/
 pnpm run preview              # serve dist/ without the Worker
 pnpm exec wrangler dev        # dist/ + Worker, http://localhost:8787 (needs .dev.vars)

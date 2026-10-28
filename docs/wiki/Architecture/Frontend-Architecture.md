@@ -87,6 +87,7 @@ No framework runtime. Each script is a few lines to a few hundred, bundled and h
 | Header focus fix | `Header.astro`                                                | Every page                       | Scrolls focused elements clear of the sticky header (WebKit)   |
 | Scroll reveal    | `src/scripts/reveal.ts` via `BaseLayout`                      | Every page                       | Enter and Reveal motion for content below the fold             |
 | Background field | `src/scripts/background-field.ts` via `BackgroundField.astro` | Every page                       | The decorative canvas                                          |
+| Headline blur    | `Hero.astro`                                                  | Home                             | Fits the headline's blurred patch to its widest phrase         |
 | Contact form     | `src/scripts/contact-form.ts` via `ContactForm.astro`         | Contact pages                    | Validation, Turnstile, fetch submit, messages                  |
 
 Copy never lives in a script. Components pass strings through `data-*` attributes (the form's
@@ -113,6 +114,11 @@ Never write an `is:inline` script directly. See [Security](/Architecture/Securit
 caller. Images below the fold load lazily; one image per page can pass `priority`. Without a key,
 or with a key that doesn't exist, it renders the striped placeholder. Both reserve the same
 aspect ratio, so there is no layout shift. See [Add or replace an image](/Guides/Add-or-Replace-an-Image).
+
+An image with a light-theme version (`<key>-light.png`) renders both versions and CSS shows the
+one matching `data-theme`; the light one is always lazy ([Theme](/How-It-Works/Theme#images)).
+`AnnotatedImage` wraps `ImageFrame` for the case study hero and gallery and adds the image's
+notes from the registry ([Design system](/Product/Design-System#images)).
 
 ## Build-time helpers
 

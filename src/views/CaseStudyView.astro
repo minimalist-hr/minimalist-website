@@ -7,7 +7,7 @@
 import MetaPanel, { type MetaItem } from '../components/MetaPanel.astro';
 import CtaBand from '../components/CtaBand.astro';
 import CtaLink from '../components/CtaLink.astro';
-import ImageFrame from '../components/ImageFrame.astro';
+import AnnotatedImage from '../components/AnnotatedImage.astro';
 import Quote from '../components/Quote.astro';
 import ResultList from '../components/ResultList.astro';
 import ToolTags from '../components/ToolTags.astro';
@@ -79,7 +79,7 @@ if (website) {
 
     {(heroImage || heroCaption) && (
       <div class="container hero-image">
-        <ImageFrame
+        <AnnotatedImage
           caption={heroCaption ?? ''}
           image={heroImage}
           locale={locale}
@@ -108,7 +108,7 @@ if (website) {
         <div class="gallery">
           {/* Screenshots are 4:5; the placeholders keep the design's 4:3. */}
           {gallery.map((item) => (
-            <ImageFrame
+            <AnnotatedImage
               caption={item.caption}
               image={item.image}
               locale={locale}

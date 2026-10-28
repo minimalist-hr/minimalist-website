@@ -51,6 +51,12 @@ nothing animates layout. Nothing on screen at load waits for a script, so motion
 - The loop stops when the tab is hidden or the canvas is off screen.
 - Shallower tree on phones (one level less).
 - Reduced motion draws one still frame and stops.
+- The hero's four blurred patches (`backdrop-filter`) recompute while the field moves; they're
+  small, and the loop stops off screen like the canvas.
+
+**Theme images.** An image's light-theme version is always lazy, so the default dark theme never
+downloads it. In the light theme a `priority` image (the case study hero) downloads both
+versions. See [Theme](/How-It-Works/Theme#images).
 
 **Worker.** Static files are served without running the Worker. Only `POST /api/contact` and
 missing URLs reach it.
