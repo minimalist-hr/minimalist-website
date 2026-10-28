@@ -11,11 +11,22 @@
   }
 
   /*
-   * Content blocks are opaque (wiki: Background field): the field shows in the space between
-   * them and beside the column, never behind text or rules. The hero keeps the field behind it.
+   * The content column is opaque (wiki: Background field): below the hero, everything in <main>
+   * sits on paper and the field shows only beside it. The hero keeps the field behind it. Once
+   * the window is wider than the column, hairlines close its sides, meeting the hero's closing
+   * rule and the footer's top rule. Narrower, the column fills the window and the sides stay
+   * open, so no line sits on the screen edge.
    */
-  main .container:not([data-field-hero] .container) {
+  main > :not([data-field-hero]) {
+    max-width: var(--container-max);
+    margin-inline: auto;
     background-color: var(--paper);
+  }
+
+  @media (min-width: 78rem) {
+    main > :not([data-field-hero]) {
+      border-inline: var(--hairline) solid var(--rule);
+    }
   }
 
   /*

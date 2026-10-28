@@ -36,29 +36,22 @@ const text = copy[locale];
 ---
 
 <BaseLayout title={text.title} description={text.text} noindex>
-  <div class="page">
-    <section class="container not-found">
-      <p class="label">{text.label}</p>
-      <h1>{text.heading}</h1>
-      <p class="text">{text.text}</p>
-      <Button href={localizedPath('home', locale)}>{text.action}</Button>
-    </section>
-  </div>
+  <section class="container not-found">
+    <p class="label">{text.label}</p>
+    <h1>{text.heading}</h1>
+    <p class="text">{text.text}</p>
+    <Button href={localizedPath('home', locale)}>{text.action}</Button>
+  </section>
 </BaseLayout>
 
 <style>
-  /* The space around the message is outside the opaque container, so the background field
-     shows there (wiki: Background field). */
-  .page {
-    min-height: calc(100svh - var(--header-height) - 240px);
-    padding-block: clamp(56px, 10vw, 150px) clamp(56px, 8vw, 120px);
-  }
-
   .not-found {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: clamp(24px, 3vw, 40px);
+    min-height: calc(100svh - var(--header-height) - 240px);
+    padding-block: clamp(56px, 10vw, 150px) clamp(56px, 8vw, 120px);
   }
 
   .label {

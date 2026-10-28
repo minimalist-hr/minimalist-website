@@ -145,11 +145,8 @@ if (website) {
 </BaseLayout>
 
 <style>
-  /* Space above and below the article is margin, outside the opaque containers, so the
-     background field shows there (wiki: Background field). */
   .head {
-    margin-top: clamp(40px, 6vw, 88px);
-    padding-bottom: clamp(16px, 2vw, 28px);
+    padding-block: clamp(40px, 6vw, 88px) clamp(16px, 2vw, 28px);
   }
 
   h1 {
@@ -168,8 +165,7 @@ if (website) {
     display: flex;
     flex-direction: column;
     gap: clamp(28px, 4vw, 56px);
-    padding-top: clamp(12px, 1.5vw, 20px);
-    margin-bottom: clamp(48px, 7vw, 104px);
+    padding-block: clamp(12px, 1.5vw, 20px) clamp(48px, 7vw, 104px);
   }
 
   .sections {

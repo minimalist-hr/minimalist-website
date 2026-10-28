@@ -27,8 +27,8 @@ so moving the pointer across an area doesn't flicker. The whole lattice drifts a
 | Pointer reach (`POINTER_DETAIL_*`) | 0.85          | 0.45                               |
 | Line alpha (`LINE_ALPHA_*`)        | 0.18          | 0.11                               |
 
-Away from the hero the field shows only between content blocks (see Placement), so its alpha
-can sit closer to the hero's than a level drawn behind text could.
+Away from the hero the field shows only beside the content column (see Placement), so its
+alpha can sit closer to the hero's than a level drawn behind text could.
 
 The home hero is marked with `[data-field-hero]`. Its closing rule is the threshold: lines above
 it are drawn at hero strength and lines below it much fainter **in the same frame**, so the
@@ -54,21 +54,21 @@ Behind all content but above the page background. The header, footer, form field
 and tags keep their own `--paper` background, so the field runs behind the page, not through
 the chrome or the controls. Hidden in print.
 
-**Content blocks are opaque** (2026-10-28). Every `.container` inside `<main>` has the `--paper`
-background (`utilities.css`), except inside the hero (`[data-field-hero]`), which keeps the
-field behind it. A block is plain from its first line down to and including its rule; the
-field shows in the gaps between blocks and, on screens wider than the 1240px column, beside it.
-On phones the column is the full width, so the gaps are full-width bands.
+**The content column is opaque** (2026-10-28). Below the hero, every top-level element of
+`<main>` (`main > :not([data-field-hero])`, in `utilities.css`) is the 1240px column on a
+`--paper` background, so the field never runs behind text, rules or the space between blocks.
+It shows only in the side margins, on windows wider than the column. The hero keeps the field
+behind it.
 
-That only works if the space between blocks lies **outside** the containers:
+From 78rem (1248px) up, the column has a hairline on each side (`--rule`, like the header's
+bottom and the footer's top rule). The lines start at the hero's full-width closing rule (or
+the header) and end at the footer, so the column reads as framed. Narrower windows have no
+margin, so the column fills the window, the sides stay open and no line sits on the screen edge.
+On phones and tablets the field therefore shows only in the hero.
 
-- `Section` puts its top space on the section. The space above a rule stays in the container;
-  with `bordered={false}` the space under the content moves to the section too.
-- Case study, insight and 404 use margins, not padding, for the space above, after the
-  insight's head rule and below the article.
-
-A new page or block keeps this by using `Section`, or by putting the space around its
-`.container` in margins or on a wrapper element.
+A new page gets this as long as its blocks are direct children of `<main>` (any `Section`,
+`article` or wrapper). Something meant to run the full width of the window needs its own
+exception, as the hero has.
 
 ## Safeguards
 
