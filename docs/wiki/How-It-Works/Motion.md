@@ -84,7 +84,8 @@ ink, chips and tool tags on hover, the menu button.
 `src/components/Hero.astro`. Four phrases sit stacked in one grid cell, so the heading is as tall
 as the longest one. A CSS animation (`phrase`, 18s loop) shows each for 4.5s, fading in from
 10px below and out 10px upward. Only the first phrase is exposed to screen readers; the others
-are `aria-hidden`. The scroll cue bobs on a 2.6s loop. With reduced motion only the first phrase
+are `aria-hidden`. The scroll cue's text and arrow bob on a 2.6s loop (the cue itself stays put, so its blurred
+patch does too). With reduced motion only the first phrase
 shows and nothing loops.
 
 ## Design-specified extras

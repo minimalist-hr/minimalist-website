@@ -5,21 +5,21 @@ contact form submission, which passes through the Worker and is emailed.
 
 ## Sources
 
-| Source                | File(s)                                    | Shape                                    | Read by                                     |
-| :-------------------- | :----------------------------------------- | :--------------------------------------- | :------------------------------------------ |
-| Case studies          | `src/content/work/{en,hr}/*.md`            | Content collection `work`                | Home, Work list, case study pages, sitemap  |
-| Insights              | `src/content/insights/{en,hr}/*.md`        | Content collection `insights`            | Home, Insights list, article pages, sitemap |
-| Services              | `src/data/services.ts`                     | `Service[]`                              | Home, Services                              |
-| Steps                 | `src/data/steps.ts`                        | `Step[]`                                 | Home, Approach                              |
-| Skills                | `src/data/skills.ts`                       | `SkillGroup[]`                           | Home, Skills                                |
-| Studio figures        | `src/data/stats.ts`                        | `Stat[]`                                 | Home, About                                 |
-| FAQ                   | `src/data/faq.ts`                          | `FaqItem[]`                              | Services                                    |
-| Manifesto, principles | `src/data/about.ts`                        | `Localized<string>[]`                    | About                                       |
-| Image registry        | `src/lib/images.ts` + `src/assets/images/` | key → file + alt                         | `ImageFrame` everywhere                     |
-| UI strings            | `src/i18n/ui.ts`                           | `Record<Locale, Record<UiKey, string>>`  | Components, Worker auto-reply               |
-| Route map             | `src/i18n/routes.ts`                       | `Record<RouteKey, Record<Locale, path>>` | Navigation, language switch, sitemap        |
-| Site facts and flags  | `src/site.config.ts`                       | `siteConfig`                             | Footer, Legal, Contact, JSON-LD, emails     |
-| Inquiry contract      | `src/lib/inquiry.ts`                       | Constants and types                      | Contact form, Worker                        |
+| Source                | File(s)                                    | Shape                                      | Read by                                     |
+| :-------------------- | :----------------------------------------- | :----------------------------------------- | :------------------------------------------ |
+| Case studies          | `src/content/work/{en,hr}/*.md`            | Content collection `work`                  | Home, Work list, case study pages, sitemap  |
+| Insights              | `src/content/insights/{en,hr}/*.md`        | Content collection `insights`              | Home, Insights list, article pages, sitemap |
+| Services              | `src/data/services.ts`                     | `Service[]`                                | Home, Services                              |
+| Steps                 | `src/data/steps.ts`                        | `Step[]`                                   | Home, Approach                              |
+| Skills                | `src/data/skills.ts`                       | `SkillGroup[]`                             | Home, Skills                                |
+| Studio figures        | `src/data/stats.ts`                        | `Stat[]`                                   | Home, About                                 |
+| FAQ                   | `src/data/faq.ts`                          | `FaqItem[]`                                | Services                                    |
+| Manifesto, principles | `src/data/about.ts`                        | `Localized<string>[]`                      | About                                       |
+| Image registry        | `src/lib/images.ts` + `src/assets/images/` | key → file (+ light version) + alt + notes | `ImageFrame` everywhere                     |
+| UI strings            | `src/i18n/ui.ts`                           | `Record<Locale, Record<UiKey, string>>`    | Components, Worker auto-reply               |
+| Route map             | `src/i18n/routes.ts`                       | `Record<RouteKey, Record<Locale, path>>`   | Navigation, language switch, sitemap        |
+| Site facts and flags  | `src/site.config.ts`                       | `siteConfig`                               | Footer, Legal, Contact, JSON-LD, emails     |
+| Inquiry contract      | `src/lib/inquiry.ts`                       | Constants and types                        | Contact form, Worker                        |
 
 ## Relationships
 
@@ -125,6 +125,10 @@ Content collections use plain strings; an unknown key there falls back to the pl
 
 - The file is `src/assets/images/<key>.jpg` (photographs) or `.png` (screenshots).
 - A key without a file fails the build.
+- `<key>-light.<ext>` next to the file is picked up as the light-theme version (`light`).
+- `notes` holds optional notes per key for case study screenshots: a box, a leader line path
+  and the label in both languages (`ImageNote`; a missing `hr` fails the build). See
+  [Notes on screenshots](/Guides/Add-or-Replace-an-Image#notes-on-screenshots).
 - `studioImage(key)` returns `undefined` for a missing or unknown key, so the slot shows the
   placeholder instead.
 
