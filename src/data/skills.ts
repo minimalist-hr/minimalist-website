@@ -1,6 +1,9 @@
 import type { Localized } from '../i18n/localized';
 
-/** Six skill areas with their tool tags (plan §2, Skills). Tool names are not translated. */
+/**
+ * Six skill areas with their tool tags (wiki: Pages and content, Skills). Tool names are not
+ * translated.
+ */
 export interface SkillGroup {
   label: Localized<string>;
   /** One line, used on the home page. */

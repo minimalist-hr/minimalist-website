@@ -1,5 +1,5 @@
 /*
- * Design tokens: the single place for brand values (plan §3, §5).
+ * Design tokens: the single place for brand values (wiki: Design system, Responsive layout).
  *
  * Values come from design/*.extracted.html. Fluid sizes are mobile-first:
  * the clamp() minimum is the mobile design value, the maximum is the desktop
@@ -116,7 +116,7 @@
   --row-min-height: 48px;
   --hairline: 1px;
 
-  /* Motion (plan §3.5) */
+  /* Motion (wiki: Motion) */
   --ease: cubic-bezier(0.2, 0, 0, 1);
   --duration-state: 140ms; /* colour changes, linear */
   --duration-lift: 160ms; /* translate only */

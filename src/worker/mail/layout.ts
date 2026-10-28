@@ -1,5 +1,5 @@
 /**
- * Shared HTML shell for the site's emails, in the brand's neutral palette (plan §3).
+ * Shared HTML shell for the site's emails, in the brand's neutral palette (wiki: Design system).
  *
  * Email clients are not browsers: layout uses tables and inline styles, which every client
  * keeps. The light theme is the default because Gmail and Outlook ignore

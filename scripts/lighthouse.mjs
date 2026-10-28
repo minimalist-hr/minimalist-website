@@ -1,5 +1,5 @@
 /**
- * Lighthouse CI with retries (`pnpm run test:lighthouse`, plan §11.1).
+ * Lighthouse CI with retries (`pnpm run test:lighthouse`, wiki: Performance).
  *
  * In the CI container Lighthouse sometimes fails to record a page load (NO_NAVSTART), a
  * browser flake unrelated to the site. `lhci autorun` has no retry, so this collects one run

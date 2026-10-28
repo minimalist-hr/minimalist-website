@@ -1,5 +1,5 @@
 /**
- * Scroll reveal (plan §3.5): content below the fold fades up once as it scrolls into view
+ * Scroll reveal (wiki: Motion): content below the fold fades up once as it scrolls into view
  * (Enter), and rules draw in from the left (Reveal). Styles live in src/styles/motion.css.
  *
  * Only elements that start below the viewport are held back, so nothing on screen at load

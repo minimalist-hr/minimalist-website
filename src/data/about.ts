@@ -1,7 +1,7 @@
 import type { Localized } from '../i18n/localized';
 
 /**
- * About page content (plan §2).
+ * About page content (wiki: Pages and content).
  */
 
 export const principles: Localized<string>[] = [

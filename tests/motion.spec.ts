@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 /**
- * Scroll reveal (plan §3.5, src/scripts/reveal.ts): only content below the fold is held back,
+ * Scroll reveal (wiki: Motion, src/scripts/reveal.ts): only content below the fold is held back,
  * it enters as it scrolls into view, keyboard focus reveals it, and reduced motion holds
  * nothing back.
  */

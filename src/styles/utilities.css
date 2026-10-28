@@ -42,7 +42,7 @@
   }
 
   /*
-   * Links, the same as the header nav (plan §3.5 Reveal): no underline at rest; on hover and
+   * Links, the same as the header nav (wiki: Motion, Reveal): no underline at rest; on hover and
    * keyboard focus an ink line extends from the left; the current page or language keeps
    * it. The link's own styles brighten the text to ink. Put .link-line on the link, or on a
    * span inside it. Single-line links only: the line would not follow wrapped text, so links

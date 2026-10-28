@@ -1,4 +1,4 @@
-/** Theme settings shared by the inline no-flash script and the theme toggle (plan §6). */
+/** Theme settings shared by the inline no-flash script and the theme toggle (wiki: Theme). */
 
 export type Theme = 'dark' | 'light';
 

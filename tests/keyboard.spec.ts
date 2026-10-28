@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { expect, test, type Page } from '@playwright/test';
 
 /**
- * Keyboard and reflow checks that axe cannot make (plan §11.2): skip link, a visible and
+ * Keyboard and reflow checks that axe cannot make (wiki: Accessibility): skip link, a visible and
  * unobscured focus on every stop in both directions, the mobile menu, the theme switch,
  * the contact form's error focus, and no content lost at 200% / 400% zoom.
  */

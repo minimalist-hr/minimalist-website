@@ -1,6 +1,6 @@
 import type { Localized } from '../i18n/localized';
 
-/** The questions asked first, shown on the Approach page (plan §2). */
+/** The questions asked first, shown on the Services page (wiki: Pages and content). */
 export interface FaqItem {
   question: Localized<string>;
   answer: Localized<string>;
