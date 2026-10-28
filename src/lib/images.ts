@@ -15,6 +15,10 @@ import type { Localized } from '../i18n/localized';
  *
  * Photographs are JPEG; screenshots of client work are PNG, so text stays sharp until Astro
  * encodes the served sizes.
+ *
+ * An image can have a light-theme version next to it, `<key>-light.<ext>`: the same picture on a
+ * light background, for mockups whose own background would otherwise stay dark in the light
+ * theme. ImageFrame shows the one that matches the theme (wiki: Theme).
  */
 
 /** Alt text per image, in both languages. A missing HR entry fails the build. */
@@ -93,6 +97,8 @@ export type ImageKey = keyof typeof alt;
 
 export interface StudioImage {
   src: ImageMetadata;
+  /** The light-theme version, when the image has one. */
+  light?: ImageMetadata;
   alt: Localized<string>;
 }
 
@@ -100,12 +106,17 @@ const files = import.meta.glob<{ default: ImageMetadata }>('../assets/images/*.{
   eager: true,
 });
 
+function file(name: string): ImageMetadata | undefined {
+  return (files[`../assets/images/${name}.jpg`] ?? files[`../assets/images/${name}.png`])?.default;
+}
+
 /** Every key must have a file; a typo fails the build rather than rendering nothing. */
 export const studioImages: Record<ImageKey, StudioImage> = Object.fromEntries(
   (Object.keys(alt) as ImageKey[]).map((key) => {
-    const file = files[`../assets/images/${key}.jpg`] ?? files[`../assets/images/${key}.png`];
-    if (!file) throw new Error(`No image file for "${key}" in src/assets/images/`);
-    return [key, { src: file.default, alt: alt[key] }];
+    const src = file(key);
+    if (!src) throw new Error(`No image file for "${key}" in src/assets/images/`);
+    const light = file(`${key}-light`);
+    return [key, { src, ...(light && { light }), alt: alt[key] }];
   }),
 ) as Record<ImageKey, StudioImage>;
 
