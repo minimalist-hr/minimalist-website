@@ -11,7 +11,7 @@ export const siteConfig = {
   /** Show the Insights section in navigation and routes (design flag `showInsights`). */
   showInsights: true,
 
-  /** Business details shown in the footer and on the Legal page (plan §14). */
+  /** Business details shown in the footer and on the Legal page (wiki: Privacy and data handling). */
   company: {
     legalName: 'Minimalist, obrt za razvoj softvera',
     owner: 'Filip Mučnjak',

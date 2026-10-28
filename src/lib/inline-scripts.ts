@@ -11,7 +11,7 @@ import { defaultTheme, themeColors, themeStorageKey } from './theme';
 /** Marks JavaScript as available, so JS-only controls never flash (see MobileMenu). */
 export const jsFlagScript = "document.documentElement.dataset.js='';";
 
-/** Applies the saved theme and matching theme-color before first paint (plan §6). */
+/** Applies the saved theme and matching theme-color before first paint (wiki: Theme). */
 export const themeScript = [
   '(function(){',
   `var theme=${JSON.stringify(defaultTheme)};`,

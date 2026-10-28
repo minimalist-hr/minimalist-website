@@ -1,7 +1,7 @@
 import type { Locale } from './config';
 
 /**
- * EN ↔ HR route map (plan §2). Every static page has an entry, so the language
+ * EN ↔ HR route map (wiki: Internationalisation). Every static page has an entry, so the language
  * switcher and hreflang links always point to the equivalent page.
  * Paths always end with a slash (trailingSlash: 'always').
  *

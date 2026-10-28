@@ -61,7 +61,7 @@ build:
 
 # ---------------------------------------------------------------- audit
 
-# Accessibility (axe on every page, both themes, both layouts) and Lighthouse (plan §11).
+# Accessibility (axe on every page, both themes, both layouts) and Lighthouse (wiki: Testing).
 # Merge requests into main only, once per release; with "Pipelines must succeed" it gates the merge.
 audit:
   stage: audit

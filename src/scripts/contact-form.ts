@@ -1,5 +1,5 @@
 /**
- * Progressive enhancement for the inquiry form (plan §9.2):
+ * Progressive enhancement for the inquiry form (wiki: Contact form):
  * inline bilingual validation, Turnstile, a fetch submit with a sending state, and an inline
  * success or error message that receives focus. The markup and all copy live in
  * ContactForm.astro; this file only adds behaviour.

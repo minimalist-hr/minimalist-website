@@ -12,7 +12,7 @@ import { parseInquiry } from './validation';
 const MAX_BODY_BYTES = 64 * 1024;
 
 /**
- * POST /api/contact (plan §9.3). Stores nothing and never logs message content.
+ * POST /api/contact (wiki: Backend architecture). Stores nothing and never logs message content.
  *
  * The page submits with JavaScript and asks for JSON. A plain form POST (no JavaScript) gets
  * a redirect back to the contact page instead.

@@ -1,7 +1,7 @@
 /**
- * Sitemap (plan §10). Built here rather than with @astrojs/sitemap, which pairs languages by
- * matching paths; our Croatian slugs are translated (/work/ ↔ /hr/radovi/), so the pairs come
- * from the route map and each entry's translationKey instead.
+ * Sitemap (wiki: SEO and metadata). Built here rather than with @astrojs/sitemap, which pairs
+ * languages by matching paths; our Croatian slugs are translated (/work/ ↔ /hr/radovi/), so
+ * the pairs come from the route map and each entry's translationKey instead.
  */
 import { defaultLocale, localeMeta, locales } from '../i18n/config';
 import { routes, type RouteKey } from '../i18n/routes';
