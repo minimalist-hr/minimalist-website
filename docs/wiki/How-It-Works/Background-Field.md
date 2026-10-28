@@ -25,10 +25,10 @@ so moving the pointer across an area doesn't flicker. The whole lattice drifts a
 | :--------------------------------- | :------------ | :--------------------------------- |
 | Max depth                          | 6             | 4                                  |
 | Pointer reach (`POINTER_DETAIL_*`) | 0.85          | 0.45                               |
-| Line alpha (`LINE_ALPHA_*`)        | 0.18          | 0.11                               |
+| Line alpha (`LINE_ALPHA_*`)        | 0.18          | 0.18                               |
 
-Away from the hero the field shows only beside the content column (see Placement), so its
-alpha can sit closer to the hero's than a level drawn behind text could.
+Away from the hero the field shows only beside the content column (see Placement), so it runs
+at the hero's line strength; only the depth and the pointer's reach drop.
 
 The home hero is marked with `[data-field-hero]`. Its closing rule is the threshold: lines above
 it are drawn at hero strength and lines below it much fainter **in the same frame**, so the
@@ -70,6 +70,15 @@ A new page gets this as long as its blocks are direct children of `<main>` (any 
 `article` or wrapper). Something meant to run the full width of the window needs its own
 exception, as the hero has.
 
+**Blur behind the hero text** (2026-10-28). The studio label, the headline, the lede and the
+scroll cue each sit on a patch of the field blurred by 8px (`backdrop-filter`), reaching 12px
+above and below the text box and 16–28px to the sides. It's a `::before` at `z-index: -1` in
+`Hero.astro`, so the layout doesn't move. The vertical reach stays under half the smallest gap
+between the elements, so no two patches overlap and blur twice. The headline's patch is as wide
+as its box, which fits the longest phrase. The scroll cue animates its text and arrow rather
+than itself, so its patch stays still. Browsers without `backdrop-filter` show the field
+unblurred.
+
 ## Safeguards
 
 - `aria-hidden="true"`, `pointer-events: none`, no content.
@@ -94,7 +103,7 @@ you're most likely to touch:
 | `MAX_DEPTH_HERO` / `MAX_DEPTH_AMBIENT`       | 6 / 4       | Smallest cell size                                                 |
 | `POINTER_DETAIL_HERO` / `_AMBIENT`           | 0.85 / 0.45 | How dense and how far the pointer's effect reaches                 |
 | `DRIFT_DETAIL`, `DRIFT_COUNT`                | 0.35, 3     | Liveliness without a pointer                                       |
-| `LINE_ALPHA_HERO` / `_AMBIENT`               | 0.18 / 0.11 | Line strength                                                      |
+| `LINE_ALPHA_HERO` / `_AMBIENT`               | 0.18 / 0.18 | Line strength                                                      |
 | `HERO_HOLD` / `HERO_RELEASE`                 | 0.72 / 0.3  | Where the hero hands over                                          |
 | `SPLIT_DURATION_MS` / `COLLAPSE_DURATION_MS` | 240 / 420   | Open and close speed                                               |
 | `MAX_CELL_FRACTION`                          | 1.1         | Largest cell relative to the viewport; too tight looks like a grid |

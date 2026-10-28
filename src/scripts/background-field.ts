@@ -55,11 +55,11 @@ export const MAX_CELL_FRACTION = 1.1;
  * Line alpha over the hero and away from it, before the theme's own scale. The two are drawn
  * in the same frame, divided at the hero's closing rule, so the boundary is a visible edge
  * rather than something that only happens over a screenful of scrolling. The content column is
- * opaque, so away from the hero the field only shows beside it and can be stronger than a level
- * that had to sit behind text.
+ * opaque, so away from the hero the field only shows beside it and runs at the hero's strength;
+ * only the depth and the pointer's reach still drop below the hero.
  */
 export const LINE_ALPHA_HERO = 0.18;
-export const LINE_ALPHA_AMBIENT = 0.11;
+export const LINE_ALPHA_AMBIENT = 0.18;
 /** Alpha of the largest cells relative to the smallest; deeper cells read stronger. */
 export const DEPTH_ALPHA_FLOOR = 0.7;
 

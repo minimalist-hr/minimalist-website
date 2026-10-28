@@ -103,6 +103,33 @@ const [first, ...rest] = phrases;
     padding-block: 44px 56px;
   }
 
+  /*
+   * The text sits on a blurred patch of the background field (wiki: Background field), a little
+   * larger than the text box. A pseudo-element, so the layout does not move; z-index -1 puts it
+   * under the text and over the field. The vertical reach stays under half the smallest gap
+   * between the elements, so two patches never overlap and blur twice. The elements shrink to
+   * their text, so each patch ends with it.
+   */
+  .studio-label,
+  h1,
+  .lede,
+  .scroll {
+    position: relative;
+    align-self: flex-start;
+  }
+
+  .studio-label::before,
+  h1::before,
+  .lede::before,
+  .scroll::before {
+    content: '';
+    position: absolute;
+    inset: -12px clamp(-28px, -2vw, -16px);
+    z-index: -1;
+    pointer-events: none;
+    backdrop-filter: blur(8px);
+  }
+
   .studio-label {
     margin-bottom: 40px;
     font-size: var(--text-label);
@@ -175,21 +202,27 @@ const [first, ...rest] = phrases;
     align-items: center;
     gap: clamp(16px, 2vw, 28px);
     margin-top: 56px;
+    /* The least space above the scroll cue, kept here so the cue's box ends with its text. */
+    margin-bottom: 36px;
   }
 
   .scroll {
     display: flex;
     flex-direction: column;
     align-items: center;
+    align-self: center;
     gap: 8px;
     margin-top: auto;
-    padding-top: 36px;
     font-size: var(--text-label-sm);
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
     color: var(--graphite);
     user-select: none;
+  }
+
+  /* The cue's text and arrow move, not the cue, so its blurred patch stays still. */
+  .scroll > * {
     animation: cue 2.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   }
 
@@ -225,6 +258,7 @@ const [first, ...rest] = phrases;
 
     .actions {
       margin-top: clamp(28px, 4vw, 48px);
+      margin-bottom: 0;
     }
 
     h1 {
@@ -254,7 +288,6 @@ const [first, ...rest] = phrases;
       flex-direction: row-reverse;
       align-self: flex-start;
       gap: 12px;
-      padding-top: 0;
     }
   }
 </style>
