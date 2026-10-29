@@ -58,11 +58,12 @@ change a decision, add a row with the date and the reason, and update the pages 
 
 ## Operational decisions
 
-| Date       | Decision                                                         | Why                                                                                      |
-| :--------- | :--------------------------------------------------------------- | :--------------------------------------------------------------------------------------- |
-| 2026-09-18 | Custom domains declared in `wrangler.jsonc`, not the dashboard   | A deploy can never drop them.                                                            |
-| 2026-09-18 | `workers_dev: false`, `preview_urls: true`                       | Production answers only on minimalist.hr; the staging preview keeps its workers.dev URL. |
-| 2026-09-18 | Cloudflare Email Sending not used                                | Needs Workers Paid; Email Routing would take over iCloud's MX.                           |
-| 2026-09-25 | One staging preview, pipelines only on MRs, `staging` and `main` | Saves GitLab compute minutes.                                                            |
-| 2026-09-25 | Audit job only on `staging` → `main` MRs                         | Runs once per release instead of on every change.                                        |
-| 2026-09-26 | Required consent checkbox                                        | GDPR: the inquirer accepts the privacy policy; the Worker rejects a submit without it.   |
+| Date       | Decision                                                                      | Why                                                                                      |
+| :--------- | :---------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------- |
+| 2026-09-18 | Custom domains declared in `wrangler.jsonc`, not the dashboard                | A deploy can never drop them.                                                            |
+| 2026-09-18 | `workers_dev: false`, `preview_urls: true`                                    | Production answers only on minimalist.hr; the staging preview keeps its workers.dev URL. |
+| 2026-09-18 | Cloudflare Email Sending not used                                             | Needs Workers Paid; Email Routing would take over iCloud's MX.                           |
+| 2026-09-25 | One staging preview, pipelines only on MRs, `staging` and `main`              | Saves GitLab compute minutes.                                                            |
+| 2026-09-25 | Audit job only on `staging` → `main` MRs                                      | Runs once per release instead of on every change.                                        |
+| 2026-09-26 | Required consent checkbox                                                     | GDPR: the inquirer accepts the privacy policy; the Worker rejects a submit without it.   |
+| 2026-10-29 | The GitLab wiki is published by CI (`sync_wiki`) after each production deploy | A manual sync was easy to forget; this way the wiki always matches what is live.         |

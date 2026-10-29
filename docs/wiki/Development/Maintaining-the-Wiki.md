@@ -7,7 +7,7 @@ master copy; the GitLab wiki is a published copy of it. There is no separate pla
 
 - Edit pages in the repository, in the same branch and merge request as the change they
   describe, so code and documentation are reviewed together.
-- Don't edit pages in the GitLab wiki UI; the next sync overwrites them.
+- Don't edit pages in the GitLab wiki UI; the next release overwrites them.
 
 ## How it relates to the other documents
 
@@ -40,37 +40,23 @@ The original build plan (`MINIMALIST-WEBSITE-PLAN.md`) and `README.md` were remo
 
 ## Syncing to GitLab
 
-The GitLab wiki is its own Git repository: `<project URL>.wiki.git` (find the clone URL under
-Plan → Wiki → Clone repository).
+The GitLab wiki is its own Git repository (`<project URL>.wiki.git`). The `sync_wiki` CI job
+publishes `docs/wiki/` to it on every push to `main`, after `deploy_production` succeeds, so the
+wiki describes what is live. It mirrors the folder (pages removed here are removed there),
+leaves GitLab's own `.gitlab/` folder alone, and commits nothing when nothing changed.
 
-**macOS / Linux / Git Bash:**
+It pushes with the `WIKI_TOKEN` CI/CD variable (see
+[Infrastructure](/Architecture/Infrastructure#cicd-variables)). On GitLab.com Free that is a
+personal access token, since project access tokens need Premium. When it expires the job fails
+with an authentication error; create a new token and replace the variable value.
+
+**By hand** (only if the job can't run), from the project root in Git Bash:
 
 ```bash
-# once
-git clone <project URL>.wiki.git ../website.wiki
-
-# each time
-rsync -a --delete --exclude .git docs/wiki/ ../website.wiki/
-cd ../website.wiki
-git add -A
-git commit -m "Sync wiki from $(git -C ../website rev-parse --short HEAD)"
-git push
+git clone <project URL>.wiki.git ../website.wiki   # once
+rsync -a --delete --exclude .git --exclude .gitlab docs/wiki/ ../website.wiki/
+cd ../website.wiki && git add -A && git commit -m "Sync wiki" && git push
 ```
-
-**Windows PowerShell** (no rsync):
-
-```powershell
-robocopy docs\wiki ..\website.wiki /MIR /XD .git
-cd ..\website.wiki; git add -A; git commit -m "Sync wiki"; git push
-```
-
-Sync after the merge request reaches `main`, so the wiki describes what is live.
-
-### Automating it (optional)
-
-A CI job on `main` could push `docs/wiki/` to the wiki repository with a project access token
-that has `write_repository`. That changes `.gitlab-ci.yml` and adds a token, so it needs a
-decision first.
 
 ## When to update which page
 

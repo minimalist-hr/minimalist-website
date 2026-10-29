@@ -53,7 +53,8 @@ Both `main` and `staging` are protected: no direct pushes, merges need a passing
    job (axe, keyboard, motion, Lighthouse). While it's open, every merge into `staging` reruns it.
 2. When it's green and the preview looks right, merge it. **Don't squash**, or the branches drift
    apart.
-3. The `main` pipeline builds and runs `wrangler deploy`. Check https://minimalist.hr.
+3. The `main` pipeline builds, runs `wrangler deploy`, then publishes `docs/wiki/` to the GitLab
+   wiki. Check https://minimalist.hr.
 
 Details and rollback: [Release and roll back](/Guides/Release-and-Roll-Back).
 

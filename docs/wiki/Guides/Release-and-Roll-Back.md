@@ -15,7 +15,8 @@
    succeed" blocks the merge until it's green.
 3. Merge **without squashing**.
 4. The `main` pipeline builds again and runs `wrangler deploy` (resource group `production`, so
-   two deploys never overlap). The deployment message is `<short sha> <commit title>`.
+   two deploys never overlap). The deployment message is `<short sha> <commit title>`. Then
+   `sync_wiki` publishes `docs/wiki/` to the GitLab wiki.
 5. Smoke test production:
    - `/` and `/hr/` load; the language switch and theme work;
    - a case study and an insight load;

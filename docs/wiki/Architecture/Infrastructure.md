@@ -61,19 +61,20 @@ Settings → Merge requests: **Pipelines must succeed** is on.
 Pipelines run only for merge requests and for pushes to `main` and `staging`. A plain branch
 push runs nothing.
 
-| Trigger                                  | Jobs                                             |
-| :--------------------------------------- | :----------------------------------------------- |
-| MR into `staging`                        | `build` (lint, format check, type checks, build) |
-| Push to `staging` (after a merge)        | `build` (build only) → `deploy_staging`          |
-| MR `staging` → `main`                    | `build` (with checks) → `audit`                  |
-| Push to `main` (after the release merge) | `build` (build only) → `deploy_production`       |
+| Trigger                                  | Jobs                                                     |
+| :--------------------------------------- | :------------------------------------------------------- |
+| MR into `staging`                        | `build` (lint, format check, type checks, build)         |
+| Push to `staging` (after a merge)        | `build` (build only) → `deploy_staging`                  |
+| MR `staging` → `main`                    | `build` (with checks) → `audit`                          |
+| Push to `main` (after the release merge) | `build` (build only) → `deploy_production` → `sync_wiki` |
 
-| Job                 | Image                                        | What it does                                                                                                                                     |
-| :------------------ | :------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `build`             | `node:24-slim`                               | `pnpm install --frozen-lockfile`; on MRs `lint`, `format:check`, `check`; then `build`. Keeps `dist/` for a week. Refreshes the pnpm store cache |
-| `audit`             | `mcr.microsoft.com/playwright:v1.63.0-noble` | `test:a11y` and `test:lighthouse` against `dist/`. Reports kept for a week, even on failure                                                      |
-| `deploy_staging`    | `node:24-slim`                               | Appends `X-Robots-Tag: noindex` to `dist/_headers`, then `wrangler versions upload --preview-alias staging`. Resource group `staging`            |
-| `deploy_production` | `node:24-slim`                               | Appends `noindex` unless `ALLOW_INDEXING=true`, then `wrangler deploy`. Resource group `production`, so deploys never overlap                    |
+| Job                 | Image                                        | What it does                                                                                                                                                                           |
+| :------------------ | :------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `build`             | `node:24-slim`                               | `pnpm install --frozen-lockfile`; on MRs `lint`, `format:check`, `check`; then `build`. Keeps `dist/` for a week. Refreshes the pnpm store cache                                       |
+| `audit`             | `mcr.microsoft.com/playwright:v1.63.0-noble` | `test:a11y` and `test:lighthouse` against `dist/`. Reports kept for a week, even on failure                                                                                            |
+| `deploy_staging`    | `node:24-slim`                               | Appends `X-Robots-Tag: noindex` to `dist/_headers`, then `wrangler versions upload --preview-alias staging`. Resource group `staging`                                                  |
+| `deploy_production` | `node:24-slim`                               | Appends `noindex` unless `ALLOW_INDEXING=true`, then `wrangler deploy`. Resource group `production`, so deploys never overlap                                                          |
+| `sync_wiki`         | `alpine:3.22`                                | Mirrors `docs/wiki/` to the GitLab wiki repository and pushes if anything changed ([Maintaining the wiki](/Development/Maintaining-the-Wiki#syncing-to-gitlab)). Resource group `wiki` |
 
 Deploy messages are `<short sha> <commit title>`, cut to 90 characters. Deploy jobs are not
 interruptible; the others are, so a newer pipeline cancels an older one.
@@ -82,14 +83,15 @@ The Playwright image tag must match `@playwright/test` in `package.json`.
 
 ### CI/CD variables
 
-| Key                         | Purpose                                                                   | Flags                         |
-| :-------------------------- | :------------------------------------------------------------------------ | :---------------------------- |
-| `CLOUDFLARE_API_TOKEN`      | Wrangler auth ("Edit Cloudflare Workers" template, scoped to the account) | Masked, hidden, not protected |
-| `CLOUDFLARE_ACCOUNT_ID`     | Wrangler account                                                          | Masked                        |
-| `CF_WORKERS_SUBDOMAIN`      | Builds the staging environment URL                                        | —                             |
-| `PRODUCTION_URL`            | Production environment URL (`https://minimalist.hr/`)                     | —                             |
-| `ALLOW_INDEXING`            | `true` since launch; without it production gets `noindex`                 | —                             |
-| `PUBLIC_TURNSTILE_SITE_KEY` | Turnstile site key, baked into the build                                  | —                             |
+| Key                         | Purpose                                                                    | Flags                         |
+| :-------------------------- | :------------------------------------------------------------------------- | :---------------------------- |
+| `CLOUDFLARE_API_TOKEN`      | Wrangler auth ("Edit Cloudflare Workers" template, scoped to the account)  | Masked, hidden, not protected |
+| `CLOUDFLARE_ACCOUNT_ID`     | Wrangler account                                                           | Masked                        |
+| `CF_WORKERS_SUBDOMAIN`      | Builds the staging environment URL                                         | —                             |
+| `PRODUCTION_URL`            | Production environment URL (`https://minimalist.hr/`)                      | —                             |
+| `ALLOW_INDEXING`            | `true` since launch; without it production gets `noindex`                  | —                             |
+| `PUBLIC_TURNSTILE_SITE_KEY` | Turnstile site key, baked into the build                                   | —                             |
+| `WIKI_TOKEN`                | Pushes the wiki (personal access token, scope `write_repository`, expires) | Masked, hidden, protected     |
 
 ### Environments
 
