@@ -57,10 +57,11 @@ resource groups, so they never overlap.
 | `PRODUCTION_URL`            | `https://minimalist.hr/`                                              | —                             |
 | `ALLOW_INDEXING`            | `true`; without it production gets `noindex`                          | —                             |
 | `PUBLIC_TURNSTILE_SITE_KEY` | Baked into the build; missing → test key, which a real secret rejects | —                             |
-| `WIKI_TOKEN`                | Personal access token, `write_repository`, expires                    | Masked, hidden, protected     |
+| `WIKI_TOKEN`                | Fine-grained personal access token for the wiki push, expires         | Masked, hidden, protected     |
 
-`WIKI_TOKEN` is personal because project access tokens need Premium on GitLab.com. When it
-expires `sync_wiki` fails with an auth error: create a new token and replace the value.
+`WIKI_TOKEN` is a fine-grained personal access token limited to this project, with _Wiki_ →
+Read and Create. It's personal because project access tokens need Premium on GitLab.com. When
+it expires `sync_wiki` fails with an auth error: create a new token and replace the value.
 
 ## Email and DNS
 
