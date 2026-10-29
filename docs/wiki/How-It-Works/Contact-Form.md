@@ -1,142 +1,96 @@
 # Contact form
 
-The one interactive feature with a server side. Files:
+The one feature with a server side. The form and the Worker share one contract,
+`src/lib/inquiry.ts` (fields, limits, allowed values, response type), so they can't disagree.
 
-| Part              | File                                                                                  |
-| :---------------- | :------------------------------------------------------------------------------------ |
-| Markup and copy   | `src/components/ContactForm.astro` (+ `TextField`, `ChipGroup`, `Checkbox`, `Button`) |
-| Browser behaviour | `src/scripts/contact-form.ts`                                                         |
-| Shared contract   | `src/lib/inquiry.ts`                                                                  |
-| Server            | `src/worker/contact.ts`, `validation.ts`, `turnstile.ts`                              |
-| Emails            | `src/worker/compose.ts`, `autoreply.ts`, `mail/`                                      |
-| Strings           | `form.*` and `email.*` in `src/i18n/ui.ts`                                            |
+| Part    | Files                                                        |
+| :------ | :----------------------------------------------------------- |
+| Markup  | `ContactForm.astro` (+ `TextField`, `ChipGroup`, `Checkbox`) |
+| Browser | `src/scripts/contact-form.ts`                                |
+| Worker  | `src/worker/contact.ts`, `validation.ts`, `turnstile.ts`     |
+| Emails  | `src/worker/compose.ts`, `autoreply.ts`, `mail/`             |
+| Strings | `form.*` and `email.*` in `src/i18n/ui.ts`                   |
 
-## Round trip
-
-```mermaid
-sequenceDiagram
-  autonumber
-  actor V as Visitor
-  participant P as Contact page (script)
-  participant T as Turnstile
-  participant W as Worker /api/contact
-  participant R as Resend
-  participant S as Studio inbox
-
-  P->>T: load api.js, render widget (interaction-only)
-  T-->>P: token (callback)
-  V->>P: submit
-  P->>P: validate fields (same rules as the Worker)
-  P->>W: POST form data, Accept: application/json
-  W->>W: origin, size, honeypot, parseInquiry
-  W->>T: siteverify(token, secret, IP)
-  T-->>W: success
-  W->>R: notification (reply-to: visitor)
-  R-->>S: email
-  W->>R: auto-reply (fixed text, visitor's language)
-  W-->>P: 200 { ok: true }
-  P->>V: success message, focused
-```
-
-## Fields
-
-| Field        | Name                    | Control                                   | Required      |
-| :----------- | :---------------------- | :---------------------------------------- | :------------ |
-| Name         | `name`                  | text, `autocomplete="name"`               | yes           |
-| Email        | `email`                 | email, `autocomplete="email"`             | yes           |
-| Company      | `company`               | text, `autocomplete="organization"`       | no            |
-| Role         | `role`                  | text, `autocomplete="organization-title"` | no            |
-| Timeline     | `timeline`              | radio chips                               | no            |
-| Budget (EUR) | `budget`                | radio chips                               | no            |
-| Brief        | `brief`                 | textarea, with a hint                     | yes           |
-| Consent      | `consent`               | checkbox, value `yes`, links to Legal     | yes           |
-| Language     | `locale`                | hidden                                    | —             |
-| Honeypot     | `website`               | hidden text, `tabindex="-1"`, off screen  | must be empty |
-| Turnstile    | `cf-turnstile-response` | added by the widget                       | yes           |
-
-Field limits and allowed values: [Data model → Inquiry contract](/Data/Data-Model#inquiry-contract).
+Fields: name, email, company, role, timeline (chips), budget in EUR (chips), brief, required
+consent. Hidden: `locale`, the honeypot `website`, the Turnstile token.
 
 ## In the browser
 
-`enhanceContactForm` runs on every `[data-contact-form]`:
+1. Turnstile loads only on this page, invisible unless it's unsure (`interaction-only`), in
+   the page's language and theme.
+2. The script sets `novalidate` and validates on submit with messages in the page's language.
+   Each invalid field gets `aria-invalid` and its error; a summary appears; focus goes to the
+   first invalid field. Errors clear as soon as a field is valid.
+3. While sending, the button uses `aria-disabled` (not `disabled`, which drops focus). It waits
+   up to 10s for a token, then posts with `fetch` and `Accept: application/json`.
+4. Success replaces the form with a focused message. A failure resets Turnstile (a token is
+   valid once) and shows the matching message, with the email address for send errors.
 
-1. **Turnstile** loads once, only on this page, with `render=explicit`. The widget uses the
-   site key from the build (`PUBLIC_TURNSTILE_SITE_KEY`), the page language and the current
-   theme, and `appearance: 'interaction-only'`, so most visitors never see it.
-2. **Validation.** The script sets `novalidate` and runs native constraints plus the shared
-   email pattern on submit. Messages come from `data-messages` (built from `ui.ts`), so they
-   are in the page's language.
-3. **Errors.** Each invalid field gets `aria-invalid` and its `<name>-error` text; a summary
-   appears in the `role="alert"` element; focus moves to the first invalid field. An error
-   clears as soon as its field becomes valid; the summary clears when none are left.
-4. **Submit.** The button switches to "Sending…" with `aria-disabled` (not `disabled`, which
-   would drop focus). The script waits up to 10s for a Turnstile token, then posts with
-   `fetch` and `Accept: application/json`.
-5. **Result.** Success hides the form body and focuses the success message. Any failure resets
-   Turnstile (a token is valid once) and shows the matching message.
+Without JavaScript the form posts normally, but Turnstile can't run, so it fails verification;
+a `<noscript>` note offers the email address instead.
 
-| Worker answer                        | Message shown                                      |
-| :----------------------------------- | :------------------------------------------------- |
-| `invalid` + fields                   | Field errors and the summary                       |
-| `verification`                       | `form.errorVerification`                           |
-| `send`, `unavailable`, network error | `form.errorSend`, with the email address as a link |
+## In the Worker
 
-## Without JavaScript
+`handleContact` stops at the first failure:
 
-The form still posts normally, but Turnstile can't run, so the Worker answers `verification`
-and redirects (303) to the contact page with `?status=verification`. The page doesn't display
-`status`; instead a `<noscript>` note above the form gives the email address. See
-[Roadmap → Known small gaps](/Overview/Roadmap#known-small-gaps).
+| #   | Check                                      | On failure                         |
+| :-- | :----------------------------------------- | :--------------------------------- |
+| 1   | `POST`                                     | `405`                              |
+| 2   | `Origin`, if present, equals the request's | `403`                              |
+| 3   | `Content-Length` ≤ 64 KiB                  | `413`                              |
+| 4   | Body is form data                          | `400`                              |
+| 5   | Honeypot empty                             | Fake success, nothing sent         |
+| 6   | `parseInquiry` passes                      | `400 { error: 'invalid', fields }` |
+| 7   | `TURNSTILE_SECRET_KEY` set (fail closed)   | `503 { error: 'unavailable' }`     |
+| 8   | Turnstile token verifies                   | `403 { error: 'verification' }`    |
+| 9   | Notification sent                          | `502 { error: 'send' }`            |
+| 10  | Auto-reply sent                            | Logged only; still success         |
 
-## On the server
+From step 5, `Accept: application/json` gets JSON; a plain form post gets a `303` to the contact
+page with `?status=…`. Server validation is authoritative. Single-line fields lose line breaks
+(they reach the subject line).
 
-See [Backend architecture → The contact pipeline](/Architecture/Backend-Architecture#the-contact-pipeline)
-for the exact order of checks and status codes. Key points:
+## Emails
 
-- Server validation is authoritative.
-- A filled honeypot gets a fake success.
-- Without a Turnstile secret, nothing is sent (`503`).
-- The auto-reply is sent only after the notification succeeds, and its failure doesn't fail
-  the request.
+- **Notification** to `CONTACT_TO`, from "Minimalist website" `<CONTACT_FROM>`, reply-to the
+  inquirer, subject `Inquiry: <name>[, <company>]`. Always English, with a Language row.
+- **Auto-reply** to the inquirer in their language, reply-to `CONTACT_TO`,
+  `Auto-Submitted: auto-replied`. **It repeats nothing from the form, not even the name**, so
+  the form can't send someone else's text to a stranger.
+- Both are plain text plus HTML (`mail/layout.ts`): light by default, dark where clients support
+  it; every form value goes through `escapeHtml`.
 
-## What the studio receives
+## Mailer
 
-Subject `Inquiry: Ana Horvat, Acme d.o.o.`, from "Minimalist website" `<form@minimalist.hr>`,
-reply-to the inquirer. Plain text plus HTML: name, role and company, then a table (email,
-timeline, budget, language), the brief, a "Reply to Ana" button and a footer with the time sent
-(Zagreb) and a note that the privacy policy was accepted. Replying in the mail client goes
-straight to the inquirer.
+Email goes through the `Mailer` interface (`src/worker/mail/types.ts`); `MAIL_PROVIDER` picks
+the implementation: `resend` (production) or `console` (logs metadata only). Errors carry a
+short `code` such as `resend_403_…`; provider messages are dropped because they can contain
+addresses. To switch provider: [Change the email provider](/Guides/Change-the-Email-Provider).
 
-## What the inquirer receives
+| Name                   | Kind                  | Value                                  |
+| :--------------------- | :-------------------- | :------------------------------------- |
+| `CONTACT_TO`           | Var, `wrangler.jsonc` | `hello@minimalist.hr`                  |
+| `CONTACT_FROM`         | Var                   | `form@minimalist.hr`                   |
+| `MAIL_PROVIDER`        | Var                   | `resend`; `console` in `.dev.vars`     |
+| `TURNSTILE_SECRET_KEY` | Secret                | Cloudflare; test secret in `.dev.vars` |
+| `RESEND_API_KEY`       | Secret                | Cloudflare; optional locally           |
 
-From "Minimalist" `<form@minimalist.hr>`, reply-to `hello@minimalist.hr`, in their language:
-"Thank you — your inquiry has arrived", when to expect an answer, a link to the Approach page,
-the business signature and a line explaining why they got it. Nothing from the form is repeated.
+The Worker logs only error codes and the missing-secret warning. **Never log names, addresses,
+briefs or provider messages.**
 
 ## Testing locally
 
-1. `cp .dev.vars.example .dev.vars` (Turnstile test secret, `MAIL_PROVIDER=console`).
-2. `pnpm run build && pnpm exec wrangler dev`.
-3. Open `http://localhost:8787/contact/` and send the form. The test keys always pass.
-4. The Wrangler terminal shows `[mail:console] would send to …` twice.
+```bash
+cp .dev.vars.example .dev.vars    # Turnstile test secret, MAIL_PROVIDER=console
+pnpm run build && pnpm exec wrangler dev
+```
 
-To test a real send, set `MAIL_PROVIDER=resend` and a `RESEND_API_KEY` in `.dev.vars`. Mail goes
-to `CONTACT_TO` (the real inbox) and the auto-reply to whatever address you type.
-
-## Environments
-
-| Environment    | Form sends?             | Why                                               |
-| :------------- | :---------------------- | :------------------------------------------------ |
-| `pnpm dev`     | No                      | No Worker; `/api/contact` doesn't exist           |
-| `wrangler dev` | Yes (console or Resend) | Test keys                                         |
-| Staging        | No                      | The Turnstile widget accepts only `minimalist.hr` |
-| Production     | Yes                     | —                                                 |
+Send the form at `http://localhost:8787/contact/`; the terminal shows `[mail:console] would send
+to …` twice. For a real send set `MAIL_PROVIDER=resend` and `RESEND_API_KEY` in `.dev.vars`.
+Staging can't send; after Worker or email changes, send one real inquiry on production.
 
 ## Changing the form
 
-- A new field: add it to `ContactForm.astro`, its label and messages to `ui.ts` (both
-  languages), its limit or values to `inquiry.ts`, its parsing to `validation.ts`, and its row to
-  `compose.ts`. If it's validated, add it to `VALIDATED_FIELDS` in `contact-form.ts`.
-- New budget or timeline values: change `inquiry.ts` and the labels in `ui.ts` and `compose.ts`.
-- Check the privacy policy if the form starts collecting a new kind of data.
-- Run the `contact form` tests in `tests/keyboard.spec.ts`.
+A new field touches `ContactForm.astro`, `ui.ts` (both languages), `inquiry.ts`,
+`validation.ts`, `compose.ts`, and `VALIDATED_FIELDS` in `contact-form.ts` if validated. A new
+kind of data also means updating the privacy policy. Run the "contact form" keyboard tests.

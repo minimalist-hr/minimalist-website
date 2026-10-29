@@ -2,97 +2,90 @@
 
 ## Branches
 
-```mermaid
-gitGraph
-  commit id: "main"
-  branch staging
-  commit id: "staging"
-  branch feat/x
-  commit id: "change 1"
-  commit id: "change 2"
-  checkout staging
-  merge feat/x id: "MR → staging (preview)"
-  checkout main
-  merge staging id: "release MR → production"
-```
+| Branch                      | Purpose                                                          |
+| :-------------------------- | :--------------------------------------------------------------- |
+| `main`                      | Production. Every merge deploys minimalist.hr                    |
+| `staging`                   | Finished work waiting for release; every merge refreshes staging |
+| `feat/…`, `fix/…`, `docs/…` | One piece of work, off `staging`                                 |
 
-| Branch                      | Purpose                                                                                      | Who writes to it                       |
-| :-------------------------- | :------------------------------------------------------------------------------------------- | :------------------------------------- |
-| `main`                      | Production. Every merge deploys minimalist.hr                                                | Release and hotfix merge requests only |
-| `staging`                   | Finished work waiting for release. Every merge refreshes the staging preview. Default branch | Merge requests only                    |
-| `feat/…`, `fix/…`, `docs/…` | One piece of work                                                                            | You                                    |
-
-Both `main` and `staging` are protected: no direct pushes, merges need a passing pipeline.
+`main` and `staging` are protected: merge requests only, with a passing pipeline. Plain branch
+pushes run no pipeline.
 
 ## Making a change
 
-1. **Branch off `staging`:** `git switch staging && git pull && git switch -c feat/short-name`.
-2. **Read first.** Check the relevant part of this wiki and the design. If the change touches
-   brand, layout or copy, the design is the spec.
-3. **Small steps.** After each step:
+1. `git switch staging && git pull && git switch -c feat/short-name`
+2. Read the relevant wiki page and the design. For brand, layout or copy the design is the spec.
+3. Work in small steps; after each, run the checks and commit. One logical change per commit.
+4. Test what you changed ([Testing](/Development/Testing)).
+5. Update the wiki in the same branch if behaviour, configuration, structure or a decision
+   changed.
+6. Open a merge request into `staging`. Merging it refreshes the staging preview (the form
+   renders there but can't send).
 
-   ```bash
-   pnpm run lint && pnpm run format:check && pnpm run check && pnpm run build
-   ```
+## Release
 
-   Then commit. One logical change per commit.
+1. Check the staging preview on a phone and a desktop, both languages and themes. Have any
+   dashboard changes (secrets, variables, DNS) ready.
+2. Open a merge request **`staging` → `main`**. It runs the checks, the build and the `audit`.
+   While it's open, each merge into `staging` reruns it.
+3. Merge **without squashing**, or the branches drift apart.
+4. `main` builds, deploys and publishes the wiki.
+5. Smoke test: `/` and `/hr/`, the language switch and theme, a case study and an insight,
+   `/x/` and `/hr/x/` give the right 404, `/sitemap.xml`, `curl -I https://minimalist.hr/` shows
+   the security headers and **no** `X-Robots-Tag`. After Worker or email changes, send one real
+   inquiry.
 
-4. **Test what you changed.** Run the relevant tests rather than everything, for example
-   `pnpm exec playwright test -g "contact form" --project=mobile --project=desktop`.
-   Larger UI changes: also `pnpm run test:a11y:browsers` locally.
-5. **Update the wiki** in the same branch if behaviour, configuration or structure changed.
-6. **Push and open a merge request into `staging`.** The pipeline runs lint, format check, type
-   checks and the build.
-7. **Merge.** The pipeline builds and uploads the staging preview. Check it (GitLab → Operate →
-   Environments → `staging`, or https://staging-minimalist-website.minimalist-1a8.workers.dev/).
-   The form renders there but can't send.
+**If the audit fails:** read `playwright-report/` or `.lighthouseci/` in the job artifacts, fix
+on a branch off `staging`. A Lighthouse `NO_NAVSTART` after three attempts is a CI flake: rerun.
 
-## Releasing
+## Roll back
 
-1. Open a merge request **`staging` → `main`**. It runs the checks, the build and the `audit`
-   job (axe, keyboard, motion, Lighthouse). While it's open, every merge into `staging` reruns it.
-2. When it's green and the preview looks right, merge it. **Don't squash**, or the branches drift
-   apart.
-3. The `main` pipeline builds, runs `wrangler deploy`, then publishes `docs/wiki/` to the GitLab
-   wiki. Check https://minimalist.hr.
+**Fastest:** Cloudflare → Workers & Pages → `minimalist-website` → Deployments → previous
+version → Rollback. Assets roll back with it. Then make the repository match, or the next deploy
+brings the problem back:
 
-Details and rollback: [Release and roll back](/Guides/Release-and-Roll-Back).
+1. On a branch off `main`, `git revert -m 1 <merge sha>`, merge request into `main`.
+2. Merge `main` back into `staging`.
 
-## Hotfixes
+Secrets and dashboard settings aren't part of a Worker version; roll those back by hand.
 
-1. Branch off `main`, fix, open a merge request into `main`.
-2. After it deploys, merge `main` back into `staging`.
+## Hotfix
 
-## What runs where
+Branch off `main`, merge request into `main` (no audit runs, so run the relevant tests
+locally), then merge `main` back into `staging`.
 
-| Event                    | Lint, format, types | Build | Audit | Deploy          |
-| :----------------------- | :-----------------: | :---: | :---: | :-------------- |
-| Push to a feature branch |          —          |   —   |   —   | —               |
-| MR into `staging`        |          ✓          |   ✓   |   —   | —               |
-| Merge into `staging`     |          —          |   ✓   |   —   | Staging preview |
-| MR `staging` → `main`    |          ✓          |   ✓   |   ✓   | —               |
-| Merge into `main`        |          —          |   ✓   |   —   | Production      |
+## Commits and merge requests
 
-## Commit messages
+- Commit messages: short, imperative, sentence case, no period; say what changes for the site.
+  `Require consent to the privacy policy on the contact form`
+- Merge requests: what and why, how you checked it, screenshots for visual changes, and any
+  dashboard change needed.
 
-Short, imperative, sentence case, no trailing period. Say what changes for the site, not which
-file you touched. An optional area prefix is fine.
+## Ask first
 
-```text
-Keep the background field out of the contact form's text fields
-Require consent to the privacy policy on the contact form
-Contact form: auto-reply to the sender, in their language
+- Changing `.gitlab-ci.yml`, `wrangler.jsonc`, `.gitignore`, `.nvmrc`: explain the problem.
+- A new dependency: what it does and why built-ins aren't enough.
+- New sections, components or styles not in the design.
+- Brand rules: only through an approved deviation in the [Decision log](/Decision-Log).
+
+## The wiki
+
+`docs/wiki/` is the master copy. `sync_wiki` mirrors it to the GitLab wiki after each production
+deploy (see [Infrastructure](/How-It-Works/Infrastructure#gitlab)), so edits in the GitLab UI are
+overwritten.
+
+- File names become titles (`Getting-Started.md` → "Getting Started"); folders are sections.
+  Add new pages to `home.md` and `_sidebar.md`.
+- Links are root-relative without `.md`: `[Testing](/Development/Testing#lighthouse)`.
+- Mermaid for diagrams. No secrets, tokens or account IDs.
+- One place per fact; link instead of repeating. Describe rules, decisions, setup and gotchas;
+  don't copy what the code already says.
+- If code and wiki disagree, find out which is wrong and fix it in the same merge request.
+
+By hand, only if the job can't run (Git Bash, from the project root):
+
+```bash
+git clone https://gitlab.com/minimalist-sds/website.wiki.git ../website.wiki   # once
+rsync -a --delete --exclude .git --exclude .gitlab docs/wiki/ ../website.wiki/
+cd ../website.wiki && git add -A && git commit -m "Sync wiki" && git push
 ```
-
-## Merge requests
-
-- Title like a commit message; description says what and why, and how you checked it.
-- Screenshots for visual changes (mobile and desktop, both themes if colours are involved).
-- Note anything that needs a dashboard change (Cloudflare, GitLab variables, Resend).
-
-## Changes that need a word first
-
-- `.gitlab-ci.yml`, `wrangler.jsonc`, `.gitignore`, `.nvmrc`: explain the problem before changing.
-- New dependencies: state what and why; get approval.
-- New sections, components or visual styles not in the design: ask the owner.
-- Brand rules: not changed without an approved deviation in the [Decision log](/Overview/Decision-Log).
