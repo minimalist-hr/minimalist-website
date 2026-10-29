@@ -1,11 +1,5 @@
 import { expect, test } from '@playwright/test';
 
-/**
- * Scroll reveal (wiki: Motion, src/scripts/reveal.ts): only content below the fold is held back,
- * it enters as it scrolls into view, keyboard focus reveals it, and reduced motion holds
- * nothing back.
- */
-
 const held = '[data-reveal="pending"], [data-rule="pending"]';
 
 test('nothing on screen at load is held back', async ({ page }) => {

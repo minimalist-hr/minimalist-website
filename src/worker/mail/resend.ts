@@ -12,10 +12,6 @@ class MailSendError extends Error {
   }
 }
 
-/**
- * Resend (resend.com) through its REST API. The API key is a Worker secret
- * (RESEND_API_KEY); the sending domain is verified in the Resend dashboard.
- */
 export function createResendMailer(apiKey: string): Mailer {
   return {
     async send(mail) {

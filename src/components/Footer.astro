@@ -1,8 +1,4 @@
 ---
-/**
- * Site footer. Mobile design: 2-column grid with brand and contact spanning both columns.
- * Desktop design (md and up): brand, two nav columns and contact side by side.
- */
 import type { Locale } from '../i18n/config';
 import { localizedPath, useTranslations } from '../i18n/utils';
 import { buildNav, footerNav } from '../lib/navigation';
@@ -172,7 +168,6 @@ const year = new Date().getFullYear();
     color: var(--graphite);
   }
 
-  /* ---- Desktop design (md and up) ---- */
   @media (min-width: 60rem) {
     .grid {
       grid-template-columns: repeat(4, minmax(0, 1fr));

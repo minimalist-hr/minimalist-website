@@ -1,9 +1,3 @@
-/**
- * Progressive enhancement for the inquiry form (wiki: Contact form):
- * inline bilingual validation, Turnstile, a fetch submit with a sending state, and an inline
- * success or error message that receives focus. The markup and all copy live in
- * ContactForm.astro; this file only adds behaviour.
- */
 import { emailPattern, type InquiryResponse } from '../lib/inquiry';
 
 interface Messages {
@@ -83,7 +77,7 @@ export function enhanceContactForm(form: HTMLFormElement): void {
   form.noValidate = true;
   const submitLabel = submit.textContent ?? '';
 
-  // ---- Turnstile: one token per submit, refreshed after every attempt ----
+  // Turnstile: one token per submit, refreshed after every attempt.
   let widgetId: string | undefined;
   let token = '';
   let onToken: ((value: string) => void) | undefined;
@@ -120,7 +114,6 @@ export function enhanceContactForm(form: HTMLFormElement): void {
     if (widgetId) window.turnstile?.reset(widgetId);
   }
 
-  // ---- Field errors ----
   function fieldControl(name: string) {
     return form.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement | null;
   }
@@ -201,7 +194,6 @@ export function enhanceContactForm(form: HTMLFormElement): void {
     form.setAttribute('aria-busy', String(busy));
   }
 
-  // ---- Submit ----
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     if (sending) return;

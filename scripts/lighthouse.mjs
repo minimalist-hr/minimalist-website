@@ -1,10 +1,7 @@
 /**
- * Lighthouse CI with retries (`pnpm run test:lighthouse`, wiki: Performance).
- *
- * In the CI container Lighthouse sometimes fails to record a page load (NO_NAVSTART), a
- * browser flake unrelated to the site. `lhci autorun` has no retry, so this collects one run
- * at a time, retries a run that fails, then asserts and uploads as autorun would.
- * URLs, run count, server and thresholds stay in lighthouserc.cjs.
+ * In the CI container Lighthouse sometimes fails to record a page load (NO_NAVSTART). `lhci
+ * autorun` has no retry, so this collects one run at a time, retries a run that fails, then
+ * asserts and uploads as autorun would. Settings stay in lighthouserc.cjs.
  */
 import { spawnSync } from 'node:child_process';
 import { rmSync } from 'node:fs';

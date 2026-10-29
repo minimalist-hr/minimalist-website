@@ -1,16 +1,7 @@
 ---
 /**
- * Image slot. With an `image` key it renders the photograph, cropped to the reserved
- * ratio; without one it renders the striped placeholder with its caption exactly as in
- * the design (wiki: Design system). Both reserve the same aspect ratio, so swapping a placeholder
- * for a photograph shifts nothing.
- *
- * The files are full colour (see src/lib/images.ts); no CSS filters either way.
- *
- * An image with a light-theme version renders both, and the theme shows one (wiki: Theme). The
- * dark one is the default, also without JavaScript, and keeps the slot's loading. The light one
- * is always lazy: a hidden lazy image is never fetched, so the dark theme never downloads it,
- * and the light theme fetches it as soon as it shows.
+ * An image with a light-theme version renders both and the theme shows one. The light one is
+ * always lazy: a hidden lazy image is never fetched, so the dark theme never downloads it.
  */
 import { Image } from 'astro:assets';
 
@@ -116,7 +107,6 @@ const height = Math.round((width * h) / w);
     object-fit: cover;
   }
 
-  /* One of the two theme versions shows; dark unless the theme is light. */
   :global(:root:not([data-theme='light'])) .frame > :global(img[data-theme-image='light']),
   :global(:root[data-theme='light']) .frame > :global(img[data-theme-image='dark']) {
     display: none;

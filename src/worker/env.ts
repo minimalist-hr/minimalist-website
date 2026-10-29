@@ -1,7 +1,6 @@
 /**
- * Bindings and variables available to the Worker.
- * `Env` is generated from wrangler.jsonc by `pnpm run types:worker`. Secrets are declared
- * here instead, as optional: previews may run without them. They are omitted from `Env`
+ * `Env` is generated from wrangler.jsonc by `pnpm run types:worker`. Secrets are declared here
+ * instead, as optional, because previews may run without them. They are omitted from `Env`
  * first, because `wrangler types` also adds any names it finds in a local .dev.vars.
  */
 type Secrets = 'TURNSTILE_SECRET_KEY' | 'RESEND_API_KEY';

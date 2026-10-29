@@ -1,9 +1,5 @@
 /*
- * Design tokens: the single place for brand values (wiki: Design system, Responsive layout).
- *
- * Values come from design/*.extracted.html. Fluid sizes are mobile-first:
- * the clamp() minimum is the mobile design value, the maximum is the desktop
- * design value. Never add a colour or gradient (brand rule).
+ * Fluid sizes are clamp(mobile value, fluid, desktop value).
  *
  * Breakpoints (media queries can't read custom properties, so use these literals):
  *   sm  40rem  (640px)   mobile layout, relaxed
@@ -23,7 +19,7 @@
   --stripe-a: #1b1b19;
   --stripe-b: #131312;
 
-  /* Background field (src/scripts/background-field.ts): hairlines in the label grey. */
+  /* Background field: hairlines in the label grey. */
   --field-line: var(--graphite);
   --field-alpha-scale: 1;
 
@@ -36,7 +32,7 @@
   --ink: #111110;
   --ink-2: #3b3a36;
   /* Brand value #7E7C75 is 3.80:1 on paper, short of WCAG AA (4.5:1) for small labels.
-     Darkened one step, same warm grey, with the owner's approval (Sept 2026):
+     Darkened one step, same warm grey:
      5.30:1 on paper, 4.72:1 on the image placeholders. */
   --graphite: #67655e;
   --rule: #dcdad3;
@@ -57,7 +53,7 @@
   --weight-regular: 400;
   --weight-medium: 500;
 
-  /* Type scale. Fixed steps are identical in both designs. */
+  /* Type scale */
   --text-label-sm: 10px; /* legal line, form labels */
   --text-label: 11px; /* nav, section labels */
   --text-label-lg: 12px; /* mobile menu links */
@@ -116,7 +112,7 @@
   --row-min-height: 48px;
   --hairline: 1px;
 
-  /* Motion (wiki: Motion) */
+  /* Motion */
   --ease: cubic-bezier(0.2, 0, 0, 1);
   --duration-state: 140ms; /* colour changes, linear */
   --duration-lift: 160ms; /* translate only */

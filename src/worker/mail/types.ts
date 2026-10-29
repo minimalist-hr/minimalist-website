@@ -1,8 +1,4 @@
-/**
- * The seam that keeps the email provider swappable: the rest of the Worker only knows this
- * interface. To change provider, add an implementation next to resend.ts and select it
- * in index.ts; nothing else changes.
- */
+/** The rest of the Worker only knows this interface, so a provider is one implementation. */
 
 export interface OutgoingMail {
   to: string;
@@ -12,7 +8,6 @@ export interface OutgoingMail {
   subject: string;
   /** Plain-text body; always sent, for clients and filters that prefer it. */
   text: string;
-  /** HTML body (src/worker/mail/layout.ts). */
   html?: string;
   /** Extra headers, e.g. Auto-Submitted on the auto-reply. */
   headers?: Record<string, string>;

@@ -1,7 +1,3 @@
-/**
- * schema.org JSON-LD (wiki: SEO and metadata): Organization on the home page, Article on insights,
- * BreadcrumbList on case studies and insights. Values come from site.config and content.
- */
 import { localeMeta, type Locale } from '../i18n/config';
 import { localizedPath, useTranslations } from '../i18n/utils';
 import { siteConfig } from '../site.config';

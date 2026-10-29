@@ -1,4 +1,3 @@
-/** Supported locales. English is the default and lives at the site root; Croatian under /hr/. */
 export const locales = ['en', 'hr'] as const;
 
 export type Locale = (typeof locales)[number];

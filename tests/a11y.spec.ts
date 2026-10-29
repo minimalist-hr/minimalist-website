@@ -3,11 +3,7 @@ import { readFileSync } from 'node:fs';
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 
-/**
- * WCAG 2.2 AA checks with axe on every page, in both themes and both layouts (wiki: Accessibility).
- * The page list comes from the built sitemap, so new pages are covered automatically;
- * the two 404 pages are added because they are not in the sitemap.
- */
+/** The page list comes from the built sitemap; the 404 pages aren't in it. */
 
 const WCAG_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
 

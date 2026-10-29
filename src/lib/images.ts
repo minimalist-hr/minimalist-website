@@ -3,22 +3,9 @@ import type { ImageMetadata } from 'astro';
 import type { Localized } from '../i18n/localized';
 
 /**
- * The photographs used across the site (wiki: Design system).
- *
- * The files in `src/assets/images/` are full colour and untreated, which is a deliberate
- * departure from the brand's greyscale rule (wiki: Design system). Nothing is filtered in CSS either
- * way. Astro crops each one to the ratio the slot asks for and emits the responsive sizes.
- *
  * Alt text lives here rather than beside the copy, so one image has one description in both
- * languages wherever it appears. Slots that still have no photograph keep the striped
- * placeholder and its caption instead.
- *
- * Photographs are JPEG; screenshots of client work are PNG, so text stays sharp until Astro
- * encodes the served sizes.
- *
- * An image can have a light-theme version next to it, `<key>-light.<ext>`: the same picture on a
- * light background, for mockups whose own background would otherwise stay dark in the light
- * theme. ImageFrame shows the one that matches the theme (wiki: Theme).
+ * languages wherever it appears. A file `<key>-light.<ext>` next to an image is its light-theme
+ * version.
  */
 
 /** Alt text per image, in both languages. A missing HR entry fails the build. */
@@ -99,7 +86,7 @@ export type ImageKey = keyof typeof alt;
 export type NotePoint = readonly [x: number, y: number];
 
 /**
- * A note on a screenshot (wiki: Design system): a hairline box around a feature and a leader
+ * A note on a screenshot: a hairline box around a feature and a leader
  * line from the box out into the empty background, ending in a short label.
  */
 export interface ImageNote {

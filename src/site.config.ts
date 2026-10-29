@@ -1,6 +1,3 @@
-/**
- * Site-wide facts and feature flags. Change values here, not in components.
- */
 export const siteConfig = {
   name: 'Minimalist',
   url: 'https://minimalist.hr',
@@ -8,10 +5,10 @@ export const siteConfig = {
   /** Default byline for insights. */
   author: 'Filip Mučnjak',
 
-  /** Show the Insights section in navigation and routes (design flag `showInsights`). */
+  /** Show the Insights section in navigation and routes. */
   showInsights: true,
 
-  /** Business details shown in the footer and on the Legal page (wiki: Privacy and data handling). */
+  /** Business details shown in the footer and on the Legal page. */
   company: {
     legalName: 'Minimalist, obrt za razvoj softvera',
     owner: 'Filip Mučnjak',

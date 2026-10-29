@@ -1,8 +1,4 @@
 ---
-/**
- * Questions and answers, two columns from md up. Answers are always visible, as in the
- * design, so there is no disclosure widget to operate (wiki: Accessibility).
- */
 import type { Locale } from '../i18n/config';
 import { pick } from '../i18n/localized';
 import type { FaqItem } from '../data/faq';
@@ -38,7 +34,6 @@ const { items, locale } = Astro.props;
     gap: 10px;
   }
 
-  /* The design rules every row after the first. */
   .item[data-bordered='true'] {
     padding-top: clamp(18px, 2.2vw, 26px);
     border-top: var(--hairline) solid var(--rule);

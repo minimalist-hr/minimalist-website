@@ -1,16 +1,8 @@
 ---
 /**
- * An image slot with notes (wiki: Design system): for the case study's screenshots, whose empty
- * background would otherwise be just that. Each note is a hairline box around a feature, a
- * small square on its edge and a leader line out into the background, ending in a label. The
- * notes live with the image in src/lib/images.ts; an image without notes renders as a plain
- * ImageFrame.
- *
- * From md up the labels sit on the image. Below md they would be too small there, so the lines
- * go, the squares carry numbers, and the same labels run as a numbered list under the image. It
- * is one list either way, so assistive technology reads the notes once, after the image.
- *
- * Colours are theme tokens, so the notes follow the theme with the image (wiki: Theme).
+ * Below md the labels would be too small on the image, so the lines go, the squares carry
+ * numbers and the labels run as a numbered list under it. It is one list either way, so
+ * assistive technology reads the notes once, after the image.
  */
 import type { ComponentProps } from 'astro/types';
 
@@ -146,7 +138,6 @@ const number = (index: number) => String(index + 1).padStart(2, '0');
     color: var(--graphite);
   }
 
-  /* ---- Desktop design (md and up): the labels move onto the image ---- */
   @media (min-width: 60rem) {
     .lines {
       display: block;
@@ -164,7 +155,6 @@ const number = (index: number) => String(index + 1).padStart(2, '0');
       vector-effect: non-scaling-stroke;
     }
 
-    /* Just the brand's closing square at the start of each line. */
     .marker {
       width: 7px;
       height: 7px;
