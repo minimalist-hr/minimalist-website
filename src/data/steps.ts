@@ -1,7 +1,6 @@
 import type { ImageKey } from '../lib/images';
 import type { Localized } from '../i18n/localized';
 
-/** The six engagement steps, same order on every project (wiki: Pages and content, Approach). */
 export interface Step {
   number: string;
   title: Localized<string>;

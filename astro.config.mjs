@@ -14,7 +14,6 @@ const cspHash = (/** @type {string} */ source) =>
     `sha256-${createHash('sha256').update(source).digest('base64')}`
   );
 
-// https://astro.build/config
 export default defineConfig({
   // Canonical origin, used for canonical and hreflang URLs.
   site: siteConfig.url,
@@ -22,7 +21,7 @@ export default defineConfig({
   // Matches "html_handling": "force-trailing-slash" in wrangler.jsonc
   trailingSlash: 'always',
 
-  // EN at the root, HR under /hr/. No browser-language redirects (wiki: Internationalisation).
+  // EN at the root, HR under /hr/. No browser-language redirects.
   i18n: {
     locales: [...locales],
     defaultLocale,
@@ -31,7 +30,7 @@ export default defineConfig({
 
   integrations: [localized404(locales.filter((locale) => locale !== defaultLocale))],
 
-  // Content Security Policy (wiki: Security), emitted as a <meta> tag on every page with hashes of
+  // Content Security Policy, emitted as a <meta> tag on every page with hashes of
   // Astro's own scripts and styles, so no 'unsafe-inline' is needed for scripts. Our two
   // is:inline scripts are hashed here from the same strings the pages render.
   // frame-ancestors cannot be set in a <meta> tag; it is sent as a header (public/_headers).

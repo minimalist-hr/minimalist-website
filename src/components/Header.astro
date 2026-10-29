@@ -1,9 +1,4 @@
 ---
-/**
- * Site header (wiki: Responsive layout). Mobile design below md: wordmark + menu button with
- * dropdown.
- * Desktop design from md: wordmark, primary nav, language switch and theme toggle.
- */
 import type { Locale } from '../i18n/config';
 import { localizedPath, useTranslations, type Alternates } from '../i18n/utils';
 import { buildNav, primaryNav } from '../lib/navigation';
@@ -121,7 +116,6 @@ const items = buildNav(primaryNav, locale, Astro.url.pathname);
     }
   }
 
-  /* ---- Desktop design (md and up) ---- */
   @media (min-width: 60rem) {
     .bar {
       gap: 20px;
@@ -155,7 +149,6 @@ const items = buildNav(primaryNav, locale, Astro.url.pathname);
       transition: color var(--duration-state) linear;
     }
 
-    /* Reveal: 1px rule extends from the left on hover and for the current page. */
     .desktop-nav a::after {
       content: '';
       position: absolute;

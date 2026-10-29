@@ -1,8 +1,8 @@
-# Response headers for files served from dist/ (Cloudflare static assets; wiki: Security).
+# Response headers for files served from dist/ (Cloudflare static assets).
 #
 # The Content-Security-Policy with script and style hashes is a <meta> tag on each page
 # (astro.config.mjs). A <meta> tag cannot set frame-ancestors, so that one directive is sent
-# here. The CI pipeline appends an X-Robots-Tag rule for previews and pre-launch production.
+# here. The CI pipeline appends an X-Robots-Tag rule for the staging preview.
 
 /*
   Content-Security-Policy: frame-ancestors 'none'

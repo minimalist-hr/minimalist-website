@@ -1,7 +1,7 @@
 const SITEVERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
 /**
- * Checks a Turnstile token with Cloudflare (wiki: Backend architecture). A token is valid once and
+ * Checks a Turnstile token with Cloudflare. A token is valid once and
  * for a few minutes; anything but an explicit success counts as a failure.
  */
 export async function verifyTurnstile(

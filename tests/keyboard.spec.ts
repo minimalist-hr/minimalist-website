@@ -2,12 +2,6 @@ import { readFileSync } from 'node:fs';
 
 import { expect, test, type Page } from '@playwright/test';
 
-/**
- * Keyboard and reflow checks that axe cannot make (wiki: Accessibility): skip link, a visible and
- * unobscured focus on every stop in both directions, the mobile menu, the theme switch,
- * the contact form's error focus, and no content lost at 200% / 400% zoom.
- */
-
 function sitemapPaths(): string[] {
   const xml = readFileSync(new URL('../dist/sitemap.xml', import.meta.url), 'utf8');
   return [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(

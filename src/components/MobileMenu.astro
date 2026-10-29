@@ -1,10 +1,4 @@
 ---
-/**
- * Mobile menu (below md): 44px button + dropdown panel under the header (wiki: Responsive layout).
- * Open state lives on <html data-menu="open">. Closes on Esc (focus returns to the button),
- * on link click, when focus leaves it and when the viewport grows past md.
- * Without JS the button is hidden and the panel is shown as a plain list.
- */
 import type { Locale } from '../i18n/config';
 import { useTranslations, type Alternates } from '../i18n/utils';
 import type { NavItem } from '../lib/navigation';
@@ -164,7 +158,6 @@ const t = useTranslations(locale);
     transform: translateY(-6.25px) rotate(-45deg);
   }
 
-  /* Dropdown panel directly under the header, full width. */
   .panel {
     position: absolute;
     top: 100%;
@@ -238,7 +231,7 @@ const t = useTranslations(locale);
 
   /*
    * No JS: no toggle button; the panel becomes a static list that wraps onto its own row
-   * in the header bar (see Header.astro).
+   * in the header bar.
    */
   :global(:root:not([data-js])) .menu-button {
     display: none;

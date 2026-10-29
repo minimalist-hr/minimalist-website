@@ -3,7 +3,7 @@
 # MR into staging  -> checks + build
 # push to staging  -> build + upload the staging preview (the MR already ran the checks)
 # MR staging->main -> checks + build + audit
-# push to main     -> build + deploy to production (the release MR already ran the checks)
+# push to main     -> build + deploy to production (the release MR already ran the checks) + wiki sync
 # Plain branch pushes start no pipeline.
 
 workflow:
@@ -34,8 +34,6 @@ default:
     - pnpm config set store-dir .pnpm-store
     - pnpm install --frozen-lockfile
 
-# ---------------------------------------------------------------- build
-
 # Checks and build in one job, so the install runs once.
 build:
   stage: build
@@ -59,9 +57,7 @@ build:
       - dist/
     expire_in: 1 week
 
-# ---------------------------------------------------------------- audit
-
-# Accessibility (axe on every page, both themes, both layouts) and Lighthouse (wiki: Testing).
+# Accessibility (axe on every page, both themes, both layouts) and Lighthouse.
 # Merge requests into main only, once per release; with "Pipelines must succeed" it gates the merge.
 audit:
   stage: audit
@@ -81,8 +77,6 @@ audit:
       - playwright-report/
       - .lighthouseci/
     expire_in: 1 week
-
-# ---------------------------------------------------------------- deploy
 
 # One staging preview, refreshed by every merge into staging.
 # Uploads a Worker version under the alias "staging" without touching production.
@@ -112,7 +106,7 @@ deploy_production:
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
   script:
-    # Keep search engines out until launch. Set ALLOW_INDEXING=true in GitLab when the site goes live.
+    # Without ALLOW_INDEXING=true in GitLab, production is kept out of search engines.
     - |
       if [ "$ALLOW_INDEXING" != "true" ]; then printf '\n/*\n  X-Robots-Tag: noindex\n' >> dist/_headers; fi
     - MSG="$(printf '%s %s' "$CI_COMMIT_SHORT_SHA" "$CI_COMMIT_TITLE" | cut -c1-90)"
@@ -120,3 +114,31 @@ deploy_production:
   environment:
     name: production
     url: $PRODUCTION_URL
+
+# Mirrors docs/wiki/ to the GitLab wiki once production is live.
+# Runs on every release, so a failed sync catches up next time. No changes, no commit.
+sync_wiki:
+  stage: deploy
+  needs: [deploy_production]
+  image: alpine:3.22
+  interruptible: false
+  resource_group: wiki
+  cache: []
+  before_script: []
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+  script:
+    - test -n "$WIKI_TOKEN" || { echo "WIKI_TOKEN is not set"; exit 1; }
+    - apk add --no-cache git rsync
+    - git clone --depth 1 "https://oauth2:${WIKI_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.wiki.git" /tmp/wiki
+    # .gitlab/ in the wiki repository belongs to GitLab (page redirects); keep it.
+    - rsync -a --delete --exclude .git --exclude .gitlab docs/wiki/ /tmp/wiki/
+    - cd /tmp/wiki
+    - git add -A
+    - |
+      if git diff --cached --quiet; then
+        echo "Wiki already up to date"
+      else
+        git -c user.name="$GITLAB_USER_NAME" -c user.email="$GITLAB_USER_EMAIL" commit -m "Sync wiki from $CI_COMMIT_SHORT_SHA"
+        git push origin HEAD
+      fi

@@ -1,13 +1,4 @@
 ---
-/**
- * Project inquiry form (wiki: Contact form). Field names, limits and allowed values come from
- * src/lib/inquiry.ts, the same contract the Worker validates against.
- *
- * With JavaScript (the script below): inline bilingual validation, Turnstile, a fetch submit
- * with a sending state, and an inline success or error message that receives focus.
- * Without JavaScript the form still posts, but Turnstile needs JavaScript, so a note offers
- * the email address instead.
- */
 import { PUBLIC_TURNSTILE_SITE_KEY } from 'astro:env/client';
 
 import type { Locale } from '../i18n/config';
@@ -146,7 +137,7 @@ const messages = {
       </label>
     </div>
 
-    <!-- Turnstile renders here only when it needs an interaction (wiki: Contact form). -->
+    <!-- Turnstile renders here only when it needs an interaction. -->
     <div data-turnstile data-sitekey={PUBLIC_TURNSTILE_SITE_KEY} data-language={locale}></div>
 
     <p class="notice" data-form-error role="alert" hidden></p>
@@ -259,7 +250,6 @@ const messages = {
     color: var(--ink-2);
   }
 
-  /* Name/email and company/role sit in pairs from sm up (wiki: Responsive layout). */
   @media (min-width: 40rem) {
     .pairs {
       grid-template-columns: repeat(2, minmax(0, 1fr));

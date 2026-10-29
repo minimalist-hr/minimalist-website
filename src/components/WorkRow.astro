@@ -1,8 +1,4 @@
 ---
-/**
- * Work list row: image beside text, alternating sides from md up (design).
- * Published entries link to the case study; the rest show the in-progress note.
- */
 import type { Locale } from '../i18n/config';
 import { useTranslations } from '../i18n/utils';
 import { workPath, type WorkEntry } from '../lib/content';
@@ -13,7 +9,7 @@ import MetaRow from './MetaRow.astro';
 interface Props {
   entry: WorkEntry;
   locale: Locale;
-  /** Even rows put the image on the right (design). */
+  /** Even rows put the image on the right. */
   flipped?: boolean;
   /** Hairline under the row; the last row omits it. */
   bordered?: boolean;
@@ -97,7 +93,6 @@ const t = useTranslations(locale);
     color: var(--graphite);
   }
 
-  /* ---- Desktop design (md and up): two columns, alternating sides ---- */
   @media (min-width: 60rem) {
     .row {
       grid-template-columns: repeat(2, minmax(0, 1fr));

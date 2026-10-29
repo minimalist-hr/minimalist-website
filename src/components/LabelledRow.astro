@@ -1,15 +1,11 @@
 ---
-/**
- * A small uppercase label beside a block of content, wrapping to one column on narrow
- * screens. Used for the pricing note, the FAQ and the Skills rows.
- */
 interface Props {
   label?: string | undefined;
   /** Hairline above the row. */
   bordered?: boolean;
-  /** Vertical padding for stacked rows, e.g. the Skills areas (design). */
+  /** Vertical padding for stacked rows, e.g. the Skills areas. */
   padded?: boolean;
-  /** Width of the label column; the design uses 240px, and 200px on Legal. */
+  /** Width of the label column. */
   sideWidth?: string;
   class?: string;
 }

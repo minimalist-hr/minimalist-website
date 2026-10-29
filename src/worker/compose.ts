@@ -32,7 +32,6 @@ function sentAt(date: Date): string {
   }).format(date);
 }
 
-/** Notification to the studio, with reply-to set to the inquirer. HTML plus a plain-text copy. */
 export function composeInquiryMail(
   inquiry: Inquiry,
   addresses: { to: string; from: string },

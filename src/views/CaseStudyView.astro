@@ -1,9 +1,4 @@
 ---
-/**
- * Case study page, shared by /work/[slug]/ and /hr/radovi/[slug]/.
- * Structure follows the design: back link, title, meta, hero image, labelled sections,
- * gallery, tech stack, results, quote, closing CTA.
- */
 import MetaPanel, { type MetaItem } from '../components/MetaPanel.astro';
 import CtaBand from '../components/CtaBand.astro';
 import CtaLink from '../components/CtaLink.astro';
@@ -46,7 +41,6 @@ const {
   ctaTitle,
 } = entry.data;
 
-/** Client and scope are optional; only show what the entry provides. */
 const meta: MetaItem[] = [];
 if (client) meta.push({ label: t('case.client'), value: client });
 meta.push({ label: t('case.sector'), value: sector });
@@ -106,7 +100,7 @@ if (website) {
 
       {gallery.length > 0 && (
         <div class="gallery">
-          {/* Screenshots are 4:5; the placeholders keep the design's 4:3. */}
+          {/* Screenshots are 4:5; placeholders 4:3. */}
           {gallery.map((item) => (
             <AnnotatedImage
               caption={item.caption}
@@ -218,7 +212,6 @@ if (website) {
     border-top: var(--hairline) solid var(--rule);
   }
 
-  /* ---- Desktop design (md and up) ---- */
   @media (min-width: 60rem) {
     .sections {
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 44%), 1fr));

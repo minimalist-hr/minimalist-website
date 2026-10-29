@@ -1,8 +1,4 @@
 ---
-/**
- * Numbered block used on Services and Approach: number and heading on one baseline,
- * a paragraph, an image, then anything else passed as children.
- */
 import type { Locale } from '../i18n/config';
 import ImageFrame from './ImageFrame.astro';
 
@@ -14,7 +10,7 @@ interface Props {
   /** Key into the image registry; without it the caption's placeholder is shown. */
   image?: string | undefined;
   locale?: Locale | undefined;
-  /** Hairline above the block (the design rules the rows after the first). */
+  /** Hairline above the block. */
   bordered?: boolean;
 }
 

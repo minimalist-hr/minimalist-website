@@ -1,16 +1,10 @@
 /**
- * Scroll reveal (wiki: Motion): content below the fold fades up once as it scrolls into view
- * (Enter), and rules draw in from the left (Reveal). Styles live in src/styles/motion.css.
- *
  * Only elements that start below the viewport are held back, so nothing on screen at load
- * waits for motion. Without JavaScript, or with reduced motion, nothing is hidden. Once an
- * element has entered, its attributes are removed, so its own transitions (hover lift,
- * colour changes) apply again.
+ * waits. Once an element has entered, its attributes are removed, so its own transitions apply
+ * again.
  *
- * What enters:
- * - content: each child of a `main .container`; a child holding `[data-reveal-item]`
- *   elements (cards, steps) is opened up so those items enter one by one
- * - rules: `.rule-top`, `.rule-bottom` and elements marked `data-draw` (a border rule)
+ * Content: each child of a `main .container`; a child holding `[data-reveal-item]` elements is
+ * opened up so those items enter one by one. Rules: `.rule-top`, `.rule-bottom` and `data-draw`.
  */
 
 /** Delay between items that enter together, and the most any item waits. */

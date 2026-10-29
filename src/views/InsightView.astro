@@ -1,8 +1,4 @@
 ---
-/**
- * Insight article, shared by /insights/[slug]/ and /hr/zapisi/[slug]/.
- * Long-form reading layout: sidebar metadata beside the article body (design).
- */
 import { render } from 'astro:content';
 
 import CtaBand from '../components/CtaBand.astro';
@@ -132,7 +128,6 @@ if (hasBody) {
     text-wrap: pretty;
   }
 
-  /* The design sets the opening paragraph larger and in ink. */
   .prose :global(p:first-child) {
     font-size: var(--text-lg);
     line-height: 1.45;

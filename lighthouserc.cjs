@@ -1,9 +1,4 @@
-/**
- * Lighthouse CI (wiki: Performance), run in CI on merge requests (`pnpm run test:lighthouse`, which
- * runs scripts/lighthouse.mjs: one run at a time, with retries).
- * Mobile emulation (Lighthouse's default) against the built site on the Workers runtime.
- * Run `pnpm run build` first. Uses Playwright's Chromium, so there is one browser to manage.
- */
+/** Mobile emulation against the built site on the Workers runtime, with Playwright's Chromium. */
 const { chromium } = require('@playwright/test');
 
 const PORT = 8788;
@@ -16,7 +11,7 @@ module.exports = {
       startServerReadyPattern: 'Ready on',
       startServerReadyTimeout: 120000,
       chromePath: chromium.executablePath(),
-      // The pages the performance budget names (wiki: Performance): home, a case study, contact.
+      // Home, a case study, contact.
       url: [`${base}/`, `${base}/work/lift-mucnjak-website/`, `${base}/contact/`],
       // Median of three runs, to smooth out noisy shared CI runners.
       numberOfRuns: 3,

@@ -1,15 +1,4 @@
 ---
-/**
- * Vertical timeline of the six steps, in the same language as "How we work" on the home
- * page: one continuous rule with a square marker per step. Used on the Approach page,
- * where each step also carries a longer description and an image.
- * Mobile: the rule runs down the left. From md up it runs down the middle and the steps
- * alternate sides, each side starting half a step lower, so the columns interlock. Both
- * sides align to the rule. Each square sits on the rule, and a hairline runs from it to
- * underline the step's heading.
- * Motion: the rule draws down as the page scrolls (scroll-driven, where supported), and
- * each underline extends from its square as the step enters (src/scripts/reveal.ts).
- */
 import type { Locale } from '../i18n/config';
 import { pick } from '../i18n/localized';
 import type { Step } from '../data/steps';
@@ -115,7 +104,6 @@ const { steps, locale } = Astro.props;
     transform-origin: left;
   }
 
-  /* Reveal: the underline extends from the square, just after the step starts to enter. */
   .step[data-reveal] .heading::after {
     transition: transform var(--duration-reveal) var(--ease) calc(var(--reveal-delay, 0ms) + 120ms);
   }
