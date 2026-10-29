@@ -1,8 +1,4 @@
 ---
-/**
- * About page, shared by /about/ and /hr/o-studiju/:
- * manifesto, principles grid, portrait with the studio description and profile details.
- */
 import CtaBand from '../components/CtaBand.astro';
 import ImageFrame from '../components/ImageFrame.astro';
 import LabelledRow from '../components/LabelledRow.astro';
@@ -199,7 +195,7 @@ const details = [
     color: var(--ink);
   }
 
-  /* Hairline grid: 1px gaps over the rule colour, as in the design's grid device. */
+  /* Hairline grid: 1px gaps over the rule colour. */
   .principles {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
@@ -233,7 +229,6 @@ const details = [
     line-height: var(--leading-snug);
   }
 
-  /* The closing line is set in graphite, as in the design. */
   .principle-close {
     line-height: 1.35;
     color: var(--graphite);

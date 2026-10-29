@@ -1,8 +1,5 @@
 import type { Localized } from '../i18n/localized';
 
-/**
- * Studio figures shown on the home page and About (wiki: Data model).
- */
 export interface Stat {
   value: string;
   label: Localized<string>;

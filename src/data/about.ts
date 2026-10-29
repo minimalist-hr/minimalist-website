@@ -1,9 +1,5 @@
 import type { Localized } from '../i18n/localized';
 
-/**
- * About page content (wiki: Pages and content).
- */
-
 export const principles: Localized<string>[] = [
   { en: 'Purpose before features.', hr: 'Svrha prije funkcija.' },
   { en: 'Engineered to endure.', hr: 'Građeno da traje.' },

@@ -1,8 +1,4 @@
 ---
-/**
- * Home page, shared by / and /hr/ (wiki: Pages and content). Pages pass only the locale.
- * Section copy comes from the design; work and insights come from content collections.
- */
 import CtaBand from '../components/CtaBand.astro';
 import Hero, { type Phrase } from '../components/Hero.astro';
 import InsightCard from '../components/InsightCard.astro';
@@ -248,7 +244,6 @@ const paths = {
     gap: 18px;
   }
 
-  /* Tablets: the mobile structure gains columns (wiki: Responsive layout) */
   /* auto-fill keeps empty tracks, so a single work or insight card keeps its card width. */
   @media (min-width: 40rem) {
     .grid {
@@ -256,7 +251,6 @@ const paths = {
     }
   }
 
-  /* ---- Desktop design (md and up) ---- */
   @media (min-width: 60rem) {
     .grid-work {
       grid-template-columns: repeat(auto-fill, minmax(min(100%, 30%), 1fr));

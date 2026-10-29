@@ -34,8 +34,6 @@ default:
     - pnpm config set store-dir .pnpm-store
     - pnpm install --frozen-lockfile
 
-# ---------------------------------------------------------------- build
-
 # Checks and build in one job, so the install runs once.
 build:
   stage: build
@@ -59,9 +57,7 @@ build:
       - dist/
     expire_in: 1 week
 
-# ---------------------------------------------------------------- audit
-
-# Accessibility (axe on every page, both themes, both layouts) and Lighthouse (wiki: Testing).
+# Accessibility (axe on every page, both themes, both layouts) and Lighthouse.
 # Merge requests into main only, once per release; with "Pipelines must succeed" it gates the merge.
 audit:
   stage: audit
@@ -81,8 +77,6 @@ audit:
       - playwright-report/
       - .lighthouseci/
     expire_in: 1 week
-
-# ---------------------------------------------------------------- deploy
 
 # One staging preview, refreshed by every merge into staging.
 # Uploads a Worker version under the alias "staging" without touching production.
@@ -112,7 +106,7 @@ deploy_production:
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
   script:
-    # Keep search engines out until launch. Set ALLOW_INDEXING=true in GitLab when the site goes live.
+    # Without ALLOW_INDEXING=true in GitLab, production is kept out of search engines.
     - |
       if [ "$ALLOW_INDEXING" != "true" ]; then printf '\n/*\n  X-Robots-Tag: noindex\n' >> dist/_headers; fi
     - MSG="$(printf '%s %s' "$CI_COMMIT_SHORT_SHA" "$CI_COMMIT_TITLE" | cut -c1-90)"
@@ -121,9 +115,7 @@ deploy_production:
     name: production
     url: $PRODUCTION_URL
 
-# ---------------------------------------------------------------- wiki
-
-# Mirrors docs/wiki/ to the GitLab wiki once production is live (wiki: Maintaining the Wiki).
+# Mirrors docs/wiki/ to the GitLab wiki once production is live.
 # Runs on every release, so a failed sync catches up next time. No changes, no commit.
 sync_wiki:
   stage: deploy

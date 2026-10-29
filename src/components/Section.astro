@@ -1,14 +1,10 @@
 ---
-/**
- * Page section: centred container, fluid vertical rhythm and the hairline that separates
- * sections in the design. Sizes come from the designs (mobile 48px → desktop 104px).
- */
 interface Props {
   /** Hairline under the section. The last section before the footer sets this to false. */
   bordered?: boolean;
   /**
-   * `lead`  — larger padding, used by the closing block (design).
-   * `header` — page header: normal space above, tighter below (design).
+   * `lead`  — larger padding, used by the closing block.
+   * `header` — page header: normal space above, tighter below.
    */
   size?: 'default' | 'lead' | 'header';
   /** Drops the top padding, for a section that follows a page header. */
@@ -46,7 +42,7 @@ const {
 
 <style>
   /* Vertical rhythm lives on the section; the rule sits on the container so it runs to the
-     width of the content, as in the design. Only the footer's rule spans the whole window. */
+     width of the content. Only the footer's rule spans the whole window. */
   .section {
     padding-top: clamp(48px, 7vw, 104px);
   }
@@ -67,7 +63,6 @@ const {
     padding-bottom: clamp(56px, 8vw, 120px);
   }
 
-  /* Page header: the design keeps a tighter gap between the lede and its rule. */
   .section[data-size='header'] .container {
     padding-bottom: clamp(32px, 4vw, 56px);
   }

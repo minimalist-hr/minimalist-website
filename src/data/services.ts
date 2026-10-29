@@ -1,10 +1,6 @@
 import type { ImageKey } from '../lib/images';
 import type { Localized } from '../i18n/localized';
 
-/**
- * The four services (wiki: Pages and content). Copy comes from the design; the Services page adds
- * "Solves" and "You receive" lists to the same items later.
- */
 export interface Service {
   number: string;
   title: Localized<string>;

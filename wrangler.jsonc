@@ -4,7 +4,7 @@
   "compatibility_date": "2026-09-17",
 
   // Worker script: handles POST /api/contact and hands every other request back to
-  // the static assets (see src/worker/index.ts).
+  // the static assets.
   "main": "./src/worker/index.ts",
 
   // Static assets built by Astro. Requests that match a file are served directly;

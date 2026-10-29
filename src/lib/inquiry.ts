@@ -1,8 +1,4 @@
-/**
- * The inquiry form's contract (wiki: Contact form), shared by the form
- * (src/components/ContactForm.astro) and the Worker that receives it (src/worker/). Keep this
- * file free of browser, Astro and Workers APIs so both sides can import it.
- */
+/** Shared by the form and the Worker: keep it free of browser, Astro and Workers APIs. */
 
 export const timelineValues = ['asap', '1-3m', '3-6m', 'exploring'] as const;
 export type Timeline = (typeof timelineValues)[number];
@@ -37,7 +33,6 @@ export const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 /** Form field that must stay empty; bots fill it in. */
 export const honeypotField = 'website';
 
-/** Where the form posts. */
 export const contactEndpoint = '/api/contact';
 
 /** JSON body the Worker returns to the JavaScript submit. */

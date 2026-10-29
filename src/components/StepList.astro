@@ -1,9 +1,4 @@
 ---
-/**
- * The six steps. Mobile design: vertical rule with a square marker per step.
- * Desktop design (md and up): six columns under one horizontal rule.
- * Motion: the rule draws in (down on mobile, from the left on desktop) as the list enters.
- */
 import type { Locale } from '../i18n/config';
 import { pick } from '../i18n/localized';
 import type { Step } from '../data/steps';
@@ -75,7 +70,6 @@ const { steps, locale } = Astro.props;
     color: var(--ink-2);
   }
 
-  /* ---- Desktop design (md and up): one rule across the top, six columns ---- */
   @media (min-width: 60rem) {
     .steps {
       display: grid;

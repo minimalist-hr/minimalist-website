@@ -1,7 +1,4 @@
 ---
-/**
- * Tool names as outlined tags. Names are product names, so they are never translated.
- */
 interface Props {
   tools: string[];
 }
@@ -35,7 +32,6 @@ const { tools } = Astro.props;
     transition: box-shadow var(--duration-state) linear;
   }
 
-  /* Highlight on hover, like the chips in the contact form. */
   @media (hover: hover) {
     .tool:hover {
       box-shadow: inset 0 0 0 var(--hairline) var(--ink);

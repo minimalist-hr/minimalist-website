@@ -1,13 +1,6 @@
 import type { Locale } from './config';
 
-/**
- * EN ↔ HR route map (wiki: Internationalisation). Every static page has an entry, so the language
- * switcher and hreflang links always point to the equivalent page.
- * Paths always end with a slash (trailingSlash: 'always').
- *
- * Detail pages (case studies, insights) are built from content collections and
- * paired by their translationKey; their base paths come from `work` and `insights`.
- */
+/** Paths always end with a slash. Detail pages take their base path from `work` and `insights`. */
 export const routes = {
   home: { en: '/', hr: '/hr/' },
   work: { en: '/work/', hr: '/hr/radovi/' },

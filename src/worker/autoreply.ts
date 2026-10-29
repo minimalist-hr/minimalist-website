@@ -6,12 +6,9 @@ import type { OutgoingMail } from './mail';
 import { escapeHtml, renderLayout, styles } from './mail/layout';
 
 /**
- * Confirmation to the person who sent the form, in the language they used.
- *
- * It repeats nothing from the form, not even the name: anyone can type any address into
- * the form, so the only thing a false submission can ever send is this fixed text.
- * `Auto-Submitted` (RFC 3834) tells the recipient's mail server it is automatic, so
- * out-of-office replies do not answer it. Replies go to the studio's inbox.
+ * It repeats nothing from the form, not even the name: anyone can type any address into the
+ * form, so the only thing a false submission can ever send is this fixed text.
+ * `Auto-Submitted` (RFC 3834) keeps out-of-office replies from answering it.
  */
 export function composeAutoReply(
   locale: Locale,

@@ -11,7 +11,7 @@
   }
 
   /*
-   * The content column is opaque (wiki: Background field): below the hero, everything in <main>
+   * The content column is opaque: below the hero, everything in <main>
    * sits on paper and the field shows only beside it. The hero keeps the field behind it. Once
    * the window is wider than the column, hairlines close its sides, meeting the hero's closing
    * rule and the footer's top rule. Narrower, the column fills the window and the sides stay
@@ -61,7 +61,7 @@
   }
 
   /*
-   * Links, the same as the header nav (wiki: Motion, Reveal): no underline at rest; on hover and
+   * Links, the same as the header nav: no underline at rest; on hover and
    * keyboard focus an ink line extends from the left; the current page or language keeps
    * it. The link's own styles brighten the text to ink. Put .link-line on the link, or on a
    * span inside it. Single-line links only: the line would not follow wrapped text, so links
@@ -100,7 +100,7 @@
     }
   }
 
-  /* Uppercase label style (brand: 500, +14%, 10–11px). Graphite is allowed here. */
+  /* Uppercase label style. Graphite is allowed here. */
   .label {
     font-size: var(--text-label);
     font-weight: var(--weight-medium);

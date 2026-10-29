@@ -2,7 +2,7 @@ import type { Mailer } from './types';
 
 /**
  * Local development: pretends to send. Logs only where the mail would go and its length,
- * never the content (wiki: Backend architecture: do not log message contents).
+ * never the content.
  */
 export function createConsoleMailer(): Mailer {
   return {

@@ -39,7 +39,7 @@ function oneOf<T extends string>(value: string, allowed: readonly T[]): T | unde
 }
 
 /**
- * Server-side validation (authoritative, wiki: Contact form). Returns the names of invalid fields,
+ * Server-side validation (authoritative). Returns the names of invalid fields,
  * which the page uses to show messages.
  */
 export function parseInquiry(form: FormData): ParseResult {

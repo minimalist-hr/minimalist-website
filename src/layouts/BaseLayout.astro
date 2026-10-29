@@ -1,7 +1,4 @@
 ---
-/**
- * Page shell for every page: <head> (theme, SEO, fonts), skip link, header, <main>, footer.
- */
 import '../styles/global.css';
 
 import BackgroundField from '../components/BackgroundField.astro';
@@ -19,15 +16,14 @@ import type { StructuredData } from '../lib/structured-data';
 const latinFont = '/fonts/archivo-latin-wght.woff2';
 
 interface Props {
-  /** Full document title, e.g. "Work — Minimalist". */
   title: string;
   /** Meta description; defaults to the site description. */
   description?: string;
-  /** Localised paths of this page (see alternatesFor). Omit for non-indexable pages. */
+  /** Localised paths of this page. Omit for non-indexable pages. */
   alternates?: Alternates;
   /** Keep this page out of search results (e.g. the 404). */
   noindex?: boolean;
-  /** schema.org data for this page (see lib/structured-data.ts). */
+  /** schema.org data for this page. */
   structuredData?: StructuredData | StructuredData[];
 }
 

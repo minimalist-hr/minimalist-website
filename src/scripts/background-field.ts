@@ -1,32 +1,12 @@
 /**
- * Background field (wiki: Motion, approved addition 2026-09-22): an adaptive quadtree, drawn.
+ * An adaptive quadtree, drawn. The plane is tiled with root cells; a cell splits into four while
+ * it is still large compared with its distance to a point of interest (the pointer and a few
+ * drifting points), and stops when it is small enough or at the depth limit. Each cell grows
+ * from its own centre when it opens and collapses back into it when it leaves.
  *
- * The visualisation is the algorithm itself. The plane is tiled with root cells; a cell splits
- * into four while it is still large compared with its distance to a point of interest, and stops
- * when it is small enough or has hit the depth limit. The points of interest are the pointer and
- * two slowly drifting ones, so the partition is fine where the cursor is and coarse away from it,
- * and it keeps working when nobody is moving anything. Every line is axis-aligned and every cell
- * is a rectangle of the same proportion, which is the brand's geometry rather than an overlay on
- * top of it.
- *
- * Each cell fades in by growing from its own centre and leaves by collapsing back into it, over
- * the Reveal duration (240ms), so a split reads as four rectangles opening inside the one they
- * replaced. The lattice also drifts a few pixels a second, so the structure never sits still.
- *
- * One canvas serves the whole site. The hero runs deeper, brighter and more responsive to the
- * pointer; below the hero, and on pages without one, the same partition runs shallower and
- * fainter. There it shows only beside the content column, which is opaque (utilities.css), so
- * it never runs behind text.
- *
- * Canvas 2D rather than WebGL: a frame is a few hundred stroked rectangles over a tree of the same
- * order, so the work is trivial for a CPU and pixel-exact hairlines matter more than shading power.
- * WebGL would add a shader pipeline and context-loss handling to draw the same lines less crisply.
- *
- * Reduced motion draws a single settled frame and stops. The canvas is decorative throughout
- * (aria-hidden, pointer-events: none), so nothing is lost when it is absent.
+ * Canvas 2D rather than WebGL: a frame is a few hundred stroked rectangles, so pixel-exact
+ * hairlines matter more than shading power.
  */
-
-/* ---- Tuning ------------------------------------------------------------------------- */
 
 /** Root cell size, in viewports. Everything below is this divided by powers of two. */
 export const ROOT_SCALE = 2;
@@ -76,7 +56,7 @@ export const HERO_HOLD = 0.72;
 export const HERO_RELEASE = 0.3;
 
 /**
- * How long a cell takes to open (the Reveal duration, wiki: Motion) and how long it takes to
+ * How long a cell takes to open (the Reveal duration) and how long it takes to
  * collapse again. A cell also fades with its size rather than arriving at full strength, which
  * is what keeps a burst of small cells from snapping into place. Leaving is slower than
  * arriving, so passing the pointer over an area does not flicker.
@@ -123,8 +103,6 @@ const CULL_MARGIN_PX = 260;
 /** Height change ignored before the canvas is re-sized (mobile browser chrome). */
 const RESIZE_HEIGHT_THRESHOLD = 120;
 
-/* ---- Helpers ------------------------------------------------------------------------ */
-
 /** Smooth 0-1 ramp between two edges, flat outside them. */
 function smoothstep(edge0: number, edge1: number, value: number): number {
   const t = Math.min(Math.max((value - edge0) / (edge1 - edge0), 0), 1);
@@ -157,8 +135,6 @@ interface Cell {
   /** Frame this cell was last produced in. */
   seen: number;
 }
-
-/* ---- Engine ------------------------------------------------------------------------- */
 
 interface Options {
   canvas: HTMLCanvasElement;

@@ -1,16 +1,4 @@
 ---
-/**
- * The site's background field: one fixed, decorative canvas behind every page.
- *
- * An adaptive quadtree, drawn as it refines around the pointer. Rendered once by BaseLayout, so
- * every page gets the same effect. It runs deep and bright while a hero (`[data-field-hero]`) is
- * on screen and drops to a shallower, fainter partition below it and on pages without one.
- * The content column is opaque (utilities.css), so outside the hero it shows only beside it.
- * The algorithm, and the constants that tune it, live in src/scripts/background-field.ts.
- *
- * Purely decorative: aria-hidden, pointer-events: none, behind all content, and absent
- * without JavaScript.
- */
 ---
 
 <canvas class="field" data-background-field aria-hidden="true"></canvas>
@@ -28,11 +16,8 @@
 </script>
 
 <style>
-  /*
-   * Fixed behind the content: z-index -1 puts it under everything in the body but still over
-   * the page background (which is painted on the root). The header and footer keep their own
-   * paper background, so the field runs behind the page, not through the chrome.
-   */
+  /* z-index -1: under everything in the body, but over the page background, which is painted
+     on the root. */
   .field {
     position: fixed;
     inset: 0;

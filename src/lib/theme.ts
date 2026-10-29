@@ -1,10 +1,9 @@
-/** Theme settings shared by the inline no-flash script and the theme toggle (wiki: Theme). */
+/** Shared by the inline no-flash script and the theme toggle. */
 
 export type Theme = 'dark' | 'light';
 
 export const defaultTheme: Theme = 'dark';
 
-/** localStorage key, taken from the design. */
 export const themeStorageKey = 'mn-theme';
 
 /** Browser UI colour per theme. Must match --paper in src/styles/tokens.css. */

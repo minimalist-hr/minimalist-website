@@ -1,12 +1,6 @@
 import type { Locale } from './config';
 
-/**
- * UI strings (navigation, buttons, labels, accessible names).
- * Page copy lives with the pages/content; only shared interface text belongs here.
- *
- * `en` defines the keys. `hr` is typed against them, so a missing or extra
- * Croatian key fails `pnpm run check`.
- */
+/** `hr` is typed against `en`, so a missing or extra Croatian key fails the type check. */
 const en = {
   'site.description':
     'Minimalist is a software development studio. We design and build software that does exactly what it should. Complex problems. Simple solutions.',
@@ -102,7 +96,7 @@ const en = {
   'form.errorConsent': 'Accept the privacy policy to send the inquiry.',
   'form.noscript': 'The form needs JavaScript for its spam check. Write to {email} instead.',
 
-  // Auto-reply to the sender (src/worker/autoreply.ts). Repeats nothing from the form.
+  // Auto-reply to the sender. Repeats nothing from the form.
   'email.replySubject': 'Your inquiry is in — Minimalist',
   'email.replyLabel': 'Inquiry received',
   'email.replyTitle': 'Thank you — your inquiry is in.',

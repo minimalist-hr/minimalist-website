@@ -1,11 +1,7 @@
 /**
- * Shared HTML shell for the site's emails, in the brand's neutral palette (wiki: Design system).
- *
  * Email clients are not browsers: layout uses tables and inline styles, which every client
- * keeps. The light theme is the default because Gmail and Outlook ignore
- * `prefers-color-scheme`; clients that support it (Apple Mail, iCloud) switch to the dark
- * theme through the classes in the <style> block. Type is Archivo, loaded from the site
- * where the client allows web fonts, with a neutral system fallback.
+ * keeps. Light is the default because Gmail and Outlook ignore `prefers-color-scheme`; clients
+ * that support it (Apple Mail, iCloud) switch to dark through the classes in the <style> block.
  */
 
 import { siteConfig } from '../../site.config';

@@ -1,18 +1,10 @@
 ---
 /**
- * Home hero: studio label, rotating headline, lede, actions, scroll cue.
- *
- * The headline cycles four phrases on an 18s loop, 4.5s each (wiki: Motion). Only the first
- * phrase is exposed to screen readers, so the heading does not change underneath them;
- * with reduced motion the first phrase is simply shown.
- *
- * Each phrase arrives as its lines rather than as one string. The phrases sit stacked in
- * one grid cell, so the heading is as tall as the longest of them; left to wrap on their
- * own, a phone shows some at three lines and some at two, and the short ones leave a hole
- * under the heading. Below md the lines are set by hand so every phrase is three deep.
- * From md up they run back together and wrap on their own, which lands on two lines for
- * every phrase but one: the Croatian "Manje šuma. Bolji softver." fits on a single line
- * and leaves the same hole. `breakBefore` forces that one's second line.
+ * The phrases sit stacked in one grid cell, so the heading is as tall as the longest. Below md
+ * each phrase's lines are set by hand, so every phrase is three deep and none leaves a hole
+ * under the heading. From md up the lines run together and wrap, which gives two lines for
+ * every phrase but the Croatian "Manje šuma. Bolji softver."; `breakBefore` forces its break.
+ * Only the first phrase is exposed to screen readers, so the heading doesn't change under them.
  */
 import Button from './Button.astro';
 import CtaLink from './CtaLink.astro';
@@ -86,7 +78,7 @@ const [first, ...rest] = phrases;
 </section>
 
 <script>
-  // Fits the headline's blurred patch to its widest phrase (see the styles). The phrases share
+  // Fits the headline's blurred patch to its widest phrase. The phrases share
   // one grid cell, so the widest one sets the patch for all of them.
   const heading = document.querySelector<HTMLElement>('.hero h1');
   if (heading) {
@@ -109,7 +101,7 @@ const [first, ...rest] = phrases;
   /*
    * The hero's closing rule runs the full width of the window, not the width of the text like
    * the sections below it: it is the boundary between the hero and the rest of the page, drawn
-   * under the scroll cue. The background field (BackgroundField.astro) reads this section's
+   * under the scroll cue. The background field reads this section's
    * [data-field-hero] to know how far its full-strength stretch reaches.
    */
   .hero {
@@ -124,7 +116,7 @@ const [first, ...rest] = phrases;
   }
 
   /*
-   * The text sits on a blurred patch of the background field (wiki: Background field), a little
+   * The text sits on a blurred patch of the background field, a little
    * larger than the text box. A pseudo-element, so the layout does not move; z-index -1 puts it
    * under the text and over the field. The vertical reach stays under half the smallest gap
    * between the elements, so two patches never overlap and blur twice. The elements shrink to
@@ -177,7 +169,7 @@ const [first, ...rest] = phrases;
     text-wrap: initial;
   }
 
-  /* Hand-set lines below md; one wrapping line from md up (see the note at the top). */
+  /* Hand-set lines below md; one wrapping line from md up. */
   .line {
     display: block;
   }
@@ -207,7 +199,6 @@ const [first, ...rest] = phrases;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    /* Show only the first phrase, as in both designs. */
     .phrase {
       opacity: 0;
     }
@@ -271,7 +262,6 @@ const [first, ...rest] = phrases;
     }
   }
 
-  /* ---- Desktop design (md and up): the design's tighter fluid rhythm ---- */
   @media (min-width: 60rem) {
     .hero-inner {
       padding-block: clamp(56px, 10vw, 150px) clamp(28px, 4vw, 44px);
@@ -312,7 +302,6 @@ const [first, ...rest] = phrases;
       max-width: 58ch;
     }
 
-    /* arrow first, on one line, aligned left */
     .scroll {
       flex-direction: row-reverse;
       align-self: flex-start;

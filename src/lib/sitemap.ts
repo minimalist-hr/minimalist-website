@@ -1,5 +1,5 @@
 /**
- * Sitemap (wiki: SEO and metadata). Built here rather than with @astrojs/sitemap, which pairs
+ * Built here rather than with @astrojs/sitemap, which pairs
  * languages by matching paths; our Croatian slugs are translated (/work/ ↔ /hr/radovi/), so
  * the pairs come from the route map and each entry's translationKey instead.
  */

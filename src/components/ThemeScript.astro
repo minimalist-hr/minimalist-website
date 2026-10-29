@@ -1,8 +1,7 @@
 ---
 /**
- * Blocking inline script: applies the saved theme before first paint (no flash).
- * Must be rendered early in <head>, after the theme-color meta it updates.
- * The script body lives in lib/inline-scripts.ts so the CSP can list its exact hash.
+ * Must render early in <head>, after the theme-color meta it updates. The body lives in
+ * lib/inline-scripts.ts so the CSP can list its exact hash.
  */
 import { themeScript } from '../lib/inline-scripts';
 import { defaultTheme, themeColors } from '../lib/theme';
