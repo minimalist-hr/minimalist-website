@@ -7,7 +7,7 @@ anything that identifies them.
 ## 1. Images
 
 Add them to `src/assets/images/` and register each key with EN and HR alt text
-([Images](/Guides/Images)). Typical keys: `work-<client>-cover`, `-hero`, `-<detail>`. Mockups on
+([Images](Images)). Typical keys: `work-<client>-cover`, `-hero`, `-<detail>`. Mockups on
 a dark background also need a `<key>-light.png`. Hero and gallery screenshots can carry notes.
 
 ## 2. English file

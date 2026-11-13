@@ -17,12 +17,12 @@ implementation selected by `MAIL_PROVIDER`; nothing else changes.
    `src/worker/env.ts`.
 3. **Configure:** verify the sending domain on a subdomain or selector that doesn't clash with
    iCloud's records; `pnpm exec wrangler secret put <PROVIDER>_API_KEY`; change `MAIL_PROVIDER`
-   in `wrangler.jsonc` (explain in the MR) and run `pnpm run types:worker`; add the variable to
+   in `wrangler.jsonc` (explain in the PR) and run `pnpm run types:worker`; add the variable to
    `.dev.vars.example`. The CSP doesn't apply to the Worker's own `fetch`.
 4. **Test** locally with `wrangler dev` and the key in `.dev.vars`: both emails arrive with SPF,
    DKIM and DMARC passing. After release, one real inquiry on production.
 5. **Clean up:** remove the old implementation and secret; update
-   [Contact form](/How-It-Works/Contact-Form#mailer),
-   [Infrastructure](/How-It-Works/Infrastructure#email-and-dns),
-   [Security and privacy](/How-It-Works/Security-and-Privacy) and the
-   [Decision log](/Decision-Log).
+   [Contact form](Contact-Form#mailer),
+   [Infrastructure](Infrastructure#email-and-dns),
+   [Security and privacy](Security-and-Privacy) and the
+   [Decision log](Decision-Log).

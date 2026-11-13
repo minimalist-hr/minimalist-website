@@ -2,7 +2,7 @@
 
 ## 1. Cover image (optional)
 
-Add and register it ([Images](/Guides/Images)). Without one, the placeholder shows
+Add and register it ([Images](Images)). Without one, the placeholder shows
 `coverCaption`.
 
 ## 2. English file

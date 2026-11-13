@@ -14,14 +14,14 @@
 
 | Layer          | Command                | Runs                                                   |
 | :------------- | :--------------------- | :----------------------------------------------------- |
-| Lint, format   | `lint`, `format:check` | Every commit; MR pipelines                             |
+| Lint, format   | `lint`, `format:check` | Every commit; every PR                                 |
 | Types          | `check`                | Every commit; catches missing HR strings               |
 | Build          | `build`                | Every commit; catches schema errors and missing images |
-| Browser audits | `test:a11y`            | UI changes locally; release MR                         |
+| Browser audits | `test:a11y`            | UI changes locally; release PR                         |
 | Cross-browser  | `test:a11y:browsers`   | Locally, before larger UI changes                      |
-| Lighthouse     | `test:lighthouse`      | Release MR                                             |
+| Lighthouse     | `test:lighthouse`      | Release PR                                             |
 
-**Test what you changed**, not everything; the full Chromium suite runs in the release MR.
+**Test what you changed**, not everything; the full Chromium suite runs in the release PR.
 
 ```bash
 pnpm exec playwright test tests/motion.spec.ts --project=desktop

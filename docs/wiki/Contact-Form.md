@@ -65,7 +65,7 @@ page with `?status=…`. Server validation is authoritative. Single-line fields 
 Email goes through the `Mailer` interface (`src/worker/mail/types.ts`); `MAIL_PROVIDER` picks
 the implementation: `resend` (production) or `console` (logs metadata only). Errors carry a
 short `code` such as `resend_403_…`; provider messages are dropped because they can contain
-addresses. To switch provider: [Change the email provider](/Guides/Change-the-Email-Provider).
+addresses. To switch provider: [Change the email provider](Change-the-Email-Provider).
 
 | Name                   | Kind                  | Value                                  |
 | :--------------------- | :-------------------- | :------------------------------------- |

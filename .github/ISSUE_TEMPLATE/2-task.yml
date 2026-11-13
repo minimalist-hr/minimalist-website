@@ -1,0 +1,17 @@
+name: Task
+description: Maintenance or technical work no visitor sees.
+type: Task
+assignees: [mucnjakf]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What and why
+      placeholder: Update Astro to 7.4.7, which fixes two advisories.
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: Done when
+      description: How to tell it's finished.

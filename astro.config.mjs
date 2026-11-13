@@ -67,7 +67,7 @@ export default defineConfig({
     },
   },
 
-  // Typed build-time settings. Set in GitLab CI/CD variables for real deploys.
+  // Typed build-time settings. Set in the CI deploy jobs for real deploys.
   env: {
     schema: {
       // Turnstile site key (public). Defaults to Cloudflare's always-pass test key; that

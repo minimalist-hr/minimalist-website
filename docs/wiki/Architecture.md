@@ -6,7 +6,7 @@ A static site plus one small Worker.
 - **Cloudflare** serves `dist/` from its edge through the Worker `minimalist-website`.
 - The same **Worker** handles the only dynamic request, `POST /api/contact`: Turnstile,
   validation, email through **Resend**.
-- **GitLab CI** builds and deploys. Nothing is stored: no database, sessions or cookies.
+- **GitHub Actions** checks, builds and deploys. Nothing is stored: no database, sessions or cookies.
 
 ```mermaid
 flowchart LR
@@ -77,7 +77,7 @@ own rules.
 
 Node 24, pnpm (pinned), Astro 7, TypeScript strict, `sharp`. Two runtime dependencies. Quality:
 ESLint, Prettier, `astro check`, Playwright with axe, Lighthouse CI. Services: Cloudflare
-(Workers, DNS, Turnstile, Web Analytics), Resend, iCloud+, GitLab.com. Versions are in
+(Workers, DNS, Turnstile, Web Analytics), Resend, iCloud+, GitHub, SonarQube Cloud. Versions are in
 `package.json`.
 
 Deliberately not used: UI frameworks, Tailwind or UI kits, MDX, a CMS, `@astrojs/sitemap`,

@@ -53,7 +53,7 @@ from data. One source per fact: import, don't repeat. `src/lib/inquiry.ts`, `src
 
 - External `http(s)` links: `target="_blank" rel="noopener"` plus the visually hidden
   `t('a11y.newTab')` hint. `mailto:` and internal links stay in the tab.
-- Images through the registry and `ImageFrame`, never a raw `<img>` ([Images](/Guides/Images)).
+- Images through the registry and `ImageFrame`, never a raw `<img>` ([Images](Images)).
 
 ## Accessibility
 

@@ -7,8 +7,8 @@ Cloudflare account, key or secret is needed to develop: local runs use Turnstile
 a mailer that only logs.
 
 ```bash
-git clone https://gitlab.com/minimalist-sds/website.git
-cd website
+git clone https://github.com/minimalist-hr/minimalist-website.git
+cd minimalist-website
 corepack enable
 pnpm install
 pnpm dev

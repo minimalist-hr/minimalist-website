@@ -7,7 +7,7 @@ stores in the browser).
 
 - An inline script in `<head>` applies the saved theme and `theme-color` before first paint, so
   there's no flash. Its body lives in `src/lib/inline-scripts.ts` (CSP hashing, see
-  [Security](/How-It-Works/Security-and-Privacy#inline-scripts)).
+  [Security](Security-and-Privacy#inline-scripts)).
 - Tokens switch on `:root[data-theme]`. Without JavaScript the page stays dark and the toggle is
   hidden.
 - The toggle is a `button role="switch"`; it flips `data-theme`, updates `theme-color`, saves
@@ -21,7 +21,7 @@ image (the case study hero) downloads both in the light theme.
 
 ## Motion
 
-Vocabulary and durations: [Brand and design → Motion](/Product/Brand-and-Design#motion). Three
+Vocabulary and durations: [Brand and design → Motion](Brand-and-Design#motion). Three
 guarantees: content on screen at load never waits, nothing is hidden without JavaScript, reduced
 motion turns everything off.
 
