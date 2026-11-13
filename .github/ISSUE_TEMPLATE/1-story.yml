@@ -2,6 +2,7 @@ name: Story
 description: A change visitors see, such as content, a page or the design.
 type: Story
 assignees: [mucnjakf]
+projects: [minimalist-hr/2]
 body:
   - type: textarea
     id: what

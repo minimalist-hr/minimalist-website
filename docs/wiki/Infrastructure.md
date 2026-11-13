@@ -32,6 +32,9 @@ public. Moved from GitLab in November 2026 ([Decision log](Decision-Log)).
 - Rebase merging is off; head branches are deleted after merge.
 - Secret scanning with push protection, Dependabot alerts and security updates, CodeQL (default
   setup), private vulnerability reporting.
+- **Board:** org project #2 "Minimalist website" (Backlog, Ready, In progress, In review, Done).
+  Open issues and pull requests are added automatically and start in Backlog; closed or merged
+  ones move to Done. The issue forms (Story, Task, Bug) set the issue type and the board.
 
 | Trigger               | Workflow › jobs                 |
 | :-------------------- | :------------------------------ |
