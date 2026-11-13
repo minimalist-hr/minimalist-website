@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [staging, main]
+
+permissions:
+  contents: read
+
+# A new push to a pull request stops the run it replaces.
+concurrency:
+  group: ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup
+      - run: pnpm run lint
+      - run: pnpm run format:check
+      - run: pnpm run check
+      - run: pnpm run build
+
+  # Accessibility and Lighthouse, once per release. On pull requests into staging the job is
+  # skipped, which still counts as passed for the required check.
+  audit:
+    name: audit
+    needs: checks
+    if: github.base_ref == 'main'
+    runs-on: ubuntu-latest
+    # Browsers preinstalled. The tag must match @playwright/test in package.json.
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+      options: --ipc=host
+    env:
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup
+      - run: pnpm run build
+      - run: pnpm run test:a11y
+      - run: pnpm run test:lighthouse
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: ${{ !cancelled() }}
+        with:
+          name: audit-reports
+          path: |
+            playwright-report/
+            .lighthouseci/
+          retention-days: 7
