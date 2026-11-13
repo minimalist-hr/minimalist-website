@@ -65,9 +65,9 @@
 | CI install fails on an install script | Approve the package in `allowBuilds` (ask first)            |
 | pnpm refuses a just-published version | Wait, or add it to `minimumReleaseAgeExclude` with a reason |
 | `--frozen-lockfile` fails             | `pnpm install` and commit `pnpm-lock.yaml`                  |
-| No pipeline on push                   | Plain pushes run nothing; open a merge request              |
-| Deploy auth error                     | Replace `CLOUDFLARE_API_TOKEN` in GitLab                    |
-| `sync_wiki` auth error                | `WIKI_TOKEN` expired; replace it                            |
+| No workflow on push                   | Plain pushes run nothing; open a pull request               |
+| Deploy auth error                     | Replace `CLOUDFLARE_API_TOKEN` in both environments         |
+| `wiki` job fails to clone             | The wiki has no first page yet; create one in the GitHub UI |
 
-Logs: Cloudflare → the Worker → Logs; locally the `wrangler dev` terminal; GitLab → Build →
-Pipelines for jobs and artifacts.
+Logs: Cloudflare → the Worker → Logs; locally the `wrangler dev` terminal; GitHub → Actions for
+runs and artifacts.

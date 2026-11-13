@@ -2,8 +2,8 @@
 
 ## Sources of truth
 
-- **`docs/wiki/` is the single source of truth** for the project: scope, decisions, architecture, data, configuration, workflow and how things work. Start at `docs/wiki/home.md` and read the relevant pages before starting a task. If a request conflicts with the wiki, say so.
-- **Keep the wiki true.** Any change to behaviour, structure, configuration, content model, workflow or a decision updates the matching wiki page in the same branch and merge request (conventions in `docs/wiki/Development/Workflow.md`, section "The wiki"). Record new decisions and approved deviations in `docs/wiki/Decision-Log.md`. The wiki holds rules, decisions, setup and gotchas; don't copy into it what the code already says. Never put secrets, tokens or account IDs in the wiki.
+- **`docs/wiki/` is the single source of truth** for the project: scope, decisions, architecture, data, configuration, workflow and how things work. Start at `docs/wiki/Home.md` and read the relevant pages before starting a task. If a request conflicts with the wiki, say so.
+- **Keep the wiki true.** Any change to behaviour, structure, configuration, content model, workflow or a decision updates the matching wiki page in the same branch and pull request (conventions in `docs/wiki/Workflow.md`, section "The wiki"). Record new decisions and approved deviations in `docs/wiki/Decision-Log.md`. The wiki holds rules, decisions, setup and gotchas; don't copy into it what the code already says. Never put secrets, tokens or account IDs in the wiki.
 - If the code and the wiki disagree, find out which is wrong and fix it; don't silently follow either.
 - Code comments explain the code only: a non-obvious reason or a workaround. No wiki references, dates, approvals or history, and no comment that repeats the code.
 - The design is the visual spec. Use `design/*.extracted.html` for exact copy, sizes, spacing and tokens, and the original `design/*.html` bundles (open in a browser) for visual comparison. Ask before inventing sections, components or visual styles.
@@ -40,17 +40,18 @@
 ## Workflow
 
 - Work in small steps. After each step run `pnpm run lint && pnpm run format:check && pnpm run check && pnpm run build`, then commit with a clear message. One logical change per commit.
-- `main` is production, `staging` collects finished work; both are protected (no direct pushes). Work on a branch off `staging`; the user opens a merge request into `staging`. Merging into `staging` deploys the one staging preview URL. Releases are a `staging` → `main` merge request; merging it deploys production. Hotfixes may target `main`, then `main` is merged back into `staging`. Plain branch pushes run no pipeline. Don't push unless asked.
-- Before changing `.gitlab-ci.yml`, `wrangler.jsonc`, `.gitignore` or `.nvmrc`, explain the problem first.
+- GitHub: `minimalist-hr/minimalist-website` (public). `main` is production, `staging` collects finished work; both are protected by rulesets (pull requests only, no direct pushes). Work on a branch off `staging`; the user opens a pull request into `staging` (squash is fine). Merging into `staging` deploys the one staging preview URL. Releases are a `staging` → `main` pull request merged with a merge commit (the only method `main` allows); merging it deploys production and syncs the wiki. Hotfixes may target `main`, then a `main` → `staging` pull request. Plain branch pushes run no workflow. Don't push unless asked.
+- Before changing `.github/workflows/`, `wrangler.jsonc`, `.gitignore` or `.nvmrc`, explain the problem first.
 - CLI tools change: when a command or flag from the wiki doesn't match, check `--help` or the current docs, say what differs, and update the wiki.
 
 ## Audits
 
-- `test:a11y` and `test:lighthouse` run in CI on `staging` → `main` merge requests only (job `audit`); the targets are WCAG 2.2 AA with zero axe violations and Lighthouse 95+/100/100/100 (wiki: Testing).
+- `test:a11y` and `test:lighthouse` run in CI on `staging` → `main` pull requests only (job `audit`); the targets are WCAG 2.2 AA with zero axe violations and Lighthouse 95+/100/100/100 (wiki: Testing).
 - `test:a11y` also runs `tests/keyboard.spec.ts`: skip link, a visible focus that the sticky header never covers (both Tab directions), mobile menu keys, form error focus, and reflow at 320px / 640px. A screen reader pass stays manual.
 - `test:a11y` also runs `tests/motion.spec.ts` (the scroll reveal). axe audits with reduced motion, so it sees every page in its final state.
 - CI runs Chromium only. Before larger UI changes, run `pnpm run test:a11y:browsers` locally (adds Firefox and WebKit). WebKit skips links on Tab, like Safari, so link-only keyboard tests skip it.
-- The Playwright Docker image tag in `.gitlab-ci.yml` must match the `@playwright/test` version.
+- The Playwright container image tag in `.github/workflows/ci.yml` must match the `@playwright/test` version.
+- SonarQube Cloud (Automatic Analysis) is a required check on pull requests; security hotspots in new code are reviewed in Sonar.
 - `test:lighthouse` runs `scripts/lighthouse.mjs`, not `lhci autorun`: Lighthouse sometimes fails to record a page load in the CI container (`NO_NAVSTART`), so each run is retried up to three times.
 - On Windows, `lhci collect` fails on a Chrome-launcher cleanup bug (EPERM on its temp profile); it works in CI. Locally, run Lighthouse against a Chromium started with `--remote-debugging-port` instead.
 
@@ -68,7 +69,7 @@
 
 ## Secrets
 
-- Never write, ask for or echo Cloudflare API tokens, account IDs or other secrets. They live only in GitLab CI/CD variables and Cloudflare secrets. Local dev secrets go in `.dev.vars` (gitignored); commit only `.dev.vars.example`.
+- Never write, ask for or echo Cloudflare API tokens, account IDs or other secrets. They live only in GitHub Actions secrets and Cloudflare secrets. Local dev secrets go in `.dev.vars` (gitignored); commit only `.dev.vars.example`.
 
 ## Commands
 

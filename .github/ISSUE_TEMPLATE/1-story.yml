@@ -1,0 +1,17 @@
+name: Story
+description: A change visitors see, such as content, a page or the design.
+type: Story
+assignees: [mucnjakf]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What and why
+      placeholder: Add the Lift-Mučnjak case study, so the work page shows a finished client site.
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: Done when
+      description: How to tell it's finished. Both languages, both layouts.

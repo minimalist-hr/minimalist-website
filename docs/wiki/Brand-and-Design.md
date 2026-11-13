@@ -2,7 +2,7 @@
 
 The brand rules are hard constraints. Every value used in code is a token in
 `src/styles/tokens.css`. Approved exceptions are in the
-[Decision log](/Decision-Log#approved-deviations-from-the-brand-or-design).
+[Decision log](Decision-Log#approved-deviations-from-the-brand-or-design).
 
 ## Colour
 
@@ -50,7 +50,7 @@ Inline SVG, 24px box, 1.5px stroke, square caps, `currentColor`.
 - A slot without an image shows the striped placeholder with its caption.
 - Type on an image (unused): darken the file to 42%, paper-coloured type, ≥ 4.5:1.
 - Case study screenshots may carry notes (box, square, leader line, label) on their plain
-  background, never over the picture. See [Images](/Guides/Images#notes-on-screenshots).
+  background, never over the picture. See [Images](Images#notes-on-screenshots).
 
 ## Motion
 
@@ -67,7 +67,7 @@ Easing `cubic-bezier(.2, 0, 0, 1)` (`--ease`). Everything not listed is instant.
 
 From the design: the theme knob (220ms) and the menu bars (260ms). Content on screen at load is
 never hidden, nothing is hidden without JavaScript, and reduced motion turns all of it off. How
-it's built: [Theme and motion](/How-It-Works/Theme-and-Motion).
+it's built: [Theme and motion](Theme-and-Motion).
 
 ## Voice
 

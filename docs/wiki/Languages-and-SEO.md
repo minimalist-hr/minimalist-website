@@ -56,5 +56,5 @@ The sitemap is submitted to Google and Bing; it updates with each build.
 ## Keeping previews out of search
 
 - The staging deploy appends `X-Robots-Tag: noindex` to `dist/_headers`.
-- Production gets the same unless the GitLab variable `ALLOW_INDEXING=true` (set since launch).
+- Production gets the same unless the `production` environment variable `ALLOW_INDEXING` is `true` (set since launch).
 - Production answers only on `minimalist.hr`; `www` redirects to the apex.

@@ -1,0 +1,42 @@
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    # pnpm holds back fresh releases too; a version Dependabot picks must already be allowed.
+    cooldown:
+      default-days: 3
+    ignore:
+      # Moves with the audit container image tag in ci.yml, which Dependabot doesn't update.
+      - dependency-name: '@playwright/test'
+      # Pinned exactly; updated by hand with a visual check of the images.
+      - dependency-name: sharp
+      # Majors need release notes and checks of their own.
+      - dependency-name: astro
+        update-types: [version-update:semver-major]
+      - dependency-name: wrangler
+        update-types: [version-update:semver-major]
+      - dependency-name: typescript
+        update-types: [version-update:semver-major]
+      - dependency-name: eslint
+        update-types: [version-update:semver-major]
+      - dependency-name: '@eslint/js'
+        update-types: [version-update:semver-major]
+      # Follows the Node version in .nvmrc, which moves from LTS to LTS.
+      - dependency-name: '@types/node'
+        update-types: [version-update:semver-major]
+    groups:
+      npm:
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directories: [/, /.github/actions/*]
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      actions:
+        patterns: ['*']

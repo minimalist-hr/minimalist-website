@@ -42,7 +42,8 @@ HSTS `max-age=31536000; includeSubDomains` (no `preload`). Cache: `/_astro/*` a 
 
 ## Secrets
 
-- Cloudflare API token and account ID: GitLab CI/CD variables only.
+- Cloudflare API token and account ID: GitHub Actions secrets only (the token only in the
+  `staging` and `production` environments).
 - `TURNSTILE_SECRET_KEY`, `RESEND_API_KEY`: Cloudflare Worker secrets only.
 - Local: `.dev.vars` (gitignored); commit only `.dev.vars.example`.
 - Never in code, commits, issues, logs or this wiki.
