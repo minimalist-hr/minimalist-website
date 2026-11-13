@@ -5,22 +5,22 @@ reason, and update the pages that describe it.
 
 ## Foundations
 
-| Area            | Decision                                                  | Why                                                                                |
-| :-------------- | :-------------------------------------------------------- | :--------------------------------------------------------------------------------- |
-| Framework       | Astro, static output                                      | A content site: HTML and CSS, almost no JavaScript; built-in i18n and collections. |
-| Styling         | Plain CSS, custom properties, Astro scoped styles         | A few neutrals and one typeface; tokens map 1:1 to CSS variables.                  |
-| Browser JS      | Small vanilla TypeScript scripts                          | No framework runtime in the browser.                                               |
-| Content         | Content collections (Markdown + typed schema)             | Adding a case study or article means adding a file.                                |
-| Hosting         | Cloudflare Workers with static assets (not Pages)         | Free static requests, fast EU edge, preview URLs.                                  |
-| CI/CD           | GitLab CI deploying with Wrangler; no Cloudflare Git link | Deploys only after the pipeline passes; everything is defined in the repo.         |
-| Form spam       | Turnstile + honeypot                                      | Invisible to most visitors, cookieless.                                            |
-| Form email      | Resend, eu-west-1                                         | No database, small GDPR surface. Resend keeps logs in the US.                      |
-| Inbox           | iCloud+ Custom Email Domain                               | Owner's choice. No DPA; may move to Zoho later.                                    |
-| Analytics       | Cloudflare Web Analytics                                  | Cookieless, so no cookie banner.                                                   |
-| Fonts           | Self-hosted Archivo variable woff2, latin + latin-ext     | Performance, GDPR, Croatian diacritics.                                            |
-| Package manager | pnpm, version pinned                                      | Fast, strict, reproducible.                                                        |
-| Sitemap         | Own endpoint, not `@astrojs/sitemap`                      | The integration pairs languages by path; Croatian slugs are translated.            |
-| Tests           | Playwright end to end, no unit test framework             | The logic is small; what matters is behaviour in real browsers.                    |
+| Area            | Decision                                                       | Why                                                                                |
+| :-------------- | :------------------------------------------------------------- | :--------------------------------------------------------------------------------- |
+| Framework       | Astro, static output                                           | A content site: HTML and CSS, almost no JavaScript; built-in i18n and collections. |
+| Styling         | Plain CSS, custom properties, Astro scoped styles              | A few neutrals and one typeface; tokens map 1:1 to CSS variables.                  |
+| Browser JS      | Small vanilla TypeScript scripts                               | No framework runtime in the browser.                                               |
+| Content         | Content collections (Markdown + typed schema)                  | Adding a case study or article means adding a file.                                |
+| Hosting         | Cloudflare Workers with static assets (not Pages)              | Free static requests, fast EU edge, preview URLs.                                  |
+| CI/CD           | GitHub Actions deploying with Wrangler; no Cloudflare Git link | Deploys only after the checks pass; everything is defined in the repo.             |
+| Form spam       | Turnstile + honeypot                                           | Invisible to most visitors, cookieless.                                            |
+| Form email      | Resend, eu-west-1                                              | No database, small GDPR surface. Resend keeps logs in the US.                      |
+| Inbox           | iCloud+ Custom Email Domain                                    | Owner's choice. No DPA; may move to Zoho later.                                    |
+| Analytics       | Cloudflare Web Analytics                                       | Cookieless, so no cookie banner.                                                   |
+| Fonts           | Self-hosted Archivo variable woff2, latin + latin-ext          | Performance, GDPR, Croatian diacritics.                                            |
+| Package manager | pnpm, version pinned                                           | Fast, strict, reproducible.                                                        |
+| Sitemap         | Own endpoint, not `@astrojs/sitemap`                           | The integration pairs languages by path; Croatian slugs are translated.            |
+| Tests           | Playwright end to end, no unit test framework                  | The logic is small; what matters is behaviour in real browsers.                    |
 
 ## Approved deviations from the brand or design
 
@@ -42,16 +42,21 @@ reason, and update the pages that describe it.
 
 ## Operations
 
-| Date       | Decision                                                             | Why                                                                                 |
-| :--------- | :------------------------------------------------------------------- | :---------------------------------------------------------------------------------- |
-| 2026-09-18 | Custom domains declared in `wrangler.jsonc`, not the dashboard       | A deploy can never drop them.                                                       |
-| 2026-09-18 | `workers_dev: false`, `preview_urls: true`                           | Production answers only on minimalist.hr; staging keeps its workers.dev URL.        |
-| 2026-09-25 | One staging preview; pipelines only on MRs, `staging` and `main`     | Saves GitLab compute minutes.                                                       |
-| 2026-09-25 | Audit job only on `staging` → `main` MRs                             | Once per release instead of on every change.                                        |
-| 2026-09-26 | Required consent checkbox on the form                                | GDPR: the inquirer accepts the privacy policy; the Worker rejects a submit without. |
-| 2026-09-26 | Legal texts final without outside review                             | Owner's call. Revisit if the site starts collecting anything new.                   |
-| 2026-10-29 | CI publishes the GitLab wiki after each production deploy            | A manual sync was easy to forget.                                                   |
-| 2026-10-29 | Wiki cut to 20 pages; code comments explain code only, no wiki links | One place per fact; less to keep in sync.                                           |
+| Date       | Decision                                                             | Why                                                                                            |
+| :--------- | :------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------- |
+| 2026-09-18 | Custom domains declared in `wrangler.jsonc`, not the dashboard       | A deploy can never drop them.                                                                  |
+| 2026-09-18 | `workers_dev: false`, `preview_urls: true`                           | Production answers only on minimalist.hr; staging keeps its workers.dev URL.                   |
+| 2026-09-25 | One staging preview; pipelines only on MRs, `staging` and `main`     | Saves GitLab compute minutes.                                                                  |
+| 2026-09-25 | Audit job only on `staging` → `main` MRs                             | Once per release instead of on every change.                                                   |
+| 2026-09-26 | Required consent checkbox on the form                                | GDPR: the inquirer accepts the privacy policy; the Worker rejects a submit without.            |
+| 2026-09-26 | Legal texts final without outside review                             | Owner's call. Revisit if the site starts collecting anything new.                              |
+| 2026-10-29 | CI publishes the GitLab wiki after each production deploy            | A manual sync was easy to forget.                                                              |
+| 2026-10-29 | Wiki cut to 20 pages; code comments explain code only, no wiki links | One place per fact; less to keep in sync.                                                      |
+| 2026-11-13 | Moved from GitLab to GitHub (`minimalist-hr`), public repository     | Unused GitLab features; 400 CI minutes a month on GitLab Free, unlimited on public GitHub.     |
+| 2026-11-13 | Rulesets: `main` takes merge commits only, `staging` merge or squash | A squashed release would make the branches drift apart.                                        |
+| 2026-11-13 | Cloudflare token is account-owned, only in the deploy environments   | Survives user changes; pull request jobs never see it.                                         |
+| 2026-11-13 | SonarQube Cloud with Automatic Analysis, required on pull requests   | Static analysis with no token or workflow job; covers Dependabot's PRs too.                    |
+| 2026-11-13 | Merged MRs and pipeline history not imported                         | GitHub can't import them; the GitLab project export is the archive. Issues kept their numbers. |
 
 ## Out of scope
 

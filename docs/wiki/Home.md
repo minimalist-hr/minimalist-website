@@ -4,7 +4,7 @@ The website of **Minimalist**, a small software studio in Zagreb, at
 [minimalist.hr](https://minimalist.hr). English and Croatian, dark and light.
 
 Astro builds a static site. A Cloudflare Worker serves it and handles the contact form
-(Turnstile, then email through Resend). GitLab CI checks, builds and deploys. No database, no
+(Turnstile, then email through Resend). GitHub Actions checks, builds and deploys. No database, no
 CMS, no cookies.
 
 **Status:** live since 2026-09-18. The build is finished; work is content (case studies and
@@ -25,7 +25,7 @@ insights as they exist) and maintenance.
 | :-------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Production            | [minimalist.hr](https://minimalist.hr)                                                                                                                                    |
 | Staging preview       | [staging-minimalist-website.minimalist-1a8.workers.dev](https://staging-minimalist-website.minimalist-1a8.workers.dev/)                                                   |
-| Repository, CI, wiki  | [gitlab.com/minimalist-sds/website](https://gitlab.com/minimalist-sds/website)                                                                                            |
+| Repository, CI, wiki  | [github.com/minimalist-hr/minimalist-website](https://github.com/minimalist-hr/minimalist-website)                                                                        |
 | Cloudflare            | [dash.cloudflare.com](https://dash.cloudflare.com/) (root only: deep links contain the account ID)                                                                        |
 | Resend                | [resend.com/domains](https://resend.com/domains/76a5d2a8-84d9-4664-b5f3-69de41d35afd)                                                                                     |
 | Search consoles       | [Google](https://search.google.com/search-console?resource_id=sc-domain%3Aminimalist.hr), [Bing](https://www.bing.com/webmasters/sitemaps?siteUrl=https://minimalist.hr/) |
@@ -34,5 +34,5 @@ insights as they exist) and maintenance.
 ## About this wiki
 
 The single source of truth for the project. The master copy is `docs/wiki/` in the repository;
-CI publishes it to the GitLab wiki after each release, so don't edit pages in the GitLab UI. See
+CI publishes it to the GitHub wiki after each release, so don't edit pages in the GitHub UI. See
 [Workflow → The wiki](Workflow#the-wiki).

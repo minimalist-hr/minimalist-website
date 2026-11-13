@@ -21,47 +21,64 @@ into browser requests, so not visible with `curl`).
 form renders on staging but can't send. The site key is a build variable, the secret a Worker
 secret.
 
-## GitLab
+## GitHub
 
-Project [minimalist-sds/website](https://gitlab.com/minimalist-sds/website).
+Repository [minimalist-hr/minimalist-website](https://github.com/minimalist-hr/minimalist-website),
+public. Moved from GitLab in November 2026 ([Decision log](Decision-Log)).
 
-- `main` (production) and `staging` (default branch) are protected: merge by Maintainers, push
-  by no one, no force push. **Pipelines must succeed** is on.
-- Pipelines run only for merge requests and pushes to `main` and `staging`.
+- **Rulesets** on `main` (production) and `staging` (default branch): pull request required, 0
+  approvals, no force push, no deletion, no bypass. `main` allows merge commits only, `staging`
+  merge or squash. Required checks: `checks`, `audit` and `SonarCloud Code Analysis`.
+- Rebase merging is off; head branches are deleted after merge.
+- Secret scanning with push protection, Dependabot alerts and security updates, CodeQL (default
+  setup), private vulnerability reporting.
 
-| Trigger               | Jobs                                             |
-| :-------------------- | :----------------------------------------------- |
-| MR into `staging`     | `build` (lint, format check, type checks, build) |
-| Merge into `staging`  | `build` → `deploy_staging`                       |
-| MR `staging` → `main` | `build` (with checks) → `audit`                  |
-| Merge into `main`     | `build` → `deploy_production` → `sync_wiki`      |
+| Trigger               | Workflow › jobs                 |
+| :-------------------- | :------------------------------ |
+| PR into `staging`     | CI › `checks` (`audit` skipped) |
+| PR `staging` → `main` | CI › `checks` → `audit`         |
+| Push to `staging`     | Deploy › `staging`              |
+| Push to `main`        | Deploy › `production` → `wiki`  |
 
-| Job                 | Does                                                                                            |
-| :------------------ | :---------------------------------------------------------------------------------------------- |
-| `build`             | Install, checks on MRs, build; keeps `dist/` a week; refreshes the pnpm cache                   |
-| `audit`             | `test:a11y` and `test:lighthouse`; reports kept a week. Image tag must match `@playwright/test` |
-| `deploy_staging`    | Appends `noindex`, then `wrangler versions upload --preview-alias staging`                      |
-| `deploy_production` | Appends `noindex` unless `ALLOW_INDEXING=true`, then `wrangler deploy`                          |
-| `sync_wiki`         | Mirrors `docs/wiki/` to the GitLab wiki (keeps its `.gitlab/` folder), pushes only on changes   |
+| Job          | Does                                                                                          |
+| :----------- | :-------------------------------------------------------------------------------------------- |
+| `checks`     | Lint, format check, type checks, build                                                        |
+| `audit`      | Build, `test:a11y`, `test:lighthouse` in the Playwright image; reports kept a week (artifact) |
+| `staging`    | Build, append `noindex`, `wrangler versions upload --preview-alias staging`                   |
+| `production` | Build, append `noindex` unless `ALLOW_INDEXING` is `true`, `wrangler deploy`                  |
+| `wiki`       | Copies `docs/wiki/` to the GitHub wiki with the workflow's own token, pushes only on changes  |
 
-Deploy messages are `<short sha> <commit title>`. Deploy jobs aren't interruptible and use
-resource groups, so they never overlap.
+The audit image tag in `ci.yml` must match `@playwright/test`. Shared setup (pnpm from
+`package.json`, Node from `.nvmrc`, cached install) is the local action `.github/actions/setup`.
+Third-party actions are pinned to a commit. Deploy messages are `<short sha> <commit title>`;
+deploy jobs use concurrency groups, so they never overlap or cancel each other.
 
-**CI/CD variables**
+**Secrets and variables** (Settings › Secrets and variables › Actions, and Settings ›
+Environments)
 
-| Key                         | Purpose                                                               | Flags                         |
-| :-------------------------- | :-------------------------------------------------------------------- | :---------------------------- |
-| `CLOUDFLARE_API_TOKEN`      | Wrangler auth ("Edit Cloudflare Workers", scoped to the account)      | Masked, hidden, not protected |
-| `CLOUDFLARE_ACCOUNT_ID`     | Wrangler account                                                      | Masked                        |
-| `CF_WORKERS_SUBDOMAIN`      | Builds the staging URL                                                | —                             |
-| `PRODUCTION_URL`            | `https://minimalist.hr/`                                              | —                             |
-| `ALLOW_INDEXING`            | `true`; without it production gets `noindex`                          | —                             |
-| `PUBLIC_TURNSTILE_SITE_KEY` | Baked into the build; missing → test key, which a real secret rejects | —                             |
-| `WIKI_TOKEN`                | Fine-grained personal access token for the wiki push, expires         | Masked, hidden, protected     |
+| Name                        | Kind and scope                     | Purpose                                                               |
+| :-------------------------- | :--------------------------------- | :-------------------------------------------------------------------- |
+| `CLOUDFLARE_API_TOKEN`      | Secret, `staging` and `production` | Wrangler auth; account-owned token (below)                            |
+| `CLOUDFLARE_ACCOUNT_ID`     | Secret, repository                 | Wrangler account; a secret so it's masked in public logs              |
+| `PUBLIC_TURNSTILE_SITE_KEY` | Variable, repository               | Baked into the build; missing → test key, which a real secret rejects |
+| `CF_WORKERS_SUBDOMAIN`      | Variable, `staging`                | Builds the staging URL                                                |
+| `PRODUCTION_URL`            | Variable, `production`             | `https://minimalist.hr/`                                              |
+| `ALLOW_INDEXING`            | Variable, `production`             | `true`; without it production gets `noindex`                          |
 
-`WIKI_TOKEN` is a fine-grained personal access token limited to this project, with _Wiki_ →
-Read and Create. It's personal because project access tokens need Premium on GitLab.com. When
-it expires `sync_wiki` fails with an auth error: create a new token and replace the value.
+Each environment only accepts deploys from its own branch, so pull request jobs never see the
+token. The token is an **account-owned** API token (Manage account › Account API tokens), so it
+doesn't depend on a user: Workers Scripts Write and Account Settings Read on the account, Workers
+Routes Write and Zone Read on `minimalist.hr`. No expiry.
+
+**SonarQube Cloud:** project `minimalist-hr_minimalist-website` in the `minimalist-hr`
+organization, Automatic Analysis (no token, no workflow job), quality gate "Sonar way", new code =
+the last 30 days. It analyses `staging` and every pull request, Dependabot's included. Security
+hotspots in new code must be reviewed in Sonar before the check passes.
+
+**Dependabot** (`.github/dependabot.yml`): npm and GitHub Actions weekly on Mondays, minor and
+patch grouped, 3-day cooldown. Ignored: `@playwright/test` (moves with the audit image), `sharp`,
+and majors of `astro`, `wrangler`, `typescript`, `eslint`, `@types/node`; those go through
+[Update dependencies](Update-Dependencies).
 
 ## Email and DNS
 
@@ -81,7 +98,7 @@ replaces the iCloud MX records.
 | :---------------------- | :------------------------------------------------------ |
 | Resend free             | 3,000 emails a month, 100 a day; each inquiry sends two |
 | Cloudflare Workers Free | 100,000 Worker requests a day; static requests are free |
-| GitLab.com              | Monthly compute minutes (Settings → Usage quotas)       |
+| GitHub Actions          | Unlimited minutes for a public repository               |
 
 ## Dashboards
 
@@ -92,7 +109,8 @@ replaces the iCloud MX records.
 | Analytics, Core Web Vitals         | Cloudflare → Web Analytics                          |
 | Turnstile                          | Cloudflare → Turnstile                              |
 | Sent emails, domain status         | Resend → Domains                                    |
-| Pipelines, environments, variables | GitLab project                                      |
+| Workflow runs, environments        | GitHub → Actions, Settings → Environments           |
+| Code analysis                      | SonarQube Cloud → `minimalist-website`              |
 
 Links: [Home → Links](Home#links).
 
@@ -102,18 +120,18 @@ To rebuild the setup, move accounts or replace a lost token.
 
 1. **Cloudflare** account (Workers Free); open Workers & Pages once and pick the workers.dev
    subdomain (`minimalist-1a8`).
-2. **API token:** My Profile → API Tokens → "Edit Cloudflare Workers", limited to the account
-   and the zone.
-3. **GitLab variables** from the table above. The Cloudflare token is not protected, so
-   `staging` can use it.
-4. **Protected branches** `main` and `staging`; `staging` as default; "Pipelines must succeed".
+2. **API token:** an account-owned token with the permissions above.
+3. **GitHub:** environments `staging` and `production` limited to their branches, then the
+   secrets and variables from the table above.
+4. **Rulesets** for `main` and `staging`; `staging` as default branch. Add the required checks
+   once each has run.
 5. **First deploy from `main`** creates the Worker; staging uploads need it to exist.
 6. **Worker secrets:** `pnpm exec wrangler secret put TURNSTILE_SECRET_KEY` (and
    `RESEND_API_KEY`).
 7. **Domain:** point the CARNET nameservers at Cloudflare's. Once the zone is active, the next
    deploy creates the custom domains. Add the Redirect Rule, Full (strict), Always Use HTTPS,
    Web Analytics.
-8. **Turnstile** widget for `minimalist.hr`: site key → GitLab variable, secret → Worker secret.
+8. **Turnstile** widget for `minimalist.hr`: site key → GitHub variable, secret → Worker secret.
 9. **Email:** iCloud+ custom domain records; Resend domain in eu-west-1 with its records (not
    merged into the root SPF); the DMARC record. Send a test inquiry and check `dkim=pass` and
    `dmarc=pass`.
