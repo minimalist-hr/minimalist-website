@@ -17,7 +17,7 @@ Ova stranica bila je naš vlastiti projektni zadatak i vodili smo ga kao što vo
 
 Astro i TypeScript, bez sučeljnog okvira. Svaka je stranica HTML već u trenutku objave. JavaScript se šalje samo ondje gdje nešto bez njega ne radi — prekidač teme, mobilni izbornik, otkrivanje pri listanju, kontaktni obrazac i pozadina — a stranica radi i kada je sve to isključeno. Ništa nije skriveno iza skripte koja se prvo mora izvršiti.
 
-Hosting je Cloudflare. Objava grane postavlja adresu za pregled, a zadana grana objavljuje produkciju. Postupak izgradnje pokreće linter, provjeru formata, provjeru tipova za stranicu i za Worker, izgradnju, a na zahtjevima za spajanje i revizije pristupačnosti i performansi.
+Hosting je Cloudflare. Objava grane postavlja adresu za pregled, a zadana grana objavljuje produkciju. Postupak izgradnje pokreće linter, provjeru formata, provjeru tipova za stranicu i za Worker, izgradnju, a na zahtjevima za povlačenje i revizije pristupačnosti i performansi.
 
 ## Dva jezika, jedna karta ruta
 
@@ -49,7 +49,7 @@ Podijeljeno je na završnoj liniji uvodnog bloka — jedna jačina iznad nje, mn
 
 ## Pristupačnost je korak izgradnje, ne pregled
 
-Svaka se stranica iz karte stranica na svakom zahtjevu za spajanje provjerava alatom axe, a cilj je nula prekršaja prema WCAG 2.2 AA. Uz to ide i skup testova za tipkovnicu: preskočna veza, redoslijed fokusa naprijed i natrag, vidljiv fokus koji ljepljivo zaglavlje nikada ne prekriva, tipke mobilnog izbornika, fokus na prvom neispravnom polju nakon neuspjelog slanja i preslagivanje na 320 i 640 piksela. Performanse, pristupačnost, dobre prakse i SEO drže se na 95 ili više. Prolaz s čitačem ekrana ostaje ručan, jer to nijedan alat ne radi umjesto vas.
+Svaka se stranica iz karte stranica na svakom zahtjevu za povlačenje provjerava alatom axe, a cilj je nula prekršaja prema WCAG 2.2 AA. Uz to ide i skup testova za tipkovnicu: preskočna veza, redoslijed fokusa naprijed i natrag, vidljiv fokus koji ljepljivo zaglavlje nikada ne prekriva, tipke mobilnog izbornika, fokus na prvom neispravnom polju nakon neuspjelog slanja i preslagivanje na 320 i 640 piksela. Performanse, pristupačnost, dobre prakse i SEO drže se na 95 ili više. Prolaz s čitačem ekrana ostaje ručan, jer to nijedan alat ne radi umjesto vas.
 
 ## Jedna stvar na poslužitelju
 
