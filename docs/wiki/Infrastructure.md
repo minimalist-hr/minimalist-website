@@ -94,7 +94,7 @@ replaces the iCloud MX records.
 | Sent emails, domain status         | Resend → Domains                                    |
 | Pipelines, environments, variables | GitLab project                                      |
 
-Links: [Home → Links](/home#links).
+Links: [Home → Links](Home#links).
 
 ## Setting up from scratch
 

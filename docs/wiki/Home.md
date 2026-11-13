@@ -12,12 +12,12 @@ insights as they exist) and maintenance.
 
 ## Pages
 
-| Section          | Pages                                                                                                                                                                                                                                                                                                             |
-| :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Product**      | [Brand and design](/Product/Brand-and-Design) · [Pages](/Product/Pages) · [Decision log](/Decision-Log)                                                                                                                                                                                                           |
-| **How it works** | [Architecture](/How-It-Works/Architecture) · [Languages and SEO](/How-It-Works/Languages-and-SEO) · [Contact form](/How-It-Works/Contact-Form) · [Theme and motion](/How-It-Works/Theme-and-Motion) · [Security and privacy](/How-It-Works/Security-and-Privacy) · [Infrastructure](/How-It-Works/Infrastructure) |
-| **Development**  | [Getting started](/Development/Getting-Started) · [Workflow](/Development/Workflow) · [Conventions](/Development/Conventions) · [Testing](/Development/Testing) · [Troubleshooting](/Development/Troubleshooting)                                                                                                 |
-| **Guides**       | [Add a case study](/Guides/Add-a-Case-Study) · [Add an insight](/Guides/Add-an-Insight) · [Images](/Guides/Images) · [Add a page](/Guides/Add-a-Page) · [Update dependencies](/Guides/Update-Dependencies) · [Change the email provider](/Guides/Change-the-Email-Provider)                                       |
+| Section          | Pages                                                                                                                                                                                                                         |
+| :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Product**      | [Brand and design](Brand-and-Design) · [Pages](Pages) · [Decision log](Decision-Log)                                                                                                                                          |
+| **How it works** | [Architecture](Architecture) · [Languages and SEO](Languages-and-SEO) · [Contact form](Contact-Form) · [Theme and motion](Theme-and-Motion) · [Security and privacy](Security-and-Privacy) · [Infrastructure](Infrastructure) |
+| **Development**  | [Getting started](Getting-Started) · [Workflow](Workflow) · [Conventions](Conventions) · [Testing](Testing) · [Troubleshooting](Troubleshooting)                                                                              |
+| **Guides**       | [Add a case study](Add-a-Case-Study) · [Add an insight](Add-an-Insight) · [Images](Images) · [Add a page](Add-a-Page) · [Update dependencies](Update-Dependencies) · [Change the email provider](Change-the-Email-Provider)   |
 
 ## Links
 
@@ -35,4 +35,4 @@ insights as they exist) and maintenance.
 
 The single source of truth for the project. The master copy is `docs/wiki/` in the repository;
 CI publishes it to the GitLab wiki after each release, so don't edit pages in the GitLab UI. See
-[Workflow → The wiki](/Development/Workflow#the-wiki).
+[Workflow → The wiki](Workflow#the-wiki).

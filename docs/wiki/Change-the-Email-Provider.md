@@ -22,7 +22,7 @@ implementation selected by `MAIL_PROVIDER`; nothing else changes.
 4. **Test** locally with `wrangler dev` and the key in `.dev.vars`: both emails arrive with SPF,
    DKIM and DMARC passing. After release, one real inquiry on production.
 5. **Clean up:** remove the old implementation and secret; update
-   [Contact form](/How-It-Works/Contact-Form#mailer),
-   [Infrastructure](/How-It-Works/Infrastructure#email-and-dns),
-   [Security and privacy](/How-It-Works/Security-and-Privacy) and the
-   [Decision log](/Decision-Log).
+   [Contact form](Contact-Form#mailer),
+   [Infrastructure](Infrastructure#email-and-dns),
+   [Security and privacy](Security-and-Privacy) and the
+   [Decision log](Decision-Log).

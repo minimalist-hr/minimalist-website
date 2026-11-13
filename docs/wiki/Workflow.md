@@ -16,7 +16,7 @@ pushes run no pipeline.
 1. `git switch staging && git pull && git switch -c feat/short-name`
 2. Read the relevant wiki page and the design. For brand, layout or copy the design is the spec.
 3. Work in small steps; after each, run the checks and commit. One logical change per commit.
-4. Test what you changed ([Testing](/Development/Testing)).
+4. Test what you changed ([Testing](Testing)).
 5. Update the wiki in the same branch if behaviour, configuration, structure or a decision
    changed.
 6. Open a merge request into `staging`. Merging it refreshes the staging preview (the form
@@ -66,17 +66,17 @@ locally), then merge `main` back into `staging`.
 - Changing `.gitlab-ci.yml`, `wrangler.jsonc`, `.gitignore`, `.nvmrc`: explain the problem.
 - A new dependency: what it does and why built-ins aren't enough.
 - New sections, components or styles not in the design.
-- Brand rules: only through an approved deviation in the [Decision log](/Decision-Log).
+- Brand rules: only through an approved deviation in the [Decision log](Decision-Log).
 
 ## The wiki
 
 `docs/wiki/` is the master copy. `sync_wiki` mirrors it to the GitLab wiki after each production
-deploy (see [Infrastructure](/How-It-Works/Infrastructure#gitlab)), so edits in the GitLab UI are
+deploy (see [Infrastructure](Infrastructure#gitlab)), so edits in the GitLab UI are
 overwritten.
 
 - File names become titles (`Getting-Started.md` → "Getting Started"); folders are sections.
   Add new pages to `home.md` and `_sidebar.md`.
-- Links are root-relative without `.md`: `[Testing](/Development/Testing#lighthouse)`.
+- Links are root-relative without `.md`: `[Testing](Testing#lighthouse)`.
 - Mermaid for diagrams. No secrets, tokens or account IDs.
 - One place per fact; link instead of repeating. Describe rules, decisions, setup and gotchas;
   don't copy what the code already says.

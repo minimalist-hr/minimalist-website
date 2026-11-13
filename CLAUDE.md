@@ -2,8 +2,8 @@
 
 ## Sources of truth
 
-- **`docs/wiki/` is the single source of truth** for the project: scope, decisions, architecture, data, configuration, workflow and how things work. Start at `docs/wiki/home.md` and read the relevant pages before starting a task. If a request conflicts with the wiki, say so.
-- **Keep the wiki true.** Any change to behaviour, structure, configuration, content model, workflow or a decision updates the matching wiki page in the same branch and merge request (conventions in `docs/wiki/Development/Workflow.md`, section "The wiki"). Record new decisions and approved deviations in `docs/wiki/Decision-Log.md`. The wiki holds rules, decisions, setup and gotchas; don't copy into it what the code already says. Never put secrets, tokens or account IDs in the wiki.
+- **`docs/wiki/` is the single source of truth** for the project: scope, decisions, architecture, data, configuration, workflow and how things work. Start at `docs/wiki/Home.md` and read the relevant pages before starting a task. If a request conflicts with the wiki, say so.
+- **Keep the wiki true.** Any change to behaviour, structure, configuration, content model, workflow or a decision updates the matching wiki page in the same branch and merge request (conventions in `docs/wiki/Workflow.md`, section "The wiki"). Record new decisions and approved deviations in `docs/wiki/Decision-Log.md`. The wiki holds rules, decisions, setup and gotchas; don't copy into it what the code already says. Never put secrets, tokens or account IDs in the wiki.
 - If the code and the wiki disagree, find out which is wrong and fix it; don't silently follow either.
 - Code comments explain the code only: a non-obvious reason or a workaround. No wiki references, dates, approvals or history, and no comment that repeats the code.
 - The design is the visual spec. Use `design/*.extracted.html` for exact copy, sizes, spacing and tokens, and the original `design/*.html` bundles (open in a browser) for visual comparison. Ask before inventing sections, components or visual styles.
