@@ -55,19 +55,20 @@
 
 ## Tests and CI
 
-| Symptom                               | Fix                                                         |
-| :------------------------------------ | :---------------------------------------------------------- |
-| Tests fail reading `dist/sitemap.xml` | Build first                                                 |
-| Tests see old pages                   | A reused `wrangler dev` serves an old build: stop, rebuild  |
-| `audit`: browser executable not found | Playwright image tag ≠ `@playwright/test`; bump both        |
-| Lighthouse `NO_NAVSTART`              | Already retried three times; rerun the job                  |
-| Lighthouse below 95 only in CI        | Runner noise; rerun, investigate if it repeats              |
-| CI install fails on an install script | Approve the package in `allowBuilds` (ask first)            |
-| pnpm refuses a just-published version | Wait, or add it to `minimumReleaseAgeExclude` with a reason |
-| `--frozen-lockfile` fails             | `pnpm install` and commit `pnpm-lock.yaml`                  |
-| No workflow on push                   | Plain pushes run nothing; open a pull request               |
-| Deploy auth error                     | Replace `CLOUDFLARE_API_TOKEN` in both environments         |
-| `wiki` job fails to clone             | The wiki has no first page yet; create one in the GitHub UI |
+| Symptom                               | Fix                                                            |
+| :------------------------------------ | :------------------------------------------------------------- |
+| Tests fail reading `dist/sitemap.xml` | Build first                                                    |
+| Tests see old pages                   | A reused `wrangler dev` serves an old build: stop, rebuild     |
+| `audit`: browser executable not found | Playwright image tag ≠ `@playwright/test`; bump both           |
+| Lighthouse `NO_NAVSTART`              | Already retried three times; rerun the job                     |
+| Lighthouse below 95 only in CI        | Runner noise; rerun, investigate if it repeats                 |
+| CI install fails on an install script | Approve the package in `allowBuilds` (ask first)               |
+| pnpm refuses a just-published version | Wait, or add it to `minimumReleaseAgeExclude` with a reason    |
+| Dependabot PR: `MINIMUM_RELEASE_AGE`  | A fresh transitive release; wait a day, `@dependabot recreate` |
+| `--frozen-lockfile` fails             | `pnpm install` and commit `pnpm-lock.yaml`                     |
+| No workflow on push                   | Plain pushes run nothing; open a pull request                  |
+| Deploy auth error                     | Replace `CLOUDFLARE_API_TOKEN` in both environments            |
+| `wiki` job fails to clone             | The wiki has no first page yet; create one in the GitHub UI    |
 
 Logs: Cloudflare → the Worker → Logs; locally the `wrangler dev` terminal; GitHub → Actions for
 runs and artifacts.
