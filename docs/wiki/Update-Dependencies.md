@@ -23,7 +23,7 @@ Commit `package.json` and `pnpm-lock.yaml` together.
 | `@playwright/test` | The `audit` image tag in `ci.yml`; locally `pnpm exec playwright install`        |
 | `wrangler`         | `pnpm run types:worker`; consider `compatibility_date` in `wrangler.jsonc`       |
 | `astro`            | Release notes; check `astro check`, the CSP `<meta>`, image output, i18n routing |
-| `@lhci/cli`        | Whether the `lighthouse` override in `pnpm-workspace.yaml` is still needed       |
+| `@lhci/cli`        | The Lighthouse version it brings still runs on Playwright's Chromium (`audit`)   |
 | `sharp`            | Pinned exactly; rebuild and compare a few images                                 |
 | Node               | `.nvmrc` (CI reads it too), `engines` (explain first)                            |
 | pnpm               | `corepack use pnpm@<version>` updates `packageManager`                           |
