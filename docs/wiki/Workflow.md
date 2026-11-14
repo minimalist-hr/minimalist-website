@@ -2,11 +2,11 @@
 
 ## Branches
 
-| Branch                      | Purpose                                                          |
-| :-------------------------- | :--------------------------------------------------------------- |
-| `main`                      | Production. Every merge deploys minimalist.hr                    |
-| `staging`                   | Finished work waiting for release; every merge refreshes staging |
-| `feat/…`, `fix/…`, `docs/…` | One piece of work, off `staging`                                 |
+| Branch          | Purpose                                                            |
+| :-------------- | :----------------------------------------------------------------- |
+| `main`          | Production. Every merge deploys minimalist.hr                      |
+| `staging`       | Finished work waiting for release; every merge refreshes staging   |
+| `<type>/<name>` | One piece of work, off `staging`, for example `feat/services-page` |
 
 `main` and `staging` are protected by rulesets: pull requests only, with passing checks. Plain
 branch pushes run no workflow.
@@ -59,8 +59,15 @@ request `main` → `staging`, merged with a merge commit.
 
 - Commit messages: short, imperative, sentence case, no period; say what changes for the site.
   `Require consent to the privacy policy on the contact form`
-- Pull requests: the template asks for the issue, the changes and a short checklist. Add
-  screenshots for visual changes, and any dashboard change needed.
+- Pull request titles: [Conventional Commits](https://www.conventionalcommits.org), for example
+  `feat: add the services page`. Types: `feat`, `fix`, `docs`, `test`, `refactor`, `chore`. A
+  squash merge makes the title the commit on `staging`. Releases and `main` → `staging` syncs
+  need one too, for example `chore: release`.
+- Branch names: `<type>/<short-name>` in kebab-case, with the same types.
+- Pull requests: the template asks for the issue (`Closes #12` or `Relates to #12`), the changes
+  and a short checklist. Add screenshots for visual changes, and any dashboard change needed.
+- The `pr` job checks the title on every pull request, and the branch name and issue on work
+  branches. It skips Dependabot, whose titles start with `chore:`.
 
 ## Ask first
 

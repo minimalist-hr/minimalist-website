@@ -28,24 +28,27 @@ public. Moved from GitLab in November 2026 ([Decision log](Decision-Log)).
 
 - **Rulesets** on `main` (production) and `staging` (default branch): pull request required, 0
   approvals, no force push, no deletion, no bypass. `main` allows merge commits only, `staging`
-  merge or squash. Required checks: `checks`, `audit` and `SonarCloud Code Analysis`.
+  merge or squash. Required checks: `checks`, `audit`, `pr` and `SonarCloud Code Analysis`.
 - Rebase merging is off; head branches are deleted after merge.
 - Secret scanning with push protection, Dependabot alerts and security updates, CodeQL (default
   setup), private vulnerability reporting.
 - **Board:** org project #2 "Minimalist website" (Backlog, Ready, In progress, In review, Done).
   Open issues and pull requests are added automatically and start in Backlog; closed or merged
-  ones move to Done. The issue forms (Story, Task, Bug) set the issue type and the board.
+  ones move to Done. The issue forms (Epic, Story, Task, Bug) set the issue type and the board.
+  An epic's stories and tasks are its sub-issues.
 
 | Trigger               | Workflow › jobs                 |
 | :-------------------- | :------------------------------ |
 | PR into `staging`     | CI › `checks` (`audit` skipped) |
 | PR `staging` → `main` | CI › `checks` → `audit`         |
+| Any PR, on each edit  | PR rules › `pr`                 |
 | Push to `staging`     | Deploy › `staging`              |
 | Push to `main`        | Deploy › `production` → `wiki`  |
 
 | Job          | Does                                                                                          |
 | :----------- | :-------------------------------------------------------------------------------------------- |
 | `checks`     | Lint, format check, type checks, build                                                        |
+| `pr`         | Title, branch name and issue ([Workflow](Workflow#commits-and-pull-requests)); not Dependabot |
 | `audit`      | Build, `test:a11y`, `test:lighthouse` in the Playwright image; reports kept a week (artifact) |
 | `staging`    | Build, append `noindex`, `wrangler versions upload --preview-alias staging`                   |
 | `production` | Build, append `noindex` unless `ALLOW_INDEXING` is `true`, `wrangler deploy`                  |
@@ -79,9 +82,9 @@ the last 30 days. It analyses `staging` and every pull request, Dependabot's inc
 hotspots in new code must be reviewed in Sonar before the check passes.
 
 **Dependabot** (`.github/dependabot.yml`): npm and GitHub Actions weekly on Mondays, minor and
-patch grouped, 3-day cooldown. Ignored: `@playwright/test` (moves with the audit image), `sharp`,
-and majors of `astro`, `wrangler`, `typescript`, `eslint`, `@types/node`; those go through
-[Update dependencies](Update-Dependencies).
+patch grouped, 3-day cooldown, titles prefixed `chore:`. Ignored: `@playwright/test` (moves with
+the audit image), `sharp`, and majors of `astro`, `wrangler`, `typescript`, `eslint`,
+`@types/node`; those go through [Update dependencies](Update-Dependencies).
 
 ## Email and DNS
 
