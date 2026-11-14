@@ -49,8 +49,9 @@ skips links on Tab, like Safari, so link-only keyboard tests skip it.
 `scripts/lighthouse.mjs` (not `lhci autorun`) runs `/`, `/work/lift-mucnjak-website/` and
 `/contact/` three times each on port 8788, retrying a run up to three times because Lighthouse
 sometimes fails to record a load in the CI container (`NO_NAVSTART`). Turnstile is blocked: its
-challenge never settles headless. Lighthouse is pinned through `overrides` in
-`pnpm-workspace.yaml` because the version bundled with `@lhci/cli` fails on current Chromium.
+challenge never settles headless. Lighthouse comes with `@lhci/cli`; if that version ever
+fails on current Chromium (`NO_NAVSTART` on every run), pin a newer one through `overrides` in
+`pnpm-workspace.yaml`.
 
 **On Windows** `lhci collect` fails on a Chrome-launcher cleanup bug (EPERM). Use a running
 Chromium instead:
@@ -59,7 +60,7 @@ Chromium instead:
 pnpm run build
 pnpm exec wrangler dev --port 8788 &
 "<path to chrome>" --remote-debugging-port=9222 --headless=new --user-data-dir="<temp dir>"
-pnpm dlx lighthouse@<override version> http://127.0.0.1:8788/ --port=9222 --view
+pnpm dlx lighthouse@<version in pnpm-lock.yaml> http://127.0.0.1:8788/ --port=9222 --view
 ```
 
 ## Manual checks

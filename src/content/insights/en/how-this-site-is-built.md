@@ -17,7 +17,7 @@ This site was our own brief, and we ran it the way we run a client's: settle the
 
 Astro and TypeScript, no UI framework. Every page is HTML by the time it is deployed. JavaScript ships only where something needs it — the theme switch, the mobile menu, the scroll reveal, the contact form, the background — and the site works with all of it off. Nothing is hidden behind a script that has to run first.
 
-Hosting is Cloudflare. A push to a branch deploys a preview URL; the default branch deploys production. The pipeline runs the linter, the formatter, type checks for both the site and the Worker, a build, and then the accessibility and performance audits on merge requests.
+Hosting is Cloudflare. Merging into the staging branch refreshes a preview; a release to the main branch deploys production. Every pull request runs the linter, the formatter, type checks for both the site and the Worker, and a build; each release adds the accessibility and performance audits.
 
 ## Two languages, one route map
 
@@ -49,7 +49,7 @@ It is divided at the hero's closing rule — one strength above it, much fainter
 
 ## Accessibility is a build step, not a review
 
-Every page in the sitemap is checked with axe on each merge request, and the target is zero violations against WCAG 2.2 AA. A keyboard suite runs alongside it: the skip link, focus order forwards and backwards, a visible focus that the sticky header never covers, the mobile menu keys, focus landing on the first invalid field after a failed submit, and reflow at 320 and 640 pixels. Performance, accessibility, best practices and SEO are held at 95 or above. A screen reader pass stays manual, because no tool does it for you.
+Every page in the sitemap is checked with axe before each release, and the target is zero violations against WCAG 2.2 AA. A keyboard suite runs alongside it: the skip link, focus order forwards and backwards, a visible focus that the sticky header never covers, the mobile menu keys, focus landing on the first invalid field after a failed submit, and reflow at 320 and 640 pixels. Performance, accessibility, best practices and SEO are held at 95 or above. A screen reader pass stays manual, because no tool does it for you.
 
 ## One thing on a server
 

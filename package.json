@@ -20,27 +20,27 @@
     "test:lighthouse": "node scripts/lighthouse.mjs"
   },
   "dependencies": {
-    "astro": "^7.3.3",
-    "sharp": "0.35.4"
+    "astro": "^7.4.10",
+    "sharp": "0.35.5"
   },
   "allowScripts": {
     "esbuild": true
   },
   "packageManager": "pnpm@12.4.2+sha512.08adc6613180275c7c9edada39dcf08c9c61ad4e7eaf330a4f3461f102b0f907423454d117f98e72d47fef0616070644d7bffc973a6a57f5090a6d7c368b07c9",
   "devDependencies": {
-    "@astrojs/check": "^0.9.10",
-    "@axe-core/playwright": "^4.13.0",
+    "@astrojs/check": "^0.9.12",
+    "@axe-core/playwright": "^4.14.0",
     "@eslint/js": "^10.0.1",
-    "@lhci/cli": "^0.15.1",
+    "@lhci/cli": "^0.16.0",
     "@playwright/test": "^1.63.0",
-    "@types/node": "^24.13.5",
-    "eslint": "^10.10.0",
-    "eslint-plugin-astro": "^3.2.0",
+    "@types/node": "^24.19.2",
+    "eslint": "^10.14.0",
+    "eslint-plugin-astro": "^3.2.1",
     "eslint-plugin-jsx-a11y-x": "^0.2.0",
-    "prettier": "^3.9.7",
-    "prettier-plugin-astro": "^1.0.0",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.2",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.70.0",
-    "wrangler": "^4.132.0"
+    "typescript-eslint": "^8.72.2",
+    "wrangler": "^4.160.0"
   }
 }
