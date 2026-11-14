@@ -2,6 +2,7 @@ name: Task
 description: Maintenance or technical work no visitor sees.
 type: Task
 assignees: [mucnjakf]
+projects: [minimalist-hr/2]
 body:
   - type: textarea
     id: what

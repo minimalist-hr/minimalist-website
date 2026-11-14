@@ -74,7 +74,7 @@ export const skillGroups: SkillGroup[] = [
       en: 'Predictable releases, no midnight surprises.',
       hr: 'Predvidljiva izdanja, bez iznenađenja u noći.',
     },
-    tools: ['GitLab', 'Docker', 'Aspire', 'Azure'],
+    tools: ['GitHub', 'Docker', 'Aspire', 'Azure'],
   },
   {
     label: { en: 'Proving it works', hr: 'Dokaz da radi' },

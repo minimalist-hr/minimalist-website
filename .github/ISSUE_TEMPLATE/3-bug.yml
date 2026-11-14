@@ -2,6 +2,7 @@ name: Bug
 description: Something on the site that doesn't work as designed.
 type: Bug
 assignees: [mucnjakf]
+projects: [minimalist-hr/2]
 body:
   - type: input
     id: page
