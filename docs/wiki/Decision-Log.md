@@ -57,6 +57,7 @@ reason, and update the pages that describe it.
 | 2026-11-13 | Cloudflare token is account-owned, only in the deploy environments   | Survives user changes; pull request jobs never see it.                                         |
 | 2026-11-13 | SonarQube Cloud with Automatic Analysis, required on pull requests   | Static analysis with no token or workflow job; covers Dependabot's PRs too.                    |
 | 2026-11-13 | Merged MRs and pipeline history not imported                         | GitHub can't import them; the GitLab project export is the archive. Issues kept their numbers. |
+| 2026-11-14 | Conventional Commit PR titles, checked by `pr`; an Epic issue form   | Same conventions as the other Minimalist repositories.                                         |
 
 ## Out of scope
 
